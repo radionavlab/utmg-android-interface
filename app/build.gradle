@@ -1,4 +1,7 @@
+apply plugin: 'ros-android' // This should go in addition to your existing
+                            // 'com.android.application' or 'com.android.library' plug-in.
 apply plugin: 'com.android.application'
+
 
 android {
     compileSdkVersion 25
@@ -17,6 +20,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // Exclude a few files that are duplicated across our dependencies and
+    // prevent packaging Android applications.
+    packagingOptions {
+        exclude "META-INF/LICENSE.txt"
+        exclude "META-INF/NOTICE.txt"
+    }
 }
 
 dependencies {
@@ -28,4 +38,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.2.0'
     testCompile 'junit:junit:4.12'
+
+    // You now now add any rosjava dependencies, like so:
+    compile 'org.ros.android_core:android_10:[0.3,0.4)'
 }
