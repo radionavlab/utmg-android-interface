@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/bb70d3c2ce6919de4b1f919b926014520d46bdfe/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_7363cdec9e37de53bfc0ab08b2f13f5a3124deb2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/51cf6d83986de7a1123cb7d27fe1bda82ef48972/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e51c2f662bb72419632af5192553c37e33890a99">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_486b0cd7e4f63af8291459ac4a2b1f6da3787306/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/780e3fa85dd6e9a73f9eca8777636e020d852654/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_0655bdbcd1a6855f3baa002477995b86dffd75bc/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/3c8b823b7f3a968a39b57f1c511b3ca5ee0846fb/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fa0446a14ed5dd3725047d6399ffea771a564b30">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_05f1d3c34bf6d2cf0b85655329393a09ae629116/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/68d634a7bb4af8154ab2cfe8f3ce135b653ff4c6/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ea6a989b83d19b1b461281e0475a6cd6514897f8">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_911725037bda0396153b0575e89ba98ae07448f5/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/74c71e986c2a5cbc4efbe7ac72e4d4757d67b66f/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_d7d4f14f068acd6a9eb1f6e431597c18ee63811b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/e94d96bde744be8b8fae6cc0feff976f41f634b5/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_11e0678aa58c70560393f42eb3b05257992ea511/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/df5854903464278f0215f227ec1e3db7c5f8449a/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="67eb33110dbacb46a48175b08ae0c96761d2c17d">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_0715666002b34978580388adc5726a5025268a43/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/opt/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.2.0/support-annotations-25.2.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.2.0_3042543a109deaae1c2ccd1051e335d1f9679e56/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_c16c940522327b3b878177c4612a3d16d870b4b1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/af337a73e8f36640c419a14b963601f579029894/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="702d339bc0a81d21354cd7e2cf2b67225fa4a16c">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_619fe0cb5cb3bdfe6baea8ed5c3ad2435e05928e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/c858bf4836071f8809ec6bf62d373d1e4802f94a/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="152de8da301561dcb0946471697a420d8f7a68c5">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_a3635eadfd603b6677a5def01f7db223f276a79c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/c457defca27dd30617c93364e0b9fa728d2277f5/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c0f2f3b404a9225874c8a1d30acf2d28ebf2cb02/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="37cf5c58c4d92111dfacc581c73d6c15f3cd9c67">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_7047eab51fd0d55ae76a2bc647c85a5e48e1f8d9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/760ce945d0fbe1aaf3564afcf7941b76f831903c/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="cb454b52545859ed2f24a6c01366805b0fa04b22">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_036a28913325389dd8baf729727969a49d1b7702/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/opt/Android/Sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/constraint-layout-solver-1.0.2_75b6b8a189b3567efbfdf4785ea07d0af88a5806/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/siddarthkaki/.android/build-cache/a6a6b0e8366fb7a93effce7beb69c02d2c33dcb8/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="810f41e5b7fd99f196ebeabe865ba2c54e7e76dc">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_356cdc02230afba618aeed39fbc22a3dc41f2615/classes.dex" />
+    </item>
+
+</items>
