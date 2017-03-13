@@ -3,6 +3,15 @@
 
     <item
         is-multidex="false"
+        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_messages/visualization_msgs/1.12.5/ac06cc9dc7261fb89f191ba6d3df0b912829956d/visualization_msgs-1.12.5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ac06cc9dc7261fb89f191ba6d3df0b912829956d">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/visualization_msgs-1.12.5_be4a188ab3d1f447fc9467061687b622ac90e3e1.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/transition/25.2.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
@@ -147,6 +156,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/org.ros.android_core/android_15/0.3.2/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="eb70427fcf40847ab9c77b168dddc3183daf0c1e">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/org.ros.android_core-android_15-0.3.2_401b01f18b0424abf6b0179571463b3b69c82dcd.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_bootstrap/gradle_plugins/0.3.0/c2de0a0af7991c0e4cc37f658d247223a1b1b781/gradle_plugins-0.3.0.jar"
         jumboMode="false"
         optimize="true"
@@ -216,6 +234,15 @@
         revision="25.0.2"
         sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
         <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-utils-25.2.0_564b09e7e3d6e3878210acab4072108e9e9a57a3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_core/rosjava_geometry/0.3.2/47ef1e21708a3391ff73cbb968edf2450f517561/rosjava_geometry-0.3.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="47ef1e21708a3391ff73cbb968edf2450f517561">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/rosjava_geometry-0.3.2_1cee286903d33a86c51c1dcccf93c3d3300d265a.jar" />
     </item>
     <item
         is-multidex="false"
