@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-
+// ROS integration stuff
 buildscript {
     apply from: "https://github.com/rosjava/android_core/raw/kinetic/buildscript.gradle"
 }

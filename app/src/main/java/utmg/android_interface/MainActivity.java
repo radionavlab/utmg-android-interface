@@ -1,5 +1,6 @@
 package utmg.android_interface;
 
+import android.content.Intent;
 import android.gesture.GestureLibraries;
 import android.gesture.GestureLibrary;
 import android.gesture.GestureOverlayView;
@@ -101,9 +102,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        if (id == R.id.action_roscam)
         {
-            return true;
+            startActivity(new Intent(MainActivity.this, ROSCam.class));
+        }
+
+        else if (id == R.id.action_settings)
+        {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

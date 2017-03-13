@@ -66,15 +66,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/io.netty/netty/3.5.2.Final/e6fb74a0699abe108969b2ec1f269391169a0426/netty-3.5.2.Final.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e6fb74a0699abe108969b2ec1f269391169a0426">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/netty-3.5.2.Final_1b281b4609d2a39b314fafa214ad108582559fdf.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.2.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
@@ -84,12 +75,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_bootstrap/message_generation/0.3.0/ff5f3dd34f25c4e63b131972485938ad9ccdd87f/message_generation-0.3.0.jar"
+        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/io.netty/netty/3.5.2.Final/e6fb74a0699abe108969b2ec1f269391169a0426/netty-3.5.2.Final.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="ff5f3dd34f25c4e63b131972485938ad9ccdd87f">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/message_generation-0.3.0_a08172eff7198768047e488c2b820b17a8b909d2.jar" />
+        sha1="e6fb74a0699abe108969b2ec1f269391169a0426">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/netty-3.5.2.Final_1b281b4609d2a39b314fafa214ad108582559fdf.jar" />
     </item>
     <item
         is-multidex="false"
@@ -99,6 +90,15 @@
         revision="25.0.2"
         sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
         <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-fragment-25.2.0_adb68efdaecb88339fb59a6fafb5b0435a56bac5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_bootstrap/message_generation/0.3.0/ff5f3dd34f25c4e63b131972485938ad9ccdd87f/message_generation-0.3.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ff5f3dd34f25c4e63b131972485938ad9ccdd87f">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/message_generation-0.3.0_a08172eff7198768047e488c2b820b17a8b909d2.jar" />
     </item>
     <item
         is-multidex="false"
@@ -156,21 +156,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="702d339bc0a81d21354cd7e2cf2b67225fa4a16c">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-25.2.0_16338a54fb3004640c5a828fbdc12435e1fd7c7d.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/opt/Android/Sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
         <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/constraint-layout-solver-1.0.2_75b6b8a189b3567efbfdf4785ea07d0af88a5806.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="702d339bc0a81d21354cd7e2cf2b67225fa4a16c">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-25.2.0_16338a54fb3004640c5a828fbdc12435e1fd7c7d.jar" />
     </item>
     <item
         is-multidex="false"
@@ -192,21 +192,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.apache.commons/com.springsource.org.apache.commons.lang/2.4.0/686e3713650c8e3a5d98723b4d3e239586bf9822/com.springsource.org.apache.commons.lang-2.4.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="686e3713650c8e3a5d98723b4d3e239586bf9822">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.springsource.org.apache.commons.lang-2.4.0_17cd7d1e9ce4e28616b3092f84e6a6926e924ed7.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.2.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
         <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-25.2.0_349881250a0ec4893b02749221375ca533c70c7f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.apache.commons/com.springsource.org.apache.commons.lang/2.4.0/686e3713650c8e3a5d98723b4d3e239586bf9822/com.springsource.org.apache.commons.lang-2.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="686e3713650c8e3a5d98723b4d3e239586bf9822">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.springsource.org.apache.commons.lang-2.4.0_17cd7d1e9ce4e28616b3092f84e6a6926e924ed7.jar" />
     </item>
     <item
         is-multidex="false"
