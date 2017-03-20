@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity
     private GestureLibrary gLib;
     GestureOverlayView gestures;
 
+    private CanvasView customCanvas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -41,15 +43,21 @@ public class MainActivity extends AppCompatActivity
         });
 
 
+        customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
+
         gLib = GestureLibraries.fromRawResource(this, R.raw.gestures);
         if (!gLib.load()) { finish(); }
 
         //Gesture Overlay
-        gestures = (GestureOverlayView) findViewById(R.id.gestures);
-        gestures.addOnGestureListener(handleGestureListener);
-        gestures.setGestureColor(Color.RED);
+        //gestures = (GestureOverlayView) findViewById(R.id.gestures);
+        //gestures.addOnGestureListener(handleGestureListener);
+        //gestures.setGestureColor(Color.RED);
 //        gestures.setGestureStrokeWidth(12);
 
+    }
+
+    public void clearCanvas(View v) {
+        customCanvas.clearCanvas();
     }
 
     /**
