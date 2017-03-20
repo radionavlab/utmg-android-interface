@@ -14,22 +14,26 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity
-{
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
-    private GestureLibrary gLib;
-    GestureOverlayView gestures;
+public class MainActivity extends AppCompatActivity {
 
     private CanvasView customCanvas;
+    private ArrayList<Float> xCoordVec;
+    private ArrayList<Float> yCoordVec;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        xCoordVec = new ArrayList<>();
+        yCoordVec = new ArrayList<>();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
@@ -37,60 +41,27 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Sent!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                xCoordVec = customCanvas.getxCoordVec();
+                yCoordVec = customCanvas.getyCoordVec();
             }
         });
 
-
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
 
-        gLib = GestureLibraries.fromRawResource(this, R.raw.gestures);
-        if (!gLib.load()) { finish(); }
+        TextView tvX = (TextView) findViewById(R.id.xView);
+        TextView tvY = (TextView) findViewById(R.id.yView);
 
-        //Gesture Overlay
-        //gestures = (GestureOverlayView) findViewById(R.id.gestures);
-        //gestures.addOnGestureListener(handleGestureListener);
-        //gestures.setGestureColor(Color.RED);
-//        gestures.setGestureStrokeWidth(12);
+        //tvX.setText(Float.toString(customCanvas.getxCoord()));
+        tvY.setText(Float.toString(customCanvas.getyCoord()));
 
     }
 
     public void clearCanvas(View v) {
         customCanvas.clearCanvas();
     }
-
-    /**
-     * our gesture listener
-     */
-    private GestureOverlayView.OnGestureListener handleGestureListener = new GestureOverlayView.OnGestureListener()
-    {
-
-        @Override
-        public void onGesture(GestureOverlayView gestureView, MotionEvent me)
-        {
-
-        }
-
-        @Override
-        public void onGestureStarted(GestureOverlayView gestureView, MotionEvent me)
-        {
-
-        }
-
-        @Override
-        public void onGestureEnded(GestureOverlayView gestureView, MotionEvent me)
-        {
-
-        }
-
-        @Override
-        public void onGestureCancelled(GestureOverlayView gestureView, MotionEvent me)
-        {
-
-        }
-
-    };
 
 
     @Override
@@ -102,21 +73,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_roscam)
-        {
+        if (id == R.id.action_roscam) {
             startActivity(new Intent(MainActivity.this, ROSCam.class));
         }
 
-        else if (id == R.id.action_settings)
-        {
+        else if (id == R.id.action_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
 

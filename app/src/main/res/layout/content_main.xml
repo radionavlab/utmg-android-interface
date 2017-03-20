@@ -27,6 +27,21 @@
         android:textSize="20sp"
         tools:ignore="HardcodedText" />
 
+    <TextView
+        android:id="@+id/xView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hi"
+        tools:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/yView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="bye"
+        tools:textSize="36sp" />
+
 </FrameLayout>
 
 <!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->

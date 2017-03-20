@@ -32,10 +32,19 @@ public class CanvasView extends View {
     private Paint mPaint;
     private float mX, mY;
     private static final float TOLERANCE = 5;
+    ArrayList<Float> xCoordVec;
+    ArrayList<Float> yCoordVec;
+
+    float xCoord;
+    float yCoord;
+
 
     public CanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
         context = c;
+
+//        xCoord = new ArrayList<Float>();
+//        yCoord = new ArrayList<Float>();
 
         // we set a new Path
         mPath = new Path();
@@ -69,9 +78,22 @@ public class CanvasView extends View {
 
     // when ACTION_DOWN start touch according to the x,y values
     private void startTouch(float x, float y) {
+
+        mPath.reset();
+
+        // instantiate x and y arrays
+        xCoordVec = new ArrayList<>();
+        yCoordVec = new ArrayList<>();
+
         mPath.moveTo(x, y);
         mX = x;
         mY = y;
+
+        xCoord = x;
+        yCoord = y;
+
+        xCoordVec.add(mX);
+        yCoordVec.add(mY);
     }
 
     // when ACTION_MOVE move touch according to the x,y values
@@ -82,8 +104,38 @@ public class CanvasView extends View {
             mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
             mX = x;
             mY = y;
+
+            xCoord = x;
+            yCoord = y;
+
+            xCoordVec.add(mX);
+            yCoordVec.add(mY);
+
         }
     }
+
+    public ArrayList<Float> getxCoordVec() {
+
+        return xCoordVec;
+    }
+
+    public ArrayList<Float> getyCoordVec() {
+
+        return yCoordVec;
+    }
+
+
+    public float getxCoord() {
+
+        return xCoord;
+    }
+
+    public float getyCoord() {
+
+        return yCoord;
+    }
+
+
 
     public void clearCanvas() {
         mPath.reset();
@@ -92,8 +144,12 @@ public class CanvasView extends View {
 
     // when ACTION_UP stop touch
     private void upTouch() {
-        mPath.lineTo(mX, mY);
+        //mPath.lineTo(mX, mY);
+
+        // TODO DO SOMETHING WITH ARRAYS
+
     }
+
 
     //override the onTouchEvent
     @Override
@@ -111,7 +167,8 @@ public class CanvasView extends View {
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                upTouch();
+
+                //upTouch();
                 invalidate();
                 break;
         }
