@@ -3,24 +3,6 @@
 
     <item
         is-multidex="false"
-        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_messages/visualization_msgs/1.12.5/ac06cc9dc7261fb89f191ba6d3df0b912829956d/visualization_msgs-1.12.5.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ac06cc9dc7261fb89f191ba6d3df0b912829956d">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/visualization_msgs-1.12.5_be4a188ab3d1f447fc9467061687b622ac90e3e1.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/transition/25.2.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e51c2f662bb72419632af5192553c37e33890a99">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-transition-25.2.0_13404469943af946ec143d88d1f89bb8882fdec8.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_messages/actionlib_msgs/1.12.5/36d9b819e0c9ea638fe1b5e5fc797f20830bd6f7/actionlib_msgs-1.12.5.jar"
         jumboMode="false"
         optimize="true"
@@ -39,30 +21,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.apache.commons/com.springsource.org.apache.commons.logging/1.1.1/7657caf2c78e1d79c74d36f2ae128a115f7cc180/com.springsource.org.apache.commons.logging-1.1.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="7657caf2c78e1d79c74d36f2ae128a115f7cc180">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.springsource.org.apache.commons.logging-1.1.1_6b73330857d1683ef89a377f11f2392ce068a57c.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.2.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
         <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-media-compat-25.2.0_53e6d9cee17ea423a846136439f24887ac0927ba.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_messages/geometry_msgs/1.12.5/77100d8b8d324c0121d001b1c4c2cb28bb13b83b/geometry_msgs-1.12.5.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="77100d8b8d324c0121d001b1c4c2cb28bb13b83b">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/geometry_msgs-1.12.5_fe81312861af25da50bc48866a2464f6f384901c.jar" />
     </item>
     <item
         is-multidex="false"
@@ -75,39 +39,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.2.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="810f41e5b7fd99f196ebeabe865ba2c54e7e76dc">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-25.2.0_17a3ca8f6308644f94ed46f5ed6376e45e482e21.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/io.netty/netty/3.5.2.Final/e6fb74a0699abe108969b2ec1f269391169a0426/netty-3.5.2.Final.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="e6fb74a0699abe108969b2ec1f269391169a0426">
         <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/netty-3.5.2.Final_1b281b4609d2a39b314fafa214ad108582559fdf.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.2.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-fragment-25.2.0_adb68efdaecb88339fb59a6fafb5b0435a56bac5.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_bootstrap/message_generation/0.3.0/ff5f3dd34f25c4e63b131972485938ad9ccdd87f/message_generation-0.3.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ff5f3dd34f25c4e63b131972485938ad9ccdd87f">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/message_generation-0.3.0_a08172eff7198768047e488c2b820b17a8b909d2.jar" />
     </item>
     <item
         is-multidex="false"
@@ -138,48 +75,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_messages/tf2_msgs/0.5.13/d963528cd709a0ae0e7b2a202764795fb8290f14/tf2_msgs-0.5.13.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d963528cd709a0ae0e7b2a202764795fb8290f14">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/tf2_msgs-0.5.13_124b8900cab58d7192d149ed5f804edb221d3308.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.apache.commons/com.springsource.org.apache.commons.codec/1.3.0/a7c156ef67bdc69ae36a9c70adf7b8ca2633132c/com.springsource.org.apache.commons.codec-1.3.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="a7c156ef67bdc69ae36a9c70adf7b8ca2633132c">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.springsource.org.apache.commons.codec-1.3.0_ccc90e8fa98d7bbb86caee467fa4df58b9a511eb.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/org.ros.android_core/android_15/0.3.2/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="eb70427fcf40847ab9c77b168dddc3183daf0c1e">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/org.ros.android_core-android_15-0.3.2_401b01f18b0424abf6b0179571463b3b69c82dcd.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_bootstrap/gradle_plugins/0.3.0/c2de0a0af7991c0e4cc37f658d247223a1b1b781/gradle_plugins-0.3.0.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="c2de0a0af7991c0e4cc37f658d247223a1b1b781">
         <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/gradle_plugins-0.3.0_bc3004901eeee1d1152cb972c95e1e86155cec97.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/opt/Android/Sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/constraint-layout-solver-1.0.2_75b6b8a189b3567efbfdf4785ea07d0af88a5806.jar" />
     </item>
     <item
         is-multidex="false"
@@ -210,15 +111,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.2.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-25.2.0_349881250a0ec4893b02749221375ca533c70c7f.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.apache.commons/com.springsource.org.apache.commons.lang/2.4.0/686e3713650c8e3a5d98723b4d3e239586bf9822/com.springsource.org.apache.commons.lang-2.4.0.jar"
         jumboMode="false"
         optimize="true"
@@ -234,15 +126,6 @@
         revision="25.0.2"
         sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
         <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-utils-25.2.0_564b09e7e3d6e3878210acab4072108e9e9a57a3.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_core/rosjava_geometry/0.3.2/47ef1e21708a3391ff73cbb968edf2450f517561/rosjava_geometry-0.3.2.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="47ef1e21708a3391ff73cbb968edf2450f517561">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/rosjava_geometry-0.3.2_1cee286903d33a86c51c1dcccf93c3d3300d265a.jar" />
     </item>
     <item
         is-multidex="false"
@@ -318,15 +201,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/org.ros.android_core/android_10/0.3.2/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="60f4a42685150fc3603866be595eb64adceea094">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/org.ros.android_core-android_10-0.3.2_c1756d3f4f1e978c5080d16e83fd9026ff38eb7f.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.6/4572d589699f09d866a226a14b7f4323c6d8f040/commons-pool-1.6.jar"
         jumboMode="false"
         optimize="true"
@@ -354,21 +228,129 @@
     </item>
     <item
         is-multidex="false"
-        jar="/opt/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.2.0/support-annotations-25.2.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/support-annotations-25.2.0_3042543a109deaae1c2ccd1051e335d1f9679e56.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/dnsjava/dnsjava/2.1.1/5708df81cf6dbff545695f0be6380b7bbc85accc/dnsjava-2.1.1.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="5708df81cf6dbff545695f0be6380b7bbc85accc">
         <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/dnsjava-2.1.1_2283c56d6b74d3996bf053a2432bd1544f0f5e26.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="152de8da301561dcb0946471697a420d8f7a68c5">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-25.2.0_69f4986490484dc9ba0fca0b23c7fa57c356d599.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/transition/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e51c2f662bb72419632af5192553c37e33890a99">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-transition-25.2.0_13404469943af946ec143d88d1f89bb8882fdec8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.apache.commons/com.springsource.org.apache.commons.logging/1.1.1/7657caf2c78e1d79c74d36f2ae128a115f7cc180/com.springsource.org.apache.commons.logging-1.1.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7657caf2c78e1d79c74d36f2ae128a115f7cc180">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.springsource.org.apache.commons.logging-1.1.1_6b73330857d1683ef89a377f11f2392ce068a57c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_messages/geometry_msgs/1.12.5/77100d8b8d324c0121d001b1c4c2cb28bb13b83b/geometry_msgs-1.12.5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="77100d8b8d324c0121d001b1c4c2cb28bb13b83b">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/geometry_msgs-1.12.5_fe81312861af25da50bc48866a2464f6f384901c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="810f41e5b7fd99f196ebeabe865ba2c54e7e76dc">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-25.2.0_17a3ca8f6308644f94ed46f5ed6376e45e482e21.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-fragment-25.2.0_adb68efdaecb88339fb59a6fafb5b0435a56bac5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_bootstrap/message_generation/0.3.0/ff5f3dd34f25c4e63b131972485938ad9ccdd87f/message_generation-0.3.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ff5f3dd34f25c4e63b131972485938ad9ccdd87f">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/message_generation-0.3.0_a08172eff7198768047e488c2b820b17a8b909d2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.ros.rosjava_messages/tf2_msgs/0.5.13/d963528cd709a0ae0e7b2a202764795fb8290f14/tf2_msgs-0.5.13.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d963528cd709a0ae0e7b2a202764795fb8290f14">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/tf2_msgs-0.5.13_124b8900cab58d7192d149ed5f804edb221d3308.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/.gradle/caches/modules-2/files-2.1/org.apache.commons/com.springsource.org.apache.commons.codec/1.3.0/a7c156ef67bdc69ae36a9c70adf7b8ca2633132c/com.springsource.org.apache.commons.codec-1.3.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a7c156ef67bdc69ae36a9c70adf7b8ca2633132c">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.springsource.org.apache.commons.codec-1.3.0_ccc90e8fa98d7bbb86caee467fa4df58b9a511eb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/opt/Android/Sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/constraint-layout-solver-1.0.2_75b6b8a189b3567efbfdf4785ea07d0af88a5806.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-25.2.0_349881250a0ec4893b02749221375ca533c70c7f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/org.ros.android_core/android_10/0.3.2/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="60f4a42685150fc3603866be595eb64adceea094">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/org.ros.android_core-android_10-0.3.2_c1756d3f4f1e978c5080d16e83fd9026ff38eb7f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/opt/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.2.0/support-annotations-25.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
+        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/support-annotations-25.2.0_3042543a109deaae1c2ccd1051e335d1f9679e56.jar" />
     </item>
     <item
         is-multidex="false"
@@ -396,15 +378,6 @@
         revision="25.0.2"
         sha1="67eb33110dbacb46a48175b08ae0c96761d2c17d">
         <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-support-compat-25.2.0_af01c56f58a62774dba9ffc250c85fc8e9658ace.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.2.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="152de8da301561dcb0946471697a420d8f7a68c5">
-        <dex dex="/home/siddarthkaki/workspace/android/utmg-android-interface/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-25.2.0_69f4986490484dc9ba0fca0b23c7fa57c356d599.jar" />
     </item>
     <item
         is-multidex="false"
