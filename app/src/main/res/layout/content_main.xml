@@ -31,15 +31,18 @@
         android:id="@+id/xView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center|left"
         android:text="hi"
+        android:textColor="@android:color/black"
         tools:textSize="36sp" />
 
     <TextView
         android:id="@+id/yView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_gravity="center|right"
         android:text="bye"
+        android:textColor="@android:color/black"
         tools:textSize="36sp" />
 
 </FrameLayout>

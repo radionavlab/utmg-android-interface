@@ -6,6 +6,7 @@ import android.gesture.GestureLibrary;
 import android.gesture.GestureOverlayView;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -49,13 +50,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton fabClear = (FloatingActionButton) findViewById(R.id.fab_clear);
+        fabClear.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Snackbar.make(view, "Why you no work!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
 
-        TextView tvX = (TextView) findViewById(R.id.xView);
-        TextView tvY = (TextView) findViewById(R.id.yView);
+        final TextView tvX = (TextView) findViewById(R.id.xView);
+        final TextView tvY = (TextView) findViewById(R.id.yView);
 
-        //tvX.setText(Float.toString(customCanvas.getxCoord()));
+        tvX.setText(Float.toString(customCanvas.getxCoord()));
         tvY.setText(Float.toString(customCanvas.getyCoord()));
+
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+
+            public void run() {
+
+                tvX.setText(Float.toString(customCanvas.getxCoord()));
+                tvY.setText(Float.toString(customCanvas.getyCoord()));
+
+                handler.postDelayed(this, 10); // refresh every 1000 ms = 1 sec
+            }
+        };
+
+        runnable.run();
+
 
     }
 
