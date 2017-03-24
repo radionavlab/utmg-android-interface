@@ -19,7 +19,7 @@
         android:id="@+id/ClearButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
+        android:layout_gravity="bottom|left"
         android:background="@android:color/holo_orange_dark"
         android:onClick="clearCanvas"
         android:text="CLEAR"
@@ -44,6 +44,12 @@
         android:text="bye"
         android:textColor="@android:color/black"
         tools:textSize="36sp" />
+
+    <org.ros.android.view.RosTextView
+        android:id="@+id/rosText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom" />
 
 </FrameLayout>
 

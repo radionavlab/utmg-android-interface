@@ -69,6 +69,7 @@ public class ROSCam extends RosActivity {
         cameraId = 0;
 
         rosCameraPreviewView.setCamera(getCamera());
+
         try {
             java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
             java.net.InetAddress local_network_address = socket.getLocalAddress();
