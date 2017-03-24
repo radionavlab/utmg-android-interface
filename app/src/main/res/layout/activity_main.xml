@@ -14,13 +14,46 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <TextView
+        android:id="@+id/xView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|left"
+        android:text="hi"
+        android:textColor="@android:color/black"
+        tools:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/yView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|right"
+        android:text="bye"
+        android:textColor="@android:color/black"
+        tools:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/centerCoord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="center"
+        android:textColor="@android:color/black"
+        android:textSize="36sp"/>
+
+
+
+    <org.ros.android.view.RosTextView
+        android:id="@+id/rosText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -39,5 +72,20 @@
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@android:color/holo_purple"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <LinearLayout
+        android:id="@+id/linLay"
+        android:layout_width="fill_parent"
+        android:layout_height="720dp"
+        android:layout_gravity="center"
+        android:background="@drawable/canvas_border">
+
+        <utmg.android_interface.CanvasView
+            android:id="@+id/signature_canvas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

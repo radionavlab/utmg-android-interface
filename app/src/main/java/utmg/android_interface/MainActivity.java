@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.ros.android.AppCompatRosActivity;
@@ -26,6 +27,7 @@ import std_msgs.String;
 
 public class MainActivity extends AppCompatRosActivity {
 
+    private LinearLayout innerLayout;
     private CanvasView customCanvas;
     private ArrayList<Float> xCoordVec;
     private ArrayList<Float> yCoordVec;
@@ -81,6 +83,13 @@ public class MainActivity extends AppCompatRosActivity {
         tvX.setText(Float.toString(customCanvas.getxCoord()));
         tvY.setText(Float.toString(customCanvas.getyCoord()));
 
+        innerLayout = (LinearLayout) findViewById(R.id.linLay);
+        final TextView centerCoord = (TextView) findViewById(R.id.centerCoord);
+        float x = innerLayout.getWidth()/2;
+        float y = innerLayout.getHeight()/2;
+
+        centerCoord.setText("(" + Float.toString(x) + "," + Float.toString(y) + ")");
+
 
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
@@ -95,8 +104,6 @@ public class MainActivity extends AppCompatRosActivity {
         };
 
         runnable.run();
-
-
     }
 
     @Override

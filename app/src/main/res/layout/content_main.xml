@@ -6,38 +6,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:weightSum="100"
     android:background="#FFFFFF"
     android:orientation="vertical" >
 
-    <utmg.android_interface.CanvasView
-        android:id="@+id/signature_canvas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="#FFFFFF" />
 
-    <TextView
-        android:id="@+id/xView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|left"
-        android:text="hi"
-        android:textColor="@android:color/black"
-        tools:textSize="36sp" />
+    <!--<LinearLayout-->
+        <!--android:background="@drawable/canvas_border"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="827dp">-->
 
-    <TextView
-        android:id="@+id/yView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|right"
-        android:text="bye"
-        android:textColor="@android:color/black"
-        tools:textSize="36sp" />
+    <!--<utmg.android_interface.CanvasView-->
+        <!--android:id="@+id/signature_canvas"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:textColor="#FFFFFF" />-->
 
-    <org.ros.android.view.RosTextView
-        android:id="@+id/rosText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom" />
+    <!--</LinearLayout>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/xView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center|left"-->
+        <!--android:text="hi"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--tools:textSize="36sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/yView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center|right"-->
+        <!--android:text="bye"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--tools:textSize="36sp" />-->
+
+    <!--<org.ros.android.view.RosTextView-->
+        <!--android:id="@+id/rosText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center|bottom" />-->
 
 </FrameLayout>
 

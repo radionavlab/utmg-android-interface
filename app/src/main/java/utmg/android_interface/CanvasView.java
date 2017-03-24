@@ -151,6 +151,7 @@ public class CanvasView extends View {
     }
 
 
+
     //override the onTouchEvent
     @Override
     public boolean onTouchEvent(MotionEvent event) {
