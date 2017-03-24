@@ -15,18 +15,6 @@
         android:layout_height="match_parent"
         android:textColor="#FFFFFF" />
 
-    <Button
-        android:id="@+id/ClearButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|left"
-        android:background="@android:color/holo_orange_dark"
-        android:onClick="clearCanvas"
-        android:text="CLEAR"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
-
     <TextView
         android:id="@+id/xView"
         android:layout_width="wrap_content"

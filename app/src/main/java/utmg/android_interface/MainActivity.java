@@ -67,7 +67,8 @@ public class MainActivity extends AppCompatRosActivity {
             @Override
             public void onClick(View view)
             {
-                Snackbar.make(view, "Why you no work!", Snackbar.LENGTH_LONG)
+                customCanvas.clearCanvas();
+                Snackbar.make(view, "Cleared!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -97,11 +98,6 @@ public class MainActivity extends AppCompatRosActivity {
 
 
     }
-
-    public void clearCanvas(View v) {
-        customCanvas.clearCanvas();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
