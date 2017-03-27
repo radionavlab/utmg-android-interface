@@ -29,6 +29,12 @@ public class MainActivity extends AppCompatRosActivity {
     private CanvasView customCanvas;
     private ArrayList<Float> xCoordVec;
     private ArrayList<Float> yCoordVec;
+    private float centerX;
+    private float centerY;
+    private float transX;
+    private float transY;
+    private float nX;
+    private float nY;
 
     private RosTextView<std_msgs.String> rosTextView;
 
@@ -80,46 +86,84 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
+
+        // Get x and y coordinates in pixels
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
 
-        final TextView tvX = (TextView) findViewById(R.id.xView);
-        final TextView tvY = (TextView) findViewById(R.id.yView);
+//        final TextView tvX = (TextView) findViewById(R.id.xView);
+//        final TextView tvY = (TextView) findViewById(R.id.yView);
+//
+//        tvX.setText(Float.toString(customCanvas.getxCoord()));
+//        tvY.setText(Float.toString(customCanvas.getyCoord()));
+//
+//        final Handler handler = new Handler();
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                tvX.setText(Float.toString(customCanvas.getxCoord()));
+//                tvY.setText(Float.toString(customCanvas.getyCoord()));
+//
+//                handler.postDelayed(this, 10); // refresh every 1000 ms = 1 sec
+//            }
+//        };
+//        runnable.run();
 
-        tvX.setText(Float.toString(customCanvas.getxCoord()));
-        tvY.setText(Float.toString(customCanvas.getyCoord()));
 
+        // Get center coordinates in pixels
         innerLayout = (LinearLayout) findViewById(R.id.linLay);
-        final TextView centerCoord = (TextView) findViewById(R.id.centerCoord);
-
+        //final TextView centerCoord = (TextView) findViewById(R.id.centerCoord);
 
         innerLayout.post(new Runnable()
         {
             @Override
             public void run()
             {
-                // Log.i("TEST", "Layout width : "+ myLayout.getWidth());
-                float x = innerLayout.getWidth()/2;
-                float y = innerLayout.getHeight()/2;
-
-                centerCoord.setText("(" + Float.toString(x) + "," + Float.toString(y) + ")");
-
+                centerX  = customCanvas.getWidth()/2;
+                centerY = customCanvas.getHeight()/2;
+                //centerCoord.setText("(" + Float.toString(centerX) + ", " + Float.toString(centerY) + ")");
             }
         });
 
 
-        final Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
+        // Transform x and y with the center equal to (0,0)
+        final TextView newX = (TextView) findViewById(R.id.newX);
+        final TextView newY = (TextView) findViewById(R.id.newY);
 
+        final Handler handler1 = new Handler();
+        Runnable runnable1 = new Runnable() {
+            @Override
             public void run() {
+                transX = customCanvas.getxCoord() - centerX;
+                transY = -(customCanvas.getyCoord() - centerY);
+                newX.setText("transX: " + Float.toString(transX));
+                newY.setText("     transY: " + Float.toString(transY));
 
-                tvX.setText(Float.toString(customCanvas.getxCoord()));
-                tvY.setText(Float.toString(customCanvas.getyCoord()));
-
-                handler.postDelayed(this, 10); // refresh every 1000 ms = 1 sec
+                handler1.postDelayed(this, 10);
             }
         };
+        runnable1.run();
 
-        runnable.run();
+
+        // Normalize x and y
+        final TextView normX = (TextView) findViewById(R.id.normX);
+        final TextView normY = (TextView) findViewById(R.id.normY);
+
+        final Handler handler2 = new Handler();
+        Runnable runnable2 = new Runnable() {
+            @Override
+            public void run() {
+                nX = transX/customCanvas.getWidth();
+                nY = transY/customCanvas.getHeight();
+                normX.setText("normX: " + Float.toString(nX));
+                normY.setText("    normY:" + Float.toString(nY));
+
+                handler2.postDelayed(this, 10);
+            }
+        };
+        runnable2.run();
+
+
     }
 
     @Override
