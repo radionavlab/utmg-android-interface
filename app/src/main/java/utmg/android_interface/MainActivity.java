@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatRosActivity {
 
+    TrajectoryArrayPublisherNode node;
     private LinearLayout innerLayout;
     private CanvasView customCanvas;
     private ArrayList<Float> xCoordVec;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec = customCanvas.getxCoordVec();
                 yCoordVec = customCanvas.getyCoordVec();
 
+                node.setTraj(xCoordVec, yCoordVec);
                 //org.ros.message.std_msgs.String str = new org.ros.message.std_msgs.String();
 
             }
@@ -150,11 +152,11 @@ public class MainActivity extends AppCompatRosActivity {
 
     @Override
     protected void init(NodeMainExecutor nodeMainExecutor) {
-        rosTextView.setText("test");
-        rosTextView.setTopicName("testtopic");
-        rosTextView.setMessageType("std_msgs/String");
+//        rosTextView.setText("test");
+//        rosTextView.setTopicName("testtopic");
+//        rosTextView.setMessageType("std_msgs/String");
 
-        NodeMain node = new TrajectoryArrayPublisherNode();
+        node = new TrajectoryArrayPublisherNode();
 
         try {
             java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
