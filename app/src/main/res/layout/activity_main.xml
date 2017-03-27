@@ -14,38 +14,38 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:id="@+id/xView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|left"
-        android:text="hi"
-        android:textColor="@android:color/black"
-        tools:textSize="36sp" />
+    <!--<TextView-->
+        <!--android:id="@+id/xView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center|left"-->
+        <!--android:text="pixX"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--tools:textSize="36sp" />-->
 
-    <TextView
-        android:id="@+id/yView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|right"
-        android:text="bye"
-        android:textColor="@android:color/black"
-        tools:textSize="36sp" />
+    <!--<TextView-->
+        <!--android:id="@+id/yView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center|right"-->
+        <!--android:text="pixY"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--tools:textSize="36sp" />-->
 
-    <TextView
-        android:id="@+id/centerCoord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="center"
-        android:textColor="@android:color/black"
-        android:textSize="36sp"/>
+    <!--<TextView-->
+        <!--android:id="@+id/centerCoord"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="center"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--android:textSize="36sp"/>-->
 
 
 
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@android:color/holo_orange_dark"
+        app:backgroundTint="@android:color/holo_green_dark"
         app:srcCompat="@android:drawable/ic_menu_send" />
 
     <android.support.design.widget.FloatingActionButton
@@ -70,21 +70,64 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|left"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@android:color/holo_purple"
+        app:backgroundTint="@android:color/holo_red_dark"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="103dp">
+
+        <TextView
+            android:id="@+id/newX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="newX"
+            android:textSize="30dp"/>
+
+        <TextView
+            android:id="@+id/newY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:text="  newY"
+            android:textSize="30dp"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linLay"
         android:layout_width="fill_parent"
-        android:layout_height="720dp"
+        android:layout_height="636dp"
         android:layout_gravity="center">
 
         <utmg.android_interface.CanvasView
             android:id="@+id/signature_canvas"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF" />
+            android:layout_height="match_parent"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/canvas_border"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="803dp">
+
+        <TextView
+            android:id="@+id/normX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="normalizedX"
+            android:textSize="30dp"/>
+
+        <TextView
+            android:id="@+id/normY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:text="  normalizedY"
+            android:textSize="30dp"/>
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
