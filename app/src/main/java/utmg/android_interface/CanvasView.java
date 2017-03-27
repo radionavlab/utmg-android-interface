@@ -68,6 +68,14 @@ public class CanvasView extends View {
         mCanvas = new Canvas(mBitmap);
     }
 
+    public int bWidth() {
+        return mBitmap.getWidth();
+    }
+
+    public int bHeight() {
+        return mBitmap.getHeight();
+    }
+
     // override onDraw
     @Override
     protected void onDraw(Canvas canvas) {

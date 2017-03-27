@@ -83,12 +83,10 @@ public class MainActivity extends AppCompatRosActivity {
         tvX.setText(Float.toString(customCanvas.getxCoord()));
         tvY.setText(Float.toString(customCanvas.getyCoord()));
 
-        innerLayout = (LinearLayout) findViewById(R.id.linLay);
-        final TextView centerCoord = (TextView) findViewById(R.id.centerCoord);
-        float x = innerLayout.getWidth()/2;
-        float y = innerLayout.getHeight()/2;
 
-        centerCoord.setText("(" + Float.toString(x) + "," + Float.toString(y) + ")");
+        innerLayout = (LinearLayout) findViewById(R.id.linearLay);
+        final TextView centerCoord = (TextView) findViewById(R.id.centerCoord);
+
 
 
         final Handler handler = new Handler();
