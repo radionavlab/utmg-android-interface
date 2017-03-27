@@ -77,8 +77,7 @@
         android:id="@+id/linLay"
         android:layout_width="fill_parent"
         android:layout_height="720dp"
-        android:layout_gravity="center"
-        android:background="@drawable/canvas_border">
+        android:layout_gravity="center">
 
         <utmg.android_interface.CanvasView
             android:id="@+id/signature_canvas"

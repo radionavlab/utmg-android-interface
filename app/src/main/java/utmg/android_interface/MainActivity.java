@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,14 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.ros.android.AppCompatRosActivity;
-import org.ros.android.RosActivity;
 import org.ros.android.view.RosTextView;
 import org.ros.node.NodeConfiguration;
+import org.ros.node.NodeMain;
 import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import std_msgs.String;
 
 public class MainActivity extends AppCompatRosActivity {
 
@@ -49,6 +46,7 @@ public class MainActivity extends AppCompatRosActivity {
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
 
+        // Send FAB
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
         {
@@ -60,9 +58,14 @@ public class MainActivity extends AppCompatRosActivity {
 
                 xCoordVec = customCanvas.getxCoordVec();
                 yCoordVec = customCanvas.getyCoordVec();
+
+                //org.ros.message.std_msgs.String str = new org.ros.message.std_msgs.String();
+
             }
         });
 
+
+        // Clear FAB
         FloatingActionButton fabClear = (FloatingActionButton) findViewById(R.id.fab_clear);
         fabClear.setOnClickListener(new View.OnClickListener()
         {
@@ -85,10 +88,21 @@ public class MainActivity extends AppCompatRosActivity {
 
         innerLayout = (LinearLayout) findViewById(R.id.linLay);
         final TextView centerCoord = (TextView) findViewById(R.id.centerCoord);
-        float x = innerLayout.getWidth()/2;
-        float y = innerLayout.getHeight()/2;
 
-        centerCoord.setText("(" + Float.toString(x) + "," + Float.toString(y) + ")");
+
+        innerLayout.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                // Log.i("TEST", "Layout width : "+ myLayout.getWidth());
+                float x = innerLayout.getWidth()/2;
+                float y = innerLayout.getHeight()/2;
+
+                centerCoord.setText("(" + Float.toString(x) + "," + Float.toString(y) + ")");
+
+            }
+        });
 
 
         final Handler handler = new Handler();
@@ -135,11 +149,12 @@ public class MainActivity extends AppCompatRosActivity {
 
 
     @Override
-    protected void init(NodeMainExecutor nodeMainExecutor)
-    {
+    protected void init(NodeMainExecutor nodeMainExecutor) {
         rosTextView.setText("test");
         rosTextView.setTopicName("testtopic");
         rosTextView.setMessageType("std_msgs/String");
+
+        NodeMain node = new TrajectoryArrayPublisherNode();
 
         try {
             java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
@@ -147,7 +162,10 @@ public class MainActivity extends AppCompatRosActivity {
             socket.close();
             NodeConfiguration nodeConfiguration =
                     NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
-            nodeMainExecutor.execute(rosTextView, nodeConfiguration);
+
+            //nodeConfiguration.setNodeName()
+
+            nodeMainExecutor.execute(node, nodeConfiguration);
         } catch (IOException e) {
             // Socket problem
             Log.e("MainActivity", "socket error trying to get networking information from the master uri");
