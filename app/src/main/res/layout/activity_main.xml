@@ -21,32 +21,39 @@
     </android.support.design.widget.AppBarLayout>
 
     <!--<TextView-->
-        <!--android:id="@+id/xView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center|left"-->
-        <!--android:text="pixX"-->
-        <!--android:textColor="@android:color/black"-->
-        <!--tools:textSize="36sp" />-->
+    <!--android:id="@+id/xView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center|left"-->
+    <!--android:text="pixX"-->
+    <!--android:textColor="@android:color/black"-->
+    <!--tools:textSize="36sp" />-->
 
     <!--<TextView-->
-        <!--android:id="@+id/yView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center|right"-->
-        <!--android:text="pixY"-->
-        <!--android:textColor="@android:color/black"-->
-        <!--tools:textSize="36sp" />-->
+    <!--android:id="@+id/yView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center|right"-->
+    <!--android:text="pixY"-->
+    <!--android:textColor="@android:color/black"-->
+    <!--tools:textSize="36sp" />-->
 
     <!--<TextView-->
-        <!--android:id="@+id/centerCoord"-->
+    <!--android:id="@+id/centerCoord"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:text="center"-->
+    <!--android:textColor="@android:color/black"-->
+    <!--android:textSize="36sp"/>-->
+
+
+
+    <!--<org.ros.android.view.RosTextView-->
+        <!--android:id="@+id/rosText"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:text="center"-->
-        <!--android:textColor="@android:color/black"-->
-        <!--android:textSize="36sp"/>-->
-
+        <!--android:layout_gravity="center|bottom" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -71,20 +78,20 @@
         android:layout_height="88dp">
 
         <!--<TextView-->
-            <!--android:id="@+id/newX"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--android:text="newX"-->
-            <!--android:textSize="30dp"/>-->
+        <!--android:id="@+id/newX"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:text="newX"-->
+        <!--android:textSize="30dp"/>-->
 
         <!--<TextView-->
-            <!--android:id="@+id/newY"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom|right"-->
-            <!--android:text="  newY"-->
-            <!--android:textSize="30dp"/>-->
+        <!--android:id="@+id/newY"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|right"-->
+        <!--android:text="  newY"-->
+        <!--android:textSize="30dp"/>-->
         <TextView
             android:id="@+id/normX"
             android:layout_width="wrap_content"
@@ -120,21 +127,21 @@
         android:layout_width="match_parent"
         android:layout_height="808dp">
 
-    <TextView
-        android:id="@+id/xMeters"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="xMeters"
-        android:textSize="30dp" />
+        <TextView
+            android:id="@+id/xMeters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="xMeters"
+            android:textSize="30dp" />
 
-    <TextView
-        android:id="@+id/yMeters"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:text="  YMeters"
-        android:textSize="30dp" />
+        <TextView
+            android:id="@+id/yMeters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:text="  YMeters"
+            android:textSize="30dp" />
 
     </LinearLayout>
 

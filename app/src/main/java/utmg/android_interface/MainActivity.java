@@ -29,12 +29,16 @@ public class MainActivity extends AppCompatRosActivity {
     private CanvasView customCanvas;
     private ArrayList<Float> xCoordVec;
     private ArrayList<Float> yCoordVec;
+    private ArrayList<Float> xMeterVec;
+    private ArrayList<Float> yMeterVec;
     private float centerX;
     private float centerY;
     private float transX;
     private float transY;
     private float nX;
     private float nY;
+    private float xMeters;
+    private float yMeters;
 
     private RosTextView<std_msgs.String> rosTextView;
 
@@ -48,8 +52,16 @@ public class MainActivity extends AppCompatRosActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        LinearLayout canvasSize = (LinearLayout) findViewById(R.id.linLay);
+        canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
+
+        //rosTextView = (RosTextView<std_msgs.String>) findViewById(R.id.rosText);
+
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
+
+        xMeterVec = new ArrayList<>();
+        yMeterVec = new ArrayList<>();
 
         // Send FAB
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -124,23 +136,23 @@ public class MainActivity extends AppCompatRosActivity {
         });
 
 
-//        // Transform x and y with the center equal to (0,0)
-//        final TextView newX = (TextView) findViewById(R.id.newX);
-//        final TextView newY = (TextView) findViewById(R.id.newY);
-//
-//        final Handler handler1 = new Handler();
-//        Runnable runnable1 = new Runnable() {
-//            @Override
-//            public void run() {
-//                transX = customCanvas.getxCoord() - centerX;
-//                transY = -(customCanvas.getyCoord() - centerY);
-//                newX.setText("transX: " + Float.toString(transX));
-//                newY.setText("     transY: " + Float.toString(transY));
-//
-//                handler1.postDelayed(this, 10);
-//            }
-//        };
-//        runnable1.run();
+        // Transform x and y with the center equal to (0,0)
+        //final TextView newX = (TextView) findViewById(R.id.newX);
+        //final TextView newY = (TextView) findViewById(R.id.newY);
+
+        final Handler handler1 = new Handler();
+        Runnable runnable1 = new Runnable() {
+            @Override
+            public void run() {
+                transX = customCanvas.getxCoord() - centerX;
+                transY = -(customCanvas.getyCoord() - centerY);
+                //newX.setText("transX: " + Float.toString(transX));
+                //newY.setText("     transY: " + Float.toString(transY));
+
+                handler1.postDelayed(this, 10);
+            }
+        };
+        runnable1.run();
 
 
         // Normalize x and y
@@ -154,13 +166,37 @@ public class MainActivity extends AppCompatRosActivity {
                 nX = transX/customCanvas.getWidth();
                 nY = transY/customCanvas.getHeight();
                 normX.setText("normX: " + Float.toString(nX));
-                normY.setText("    normY:" + Float.toString(nY));
+                normY.setText("     normY: " + Float.toString(nY));
 
                 handler2.postDelayed(this, 10);
             }
         };
         runnable2.run();
 
+        // Scale to meters
+        final TextView mX = (TextView) findViewById(R.id.xMeters);
+        final TextView mY = (TextView) findViewById(R.id.yMeters);
+
+        final Handler handler3 = new Handler();
+        Runnable runnable3 = new Runnable() {
+            @Override
+            public void run() {
+                // Hardcoded to ViconLab
+                // TODO needs to be changed
+                xMeters = nX * 3;
+                yMeters = nY * 5;
+
+                mX.setText(Float.toString(xMeters) + "m     ");
+                mY.setText(Float.toString(yMeters) + "m");
+
+                // update array
+                xMeterVec.add(xMeters);
+                yMeterVec.add(xMeters);
+
+                handler3.postDelayed(this, 10);
+            }
+        };
+        runnable3.run();
 
     }
 
