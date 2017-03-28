@@ -1,32 +1,24 @@
 package utmg.android_interface;
 
-import android.support.annotation.NonNull;
+//import org.apache.commons.logging.Log;
 import android.util.Log;
-
 import org.ros.concurrent.CancellableLoop;
-import org.ros.internal.message.RawMessage;
+import org.ros.message.MessageListener;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
-import org.ros.node.Node;
 import org.ros.node.NodeMain;
 import org.ros.node.topic.Publisher;
+import org.ros.node.topic.Subscriber;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import geometry_msgs.Pose;
 import geometry_msgs.PoseArray;
 
-import std_msgs.Float32MultiArray;
-import std_msgs.MultiArrayDimension;
-import std_msgs.MultiArrayLayout;
+import geometry_msgs.TransformStamped;
 
 public class TrajectoryArrayPublisherNode extends AbstractNodeMain implements NodeMain {
 
@@ -87,12 +79,27 @@ public class TrajectoryArrayPublisherNode extends AbstractNodeMain implements No
 
                     xyTraj.setPoses(poses);
 
+                    publisher1.publish(xyTraj);
+
                 }
 
-                //publisher.publish(str);
 
-                publisher1.publish(xyTraj);
+                // listener
 
+                //final Log log = connectedNode.getLog();
+                Subscriber<TransformStamped> subscriberQuad = connectedNode.newSubscriber("vicon/Quad7/Quad7", geometry_msgs.TransformStamped._TYPE);
+
+                subscriberQuad.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                    @Override
+                    public void onNewMessage(geometry_msgs.TransformStamped message) {
+                        double quadx = message.getTransform().getTranslation().getX();
+                        double quady = message.getTransform().getTranslation().getY();
+                        double quadz = message.getTransform().getTranslation().getZ();
+
+                        Log.i("QuadPos", Double.toString(quadx) + "\t\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
+
+                    }
+                });
 
                 // go to sleep for one second
                 Thread.sleep(1000);
