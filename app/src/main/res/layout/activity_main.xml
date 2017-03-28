@@ -14,7 +14,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="48dp"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
@@ -75,51 +75,30 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="103dp">
+        android:layout_height="88dp">
 
-        <TextView
-            android:id="@+id/newX"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="newX"
-            android:textSize="30dp"/>
+        <!--<TextView-->
+            <!--android:id="@+id/newX"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:text="newX"-->
+            <!--android:textSize="30dp"/>-->
 
-        <TextView
-            android:id="@+id/newY"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:text="  newY"
-            android:textSize="30dp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linLay"
-        android:layout_width="fill_parent"
-        android:layout_height="636dp"
-        android:layout_gravity="center">
-
-        <utmg.android_interface.CanvasView
-            android:id="@+id/signature_canvas"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/canvas_border"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="803dp">
-
+        <!--<TextView-->
+            <!--android:id="@+id/newY"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|right"-->
+            <!--android:text="  newY"-->
+            <!--android:textSize="30dp"/>-->
         <TextView
             android:id="@+id/normX"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:text="normalizedX"
-            android:textSize="30dp"/>
+            android:textSize="30dp" />
 
         <TextView
             android:id="@+id/normY"
@@ -127,7 +106,43 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:text="  normalizedY"
-            android:textSize="30dp"/>
+            android:textSize="30dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linLay"
+        android:layout_width="fill_parent"
+        android:layout_height="648dp"
+        android:layout_gravity="center">
+
+        <utmg.android_interface.CanvasView
+            android:id="@+id/signature_canvas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/canvas_border"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="808dp">
+
+    <TextView
+        android:id="@+id/xMeters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="xMeters"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/yMeters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:text="  YMeters"
+        android:textSize="30dp" />
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
