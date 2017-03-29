@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatRosActivity {
 
         final ImageView quad = (ImageView) findViewById(R.id.quad);
         quad.setImageResource(R.drawable.quad);
-        LinearLayout.LayoutParams lp = (android.widget.LinearLayout.LayoutParams)quad.getLayoutParams();
+        android.support.design.widget.CoordinatorLayout.LayoutParams lp = (android.support.design.widget.CoordinatorLayout.LayoutParams)quad.getLayoutParams();
         lp.setMargins((int) quadXToPixel(), (int) quadYToPixel(), 0, 0);
         quad.setLayoutParams(lp);
     }

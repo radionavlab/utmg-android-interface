@@ -67,12 +67,20 @@
             android:text="      quad2pixel"/>
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/quad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/quad"/>
+
     <LinearLayout
         android:id="@+id/linLay"
         android:layout_width="fill_parent"
         android:layout_height="727dp"
         android:layout_gravity="center"
         android:orientation="vertical">
+
 
         <utmg.android_interface.CanvasView
             android:id="@+id/signature_canvas"
@@ -81,12 +89,6 @@
             android:textColor="#FFFFFF"
             android:background="@drawable/canvas_border"/>
 
-        <ImageView
-            android:id="@+id/quad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:src="@drawable/quad"/>
 
     </LinearLayout>
 
