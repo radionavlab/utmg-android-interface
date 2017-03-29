@@ -20,41 +20,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--<TextView-->
-    <!--android:id="@+id/xView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center|left"-->
-    <!--android:text="pixX"-->
-    <!--android:textColor="@android:color/black"-->
-    <!--tools:textSize="36sp" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/yView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center|right"-->
-    <!--android:text="pixY"-->
-    <!--android:textColor="@android:color/black"-->
-    <!--tools:textSize="36sp" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/centerCoord"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:text="center"-->
-    <!--android:textColor="@android:color/black"-->
-    <!--android:textSize="36sp"/>-->
-
-
-
-    <!--<org.ros.android.view.RosTextView-->
-        <!--android:id="@+id/rosText"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center|bottom" />-->
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -75,45 +40,39 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="88dp">
+        android:layout_height="73dp">
 
-        <!--<TextView-->
-        <!--android:id="@+id/newX"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:text="newX"-->
-        <!--android:textSize="30dp"/>-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/newY"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|right"-->
-        <!--android:text="  newY"-->
-        <!--android:textSize="30dp"/>-->
         <TextView
-            android:id="@+id/normX"
+            android:id="@+id/meterX"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="normalizedX"
-            android:textSize="30dp" />
+            android:text="xMeters"
+            android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/normY"
+            android:id="@+id/meterY"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:text="  normalizedY"
-            android:textSize="30dp" />
+            android:text="      yMeters"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/quad2pixel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:textSize="15dp"
+            android:text="      quad2pixel"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linLay"
         android:layout_width="fill_parent"
-        android:layout_height="648dp"
-        android:layout_gravity="center">
+        android:layout_height="727dp"
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
         <utmg.android_interface.CanvasView
             android:id="@+id/signature_canvas"
@@ -121,27 +80,13 @@
             android:layout_height="match_parent"
             android:textColor="#FFFFFF"
             android:background="@drawable/canvas_border"/>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="808dp">
-
-        <TextView
-            android:id="@+id/xMeters"
+        <ImageView
+            android:id="@+id/quad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="xMeters"
-            android:textSize="30dp" />
-
-        <TextView
-            android:id="@+id/yMeters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:text="  YMeters"
-            android:textSize="30dp" />
+            android:adjustViewBounds="true"
+            android:src="@drawable/quad"/>
 
     </LinearLayout>
 

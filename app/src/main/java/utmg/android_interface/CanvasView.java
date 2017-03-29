@@ -6,25 +6,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Paint.FontMetricsInt;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.VelocityTracker;
-import android.view.View;
-import android.view.ViewConfiguration;
-
 import java.util.ArrayList;
 
 public class CanvasView extends View {
 
-    public int width;
-    public int height;
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Path mPath;
@@ -35,16 +24,10 @@ public class CanvasView extends View {
     ArrayList<Float> xCoordVec;
     ArrayList<Float> yCoordVec;
 
-    float xCoord;
-    float yCoord;
-
 
     public CanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
         context = c;
-
-//        xCoord = new ArrayList<Float>();
-//        yCoord = new ArrayList<Float>();
 
         // we set a new Path
         mPath = new Path();
@@ -89,9 +72,6 @@ public class CanvasView extends View {
         mX = x;
         mY = y;
 
-        xCoord = x;
-        yCoord = y;
-
         xCoordVec.add(mX);
         yCoordVec.add(mY);
     }
@@ -105,41 +85,9 @@ public class CanvasView extends View {
             mX = x;
             mY = y;
 
-            xCoord = x;
-            yCoord = y;
-
-            xCoordVec.add(mX);
-            yCoordVec.add(mY);
-
+            xCoordVec.add(xMeters());
+            yCoordVec.add(yMeters());
         }
-    }
-
-    public ArrayList<Float> getxCoordVec() {
-
-        return xCoordVec;
-    }
-
-    public ArrayList<Float> getyCoordVec() {
-
-        return yCoordVec;
-    }
-
-
-    public float getxCoord() {
-
-        return xCoord;
-    }
-
-    public float getyCoord() {
-
-        return yCoord;
-    }
-
-
-
-    public void clearCanvas() {
-        mPath.reset();
-        invalidate();
     }
 
     // when ACTION_UP stop touch
@@ -150,7 +98,10 @@ public class CanvasView extends View {
 
     }
 
-
+    public void clearCanvas() {
+        mPath.reset();
+        invalidate();
+    }
 
     //override the onTouchEvent
     @Override
@@ -175,4 +126,68 @@ public class CanvasView extends View {
         }
         return true;
     }
+
+    // current ArrayList of x coordinate vectors
+    public ArrayList<Float> getxCoordVec() {
+
+        return xCoordVec;
+    }
+
+    // current ArrayList of y coordinate vectors
+    public ArrayList<Float> getyCoordVec() {
+
+        return yCoordVec;
+    }
+
+    // current x coordinate
+    public float getxCoord() {
+
+        return mX;
+    }
+
+    // current y coordinate
+    public float getyCoord() {
+
+        return mY;
+    }
+
+    // center x coordinate of bitmap
+    public int centerX() {
+        if(mBitmap != null) {
+            return mBitmap.getWidth() / 2;
+        }
+        return 0;
+    }
+
+    // center y coordinate of bitmap
+    public int centerY() {
+        if (mBitmap != null) {
+            return mBitmap.getHeight()/2;
+        }
+        return 0;
+    }
+
+    // transform, normalize and scale x to meters
+    public float xMeters() {
+        float transX = mX - centerX();
+        if(mBitmap != null) {
+            float normX = transX/mBitmap.getWidth();
+            return normX * 3;
+        }
+        return 0;
+
+    }
+
+    // transform, normalize and scale y to meters
+    public float yMeters() {
+        // transY = -mY + centerY
+        float transY = -(mY - centerY());
+        if(mBitmap != null) {
+            float normY = transY/mBitmap.getHeight();
+            return normY * 5;
+        }
+        return 0;
+
+    }
+
 }

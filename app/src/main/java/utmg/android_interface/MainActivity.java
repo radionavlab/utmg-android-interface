@@ -1,8 +1,10 @@
 package utmg.android_interface;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,20 +28,17 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatRosActivity {
 
     ROSNode node;
-    private LinearLayout innerLayout;
     private CanvasView customCanvas;
     private ArrayList<Float> xCoordVec;
     private ArrayList<Float> yCoordVec;
-    private ArrayList<Float> xMeterVec;
-    private ArrayList<Float> yMeterVec;
-    private float centerX;
-    private float centerY;
-    private float transX;
-    private float transY;
-    private float nX;
-    private float nY;
-    private float xMeters;
-    private float yMeters;
+
+    private float mX;
+    private float mY;
+
+    private double quadx = 0;
+    private double quady = 0;
+    private double quadz = 0;
+
 
     private RosTextView<std_msgs.String> rosTextView;
 
@@ -48,19 +49,17 @@ public class MainActivity extends AppCompatRosActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         LinearLayout canvasSize = (LinearLayout) findViewById(R.id.linLay);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
 
-        //rosTextView = (RosTextView<std_msgs.String>) findViewById(R.id.rosText);
-
+        customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
 
-        xMeterVec = new ArrayList<>();
-        yMeterVec = new ArrayList<>();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Send FAB
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
-
         // Clear FAB
         FloatingActionButton fabClear = (FloatingActionButton) findViewById(R.id.fab_clear);
         fabClear.setOnClickListener(new View.OnClickListener()
@@ -95,107 +93,23 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
+        // Scaled x and y
+        final TextView xMeters = (TextView) findViewById(R.id.meterX);
+        final TextView yMeters = (TextView) findViewById(R.id.meterY);
 
-        // Get x and y coordinates in pixels
-        customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
-
-//        final TextView tvX = (TextView) findViewById(R.id.xView);
-//        final TextView tvY = (TextView) findViewById(R.id.yView);
-//
-//        tvX.setText(Float.toString(customCanvas.getxCoord()));
-//        tvY.setText(Float.toString(customCanvas.getyCoord()));
-//
-//        final Handler handler = new Handler();
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                tvX.setText(Float.toString(customCanvas.getxCoord()));
-//                tvY.setText(Float.toString(customCanvas.getyCoord()));
-//
-//                handler.postDelayed(this, 10); // refresh every 1000 ms = 1 sec
-//            }
-//        };
-//        runnable.run();
-
-
-        // Get center coordinates in pixels
-        innerLayout = (LinearLayout) findViewById(R.id.linLay);
-        //final TextView centerCoord = (TextView) findViewById(R.id.centerCoord);
-
-        innerLayout.post(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                centerX  = customCanvas.getWidth()/2;
-                centerY = customCanvas.getHeight()/2;
-                //centerCoord.setText("(" + Float.toString(centerX) + ", " + Float.toString(centerY) + ")");
-            }
-        });
-
-
-        // Transform x and y with the center equal to (0,0)
-        //final TextView newX = (TextView) findViewById(R.id.newX);
-        //final TextView newY = (TextView) findViewById(R.id.newY);
-
-        final Handler handler1 = new Handler();
-        Runnable runnable1 = new Runnable() {
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                transX = customCanvas.getxCoord() - centerX;
-                transY = -(customCanvas.getyCoord() - centerY);
-                //newX.setText("transX: " + Float.toString(transX));
-                //newY.setText("     transY: " + Float.toString(transY));
+                mX = customCanvas.xMeters();
+                mY = customCanvas.yMeters();
+                xMeters.setText(Float.toString(mX) + "m     ");
+                yMeters.setText(Float.toString(mY) + "m     ");
 
-                handler1.postDelayed(this, 10);
+                handler.postDelayed(this, 10);
             }
         };
-        runnable1.run();
-
-
-        // Normalize x and y
-        final TextView normX = (TextView) findViewById(R.id.normX);
-        final TextView normY = (TextView) findViewById(R.id.normY);
-
-        final Handler handler2 = new Handler();
-        Runnable runnable2 = new Runnable() {
-            @Override
-            public void run() {
-                nX = transX/customCanvas.getWidth();
-                nY = transY/customCanvas.getHeight();
-                normX.setText("normX: " + Float.toString(nX));
-                normY.setText("     normY: " + Float.toString(nY));
-
-                handler2.postDelayed(this, 10);
-            }
-        };
-        runnable2.run();
-
-        // Scale to meters
-        final TextView mX = (TextView) findViewById(R.id.xMeters);
-        final TextView mY = (TextView) findViewById(R.id.yMeters);
-
-        final Handler handler3 = new Handler();
-        Runnable runnable3 = new Runnable() {
-            @Override
-            public void run() {
-                // Hardcoded to ViconLab
-                // TODO needs to be changed
-                xMeters = nX * 3;
-                yMeters = nY * 5;
-
-                mX.setText(Float.toString(xMeters) + "m     ");
-                mY.setText(Float.toString(yMeters) + "m");
-
-                // update array
-                xMeterVec.add(xMeters);
-                yMeterVec.add(xMeters);
-
-                handler3.postDelayed(this, 10);
-            }
-        };
-        runnable3.run();
+        runnable.run();
 
 
         // Thread for pinging quad's position in meters
@@ -206,9 +120,9 @@ public class MainActivity extends AppCompatRosActivity {
 
                 if (node != null) {
 
-                    double quadx = node.getQuadPosX();
-                    double quady = node.getQuadPosY();
-                    double quadz = node.getQuadPosZ();
+                    quadx = node.getQuadPosX();
+                    quady = node.getQuadPosY();
+                    quadz = node.getQuadPosZ();
 
                     //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
                 }
@@ -218,6 +132,39 @@ public class MainActivity extends AppCompatRosActivity {
         };
         quadPosRunnable.run();
 
+        final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
+        final Handler handler1 = new Handler();
+        Runnable runnable1 = new Runnable() {
+            @Override
+            public void run() {
+                quad2Pixel.setText(Float.toString(quadXToPixel()) + "xdp    " + Float.toString(quadYToPixel()) + "ydp");
+
+                handler1.postDelayed(this, 10);
+            }
+        };
+        runnable1.run();
+
+        final ImageView quad = (ImageView) findViewById(R.id.quad);
+        quad.setImageResource(R.drawable.quad);
+        LinearLayout.LayoutParams lp = (android.widget.LinearLayout.LayoutParams)quad.getLayoutParams();
+        lp.setMargins((int) quadXToPixel(), (int) quadYToPixel(), 0, 0);
+        quad.setLayoutParams(lp);
+    }
+
+    public float quadXToPixel() {
+        float normX = (float) quadx / 3;
+        float transX = normX * customCanvas.getWidth();
+        float xCoord = transX + customCanvas.centerX();
+
+        return xCoord;
+    }
+
+    public float quadYToPixel() {
+        float normY = (float) quady / 5;
+        float transY = normY * customCanvas.getHeight();
+        float yCoord = (-transY + customCanvas.centerY());
+
+        return yCoord;
     }
 
     @Override
