@@ -12,7 +12,6 @@ import org.ros.node.NodeMain;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import geometry_msgs.Pose;
@@ -20,12 +19,16 @@ import geometry_msgs.PoseArray;
 
 import geometry_msgs.TransformStamped;
 
-public class TrajectoryArrayPublisherNode extends AbstractNodeMain implements NodeMain {
+public class ROSNode extends AbstractNodeMain implements NodeMain {
 
     private ArrayList<Float> xes;
     private ArrayList<Float> yes;
 
-    private static final String TAG = TrajectoryArrayPublisherNode.class.getSimpleName();
+    private double quadx = 0;
+    private double quady = 0;
+    private double quadz = 0;
+
+    private static final String TAG = ROSNode.class.getSimpleName();
 
     @Override
     public GraphName getDefaultNodeName() {
@@ -92,9 +95,9 @@ public class TrajectoryArrayPublisherNode extends AbstractNodeMain implements No
                 subscriberQuad.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
                     public void onNewMessage(geometry_msgs.TransformStamped message) {
-                        double quadx = message.getTransform().getTranslation().getX();
-                        double quady = message.getTransform().getTranslation().getY();
-                        double quadz = message.getTransform().getTranslation().getZ();
+                        quadx = message.getTransform().getTranslation().getX();
+                        quady = message.getTransform().getTranslation().getY();
+                        quadz = message.getTransform().getTranslation().getZ();
 
                         Log.i("QuadPos", Double.toString(quadx) + "\t\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
 
@@ -114,5 +117,11 @@ public class TrajectoryArrayPublisherNode extends AbstractNodeMain implements No
 
         Log.i("Traj","Arrays transferred to node");
     }
+
+    double getQuadPosX() { return quadx; }
+
+    double getQuadPosY() { return quady; }
+
+    double getQuadPosZ() { return quadz; }
 
 }

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import org.ros.android.AppCompatRosActivity;
 import org.ros.android.view.RosTextView;
 import org.ros.node.NodeConfiguration;
-import org.ros.node.NodeMain;
 import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatRosActivity {
 
-    TrajectoryArrayPublisherNode node;
+    ROSNode node;
     private LinearLayout innerLayout;
     private CanvasView customCanvas;
     private ArrayList<Float> xCoordVec;
@@ -198,6 +197,27 @@ public class MainActivity extends AppCompatRosActivity {
         };
         runnable3.run();
 
+
+        // Thread for pinging quad's position in meters
+        final Handler quadPosHandler = new Handler();
+        Runnable quadPosRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                if (node != null) {
+
+                    double quadx = node.getQuadPosX();
+                    double quady = node.getQuadPosY();
+                    double quadz = node.getQuadPosZ();
+
+                    //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
+                }
+
+                quadPosHandler.postDelayed(this, 10);
+            }
+        };
+        quadPosRunnable.run();
+
     }
 
     @Override
@@ -234,7 +254,7 @@ public class MainActivity extends AppCompatRosActivity {
 //        rosTextView.setTopicName("testtopic");
 //        rosTextView.setMessageType("std_msgs/String");
 
-        node = new TrajectoryArrayPublisherNode();
+        node = new ROSNode();
 
         try {
             java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
