@@ -1,36 +1,44 @@
 package utmg.android_interface;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.ros.android.AppCompatRosActivity;
-import org.ros.android.RosActivity;
 import org.ros.android.view.RosTextView;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import std_msgs.String;
 
 public class MainActivity extends AppCompatRosActivity {
 
-    private LinearLayout innerLayout;
+    ROSNode node;
     private CanvasView customCanvas;
     private ArrayList<Float> xCoordVec;
     private ArrayList<Float> yCoordVec;
+
+    private float mX;
+    private float mY;
+
+    private double quadx = 0;
+    private double quady = 0;
+    private double quadz = 0;
+
 
     private RosTextView<std_msgs.String> rosTextView;
 
@@ -41,14 +49,19 @@ public class MainActivity extends AppCompatRosActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        rosTextView = (RosTextView<std_msgs.String>) findViewById(R.id.rosText);
+        LinearLayout canvasSize = (LinearLayout) findViewById(R.id.linLay);
+        canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
 
+        customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
 
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Send FAB
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
         {
@@ -60,9 +73,14 @@ public class MainActivity extends AppCompatRosActivity {
 
                 xCoordVec = customCanvas.getxCoordVec();
                 yCoordVec = customCanvas.getyCoordVec();
+
+                node.setTraj(xCoordVec, yCoordVec);
+                //org.ros.message.std_msgs.String str = new org.ros.message.std_msgs.String();
+
             }
         });
 
+        // Clear FAB
         FloatingActionButton fabClear = (FloatingActionButton) findViewById(R.id.fab_clear);
         fabClear.setOnClickListener(new View.OnClickListener()
         {
@@ -75,33 +93,78 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
-        customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
-
-        final TextView tvX = (TextView) findViewById(R.id.xView);
-        final TextView tvY = (TextView) findViewById(R.id.yView);
-
-        tvX.setText(Float.toString(customCanvas.getxCoord()));
-        tvY.setText(Float.toString(customCanvas.getyCoord()));
-
-
-        innerLayout = (LinearLayout) findViewById(R.id.linearLay);
-        final TextView centerCoord = (TextView) findViewById(R.id.centerCoord);
-
-
+        // Scaled x and y
+        final TextView xMeters = (TextView) findViewById(R.id.meterX);
+        final TextView yMeters = (TextView) findViewById(R.id.meterY);
 
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
-
+            @Override
             public void run() {
+                mX = customCanvas.xMeters();
+                mY = customCanvas.yMeters();
+                xMeters.setText(Float.toString(mX) + "m     ");
+                yMeters.setText(Float.toString(mY) + "m     ");
 
-                tvX.setText(Float.toString(customCanvas.getxCoord()));
-                tvY.setText(Float.toString(customCanvas.getyCoord()));
-
-                handler.postDelayed(this, 10); // refresh every 1000 ms = 1 sec
+                handler.postDelayed(this, 10);
             }
         };
-
         runnable.run();
+
+
+        // Thread for pinging quad's position in meters
+        final Handler quadPosHandler = new Handler();
+        Runnable quadPosRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                if (node != null) {
+
+                    quadx = node.getQuadPosX();
+                    quady = node.getQuadPosY();
+                    quadz = node.getQuadPosZ();
+
+                    //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
+                }
+
+                quadPosHandler.postDelayed(this, 10);
+            }
+        };
+        quadPosRunnable.run();
+
+        final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
+        final Handler handler1 = new Handler();
+        Runnable runnable1 = new Runnable() {
+            @Override
+            public void run() {
+                quad2Pixel.setText(Float.toString(quadXToPixel()) + "xdp    " + Float.toString(quadYToPixel()) + "ydp");
+
+                handler1.postDelayed(this, 10);
+            }
+        };
+        runnable1.run();
+
+        final ImageView quad = (ImageView) findViewById(R.id.quad);
+        quad.setImageResource(R.drawable.quad);
+        android.support.design.widget.CoordinatorLayout.LayoutParams lp = (android.support.design.widget.CoordinatorLayout.LayoutParams)quad.getLayoutParams();
+        lp.setMargins((int) quadXToPixel(), (int) quadYToPixel(), 0, 0);
+        quad.setLayoutParams(lp);
+    }
+
+    public float quadXToPixel() {
+        float normX = (float) quadx / 3;
+        float transX = normX * customCanvas.getWidth();
+        float xCoord = transX + customCanvas.centerX();
+
+        return xCoord;
+    }
+
+    public float quadYToPixel() {
+        float normY = (float) quady / 5;
+        float transY = normY * customCanvas.getHeight();
+        float yCoord = (-transY + customCanvas.centerY());
+
+        return yCoord;
     }
 
     @Override
@@ -133,11 +196,12 @@ public class MainActivity extends AppCompatRosActivity {
 
 
     @Override
-    protected void init(NodeMainExecutor nodeMainExecutor)
-    {
-        rosTextView.setText("test");
-        rosTextView.setTopicName("testtopic");
-        rosTextView.setMessageType("std_msgs/String");
+    protected void init(NodeMainExecutor nodeMainExecutor) {
+//        rosTextView.setText("test");
+//        rosTextView.setTopicName("testtopic");
+//        rosTextView.setMessageType("std_msgs/String");
+
+        node = new ROSNode();
 
         try {
             java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
@@ -145,7 +209,10 @@ public class MainActivity extends AppCompatRosActivity {
             socket.close();
             NodeConfiguration nodeConfiguration =
                     NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
-            nodeMainExecutor.execute(rosTextView, nodeConfiguration);
+
+            //nodeConfiguration.setNodeName()
+
+            nodeMainExecutor.execute(node, nodeConfiguration);
         } catch (IOException e) {
             // Socket problem
             Log.e("MainActivity", "socket error trying to get networking information from the master uri");
