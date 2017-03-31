@@ -28,6 +28,11 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     private double quady = 0;
     private double quadz = 0;
 
+
+    private double swordx = 0;
+    private double swordy = 0;
+    private double swordz = 0;
+
     private static final String TAG = ROSNode.class.getSimpleName();
 
     @Override
@@ -104,6 +109,21 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                     }
                 });
 
+
+                Subscriber<TransformStamped> subscriberSword = connectedNode.newSubscriber("vicon/sword/sword", geometry_msgs.TransformStamped._TYPE);
+
+                subscriberSword.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                    @Override
+                    public void onNewMessage(geometry_msgs.TransformStamped message) {
+                        swordx = message.getTransform().getTranslation().getX();
+                        swordy = message.getTransform().getTranslation().getY();
+                        swordz = message.getTransform().getTranslation().getZ();
+
+                        //Log.i("QuadPos", Double.toString(quadx) + "\t\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
+
+                    }
+                });
+
                 // go to sleep for one second
                 Thread.sleep(1000);
             }
@@ -123,5 +143,12 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     double getQuadPosY() { return quady; }
 
     double getQuadPosZ() { return quadz; }
+
+
+    double getSwordPosX() { return swordx; }
+
+    double getSwordPosY() { return swordy; }
+
+    double getSwordPosZ() { return swordz; }
 
 }
