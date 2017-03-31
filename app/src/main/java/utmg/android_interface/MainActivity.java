@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatRosActivity {
                     //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
                 }
 
-                quadPosHandler.postDelayed(this, 10);
+                quadPosHandler.postDelayed(this, 0);
             }
         };
         quadPosRunnable.run();

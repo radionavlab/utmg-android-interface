@@ -58,14 +58,14 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                 // trajectory publisher
                 geometry_msgs.PoseArray xyTraj = publisher1.newMessage();
 
-                xyTraj.getHeader().setFrameId("android_xy");
+                xyTraj.getHeader().setFrameId("world");
                 xyTraj.getHeader().setSeq(0);
                 xyTraj.getHeader().setStamp(new Time());
 
                 ArrayList<Pose> poses = new ArrayList<>();
 
                 if (xes == null || yes == null) {
-                    Log.i("Traj","Null arrays");
+                    //Log.i("Traj","Null arrays");
                 } else {
                     for (int i = 0; i < xes.size(); i++) {
                         geometry_msgs.Pose msg = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
@@ -99,7 +99,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         quady = message.getTransform().getTranslation().getY();
                         quadz = message.getTransform().getTranslation().getZ();
 
-                        Log.i("QuadPos", Double.toString(quadx) + "\t\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
+                        //Log.i("QuadPos", Double.toString(quadx) + "\t\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
 
                     }
                 });
