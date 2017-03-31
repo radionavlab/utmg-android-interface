@@ -42,8 +42,10 @@ public class MainActivity extends AppCompatRosActivity {
     private double quady = 0;
     private double quadz = 0;
 
-    private float quadXCoord = 0;
-    private float quadYCoord = 0;
+
+    private double swordx = 0;
+    private double swordy = 0;
+    private double swordz = 0;
 
     private RosTextView<std_msgs.String> rosTextView;
 
@@ -143,6 +145,28 @@ public class MainActivity extends AppCompatRosActivity {
         quadPosRunnable.run();
 
 
+        // Thread for pinging quad's position in meters
+        final Handler swordPosHandler = new Handler();
+        Runnable swordPosRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                if (node != null) {
+
+                    swordx = node.getSwordPosX();
+                    swordy = node.getSwordPosY();
+                    swordz = node.getSwordPosZ();
+
+                    //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
+                }
+
+                swordPosHandler.postDelayed(this, 0);
+            }
+        };
+        swordPosRunnable.run();
+
+
+
         // Denormalize coordinates from quad
         final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
         final Handler handler1 = new Handler();
@@ -176,22 +200,22 @@ public class MainActivity extends AppCompatRosActivity {
         runnable2.run();
 
         // set obstacle size
-        final ImageView obstacle = (ImageView) findViewById(R.id.obstacle);
-        obstacle.setMaxHeight((int)(screenHeight * .15));
-        obstacle.setMaxWidth((int)(screenWidth * .15));
+        final ImageView sword = (ImageView) findViewById(R.id.obstacle);
+        sword.setMaxHeight((int)(screenHeight * .15));
+        sword.setMaxWidth((int)(screenWidth * .15));
 
         // show location of the obstacle
         final Handler handler3 = new Handler();
         Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
-                quad.setX(quadXToPixel() + quad.getWidth()/2);
-                quad.setY(quadYToPixel() + quad.getHeight()/2);
+                sword.setX(swordXToPixel() + sword.getWidth()/2);
+                sword.setY(swordYToPixel() + sword.getHeight()/2);
 
-                handler2.postDelayed(this, 0);
+                handler3.postDelayed(this, 0);
             }
         };
-        runnable2.run();
+        runnable3.run();
     }
 
     public float quadXToPixel() {
@@ -204,6 +228,23 @@ public class MainActivity extends AppCompatRosActivity {
 
     public float quadYToPixel() {
         float normY = (float) quady / 5;
+        float transY = normY * customCanvas.getHeight();
+        float yCoord = (-transY + customCanvas.centerY());
+
+        return yCoord;
+    }
+
+
+    public float swordXToPixel() {
+        float normX = (float) swordx / 3;
+        float transX = normX * customCanvas.getWidth();
+        float xCoord = transX + customCanvas.centerX();
+
+        return xCoord;
+    }
+
+    public float swordYToPixel() {
+        float normY = (float) swordy / 5;
         float transY = normY * customCanvas.getHeight();
         float yCoord = (-transY + customCanvas.centerY());
 
