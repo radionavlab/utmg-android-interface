@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatRosActivity {
         LinearLayout canvasSize = (LinearLayout) findViewById(R.id.linLay);
 
         int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatRosActivity {
         };
         quadPosRunnable.run();
 
+
         // Denormalize coordinates from quad
         final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
         final Handler handler1 = new Handler();
@@ -154,22 +156,24 @@ public class MainActivity extends AppCompatRosActivity {
         };
         runnable1.run();
 
-        final ImageView quad = (ImageView) findViewById(R.id.quad);
 
+        // set image size
+        final ImageView quad = (ImageView) findViewById(R.id.quad);
+        quad.setMaxHeight((int)(screenHeight * .1));
+        quad.setMaxWidth((int)(screenWidth * .1));
+
+        // show real-time location of the quad
         final Handler handler2 = new Handler();
         Runnable runnable2 = new Runnable() {
             @Override
             public void run() {
-                quad.setX(quadXToPixel());
-                quad.setY(quadYToPixel());
+                quad.setX(quadXToPixel() + quad.getWidth()/2);
+                quad.setY(quadYToPixel() + quad.getHeight()/2);
+
+                handler2.postDelayed(this, 0);
             }
         };
         runnable2.run();
-
-//        quad.setImageResource(R.drawable.quad);
-//        android.support.design.widget.CoordinatorLayout.LayoutParams lp = (android.support.design.widget.CoordinatorLayout.LayoutParams)quad.getLayoutParams();
-//        lp.setMargins((int) quadXToPixel(), (int) quadYToPixel(), 0, 0);
-//        quad.setLayoutParams(lp);
     }
 
     public float quadXToPixel() {
