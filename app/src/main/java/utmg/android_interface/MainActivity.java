@@ -1,6 +1,7 @@
 package utmg.android_interface;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,6 +52,11 @@ public class MainActivity extends AppCompatRosActivity {
         setContentView(R.layout.activity_main);
 
         LinearLayout canvasSize = (LinearLayout) findViewById(R.id.linLay);
+
+        int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        canvasSize.getLayoutParams().height = (int) (screenHeight*0.75);
+
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
 
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
@@ -144,11 +150,11 @@ public class MainActivity extends AppCompatRosActivity {
         };
         runnable1.run();
 
-        final ImageView quad = (ImageView) findViewById(R.id.quad);
-        quad.setImageResource(R.drawable.quad);
-        android.support.design.widget.CoordinatorLayout.LayoutParams lp = (android.support.design.widget.CoordinatorLayout.LayoutParams)quad.getLayoutParams();
-        lp.setMargins((int) quadXToPixel(), (int) quadYToPixel(), 0, 0);
-        quad.setLayoutParams(lp);
+//        final ImageView quad = (ImageView) findViewById(R.id.quad);
+//        quad.setImageResource(R.drawable.quad);
+//        android.support.design.widget.CoordinatorLayout.LayoutParams lp = (android.support.design.widget.CoordinatorLayout.LayoutParams)quad.getLayoutParams();
+//        lp.setMargins((int) quadXToPixel(), (int) quadYToPixel(), 0, 0);
+//        quad.setLayoutParams(lp);
     }
 
     public float quadXToPixel() {
