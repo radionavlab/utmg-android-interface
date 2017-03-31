@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatRosActivity {
         runnable1.run();
 
 
-        // set image size
+        // set quad size
         final ImageView quad = (ImageView) findViewById(R.id.quad);
         quad.setMaxHeight((int)(screenHeight * .1));
         quad.setMaxWidth((int)(screenWidth * .1));
@@ -165,6 +165,24 @@ public class MainActivity extends AppCompatRosActivity {
         // show real-time location of the quad
         final Handler handler2 = new Handler();
         Runnable runnable2 = new Runnable() {
+            @Override
+            public void run() {
+                quad.setX(quadXToPixel() + quad.getWidth()/2);
+                quad.setY(quadYToPixel() + quad.getHeight()/2);
+
+                handler2.postDelayed(this, 0);
+            }
+        };
+        runnable2.run();
+
+        // set obstacle size
+        final ImageView obstacle = (ImageView) findViewById(R.id.obstacle);
+        obstacle.setMaxHeight((int)(screenHeight * .15));
+        obstacle.setMaxWidth((int)(screenWidth * .15));
+
+        // show location of the obstacle
+        final Handler handler3 = new Handler();
+        Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 quad.setX(quadXToPixel() + quad.getWidth()/2);

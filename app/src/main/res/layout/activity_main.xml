@@ -74,6 +74,13 @@
         android:adjustViewBounds="true"
         android:src="@drawable/quad"/>
 
+    <ImageView
+        android:id="@+id/obstacle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/obstacle"/>
+
     <LinearLayout
         android:id="@+id/linLay"
         android:layout_width="fill_parent"
