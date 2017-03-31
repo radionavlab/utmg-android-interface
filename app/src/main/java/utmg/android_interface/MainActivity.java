@@ -22,6 +22,8 @@ import org.ros.android.AppCompatRosActivity;
 import org.ros.android.view.RosTextView;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatRosActivity {
     private double quady = 0;
     private double quadz = 0;
 
+    private float quadXCoord = 0;
+    private float quadYCoord = 0;
 
     private RosTextView<std_msgs.String> rosTextView;
 
@@ -55,8 +59,7 @@ public class MainActivity extends AppCompatRosActivity {
 
         int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-        canvasSize.getLayoutParams().height = (int) (screenHeight*0.75);
-
+        canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
 
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
@@ -138,6 +141,7 @@ public class MainActivity extends AppCompatRosActivity {
         };
         quadPosRunnable.run();
 
+        // Denormalize coordinates from quad
         final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
         final Handler handler1 = new Handler();
         Runnable runnable1 = new Runnable() {
@@ -150,7 +154,18 @@ public class MainActivity extends AppCompatRosActivity {
         };
         runnable1.run();
 
-//        final ImageView quad = (ImageView) findViewById(R.id.quad);
+        final ImageView quad = (ImageView) findViewById(R.id.quad);
+
+        final Handler handler2 = new Handler();
+        Runnable runnable2 = new Runnable() {
+            @Override
+            public void run() {
+                quad.setX(quadXToPixel());
+                quad.setY(quadYToPixel());
+            }
+        };
+        runnable2.run();
+
 //        quad.setImageResource(R.drawable.quad);
 //        android.support.design.widget.CoordinatorLayout.LayoutParams lp = (android.support.design.widget.CoordinatorLayout.LayoutParams)quad.getLayoutParams();
 //        lp.setMargins((int) quadXToPixel(), (int) quadYToPixel(), 0, 0);
