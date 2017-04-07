@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.SwitchPreference;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import org.ros.android.AppCompatRosActivity;
 import org.ros.android.view.RosTextView;
@@ -201,8 +203,8 @@ public class MainActivity extends AppCompatRosActivity {
 
         // set obstacle size
         final ImageView sword = (ImageView) findViewById(R.id.obstacle);
-        sword.setMaxHeight((int)(screenHeight * .15));
-        sword.setMaxWidth((int)(screenWidth * .15));
+        sword.setMaxHeight((int)(screenHeight * .12));
+        sword.setMaxWidth((int)(screenWidth * .12));
 
         // show location of the obstacle
         final Handler handler3 = new Handler();
@@ -216,6 +218,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         };
         runnable3.run();
+
     }
 
     public float quadXToPixel() {

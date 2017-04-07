@@ -16,6 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="?attr/colorPrimary"
+            android:elevation="14dp"
+            android:minHeight="170dp"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
@@ -69,17 +71,19 @@
 
     <ImageView
         android:id="@+id/quad"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:src="@drawable/quad"/>
+        android:layout_gravity="center"
+        android:src="@drawable/quad" />
 
     <ImageView
         android:id="@+id/obstacle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/obstacle"/>
+        android:layout_gravity="center|left"
+        android:src="@drawable/sword"/>
 
     <LinearLayout
         android:id="@+id/linLay"

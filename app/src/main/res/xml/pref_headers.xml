@@ -13,8 +13,9 @@
         android:title="@string/pref_header_notifications" />
 
     <header
-        android:fragment="utmg.android_interface.SettingsActivity$DataSyncPreferenceFragment"
-        android:icon="@drawable/ic_sync_black_24dp"
+        android:fragment="utmg.android_interface.SettingsActivity$ObjectsToDisplayFragment"
+        android:icon="@drawable/ok"
         android:title="@string/pref_header_data_sync" />
+
 
 </preference-headers>
