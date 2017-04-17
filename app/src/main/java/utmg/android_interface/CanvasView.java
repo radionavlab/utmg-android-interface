@@ -77,8 +77,9 @@ public class CanvasView extends View {
         yCoordVec = new ArrayList<>();
 
         mPath.moveTo(x, y);
-        mX = x;
-        mY = y;
+        // rotate trajectory -90 degrees
+        mX = y;
+        mY = -x;
 
         xCoordVec.add(mX);
         yCoordVec.add(mY);
@@ -101,9 +102,7 @@ public class CanvasView extends View {
     // when ACTION_UP stop touch
     private void upTouch() {
         //mPath.lineTo(mX, mY);
-
         // TODO DO SOMETHING WITH ARRAYS
-
     }
 
     public void clearCanvas() {

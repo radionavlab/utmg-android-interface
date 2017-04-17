@@ -1,6 +1,7 @@
 package utmg.android_interface;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.Image;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatRosActivity {
     private double swordx = 0;
     private double swordy = 0;
     private double swordz = 0;
+
+    Switch quadSwitch;
 
     private RosTextView<std_msgs.String> rosTextView;
 
@@ -225,7 +229,6 @@ public class MainActivity extends AppCompatRosActivity {
         float normX = (float) quadx / 3;
         float transX = normX * customCanvas.getWidth();
         float xCoord = transX + customCanvas.centerX();
-
         return xCoord;
     }
 
@@ -274,8 +277,12 @@ public class MainActivity extends AppCompatRosActivity {
             startActivity(new Intent(MainActivity.this, ROSCam.class));
         }
 
-        else if (id == R.id.action_settings) {
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+//        else if (id == R.id.action_settings) {
+//            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+//        }
+
+        else if (id == R.id.q_switch) {
+            startActivity(new Intent(MainActivity.this, SwitchActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
