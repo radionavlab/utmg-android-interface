@@ -7,16 +7,11 @@
         android:orderInCategory="100"
         android:title="@string/action_roscam"
         app:showAsAction="never" />
-    <!--<item-->
-        <!--android:id="@+id/action_settings"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="@string/action_settings"-->
-        <!--app:showAsAction="never" />-->
     <item
-        android:id="@+id/q_switch"
-        android:title="Quad"
+        android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:actionLayout="@layout/switch_item"/>
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 
 </menu>
 

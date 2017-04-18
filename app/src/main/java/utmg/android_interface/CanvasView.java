@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
@@ -96,6 +97,9 @@ public class CanvasView extends View {
 
             xCoordVec.add(xMeters());
             yCoordVec.add(yMeters());
+
+            Log.i("touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
+
         }
     }
 
