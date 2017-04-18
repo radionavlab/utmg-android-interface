@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import geometry_msgs.Pose;
 import geometry_msgs.PoseArray;
+import nav_msgs.Path;
 
 import geometry_msgs.TransformStamped;
 
@@ -32,6 +33,10 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     private double swordy = 0;
     private double swordz = 0;
 
+    private boolean publishToggle = false;
+
+    private int seq = 0;
+
     private static final String TAG = ROSNode.class.getSimpleName();
 
     @Override
@@ -44,6 +49,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
         //final Publisher<std_msgs.String> publisher = connectedNode.newPublisher(GraphName.of("time"), std_msgs.String._TYPE);
 
         final Publisher<geometry_msgs.PoseArray> publisher1 = connectedNode.newPublisher(GraphName.of("android_quad_trajectory"), PoseArray._TYPE);
+        //final Publisher<nav_msgs.Path> publisherPath = connectedNode.newPublisher(GraphName.of("android_quad_trajectory"), Path._TYPE);
 
         final CancellableLoop loop = new CancellableLoop() {
             @Override
@@ -60,11 +66,16 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
                 // trajectory publisher
-                geometry_msgs.PoseArray xyTraj = publisher1.newMessage();
+                geometry_msgs.PoseArray mPoseArray = publisher1.newMessage();
+                //nav_msgs.Path xyPath = publisherPath.newMessage();
 
-                xyTraj.getHeader().setFrameId("world");
-                xyTraj.getHeader().setSeq(0);
-                xyTraj.getHeader().setStamp(new Time());
+                mPoseArray.getHeader().setFrameId("world");
+                mPoseArray.getHeader().setSeq(seq);
+                mPoseArray.getHeader().setStamp(new Time());
+
+//                xyPath.getHeader().setFrameId("world");
+//                xyPath.getHeader().setSeq(0);
+//                xyPath.getHeader().setStamp(new Time());
 
                 ArrayList<Pose> poses = new ArrayList<>();
 
@@ -72,21 +83,27 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                     //Log.i("Traj","Null arrays");
                 } else {
                     for (int i = 0; i < xes.size(); i++) {
-                        geometry_msgs.Pose msg = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
-                        geometry_msgs.Point temp = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+                        geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
+                        geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
 
-                        temp.setX(xes.get(i));
-                        temp.setY(yes.get(i));
-                        temp.setZ(1);
+                        mPoint.setX(xes.get(i));
+                        mPoint.setY(yes.get(i));
+                        mPoint.setZ(1);
 
-                        msg.setPosition(temp);
+                        mPose.setPosition(mPoint);
 
-                        poses.add(msg);
+                        poses.add(mPose);
                     }
 
-                    xyTraj.setPoses(poses);
+                    mPoseArray.setPoses(poses);
 
-                    publisher1.publish(xyTraj);
+                    if (publishToggle == true) {
+                        publisher1.publish(mPoseArray);
+
+                        seq = seq + 1;
+                    }
+
+                    publishToggle = false;
 
                 }
 
@@ -131,6 +148,8 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     void setTraj(ArrayList<Float> x, ArrayList<Float> y) {
         xes = x;
         yes = y;
+
+        publishToggle = true;
 
         Log.i("Traj","Arrays transferred to node");
     }

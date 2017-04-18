@@ -1,13 +1,9 @@
 package utmg.android_interface;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.SwitchPreference;
-import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -15,18 +11,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import org.ros.android.AppCompatRosActivity;
 import org.ros.android.view.RosTextView;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -228,14 +221,14 @@ public class MainActivity extends AppCompatRosActivity {
     public float quadXToPixel() {
         float normX = (float) quadx / 3;
         float transX = normX * customCanvas.getWidth();
-        float xCoord = transX + customCanvas.centerX();
+        float xCoord = transX + customCanvas.getCenterX();
         return xCoord;
     }
 
     public float quadYToPixel() {
         float normY = (float) quady / 5;
         float transY = normY * customCanvas.getHeight();
-        float yCoord = (-transY + customCanvas.centerY());
+        float yCoord = (-transY + customCanvas.getCenterY());
 
         return yCoord;
     }
@@ -244,7 +237,7 @@ public class MainActivity extends AppCompatRosActivity {
     public float swordXToPixel() {
         float normX = (float) swordx / 3;
         float transX = normX * customCanvas.getWidth();
-        float xCoord = transX + customCanvas.centerX();
+        float xCoord = transX + customCanvas.getCenterX();
 
         return xCoord;
     }
@@ -252,7 +245,7 @@ public class MainActivity extends AppCompatRosActivity {
     public float swordYToPixel() {
         float normY = (float) swordy / 5;
         float transY = normY * customCanvas.getHeight();
-        float yCoord = (-transY + customCanvas.centerY());
+        float yCoord = (-transY + customCanvas.getCenterY());
 
         return yCoord;
     }
