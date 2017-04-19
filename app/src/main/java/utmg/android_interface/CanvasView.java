@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -78,12 +77,12 @@ public class CanvasView extends View {
         yCoordVec = new ArrayList<>();
 
         mPath.moveTo(x, y);
-        // rotate trajectory -90 degrees
-        mX = y;
-        mY = -x;
+        // rotate trajectory -90 degrees TODO
+        mX = x;
+        mY = y;
 
-        xCoordVec.add(mX);
-        yCoordVec.add(mY);
+        xCoordVec.add(xMeters());
+        yCoordVec.add(yMeters());
     }
 
     // when ACTION_MOVE move touch according to the x,y values
@@ -163,7 +162,7 @@ public class CanvasView extends View {
     }
 
     // center x coordinate of bitmap
-    public int centerX() {
+    public int getCenterX() {
         if(mBitmap != null) {
             return mBitmap.getWidth() / 2;
         }
@@ -171,7 +170,7 @@ public class CanvasView extends View {
     }
 
     // center y coordinate of bitmap
-    public int centerY() {
+    public int getCenterY() {
         if (mBitmap != null) {
             return mBitmap.getHeight()/2;
         }
@@ -180,7 +179,7 @@ public class CanvasView extends View {
 
     // transform, normalize and scale x to meters
     public float xMeters() {
-        float transX = mX - centerX();
+        float transX = mX - getCenterX();
         if(mBitmap != null) {
             float normX = transX/mBitmap.getWidth();
             return normX * 3;
@@ -191,8 +190,8 @@ public class CanvasView extends View {
 
     // transform, normalize and scale y to meters
     public float yMeters() {
-        // transY = -mY + centerY
-        float transY = -(mY - centerY());
+        // transY = -mY + getCenterY
+        float transY = -(mY - getCenterY());
         if(mBitmap != null) {
             float normY = transY/mBitmap.getHeight();
             return normY * 5;
