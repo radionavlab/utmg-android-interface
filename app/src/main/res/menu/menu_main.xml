@@ -8,9 +8,9 @@
         android:title="@string/action_roscam"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/resize_canvas"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Resize Canvas"
         app:showAsAction="never" />
 
 </menu>

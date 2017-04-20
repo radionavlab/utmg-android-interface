@@ -17,5 +17,10 @@
         android:icon="@drawable/ok"
         android:title="@string/pref_header_data_sync" />
 
+    <header
+        android:fragment="utmg.android_interface.SettingsActivity$ResizeCanvasFragment"
+        android:icon="@drawable/error"
+        android:title="Resize Canvas"/>
+
 
 </preference-headers>

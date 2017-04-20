@@ -1,6 +1,7 @@
 package utmg.android_interface;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -18,8 +21,10 @@ import android.widget.TextView;
 
 import org.ros.android.AppCompatRosActivity;
 import org.ros.android.view.RosTextView;
+import org.ros.android.view.camera.RosCameraPreviewView;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +49,12 @@ public class MainActivity extends AppCompatRosActivity {
     private double swordy = 0;
     private double swordz = 0;
 
-    Switch quadSwitch;
+    SharedPreferences pref;
+    SharedPreferences.Editor prefEditor;
+
+    private float canvasWidth;
+    private float canvasHeight;
+
 
     private RosTextView<std_msgs.String> rosTextView;
 
@@ -56,10 +66,10 @@ public class MainActivity extends AppCompatRosActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LinearLayout canvasSize = (LinearLayout) findViewById(R.id.linLay);
+        final LinearLayout canvasSize = (LinearLayout) findViewById(R.id.linLay);
 
-        int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        final int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
@@ -67,6 +77,9 @@ public class MainActivity extends AppCompatRosActivity {
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
+
+        pref = getSharedPreferences("Pref", MODE_PRIVATE);
+        prefEditor = pref.edit();
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -103,6 +116,25 @@ public class MainActivity extends AppCompatRosActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+        // Get new dimensions from CanvasSizeActivity
+        final TextView newDimension = (TextView) findViewById(R.id.new_dimensions);
+        final Handler canvasH = new Handler();
+        Runnable canvasR = new Runnable() {
+            @Override
+            public void run() {
+                canvasWidth = pref.getFloat("newWidth", 0);
+                canvasHeight = pref.getFloat("newHeight", 0);
+                newDimension.setText(Float.toString(canvasWidth) + "m, " + Float.toString(canvasHeight) + "m");
+
+                canvasH.postDelayed(this, 10);
+            }
+        };
+        canvasR.run();
+
+
+
 
         // Scaled x and y
         final TextView xMeters = (TextView) findViewById(R.id.meterX);
@@ -270,12 +302,8 @@ public class MainActivity extends AppCompatRosActivity {
             startActivity(new Intent(MainActivity.this, ROSCam.class));
         }
 
-//        else if (id == R.id.action_settings) {
-//            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-//        }
-
-        else if (id == R.id.q_switch) {
-            startActivity(new Intent(MainActivity.this, SwitchActivity.class));
+        else if (id == R.id.resize_canvas) {
+            startActivity(new Intent(MainActivity.this, CanvasSizeActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

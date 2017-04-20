@@ -9,9 +9,8 @@
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
     <EditTextPreference
-        android:capitalize="words"
         android:defaultValue="@string/pref_default_display_name"
-        android:inputType="textCapWords"
+        android:inputType="number"
         android:key="example_text"
         android:maxLines="1"
         android:selectAllOnFocus="true"

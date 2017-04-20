@@ -25,6 +25,7 @@ public class CanvasView extends View {
     ArrayList<Float> yCoordVec;
 
 
+
     public CanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
         context = c;
@@ -51,12 +52,12 @@ public class CanvasView extends View {
         mCanvas = new Canvas(mBitmap);
     }
 
-    public int bWidth() {
-        return mBitmap.getWidth();
+    public float bWidth(float w) {
+        return w;
     }
 
-    public int bHeight() {
-        return mBitmap.getHeight();
+    public float bHeight(float h) {
+        return h;
     }
 
     // override onDraw

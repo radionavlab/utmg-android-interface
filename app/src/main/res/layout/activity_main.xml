@@ -42,15 +42,6 @@
         app:backgroundTint="@android:color/holo_red_dark"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_canvas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_margin="16dp"
-        app:backgroundTint="@android:color/holo_purple"
-        app:srcCompat="@android:drawable/ic_menu_crop" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -113,5 +104,14 @@
             android:background="@drawable/canvas_border"/>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/new_dimensions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="30dp"
+        android:text="New Dimensions"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

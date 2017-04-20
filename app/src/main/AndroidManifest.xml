@@ -4,8 +4,10 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -29,29 +31,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ROSCam"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/action_roscam"
-            android:screenOrientation="landscape">
-        </activity>
+            android:screenOrientation="landscape"></activity>
         <activity android:name="org.ros.android.MasterChooser" />
 
-        <service android:name="org.ros.android.NodeMainExecutorService" >
+        <service android:name="org.ros.android.NodeMainExecutorService">
             <intent-filter>
                 <action android:name="org.ros.android.NodeMainExecutorService" />
             </intent-filter>
         </service>
 
-        <!--<activity-->
-            <!--android:name=".ROSCam"-->
-            <!--android:label="@string/action_roscam"-->
-            <!--android:parentActivityName=".MainActivity">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="utmg.android_interface.MainActivity" />-->
-        <!--</activity>-->
+        <!-- <activity -->
+        <!-- android:name=".ROSCam" -->
+        <!-- android:label="@string/action_roscam" -->
+        <!-- android:parentActivityName=".MainActivity"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value="utmg.android_interface.MainActivity" /> -->
+        <!-- </activity> -->
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -60,6 +60,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="utmg.android_interface.MainActivity" />
         </activity>
+        <activity
+            android:name=".CanvasSizeActivity"
+            android:label="@string/title_activity_canvas_size"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

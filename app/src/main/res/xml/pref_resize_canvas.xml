@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Resize Canvas">
+        <EditTextPreference
+            android:id="@+id/canvas_width"
+            android:key="canvasW"
+            android:defaultValue="@string/pref_canvas_width_default"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Resize Width" />
+
+        <EditTextPreference
+            android:id="@+id/canvas_heigth"
+            android:defaultValue="@string/pref_canvas_heigth_default"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Resize Height" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
