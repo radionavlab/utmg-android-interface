@@ -48,7 +48,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     public void onStart(final ConnectedNode connectedNode) {
         //final Publisher<std_msgs.String> publisher = connectedNode.newPublisher(GraphName.of("time"), std_msgs.String._TYPE);
 
-        final Publisher<geometry_msgs.PoseArray> publisher1 = connectedNode.newPublisher(GraphName.of("/PosControl/Trajectory"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisher1 = connectedNode.newPublisher(GraphName.of("android_quad_trajectory"), PoseArray._TYPE);
         //final Publisher<nav_msgs.Path> publisherPath = connectedNode.newPublisher(GraphName.of("android_quad_trajectory"), Path._TYPE);
 
         final CancellableLoop loop = new CancellableLoop() {
@@ -117,8 +117,8 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                 subscriberQuad.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
                     public void onNewMessage(geometry_msgs.TransformStamped message) {
-                        quadx = -message.getTransform().getTranslation().getY();
-                        quady = message.getTransform().getTranslation().getX();
+                        quadx = message.getTransform().getTranslation().getX();
+                        quady = message.getTransform().getTranslation().getY();
                         quadz = message.getTransform().getTranslation().getZ();
 
                     }

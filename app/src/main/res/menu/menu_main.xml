@@ -13,5 +13,11 @@
         android:title="Resize Canvas"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/checkbox"
+        android:orderInCategory="100"
+        android:title="Objects to Display"
+        app:showAsAction="never"/>
+
 </menu>
 

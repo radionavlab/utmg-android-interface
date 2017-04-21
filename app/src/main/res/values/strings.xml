@@ -82,4 +82,6 @@
     <string name="pref_canvas_width_default">Enter width in meters</string>
     <string name="pref_canvas_heigth_default">Enter heigth in meters</string>
     <string name="title_activity_canvas_size">CanvasSizeActivity</string>
+    <string name="title_activity_checkbox">CheckboxActivity</string>
+    <string name="title_activity_objects">ObjectsActivity</string>
 </resources>

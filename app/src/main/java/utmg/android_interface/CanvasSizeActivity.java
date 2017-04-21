@@ -25,14 +25,22 @@ public class CanvasSizeActivity extends MainActivity {
         newWidth = 0;
         newHeight = 0;
 
+        final EditText w = (EditText) findViewById(R.id.resize_width);
+        final EditText h = (EditText) findViewById(R.id.resize_height);
+
+        w.setText(Float.toString(pref.getFloat("newWidth",3)));
+
+        h.setText(Float.toString(pref.getFloat("newHeight",5)));
+
+
+
         Button done = (Button) findViewById(R.id.resize_button);
         done.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                EditText w = (EditText) findViewById(R.id.resize_width);
-                EditText h = (EditText) findViewById(R.id.resize_height);
+
 
                 newWidth = Float.valueOf(w.getText().toString());
                 newHeight = Float.valueOf(h.getText().toString());
@@ -41,7 +49,6 @@ public class CanvasSizeActivity extends MainActivity {
                 prefEditor.putFloat("newHeight", newHeight);
                 prefEditor.commit();
                 finish();
-
             }
         });
     }

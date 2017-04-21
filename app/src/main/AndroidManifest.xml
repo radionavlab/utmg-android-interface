@@ -35,7 +35,7 @@
             android:name=".ROSCam"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/action_roscam"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity android:name="org.ros.android.MasterChooser" />
 
         <service android:name="org.ros.android.NodeMainExecutorService">
@@ -63,7 +63,19 @@
         <activity
             android:name=".CanvasSizeActivity"
             android:label="@string/title_activity_canvas_size"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CheckboxActivity"
+            android:label="@string/title_activity_checkbox"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ObjectsActivity"
+            android:label="@string/title_activity_objects"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="utmg.android_interface.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

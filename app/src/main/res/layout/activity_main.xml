@@ -78,7 +78,8 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:src="@drawable/quad" />
+        android:src="@drawable/quad"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/obstacle"
@@ -86,7 +87,8 @@
         android:layout_height="80dp"
         android:adjustViewBounds="true"
         android:layout_gravity="center|right"
-        android:src="@drawable/sword"/>
+        android:src="@drawable/sword"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/linLay"

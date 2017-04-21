@@ -78,7 +78,6 @@ public class CanvasView extends View {
         yCoordVec = new ArrayList<>();
 
         mPath.moveTo(x, y);
-        // rotate trajectory -90 degrees TODO
         mX = x;
         mY = y;
 

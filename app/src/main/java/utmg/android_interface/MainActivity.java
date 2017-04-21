@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -52,9 +53,12 @@ public class MainActivity extends AppCompatRosActivity {
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
 
+    private LinearLayout canvasSize;
+    private int screenHeight;
+    private int screenWidth;
     private float canvasWidth;
     private float canvasHeight;
-
+    private boolean visible = false;
 
     private RosTextView<std_msgs.String> rosTextView;
 
@@ -66,10 +70,10 @@ public class MainActivity extends AppCompatRosActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final LinearLayout canvasSize = (LinearLayout) findViewById(R.id.linLay);
+        canvasSize = (LinearLayout) findViewById(R.id.linLay);
 
-        final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        final int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
@@ -78,7 +82,7 @@ public class MainActivity extends AppCompatRosActivity {
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
 
-        pref = getSharedPreferences("Pref", MODE_PRIVATE);
+        pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
 
@@ -128,12 +132,11 @@ public class MainActivity extends AppCompatRosActivity {
                 canvasHeight = pref.getFloat("newHeight", 0);
                 newDimension.setText(Float.toString(canvasWidth) + "m, " + Float.toString(canvasHeight) + "m");
 
+                newDimension(canvasWidth, canvasHeight);
                 canvasH.postDelayed(this, 10);
             }
         };
         canvasR.run();
-
-
 
 
         // Scaled x and y
@@ -160,7 +163,6 @@ public class MainActivity extends AppCompatRosActivity {
         Runnable quadPosRunnable = new Runnable() {
             @Override
             public void run() {
-
                 if (node != null) {
 
                     quadx = node.getQuadPosX();
@@ -169,19 +171,17 @@ public class MainActivity extends AppCompatRosActivity {
 
                     //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
                 }
-
                 quadPosHandler.postDelayed(this, 0);
             }
         };
         quadPosRunnable.run();
 
 
-        // Thread for pinging quad's position in meters
+        // Thread for pinging obstacle's position in meters
         final Handler swordPosHandler = new Handler();
         Runnable swordPosRunnable = new Runnable() {
             @Override
             public void run() {
-
                 if (node != null) {
 
                     swordx = node.getSwordPosX();
@@ -190,12 +190,10 @@ public class MainActivity extends AppCompatRosActivity {
 
                     //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
                 }
-
                 swordPosHandler.postDelayed(this, 0);
             }
         };
         swordPosRunnable.run();
-
 
 
         // Denormalize coordinates from quad
@@ -222,6 +220,14 @@ public class MainActivity extends AppCompatRosActivity {
         Runnable runnable2 = new Runnable() {
             @Override
             public void run() {
+                if(pref.getBoolean("quad", false) == true) {
+                    quad.setVisibility(View.VISIBLE);
+                }
+                else if(pref.getBoolean("quad", false) == false) {
+                    quad.setVisibility((View.INVISIBLE));
+                }
+                //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
+
                 quad.setX(quadXToPixel() + quad.getWidth()/2);
                 quad.setY(quadYToPixel() + quad.getHeight()/2);
 
@@ -229,6 +235,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         };
         runnable2.run();
+
 
         // set obstacle size
         final ImageView sword = (ImageView) findViewById(R.id.obstacle);
@@ -243,11 +250,28 @@ public class MainActivity extends AppCompatRosActivity {
                 sword.setX(swordXToPixel() + sword.getWidth()/2);
                 sword.setY(swordYToPixel() + sword.getHeight()/2);
 
+                if(pref.getBoolean("sword", false) == true) {
+                    sword.setVisibility(View.VISIBLE);
+                }
+
                 handler3.postDelayed(this, 0);
             }
         };
         runnable3.run();
 
+    }
+
+    public void newDimension(float w, float h) {
+        if (h > w) {
+            float scale = h/w;
+            canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
+            canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / scale);
+        }
+        else if (w > h) {
+            float scale = w/h;
+            canvasSize.getLayoutParams().width = (int) (screenWidth * .95);
+            canvasSize.getLayoutParams().height = (int) (canvasSize.getLayoutParams().width / scale);
+        }
     }
 
     public float quadXToPixel() {
@@ -304,6 +328,10 @@ public class MainActivity extends AppCompatRosActivity {
 
         else if (id == R.id.resize_canvas) {
             startActivity(new Intent(MainActivity.this, CanvasSizeActivity.class));
+        }
+
+        else if (id == R.id.checkbox) {
+            startActivity(new Intent(MainActivity.this, ObjectsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
