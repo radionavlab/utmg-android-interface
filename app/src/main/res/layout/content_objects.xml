@@ -8,29 +8,5 @@
     tools:context="utmg.android_interface.ObjectsActivity"
     tools:showIn="@layout/activity_objects">
 
-    <LinearLayout
-        android:layout_width="585dp"
-        android:layout_height="810dp"
-        android:orientation="vertical">
-
-        <CheckBox
-            android:id="@+id/quad_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Quad"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:checked="false"/>
-
-        <CheckBox
-            android:id="@+id/sword_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sword"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:checked="false"/>
-
-    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

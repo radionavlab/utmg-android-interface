@@ -97,7 +97,7 @@ public class CanvasView extends View {
             xCoordVec.add(xMeters());
             yCoordVec.add(yMeters());
 
-            Log.i("touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
+            Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
 
         }
     }

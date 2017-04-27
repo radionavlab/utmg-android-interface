@@ -7,7 +7,6 @@
     tools:context="utmg.android_interface.MainActivity">
 
 
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,7 +96,6 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-
         <utmg.android_interface.CanvasView
             android:id="@+id/signature_canvas"
             android:layout_width="match_parent"
@@ -106,6 +104,35 @@
             android:background="@drawable/canvas_border"/>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/seekbar_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginBottom="100dp"
+        android:text="0"
+        android:textSize="20dp"/>
+
+    <FrameLayout
+        android:layout_width="32dp"
+        android:layout_height="400dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center|left">
+
+        <SeekBar
+            android:id="@+id/slider"
+            android:layout_width="320dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:max="2"
+            android:rotation="270"
+            android:progressTint="@android:color/holo_blue_dark"
+            android:thumbTint="@android:color/holo_blue_dark"/>
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/new_dimensions"

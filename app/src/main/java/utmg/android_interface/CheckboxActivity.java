@@ -50,12 +50,6 @@ public class CheckboxActivity extends MainActivity {
             }
         });
 
-//        if(pref.getBoolean("quad", false) == true) {
-//            isQuadChecked.setChecked(true);
-//        }
-//        if(pref.getBoolean("sword", false) == true) {
-//            isSwordChecked.setChecked(true);
-//        }
     }
 
 }

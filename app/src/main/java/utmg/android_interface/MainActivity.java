@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatRosActivity {
     private CanvasView customCanvas;
     private ArrayList<Float> xCoordVec;
     private ArrayList<Float> yCoordVec;
+    private ArrayList<Float> zCoordVec;
 
     private float mX;
     private float mY;
@@ -58,7 +60,6 @@ public class MainActivity extends AppCompatRosActivity {
     private int screenWidth;
     private float canvasWidth;
     private float canvasHeight;
-    private boolean visible = false;
 
     private RosTextView<std_msgs.String> rosTextView;
 
@@ -72,8 +73,8 @@ public class MainActivity extends AppCompatRosActivity {
 
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
 
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        screenHeight = Resources.getSystem().getDisplayMetrics().widthPixels;
+        screenWidth = Resources.getSystem().getDisplayMetrics().heightPixels;
 
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec = customCanvas.getxCoordVec();
                 yCoordVec = customCanvas.getyCoordVec();
 
+
                 node.setTraj(xCoordVec, yCoordVec);
                 //org.ros.message.std_msgs.String str = new org.ros.message.std_msgs.String();
 
@@ -120,6 +122,42 @@ public class MainActivity extends AppCompatRosActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+        final TextView seekbarValue = (TextView) findViewById(R.id.seekbar_value);
+        final SeekBar slider = (SeekBar) findViewById(R.id.slider);
+        if(slider.getProgress() > 0) {
+            slider.setProgress(0);
+        }
+        final Handler seekbarH = new Handler();
+        Runnable seekbarR = new Runnable() {
+            @Override
+            public void run() {
+                int max = (int) pref.getFloat("newAltitude", 2);
+                slider.setMax(max * 100);
+                slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        // TODO Auto-generated method stub
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        // TODO Auto-generated method stub
+                    }
+
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        // TODO Auto-generated method stub
+                        float value = ((float) progress / 100);
+                        seekbarValue.setText(Float.toString(value));
+                         // = value;
+                    }
+                });
+                seekbarH.postDelayed(this, 10);
+            }
+        };
+        seekbarR.run();
 
 
         // Get new dimensions from CanvasSizeActivity
