@@ -31,7 +31,6 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 public class MainActivity extends AppCompatRosActivity {
 
     ROSNode node;
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatRosActivity {
 
     private float mX;
     private float mY;
+    //zObj zObject = new zObj();
 
     private double quadx = 0;
     private double quady = 0;
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatRosActivity {
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
 
+
         pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
@@ -102,9 +103,10 @@ public class MainActivity extends AppCompatRosActivity {
 
                 xCoordVec = customCanvas.getxCoordVec();
                 yCoordVec = customCanvas.getyCoordVec();
+                zCoordVec = customCanvas.getzCoordVec();
 
 
-                node.setTraj(xCoordVec, yCoordVec);
+                node.setTraj(xCoordVec, yCoordVec, zCoordVec);
                 //org.ros.message.std_msgs.String str = new org.ros.message.std_msgs.String();
 
             }
@@ -126,9 +128,6 @@ public class MainActivity extends AppCompatRosActivity {
 
         final TextView seekbarValue = (TextView) findViewById(R.id.seekbar_value);
         final SeekBar slider = (SeekBar) findViewById(R.id.slider);
-        if(slider.getProgress() > 0) {
-            slider.setProgress(0);
-        }
         final Handler seekbarH = new Handler();
         Runnable seekbarR = new Runnable() {
             @Override
@@ -151,10 +150,10 @@ public class MainActivity extends AppCompatRosActivity {
                         // TODO Auto-generated method stub
                         float value = ((float) progress / 100);
                         seekbarValue.setText(Float.toString(value));
-                         // = value;
+                        zObject.getInstance().setZ(value);
                     }
                 });
-                seekbarH.postDelayed(this, 10);
+                seekbarH.postDelayed(this, 0);
             }
         };
         seekbarR.run();

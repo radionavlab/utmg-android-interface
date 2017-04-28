@@ -24,6 +24,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
     private ArrayList<Float> xes;
     private ArrayList<Float> yes;
+    private ArrayList<Float> zes;
 
     private double quadx = 0;
     private double quady = 0;
@@ -79,7 +80,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
                 ArrayList<Pose> poses = new ArrayList<>();
 
-                if (xes == null || yes == null) {
+                if (xes == null || yes == null || zes == null) {
                     //Log.i("Traj","Null arrays");
                 } else {
                     for (int i = 0; i < xes.size(); i++) {
@@ -88,7 +89,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
                         mPoint.setX(xes.get(i));
                         mPoint.setY(yes.get(i));
-                        mPoint.setZ(1);
+                        mPoint.setZ(zes.get(i));
 
                         mPose.setPosition(mPoint);
 
@@ -145,9 +146,10 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
         connectedNode.executeCancellableLoop(loop);
     }
 
-    void setTraj(ArrayList<Float> x, ArrayList<Float> y) {
+    void setTraj(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z) {
         xes = x;
         yes = y;
+        zes = z;
 
         publishToggle = true;
 

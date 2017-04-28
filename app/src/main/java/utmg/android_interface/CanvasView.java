@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
 
+
 public class CanvasView extends View {
 
     private Bitmap mBitmap;
@@ -23,12 +24,14 @@ public class CanvasView extends View {
     private static final float TOLERANCE = 5;
     ArrayList<Float> xCoordVec;
     ArrayList<Float> yCoordVec;
+    ArrayList<Float> zCoordVec;
 
 
 
     public CanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
         context = c;
+
 
         // we set a new Path
         mPath = new Path();
@@ -73,16 +76,17 @@ public class CanvasView extends View {
 
         mPath.reset();
 
-        // instantiate x and y arrays
+        // instantiate x, y arrays
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
+        zCoordVec = new ArrayList<>();
 
         mPath.moveTo(x, y);
         mX = x;
         mY = y;
 
-        xCoordVec.add(xMeters());
-        yCoordVec.add(yMeters());
+        //xCoordVec.add(xMeters());
+        //yCoordVec.add(yMeters());
     }
 
     // when ACTION_MOVE move touch according to the x,y values
@@ -96,6 +100,7 @@ public class CanvasView extends View {
 
             xCoordVec.add(xMeters());
             yCoordVec.add(yMeters());
+            zCoordVec.add(zObject.getInstance().getZ());
 
             Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
 
@@ -147,6 +152,12 @@ public class CanvasView extends View {
     public ArrayList<Float> getyCoordVec() {
 
         return yCoordVec;
+    }
+
+    // current ArrayList of z coordinate vectors
+    public ArrayList<Float> getzCoordVec() {
+
+        return zCoordVec;
     }
 
     // current x coordinate
