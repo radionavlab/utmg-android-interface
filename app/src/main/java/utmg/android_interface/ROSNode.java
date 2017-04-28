@@ -80,7 +80,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
                 ArrayList<Pose> poses = new ArrayList<>();
 
-                if (xes == null || yes == null || zes == null) {
+                if (xes == null || yes == null) {
                     //Log.i("Traj","Null arrays");
                 } else {
                     for (int i = 0; i < xes.size(); i++) {
