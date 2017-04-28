@@ -49,7 +49,8 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     public void onStart(final ConnectedNode connectedNode) {
         //final Publisher<std_msgs.String> publisher = connectedNode.newPublisher(GraphName.of("time"), std_msgs.String._TYPE);
 
-        final Publisher<geometry_msgs.PoseArray> publisher1 = connectedNode.newPublisher(GraphName.of("android_quad_trajectory"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisher1 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisher2 = connectedNode.newPublisher(GraphName.of("PosControl/Obstacles"), PoseArray._TYPE);
         //final Publisher<nav_msgs.Path> publisherPath = connectedNode.newPublisher(GraphName.of("android_quad_trajectory"), Path._TYPE);
 
         final CancellableLoop loop = new CancellableLoop() {
@@ -80,7 +81,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
                 ArrayList<Pose> poses = new ArrayList<>();
 
-                if (xes == null || yes == null) {
+                if (xes == null || yes == null || zes == null) {
                     //Log.i("Traj","Null arrays");
                 } else {
                     for (int i = 0; i < xes.size(); i++) {
@@ -106,7 +107,37 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
                     publishToggle = false;
 
+
+
+
+
+                    // obstacle publisher //////////////////////////////////////////////////////////////
+                    geometry_msgs.PoseArray mPoseArrayObstacles = publisher2.newMessage();
+                    mPoseArrayObstacles.getHeader().setFrameId("world");
+                    mPoseArrayObstacles.getHeader().setSeq(seq);
+                    mPoseArrayObstacles.getHeader().setStamp(new Time());
+                    ArrayList<Pose> posesObstacles = new ArrayList<>();
+                    // TODO add in loop to cover all obstacles
+                    geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
+                    geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+                    mPoint.setX(swordx);
+                    mPoint.setY(swordy);
+                    mPoint.setZ(swordz);
+                    mPose.setPosition(mPoint);
+                    posesObstacles.add(mPose);
+                    mPoseArrayObstacles.setPoses(posesObstacles);
+                    publisher2.publish(mPoseArrayObstacles);
+
+                ////////////////////////////////////////////////////////////////////////////////////
+
                 }
+
+
+
+
+
+
+
 
 
                 // listener
