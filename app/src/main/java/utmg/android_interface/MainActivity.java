@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatRosActivity {
     private float canvasWidth;
     private float canvasHeight;
 
+    int mode;
+
     private RosTextView<std_msgs.String> rosTextView;
 
 
@@ -88,6 +90,13 @@ public class MainActivity extends AppCompatRosActivity {
         prefEditor = pref.edit();
 
 
+        // TODO control modes //////////////////////////////////////////////////////////////////////
+//        mode = 1; // waypoint control
+        mode = 0; // trajectory control
+        prefEditor.putInt("mode", mode);
+        prefEditor.commit();
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -105,8 +114,11 @@ public class MainActivity extends AppCompatRosActivity {
                 yCoordVec = customCanvas.getyCoordVec();
                 zCoordVec = customCanvas.getzCoordVec();
 
-
                 node.setTraj(xCoordVec, yCoordVec, zCoordVec);
+
+                if (pref.getInt("mode", 0) == 1) {
+                    customCanvas.clearCanvas();
+                }
                 //org.ros.message.std_msgs.String str = new org.ros.message.std_msgs.String();
 
             }

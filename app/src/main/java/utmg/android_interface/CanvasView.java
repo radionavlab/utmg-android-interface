@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
+import android.content.SharedPreferences;
 
 
 public class CanvasView extends View {
@@ -25,13 +26,21 @@ public class CanvasView extends View {
     ArrayList<Float> xCoordVec;
     ArrayList<Float> yCoordVec;
     ArrayList<Float> zCoordVec;
-
+    SharedPreferences pref;
+    SharedPreferences.Editor prefEditor;
+    int mode;
 
 
     public CanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
         context = c;
 
+        // TODO
+        pref = c.getSharedPreferences("Pref", 0);
+        //prefEditor = pref.edit();
+//        mode = 1; // waypoint control
+//        mode = 0; // trajectory control
+        mode = pref.getInt("mode", 0);
 
         // we set a new Path
         mPath = new Path();
@@ -43,6 +52,12 @@ public class CanvasView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
+
+
+        // instantiate x, y arrays
+        xCoordVec = new ArrayList<>();
+        yCoordVec = new ArrayList<>();
+        zCoordVec = new ArrayList<>();
     }
 
     // override onSizeChanged
@@ -74,36 +89,47 @@ public class CanvasView extends View {
     // when ACTION_DOWN start touch according to the x,y values
     private void startTouch(float x, float y) {
 
-        mPath.reset();
+        if (mode == 0) {
+            mPath.reset();
 
-        // instantiate x, y arrays
-        xCoordVec = new ArrayList<>();
-        yCoordVec = new ArrayList<>();
-        zCoordVec = new ArrayList<>();
+            // instantiate x, y arrays
+            xCoordVec = new ArrayList<>();
+            yCoordVec = new ArrayList<>();
+            zCoordVec = new ArrayList<>();
+
+        }
+
 
         mPath.moveTo(x, y);
         mX = x;
         mY = y;
 
-        //xCoordVec.add(xMeters());
-        //yCoordVec.add(yMeters());
+        if (mode == 1) {
+            xCoordVec.add(xMeters());
+            yCoordVec.add(yMeters());
+            zCoordVec.add((float) 1.0);
+        }
+
     }
 
     // when ACTION_MOVE move touch according to the x,y values
     private void moveTouch(float x, float y) {
-        float dx = Math.abs(x - mX);
-        float dy = Math.abs(y - mY);
-        if (dx >= TOLERANCE || dy >= TOLERANCE) {
-            mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-            mX = x;
-            mY = y;
 
-            xCoordVec.add(xMeters());
-            yCoordVec.add(yMeters());
-            zCoordVec.add(zObject.getInstance().getZ());
+        if (mode == 0) {
+            float dx = Math.abs(x - mX);
+            float dy = Math.abs(y - mY);
+            if (dx >= TOLERANCE || dy >= TOLERANCE) {
+                mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                mX = x;
+                mY = y;
+                xCoordVec.add(xMeters());
+                yCoordVec.add(yMeters());
+                zCoordVec.add(zObject.getInstance().getZ());
+                mPaint.setStrokeWidth(4f);
 
-            Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
+                Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
 
+            }
         }
     }
 
@@ -114,6 +140,11 @@ public class CanvasView extends View {
     }
 
     public void clearCanvas() {
+
+        xCoordVec = new ArrayList<>();
+        yCoordVec = new ArrayList<>();
+        zCoordVec = new ArrayList<>();
+
         mPath.reset();
         invalidate();
     }
