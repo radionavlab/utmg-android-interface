@@ -1,6 +1,8 @@
 package utmg.android_interface;
 
 //import org.apache.commons.logging.Log;
+import android.content.SharedPreferences;
+import android.content.Context;
 import android.util.Log;
 import org.ros.concurrent.CancellableLoop;
 import org.ros.message.MessageListener;
@@ -22,6 +24,9 @@ import geometry_msgs.TransformStamped;
 
 public class ROSNode extends AbstractNodeMain implements NodeMain {
 
+    SharedPreferences pref;
+    SharedPreferences.Editor prefEditor;
+
     private ArrayList<Float> xes;
     private ArrayList<Float> yes;
     private ArrayList<Float> zes;
@@ -40,6 +45,8 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
     private static final String TAG = ROSNode.class.getSimpleName();
 
+
+
     @Override
     public GraphName getDefaultNodeName() {
         return GraphName.of("utmg_android");
@@ -47,10 +54,17 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
     @Override
     public void onStart(final ConnectedNode connectedNode) {
+
+        Context appCon = MainActivity.getContextOfApplication();
+
+        pref = appCon.getSharedPreferences("Pref", 0);
+        prefEditor = pref.edit();
+
         //final Publisher<std_msgs.String> publisher = connectedNode.newPublisher(GraphName.of("time"), std_msgs.String._TYPE);
 
         final Publisher<geometry_msgs.PoseArray> publisher1 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory"), PoseArray._TYPE);
         final Publisher<geometry_msgs.PoseArray> publisher2 = connectedNode.newPublisher(GraphName.of("PosControl/Obstacles"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisher3 = connectedNode.newPublisher(GraphName.of("PosControl/Waypoints"), PoseArray._TYPE);
         //final Publisher<nav_msgs.Path> publisherPath = connectedNode.newPublisher(GraphName.of("android_quad_trajectory"), Path._TYPE);
 
         final CancellableLoop loop = new CancellableLoop() {
@@ -69,11 +83,20 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
                 // trajectory publisher
                 geometry_msgs.PoseArray mPoseArray = publisher1.newMessage();
+                geometry_msgs.PoseArray mWaypointArray = publisher3.newMessage();
+
                 //nav_msgs.Path xyPath = publisherPath.newMessage();
 
-                mPoseArray.getHeader().setFrameId("world");
-                mPoseArray.getHeader().setSeq(seq);
-                mPoseArray.getHeader().setStamp(new Time());
+                if (pref.getInt("mode", 0) == 0) {
+                    mPoseArray.getHeader().setFrameId("world");
+                    mPoseArray.getHeader().setSeq(seq);
+                    mPoseArray.getHeader().setStamp(new Time());
+                }
+                else if (pref.getInt("mode", 0) == 1) {
+                    mWaypointArray.getHeader().setFrameId("world");
+                    mWaypointArray.getHeader().setSeq(seq);
+                    mWaypointArray.getHeader().setStamp(new Time());
+                }
 
 //                xyPath.getHeader().setFrameId("world");
 //                xyPath.getHeader().setSeq(0);
@@ -97,15 +120,30 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         poses.add(mPose);
                     }
 
-                    mPoseArray.setPoses(poses);
+                    if (pref.getInt("mode", 0) == 0) {
+                        mPoseArray.setPoses(poses);
 
-                    if (publishToggle == true) {
-                        publisher1.publish(mPoseArray);
+                        if (publishToggle == true) {
+                            publisher1.publish(mPoseArray);
 
-                        seq = seq + 1;
+                            seq = seq + 1;
+                        }
+
+                        publishToggle = false;
+                    }
+                    else if (pref.getInt("mode", 0) == 1) {
+                        mWaypointArray.setPoses(poses);
+
+                        if (publishToggle == true) {
+                            publisher3.publish(mWaypointArray);
+
+                            seq = seq + 1;
+                        }
+
+                        publishToggle = false;
                     }
 
-                    publishToggle = false;
+
 
 
 

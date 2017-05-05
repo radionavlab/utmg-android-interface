@@ -1,6 +1,7 @@
 package utmg.android_interface;
 
 import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatRosActivity {
 
     int mode;
 
+    public static Context contextOfApplication;
+
     private RosTextView<std_msgs.String> rosTextView;
 
 
@@ -72,6 +75,8 @@ public class MainActivity extends AppCompatRosActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        contextOfApplication = getApplicationContext();
 
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
 
@@ -91,8 +96,8 @@ public class MainActivity extends AppCompatRosActivity {
 
 
         // TODO control modes //////////////////////////////////////////////////////////////////////
-//        mode = 1; // waypoint control
-        mode = 0; // trajectory control
+        mode = 1; // waypoint control
+//        mode = 0; // trajectory control
         prefEditor.putInt("mode", mode);
         prefEditor.commit();
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -384,6 +389,10 @@ public class MainActivity extends AppCompatRosActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static Context getContextOfApplication() {
+        return contextOfApplication;
     }
 
 
