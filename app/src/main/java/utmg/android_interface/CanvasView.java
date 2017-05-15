@@ -105,8 +105,8 @@ public class CanvasView extends View {
         mY = y;
 
         if (mode == 1) {
-            xCoordVec.add(xMeters());
-            yCoordVec.add(yMeters());
+            xCoordVec.add(yMeters());
+            yCoordVec.add(xMeters());
             zCoordVec.add((float) 1.0);
         }
 
@@ -122,8 +122,8 @@ public class CanvasView extends View {
                 mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
                 mX = x;
                 mY = y;
-                xCoordVec.add(xMeters());
-                yCoordVec.add(yMeters());
+                xCoordVec.add(yMeters());
+                yCoordVec.add(xMeters());
                 zCoordVec.add(zObject.getInstance().getZ());
                 mPaint.setStrokeWidth(4f);
 
@@ -221,10 +221,10 @@ public class CanvasView extends View {
 
     // transform, normalize and scale x to meters
     public float xMeters() {
-        float transX = mX - getCenterX();
+        float transX = -(mX - getCenterX());
         if(mBitmap != null) {
             float normX = transX/mBitmap.getWidth();
-            return normX * 3;
+            return normX * 5;
         }
         return 0;
 
@@ -236,7 +236,7 @@ public class CanvasView extends View {
         float transY = -(mY - getCenterY());
         if(mBitmap != null) {
             float normY = transY/mBitmap.getHeight();
-            return normY * 5;
+            return normY * 3;
         }
         return 0;
 
