@@ -116,6 +116,7 @@
         android:textSize="20dp"/>
 
     <FrameLayout
+        android:id="@+id/slider_frame_layout"
         android:layout_width="32dp"
         android:layout_height="400dp"
         android:orientation="vertical"

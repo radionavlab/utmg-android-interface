@@ -13,21 +13,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import org.ros.android.AppCompatRosActivity;
 import org.ros.android.view.RosTextView;
-import org.ros.android.view.camera.RosCameraPreviewView;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -86,6 +81,12 @@ public class MainActivity extends AppCompatRosActivity {
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
 
+        FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
+        sbLayout.getLayoutParams().height = (int) (screenWidth * 0.6);
+
+        SeekBar sb = (SeekBar) findViewById(R.id.slider);
+        sb.getLayoutParams().width = sbLayout.getLayoutParams().height;
+
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
@@ -96,8 +97,8 @@ public class MainActivity extends AppCompatRosActivity {
 
 
         // TODO control modes //////////////////////////////////////////////////////////////////////
-        mode = 1; // waypoint control
-//        mode = 0; // trajectory control
+//        mode = 1; // waypoint control
+        mode = 0; // trajectory control
         prefEditor.putInt("mode", mode);
         prefEditor.commit();
         ////////////////////////////////////////////////////////////////////////////////////////////
