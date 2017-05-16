@@ -39,6 +39,14 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     private double swordy = 0;
     private double swordz = 0;
 
+    private double obstacle1x = 0;
+    private double obstacle1y = 0;
+    private double obstacle1z = 0;
+
+    private double obstacle2x = 0;
+    private double obstacle2y = 0;
+    private double obstacle2z = 0;
+
     private boolean publishToggle = false;
 
     private int seq = 0;
@@ -163,6 +171,23 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                     mPoint.setZ(swordz);
                     mPose.setPosition(mPoint);
                     posesObstacles.add(mPose);
+                    // obstacle 1
+                    geometry_msgs.Pose mPose1 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
+                    geometry_msgs.Point mPoint1 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+                    mPoint1.setX(obstacle1x);
+                    mPoint1.setY(obstacle1y);
+                    mPoint1.setZ(obstacle1z);
+                    mPose1.setPosition(mPoint1);
+                    posesObstacles.add(mPose1);
+                    // obstacle 2
+                    geometry_msgs.Pose mPose2 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
+                    geometry_msgs.Point mPoint2 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+                    mPoint2.setX(obstacle2x);
+                    mPoint2.setY(obstacle2y);
+                    mPoint2.setZ(obstacle2z);
+                    mPose2.setPosition(mPoint2);
+                    posesObstacles.add(mPose2);
+                    // add and publish
                     mPoseArrayObstacles.setPoses(posesObstacles);
                     publisher2.publish(mPoseArrayObstacles);
 
@@ -179,11 +204,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
                 // listener
-
-                //final Log log = connectedNode.getLog();
-                Subscriber<TransformStamped> subscriberQuad = connectedNode.newSubscriber("vicon/Quad7/Quad7", geometry_msgs.TransformStamped._TYPE);
-
-                // rotated vicon -90 degrees
+                Subscriber<TransformStamped> subscriberQuad = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
                 subscriberQuad.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
                     public void onNewMessage(geometry_msgs.TransformStamped message) {
@@ -196,13 +217,38 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
                 Subscriber<TransformStamped> subscriberSword = connectedNode.newSubscriber("vicon/sword/sword", geometry_msgs.TransformStamped._TYPE);
-
                 subscriberSword.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
                     public void onNewMessage(geometry_msgs.TransformStamped message) {
                         swordx = message.getTransform().getTranslation().getX();
                         swordy = message.getTransform().getTranslation().getY();
                         swordz = message.getTransform().getTranslation().getZ();
+
+                        //Log.i("QuadPos", Double.toString(quadx) + "\t\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
+                    }
+                });
+
+
+                Subscriber<TransformStamped> subscriberObstacle1 = connectedNode.newSubscriber("vicon/Obstacle1/Obstacle1", geometry_msgs.TransformStamped._TYPE);
+                subscriberSword.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                    @Override
+                    public void onNewMessage(geometry_msgs.TransformStamped message) {
+                        obstacle1x = message.getTransform().getTranslation().getX();
+                        obstacle1y = message.getTransform().getTranslation().getY();
+                        obstacle1z = message.getTransform().getTranslation().getZ();
+
+                        //Log.i("QuadPos", Double.toString(quadx) + "\t\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
+                    }
+                });
+
+
+                Subscriber<TransformStamped> subscriberObstacle2 = connectedNode.newSubscriber("vicon/Obstacle2/Obstacle2", geometry_msgs.TransformStamped._TYPE);
+                subscriberSword.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                    @Override
+                    public void onNewMessage(geometry_msgs.TransformStamped message) {
+                        obstacle2x = message.getTransform().getTranslation().getX();
+                        obstacle2y = message.getTransform().getTranslation().getY();
+                        obstacle2z = message.getTransform().getTranslation().getZ();
 
                         //Log.i("QuadPos", Double.toString(quadx) + "\t\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
                     }
@@ -237,5 +283,19 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     double getSwordPosY() { return swordy; }
 
     double getSwordPosZ() { return swordz; }
+
+
+    double getObstable1PosX() { return obstacle1x; }
+
+    double getObstable1PosY() { return obstacle1y; }
+
+    double getObstable1PosZ() { return obstacle1z; }
+
+
+    double getObstable2PosX() { return obstacle2x; }
+
+    double getObstable2PosY() { return obstacle2y; }
+
+    double getObstable2PosZ() { return obstacle2z; }
 
 }

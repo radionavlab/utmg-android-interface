@@ -267,8 +267,8 @@ public class MainActivity extends AppCompatRosActivity {
 
         // set quad size
         final ImageView quad = (ImageView) findViewById(R.id.quad);
-        quad.setMaxHeight((int)(screenHeight * .1));
-        quad.setMaxWidth((int)(screenWidth * .1));
+        quad.setMaxHeight((int)(screenHeight * 0.05));
+        quad.setMaxWidth((int)(screenWidth * 0.05));
 
         // show real-time location of the quad
         final Handler handler2 = new Handler();
@@ -283,8 +283,8 @@ public class MainActivity extends AppCompatRosActivity {
                 }
                 //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
 
-                quad.setX(quadXToPixel() + quad.getWidth()/2);
-                quad.setY(quadYToPixel() + quad.getHeight()/2);
+                quad.setX(quadXToPixel());// + quad.getWidth()/2);
+                quad.setY(quadYToPixel());// + quad.getHeight()/2);
 
                 handler2.postDelayed(this, 0);
             }
@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatRosActivity {
 
 
         // set obstacle size
-        final ImageView sword = (ImageView) findViewById(R.id.obstacle);
+        final ImageView sword = (ImageView) findViewById(R.id.sword);
         sword.setMaxHeight((int)(screenHeight * .12));
         sword.setMaxWidth((int)(screenWidth * .12));
 
@@ -302,8 +302,8 @@ public class MainActivity extends AppCompatRosActivity {
         Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
-                sword.setX(swordXToPixel() + sword.getWidth()/2);
-                sword.setY(swordYToPixel() + sword.getHeight()/2);
+                sword.setX(swordXToPixel());// + sword.getWidth()/2);
+                sword.setY(swordYToPixel());// + sword.getHeight()/2);
 
                 if(pref.getBoolean("sword", false) == true) {
                     sword.setVisibility(View.VISIBLE);
