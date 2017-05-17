@@ -89,6 +89,24 @@
         android:src="@drawable/sword"
         android:visibility="gone"/>
 
+    <ImageView
+        android:id="@+id/obstacle1"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center|right"
+        android:src="@drawable/obstacle"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/obstacle2"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center|right"
+        android:src="@drawable/obstacle"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/linLay"
         android:layout_width="fill_parent"

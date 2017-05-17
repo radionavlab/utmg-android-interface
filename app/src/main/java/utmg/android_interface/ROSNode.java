@@ -212,6 +212,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         quady = message.getTransform().getTranslation().getY();
                         quadz = message.getTransform().getTranslation().getZ();
 
+                        //Log.i("QuadPos", Double.toString(quadx) + "\t\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
                     }
                 });
 

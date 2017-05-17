@@ -48,6 +48,17 @@ public class MainActivity extends AppCompatRosActivity {
     private double swordy = 0;
     private double swordz = 0;
 
+
+    private double obstacle1x = 0;
+    private double obstacle1y = 0;
+    private double obstacle1z = 0;
+
+
+    private double obstacle2x = 0;
+    private double obstacle2y = 0;
+    private double obstacle2z = 0;
+
+
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
 
@@ -226,15 +237,15 @@ public class MainActivity extends AppCompatRosActivity {
 
                     //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
                 }
-                quadPosHandler.postDelayed(this, 0);
+                quadPosHandler.postDelayed(this, 100);
             }
         };
         quadPosRunnable.run();
 
 
         // Thread for pinging obstacle's position in meters
-        final Handler swordPosHandler = new Handler();
-        Runnable swordPosRunnable = new Runnable() {
+        final Handler obstaclePosHandler = new Handler();
+        Runnable obstaclePosRunnable = new Runnable() {
             @Override
             public void run() {
                 if (node != null) {
@@ -243,12 +254,20 @@ public class MainActivity extends AppCompatRosActivity {
                     swordy = node.getSwordPosY();
                     swordz = node.getSwordPosZ();
 
-                    //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
+                    obstacle1x = node.getObstable1PosX();
+                    obstacle1y = node.getObstable1PosY();
+                    obstacle1z = node.getObstable1PosZ();
+
+                    obstacle2x = node.getObstable2PosX();
+                    obstacle2y = node.getObstable2PosY();
+                    obstacle2z = node.getObstable2PosZ();
+
+
                 }
-                swordPosHandler.postDelayed(this, 0);
+                obstaclePosHandler.postDelayed(this, 0);
             }
         };
-        swordPosRunnable.run();
+        obstaclePosRunnable.run();
 
 
         // Denormalize coordinates from quad
@@ -257,7 +276,7 @@ public class MainActivity extends AppCompatRosActivity {
         Runnable runnable1 = new Runnable() {
             @Override
             public void run() {
-                quad2Pixel.setText(Float.toString(quadXToPixel()) + "xdp    " + Float.toString(quadYToPixel()) + "ydp");
+                quad2Pixel.setText(Float.toString(objectXToPixel("quad")) + "xdp    " + Float.toString(objectYToPixel("quad")) + "ydp");
 
                 handler1.postDelayed(this, 10);
             }
@@ -277,14 +296,14 @@ public class MainActivity extends AppCompatRosActivity {
             public void run() {
                 if(pref.getBoolean("quad", false) == true) {
                     quad.setVisibility(View.VISIBLE);
+                    quad.setX(objectXToPixel("quad"));// + quad.getWidth()/2);
+                    quad.setY(objectYToPixel("quad"));// + quad.getHeight()/2);
                 }
                 else if(pref.getBoolean("quad", false) == false) {
                     quad.setVisibility((View.INVISIBLE));
                 }
                 //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
 
-                quad.setX(quadXToPixel());// + quad.getWidth()/2);
-                quad.setY(quadYToPixel());// + quad.getHeight()/2);
 
                 handler2.postDelayed(this, 0);
             }
@@ -294,25 +313,45 @@ public class MainActivity extends AppCompatRosActivity {
 
         // set obstacle size
         final ImageView sword = (ImageView) findViewById(R.id.sword);
-        sword.setMaxHeight((int)(screenHeight * .12));
-        sword.setMaxWidth((int)(screenWidth * .12));
+        sword.setMaxHeight((int)(screenHeight * 0.8));
+        sword.setMaxWidth((int)(screenWidth * 0.8));
+
+        final ImageView obstacle1 = (ImageView) findViewById(R.id.obstacle1);
+        obstacle1.setMaxHeight((int)(screenHeight * 0.8));
+        obstacle1.setMaxWidth((int)(screenWidth * 0.8));
+
+        final ImageView obstacle2 = (ImageView) findViewById(R.id.obstacle2);
+        obstacle2.setMaxHeight((int)(screenHeight * 0.8));
+        obstacle2.setMaxWidth((int)(screenWidth * 0.8));
 
         // show location of the obstacle
-        final Handler handler3 = new Handler();
-        Runnable runnable3 = new Runnable() {
+        final Handler handlerObstacles = new Handler();
+        Runnable runnableObstacles = new Runnable() {
             @Override
             public void run() {
-                sword.setX(swordXToPixel());// + sword.getWidth()/2);
-                sword.setY(swordYToPixel());// + sword.getHeight()/2);
+
 
                 if(pref.getBoolean("sword", false) == true) {
                     sword.setVisibility(View.VISIBLE);
+                    sword.setX(objectXToPixel("sword"));// + sword.getWidth()/2);
+                    sword.setY(objectYToPixel("sword"));// + sword.getHeight()/2);
+                }
+                if(pref.getBoolean("obstacle1", false) == true) {
+                    obstacle1.setVisibility(View.VISIBLE);
+                    obstacle1.setX((objectXToPixel("obstacle1")));
+                    obstacle1.setY((objectYToPixel("obstacle1")));
+
+                }
+                if(pref.getBoolean("obstacle2", false) == true) {
+                    obstacle2.setVisibility(View.VISIBLE);
+                    obstacle2.setX((objectXToPixel("obstacle2")));
+                    obstacle2.setY((objectYToPixel("obstacle2")));
                 }
 
-                handler3.postDelayed(this, 0);
+                handlerObstacles.postDelayed(this, 0);
             }
         };
-        runnable3.run();
+        runnableObstacles.run();
 
     }
 
@@ -329,6 +368,54 @@ public class MainActivity extends AppCompatRosActivity {
         }
     }
 
+    // transform specified object's x position to pixels
+    public float objectXToPixel(String item) {
+
+        float normX = 0;
+
+        if (item.equals("quad")) {
+            normX = (float) quady / -5;
+        }
+        else if (item.equals("sword")) {
+            normX = (float) swordy / -5;
+        }
+        else if (item.equals("obstacle1")) {
+            normX = (float) obstacle1y / -5;
+        }
+        else if (item.equals("obstacle2")) {
+            normX = (float) obstacle2y / -5;
+        }
+
+        float transX = normX * customCanvas.getWidth();
+        float xCoord = transX + customCanvas.getCenterX();
+
+        return xCoord;
+    }
+
+    // transform specified object's y position to pixels
+    public float objectYToPixel(String item) {
+
+        float normY = 0;
+
+        if (item.equals("quad")) {
+            normY = (float) quadx / 3;
+        }
+        else if (item.equals("sword")) {
+            normY = (float) swordx / 3;
+        }
+        else if (item.equals("obstacle1")) {
+            normY = (float) obstacle1x / 3;
+        }
+        else if (item.equals("obstacle2")) {
+            normY = (float) obstacle2x / 3;
+        }
+
+        float transY = normY * customCanvas.getHeight();
+        float yCoord = (-transY + customCanvas.getCenterY());
+
+        return yCoord;
+    }
+
     public float quadXToPixel() {
         float normX = (float) quadx / 3;
         float transX = normX * customCanvas.getWidth();
@@ -343,23 +430,22 @@ public class MainActivity extends AppCompatRosActivity {
 
         return yCoord;
     }
-
-
-    public float swordXToPixel() {
-        float normX = (float) swordx / 3;
-        float transX = normX * customCanvas.getWidth();
-        float xCoord = transX + customCanvas.getCenterX();
-
-        return xCoord;
-    }
-
-    public float swordYToPixel() {
-        float normY = (float) swordy / 5;
-        float transY = normY * customCanvas.getHeight();
-        float yCoord = (-transY + customCanvas.getCenterY());
-
-        return yCoord;
-    }
+//
+//    public float swordXToPixel() {
+//        float normX = (float) swordx / 3;
+//        float transX = normX * customCanvas.getWidth();
+//        float xCoord = transX + customCanvas.getCenterX();
+//
+//        return xCoord;
+//    }
+//
+//    public float swordYToPixel() {
+//        float normY = (float) swordy / 5;
+//        float transY = normY * customCanvas.getHeight();
+//        float yCoord = (-transY + customCanvas.getCenterY());
+//
+//        return yCoord;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)

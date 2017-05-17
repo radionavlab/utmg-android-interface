@@ -214,7 +214,7 @@ public class CanvasView extends View {
     // center y coordinate of bitmap
     public int getCenterY() {
         if (mBitmap != null) {
-            return mBitmap.getHeight()/2;
+            return mBitmap.getHeight() / 2;
         }
         return 0;
     }

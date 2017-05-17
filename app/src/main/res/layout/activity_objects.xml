@@ -43,6 +43,24 @@
             android:layout_marginTop="10dp"
             android:checked="false"/>
 
+        <CheckBox
+            android:id="@+id/obstacle1_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Obstacle1"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:checked="false"/>
+
+        <CheckBox
+            android:id="@+id/obstacle2_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Obstacle2"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:checked="false"/>
+
     </LinearLayout>
 
     <!--<include layout="@layout/content_objects" />-->

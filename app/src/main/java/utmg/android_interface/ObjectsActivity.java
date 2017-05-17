@@ -41,9 +41,13 @@ public class ObjectsActivity extends AppCompatActivity {
 
         final CheckBox isQuadChecked = (CheckBox) findViewById(R.id.quad_checkbox);
         final CheckBox isSwordChecked = (CheckBox) findViewById(R.id.sword_checkbox);
+        final CheckBox isObstacle1Checked = (CheckBox) findViewById(R.id.obstacle1_checkbox);
+        final CheckBox isObstacle2Checked = (CheckBox) findViewById(R.id.obstacle2_checkbox);
 
         isQuadChecked.setChecked(pref.getBoolean("quad", false));
         isSwordChecked.setChecked(pref.getBoolean("sword", false));
+        isObstacle1Checked.setChecked(pref.getBoolean("obstacle1", false));
+        isObstacle2Checked.setChecked(pref.getBoolean("obstacle2", false));
 
         isQuadChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -61,6 +65,24 @@ public class ObjectsActivity extends AppCompatActivity {
                 prefEditor.commit();
             }
         });
+
+        isObstacle1Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                prefEditor.putBoolean("obstacle1", isObstacle1Checked.isChecked());
+                prefEditor.commit();
+            }
+        });
+
+        isObstacle2Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                prefEditor.putBoolean("obstacle2", isObstacle2Checked.isChecked());
+                prefEditor.commit();
+            }
+        });
+
+
 
     }
 
