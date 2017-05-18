@@ -156,40 +156,41 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
 
-
-                    // obstacle publisher //////////////////////////////////////////////////////////////
-                    geometry_msgs.PoseArray mPoseArrayObstacles = publisher2.newMessage();
-                    mPoseArrayObstacles.getHeader().setFrameId("world");
-                    mPoseArrayObstacles.getHeader().setSeq(seq);
-                    mPoseArrayObstacles.getHeader().setStamp(new Time());
-                    ArrayList<Pose> posesObstacles = new ArrayList<>();
-                    // TODO add in loop to cover all obstacles
-                    geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
-                    geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
-                    mPoint.setX(swordx);
-                    mPoint.setY(swordy);
-                    mPoint.setZ(swordz);
-                    mPose.setPosition(mPoint);
-                    posesObstacles.add(mPose);
-                    // obstacle 1
-                    geometry_msgs.Pose mPose1 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
-                    geometry_msgs.Point mPoint1 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
-                    mPoint1.setX(obstacle1x);
-                    mPoint1.setY(obstacle1y);
-                    mPoint1.setZ(obstacle1z);
-                    mPose1.setPosition(mPoint1);
-                    posesObstacles.add(mPose1);
-                    // obstacle 2
-                    geometry_msgs.Pose mPose2 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
-                    geometry_msgs.Point mPoint2 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
-                    mPoint2.setX(obstacle2x);
-                    mPoint2.setY(obstacle2y);
-                    mPoint2.setZ(obstacle2z);
-                    mPose2.setPosition(mPoint2);
-                    posesObstacles.add(mPose2);
-                    // add and publish
-                    mPoseArrayObstacles.setPoses(posesObstacles);
-                    publisher2.publish(mPoseArrayObstacles);
+                    if (pref.getBoolean("obstaclePublish", false) == true) {
+                        // obstacle publisher //////////////////////////////////////////////////////////////
+                        geometry_msgs.PoseArray mPoseArrayObstacles = publisher2.newMessage();
+                        mPoseArrayObstacles.getHeader().setFrameId("world");
+                        mPoseArrayObstacles.getHeader().setSeq(seq);
+                        mPoseArrayObstacles.getHeader().setStamp(new Time());
+                        ArrayList<Pose> posesObstacles = new ArrayList<>();
+                        // TODO add in loop to cover all obstacles
+                        geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
+                        geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+                        mPoint.setX(swordx);
+                        mPoint.setY(swordy);
+                        mPoint.setZ(swordz);
+                        mPose.setPosition(mPoint);
+                        posesObstacles.add(mPose);
+                        // obstacle 1
+                        geometry_msgs.Pose mPose1 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
+                        geometry_msgs.Point mPoint1 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+                        mPoint1.setX(obstacle1x);
+                        mPoint1.setY(obstacle1y);
+                        mPoint1.setZ(obstacle1z);
+                        mPose1.setPosition(mPoint1);
+                        posesObstacles.add(mPose1);
+                        // obstacle 2
+                        geometry_msgs.Pose mPose2 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
+                        geometry_msgs.Point mPoint2 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+                        mPoint2.setX(obstacle2x);
+                        mPoint2.setY(obstacle2y);
+                        mPoint2.setZ(obstacle2z);
+                        mPose2.setPosition(mPoint2);
+                        posesObstacles.add(mPose2);
+                        // add and publish
+                        mPoseArrayObstacles.setPoses(posesObstacles);
+                        publisher2.publish(mPoseArrayObstacles);
+                    }
 
                 ////////////////////////////////////////////////////////////////////////////////////
 
