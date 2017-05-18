@@ -231,7 +231,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
                 Subscriber<TransformStamped> subscriberObstacle1 = connectedNode.newSubscriber("vicon/Obstacle1/Obstacle1", geometry_msgs.TransformStamped._TYPE);
-                subscriberSword.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                subscriberObstacle1.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
                     public void onNewMessage(geometry_msgs.TransformStamped message) {
                         obstacle1x = message.getTransform().getTranslation().getX();
@@ -244,7 +244,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
                 Subscriber<TransformStamped> subscriberObstacle2 = connectedNode.newSubscriber("vicon/Obstacle2/Obstacle2", geometry_msgs.TransformStamped._TYPE);
-                subscriberSword.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                subscriberObstacle2.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
                     public void onNewMessage(geometry_msgs.TransformStamped message) {
                         obstacle2x = message.getTransform().getTranslation().getX();

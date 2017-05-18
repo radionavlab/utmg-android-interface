@@ -336,19 +336,28 @@ public class MainActivity extends AppCompatRosActivity {
                     sword.setX(objectXToPixel("sword"));// + sword.getWidth()/2);
                     sword.setY(objectYToPixel("sword"));// + sword.getHeight()/2);
                 }
+                else if(pref.getBoolean("sword", false) == false) {
+                    sword.setVisibility((View.INVISIBLE));
+                }
                 if(pref.getBoolean("obstacle1", false) == true) {
                     obstacle1.setVisibility(View.VISIBLE);
                     obstacle1.setX((objectXToPixel("obstacle1")));
                     obstacle1.setY((objectYToPixel("obstacle1")));
 
                 }
+                else if(pref.getBoolean("obstacle1", false) == false) {
+                    obstacle1.setVisibility((View.INVISIBLE));
+                }
                 if(pref.getBoolean("obstacle2", false) == true) {
                     obstacle2.setVisibility(View.VISIBLE);
                     obstacle2.setX((objectXToPixel("obstacle2")));
                     obstacle2.setY((objectYToPixel("obstacle2")));
                 }
+                else if(pref.getBoolean("obstacle2", false) == false) {
+                    obstacle2.setVisibility((View.INVISIBLE));
+                }
 
-                handlerObstacles.postDelayed(this, 0);
+                handlerObstacles.postDelayed(this, 100);
             }
         };
         runnableObstacles.run();
@@ -387,7 +396,7 @@ public class MainActivity extends AppCompatRosActivity {
         }
 
         float transX = normX * customCanvas.getWidth();
-        float xCoord = transX + customCanvas.getCenterX();
+        float xCoord = transX + customCanvas.getCenterX() + customCanvas.getLeft();
 
         return xCoord;
     }
@@ -411,25 +420,25 @@ public class MainActivity extends AppCompatRosActivity {
         }
 
         float transY = normY * customCanvas.getHeight();
-        float yCoord = (-transY + customCanvas.getCenterY());
+        float yCoord = (-transY + customCanvas.getCenterY() + customCanvas.getTop());
 
         return yCoord;
     }
 
-    public float quadXToPixel() {
-        float normX = (float) quadx / 3;
-        float transX = normX * customCanvas.getWidth();
-        float xCoord = transX + customCanvas.getCenterX();
-        return xCoord;
-    }
-
-    public float quadYToPixel() {
-        float normY = (float) quady / 5;
-        float transY = normY * customCanvas.getHeight();
-        float yCoord = (-transY + customCanvas.getCenterY());
-
-        return yCoord;
-    }
+//    public float quadXToPixel() {
+//        float normX = (float) quadx / 3;
+//        float transX = normX * customCanvas.getWidth();
+//        float xCoord = transX + customCanvas.getCenterX();
+//        return xCoord;
+//    }
+//
+//    public float quadYToPixel() {
+//        float normY = (float) quady / 5;
+//        float transY = normY * customCanvas.getHeight();
+//        float yCoord = (-transY + customCanvas.getCenterY());
+//
+//        return yCoord;
+//    }
 //
 //    public float swordXToPixel() {
 //        float normX = (float) swordx / 3;
