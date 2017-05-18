@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 public class ObjectsActivity extends AppCompatActivity {
 
@@ -43,11 +44,14 @@ public class ObjectsActivity extends AppCompatActivity {
         final CheckBox isSwordChecked = (CheckBox) findViewById(R.id.sword_checkbox);
         final CheckBox isObstacle1Checked = (CheckBox) findViewById(R.id.obstacle1_checkbox);
         final CheckBox isObstacle2Checked = (CheckBox) findViewById(R.id.obstacle2_checkbox);
+        final ToggleButton obstaclePublishToggle = (ToggleButton) findViewById(R.id.obstacle_publish_toggle);
+
 
         isQuadChecked.setChecked(pref.getBoolean("quad", false));
         isSwordChecked.setChecked(pref.getBoolean("sword", false));
         isObstacle1Checked.setChecked(pref.getBoolean("obstacle1", false));
         isObstacle2Checked.setChecked(pref.getBoolean("obstacle2", false));
+        obstaclePublishToggle.setChecked((pref.getBoolean("obstaclePublish", false)));
 
         isQuadChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -82,6 +86,13 @@ public class ObjectsActivity extends AppCompatActivity {
             }
         });
 
+        obstaclePublishToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                prefEditor.putBoolean("obstaclePublish", obstaclePublishToggle.isChecked());
+                prefEditor.commit();
+            }
+        });
 
 
     }
