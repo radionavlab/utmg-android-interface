@@ -109,9 +109,9 @@ public class MainActivity extends AppCompatRosActivity {
 
         // TODO control modes //////////////////////////////////////////////////////////////////////
 //        mode = 1; // waypoint control
-        mode = 0; // trajectory control
-        prefEditor.putInt("mode", mode);
-        prefEditor.commit();
+//        mode = 0; // trajectory control
+//        prefEditor.putInt("mode", mode);
+//        prefEditor.commit();
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -481,7 +481,7 @@ public class MainActivity extends AppCompatRosActivity {
         }
 
         else if (id == R.id.checkbox) {
-            startActivity(new Intent(MainActivity.this, ObjectsActivity.class));
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

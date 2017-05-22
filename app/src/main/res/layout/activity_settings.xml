@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="utmg.android_interface.ObjectsActivity">
+    tools:context="utmg.android_interface.SettingsActivity">
 
     <!--<android.support.design.widget.AppBarLayout-->
         <!--android:layout_width="match_parent"-->
@@ -23,7 +23,32 @@
     <LinearLayout
         android:layout_width="585dp"
         android:layout_height="810dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:id="@+id/mode_toggle_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="Control Mode:" />
+
+        <Spinner
+            android:id="@+id/mode_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="15dp" />
+
+        <TextView
+            android:id="@+id/display_object_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="Objects to display:" />
 
         <CheckBox
             android:id="@+id/quad_checkbox"
@@ -61,6 +86,10 @@
             android:layout_marginTop="10dp"
             android:checked="false"/>
 
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="15dp" />
+
         <TextView
             android:id="@+id/toggle_text"
             android:layout_width="match_parent"
@@ -79,7 +108,9 @@
 
     </LinearLayout>
 
-    <!--<include layout="@layout/content_objects" />-->
+
+
+    <!--<include layout="@layout/content_settings" />-->
 
     <!--<android.support.design.widget.FloatingActionButton-->
         <!--android:id="@+id/fab"-->

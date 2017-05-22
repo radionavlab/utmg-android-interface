@@ -2,25 +2,5 @@
 
     <!-- These settings headers are only used on tablets. -->
 
-    <header
-        android:fragment="utmg.android_interface.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/pref_header_general" />
-
-    <header
-        android:fragment="utmg.android_interface.SettingsActivity$NotificationPreferenceFragment"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/pref_header_notifications" />
-
-    <header
-        android:fragment="utmg.android_interface.SettingsActivity$ObjectsToDisplayFragment"
-        android:icon="@drawable/ok"
-        android:title="@string/pref_header_data_sync" />
-
-    <header
-        android:fragment="utmg.android_interface.SettingsActivity$ResizeCanvasFragment"
-        android:icon="@drawable/error"
-        android:title="Resize Canvas"/>
-
 
 </preference-headers>
