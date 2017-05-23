@@ -54,11 +54,6 @@
         <!-- android:value="utmg.android_interface.MainActivity" /> -->
         <!-- </activity> -->
         <activity
-            android:name=".CanvasSizeActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/title_activity_canvas_size"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".SettingsActivity"
             android:screenOrientation="landscape"
             android:label="@string/title_activity_objects"

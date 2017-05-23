@@ -476,10 +476,6 @@ public class MainActivity extends AppCompatRosActivity {
             startActivity(new Intent(MainActivity.this, ROSCam.class));
         }
 
-        else if (id == R.id.resize_canvas) {
-            startActivity(new Intent(MainActivity.this, CanvasSizeActivity.class));
-        }
-
         else if (id == R.id.checkbox) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
