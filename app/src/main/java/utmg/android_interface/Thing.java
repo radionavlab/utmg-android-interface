@@ -1,8 +1,5 @@
 package utmg.android_interface;
 
-import android.app.Application;
-
-
 public class Thing {
 
     private double x = 0;

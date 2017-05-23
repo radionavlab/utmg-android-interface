@@ -8,14 +8,9 @@
         android:title="@string/action_roscam"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/resize_canvas"
-        android:orderInCategory="100"
-        android:title="Resize Canvas"
-        app:showAsAction="never" />
 
     <item
-        android:id="@+id/checkbox"
+        android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="Settings"
         app:showAsAction="never"/>

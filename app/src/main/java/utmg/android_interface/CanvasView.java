@@ -35,11 +35,7 @@ public class CanvasView extends View {
         super(c, attrs);
         context = c;
 
-        // TODO
         pref = c.getSharedPreferences("Pref", 0);
-        //prefEditor = pref.edit();
-//        mode = 1; // waypoint control
-//        mode = 0; // trajectory control
         mode = pref.getInt("mode", 0);
 
         // we set a new Path
@@ -70,13 +66,6 @@ public class CanvasView extends View {
         mCanvas = new Canvas(mBitmap);
     }
 
-    public float bWidth(float w) {
-        return w;
-    }
-
-    public float bHeight(float h) {
-        return h;
-    }
 
     // override onDraw
     @Override

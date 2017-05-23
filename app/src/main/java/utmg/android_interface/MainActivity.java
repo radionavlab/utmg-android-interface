@@ -176,10 +176,9 @@ public class MainActivity extends AppCompatRosActivity {
         canvasR.run();
 
 
-        // Scaled x and y
+        // display position of quad in meters
         final TextView xMeters = (TextView) findViewById(R.id.meterX);
         final TextView yMeters = (TextView) findViewById(R.id.meterY);
-
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
@@ -188,155 +187,107 @@ public class MainActivity extends AppCompatRosActivity {
                 mY = customCanvas.yMeters();
                 xMeters.setText(Float.toString(mX) + "m     ");
                 yMeters.setText(Float.toString(mY) + "m     ");
-
                 handler.postDelayed(this, 10);
             }
         };
         runnable.run();
 
-
-//        // Thread for pinging quad's position in meters
-//        final Handler quadPosHandler = new Handler();
-//        Runnable quadPosRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                if (node != null) {
-//
-//                    // TODO: DONT NEED TO DO THIS HERE; DO IT IN ROSNODE
-//                    Thing quad1 = DataShare.getInstance("quad1");
-//                    quad1.setX(node.getQuadPosX());
-//                    quad1.setY(node.getQuadPosX());
-//                    quad1.setZ(node.getQuadPosX());
-//
-//                    //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
-//                }
-//                quadPosHandler.postDelayed(this, 100);
-//            }
-//        };
-//        quadPosRunnable.run();
-//
-//
-//        // Thread for pinging obstacle's position in meters
-//        final Handler obstaclePosHandler = new Handler();
-//        Runnable obstaclePosRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                if (node != null) {
-//
-//                    swordx = node.getSwordPosX();
-//                    swordy = node.getSwordPosY();
-//                    swordz = node.getSwordPosZ();
-//
-//                    obstacle1x = node.getObstable1PosX();
-//                    obstacle1y = node.getObstable1PosY();
-//                    obstacle1z = node.getObstable1PosZ();
-//
-//                    obstacle2x = node.getObstable2PosX();
-//                    obstacle2y = node.getObstable2PosY();
-//                    obstacle2z = node.getObstable2PosZ();
-//
-//
-//                }
-//                obstaclePosHandler.postDelayed(this, 0);
-//            }
-//        };
-//        obstaclePosRunnable.run();
-
-
-        // Denormalize coordinates from quad
+        // display denormalised coordinates of quad in dp
         final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
         final Handler handler1 = new Handler();
         Runnable runnable1 = new Runnable() {
             @Override
             public void run() {
                 quad2Pixel.setText(Float.toString(objectXToPixel("quad")) + "xdp    " + Float.toString(objectYToPixel("quad")) + "ydp");
-
                 handler1.postDelayed(this, 10);
             }
         };
         runnable1.run();
 
 
-        // set quad size
-        final ImageView quad = (ImageView) findViewById(R.id.quad);
-        quad.setMaxHeight((int)(screenHeight * 0.05));
-        quad.setMaxWidth((int)(screenWidth * 0.05));
 
-        // show real-time location of the quad
-        final Handler handler2 = new Handler();
-        Runnable runnable2 = new Runnable() {
-            @Override
-            public void run() {
-                if(pref.getBoolean("quad", false) == true) {
-                    quad.setVisibility(View.VISIBLE);
-                    quad.setX(objectXToPixel("quad"));// + quad.getWidth()/2);
-                    quad.setY(objectYToPixel("quad"));// + quad.getHeight()/2);
+        // quad display config
+        {
+            // set quad size
+            final ImageView quad = (ImageView) findViewById(R.id.quad);
+            quad.setMaxHeight((int) (screenHeight * 0.05));
+            quad.setMaxWidth((int) (screenWidth * 0.05));
+
+            // show real-time location of the quad
+            final Handler handler2 = new Handler();
+            Runnable runnable2 = new Runnable() {
+                @Override
+                public void run() {
+                    if (pref.getBoolean("quad", false) == true) {
+                        quad.setVisibility(View.VISIBLE);
+                        quad.setX(objectXToPixel("quad"));// + quad.getWidth()/2);
+                        quad.setY(objectYToPixel("quad"));// + quad.getHeight()/2);
+                    } else if (pref.getBoolean("quad", false) == false) {
+                        quad.setVisibility((View.INVISIBLE));
+                    }
+                    //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
+
+
+                    handler2.postDelayed(this, 0);
                 }
-                else if(pref.getBoolean("quad", false) == false) {
-                    quad.setVisibility((View.INVISIBLE));
+            };
+            runnable2.run();
+        }
+
+        // obstacle display config
+        {
+            // set obstacle size
+            final ImageView sword = (ImageView) findViewById(R.id.sword);
+            sword.setMaxHeight((int) (screenHeight * 0.5));
+            sword.setMaxWidth((int) (screenWidth * 0.5));
+
+            final ImageView obstacle1 = (ImageView) findViewById(R.id.obstacle1);
+            obstacle1.setMaxHeight((int) (screenHeight * 0.5));
+            obstacle1.setMaxWidth((int) (screenWidth * 0.5));
+
+            final ImageView obstacle2 = (ImageView) findViewById(R.id.obstacle2);
+            obstacle2.setMaxHeight((int) (screenHeight * 0.5));
+            obstacle2.setMaxWidth((int) (screenWidth * 0.5));
+
+            // show location of the obstacle
+            final Handler handlerObstacles = new Handler();
+            Runnable runnableObstacles = new Runnable() {
+                @Override
+                public void run() {
+
+                    if (pref.getBoolean("sword", false) == true) {
+                        sword.setVisibility(View.VISIBLE);
+                        sword.setX(objectXToPixel("sword"));// + sword.getWidth()/2);
+                        sword.setY(objectYToPixel("sword"));// + sword.getHeight()/2);
+                    } else if (pref.getBoolean("sword", false) == false) {
+                        sword.setVisibility((View.INVISIBLE));
+                    }
+                    if (pref.getBoolean("obstacle1", false) == true) {
+                        obstacle1.setVisibility(View.VISIBLE);
+                        obstacle1.setX((objectXToPixel("obstacle1")));
+                        obstacle1.setY((objectYToPixel("obstacle1")));
+
+                    } else if (pref.getBoolean("obstacle1", false) == false) {
+                        obstacle1.setVisibility((View.INVISIBLE));
+                    }
+                    if (pref.getBoolean("obstacle2", false) == true) {
+                        obstacle2.setVisibility(View.VISIBLE);
+                        obstacle2.setX((objectXToPixel("obstacle2")));
+                        obstacle2.setY((objectYToPixel("obstacle2")));
+                    } else if (pref.getBoolean("obstacle2", false) == false) {
+                        obstacle2.setVisibility((View.INVISIBLE));
+                    }
+
+                    handlerObstacles.postDelayed(this, 0);
                 }
-                //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
-
-
-                handler2.postDelayed(this, 0);
-            }
-        };
-        runnable2.run();
-
-
-        // set obstacle size
-        final ImageView sword = (ImageView) findViewById(R.id.sword);
-        sword.setMaxHeight((int)(screenHeight * 0.8));
-        sword.setMaxWidth((int)(screenWidth * 0.8));
-
-        final ImageView obstacle1 = (ImageView) findViewById(R.id.obstacle1);
-        obstacle1.setMaxHeight((int)(screenHeight * 0.8));
-        obstacle1.setMaxWidth((int)(screenWidth * 0.8));
-
-        final ImageView obstacle2 = (ImageView) findViewById(R.id.obstacle2);
-        obstacle2.setMaxHeight((int)(screenHeight * 0.8));
-        obstacle2.setMaxWidth((int)(screenWidth * 0.8));
-
-        // show location of the obstacle
-        final Handler handlerObstacles = new Handler();
-        Runnable runnableObstacles = new Runnable() {
-            @Override
-            public void run() {
-
-
-                if(pref.getBoolean("sword", false) == true) {
-                    sword.setVisibility(View.VISIBLE);
-                    sword.setX(objectXToPixel("sword"));// + sword.getWidth()/2);
-                    sword.setY(objectYToPixel("sword"));// + sword.getHeight()/2);
-                }
-                else if(pref.getBoolean("sword", false) == false) {
-                    sword.setVisibility((View.INVISIBLE));
-                }
-                if(pref.getBoolean("obstacle1", false) == true) {
-                    obstacle1.setVisibility(View.VISIBLE);
-                    obstacle1.setX((objectXToPixel("obstacle1")));
-                    obstacle1.setY((objectYToPixel("obstacle1")));
-
-                }
-                else if(pref.getBoolean("obstacle1", false) == false) {
-                    obstacle1.setVisibility((View.INVISIBLE));
-                }
-                if(pref.getBoolean("obstacle2", false) == true) {
-                    obstacle2.setVisibility(View.VISIBLE);
-                    obstacle2.setX((objectXToPixel("obstacle2")));
-                    obstacle2.setY((objectYToPixel("obstacle2")));
-                }
-                else if(pref.getBoolean("obstacle2", false) == false) {
-                    obstacle2.setVisibility((View.INVISIBLE));
-                }
-
-                handlerObstacles.postDelayed(this, 100);
-            }
-        };
-        runnableObstacles.run();
+            };
+            runnableObstacles.run();
+        }
 
     }
 
+    // rescaling canvas proportions to (somewhat) fit screen depending on screen orientation
+    // TODO
     public void newDimension(float w, float h) {
         if (h > w) {
             float scale = h/w;
@@ -351,6 +302,7 @@ public class MainActivity extends AppCompatRosActivity {
     }
 
     // transform specified object's x position to pixels
+    // TODO redo to match new design architecture
     public float objectXToPixel(String item) {
 
         float normX = 0;
@@ -379,6 +331,7 @@ public class MainActivity extends AppCompatRosActivity {
     }
 
     // transform specified object's y position to pixels
+    // TODO redo to match new design architecture
     public float objectYToPixel(String item) {
 
         float normY = 0;
@@ -406,36 +359,6 @@ public class MainActivity extends AppCompatRosActivity {
         return yCoord;
     }
 
-//    public float quadXToPixel() {
-//        float normX = (float) quadx / 3;
-//        float transX = normX * customCanvas.getWidth();
-//        float xCoord = transX + customCanvas.getCenterX();
-//        return xCoord;
-//    }
-//
-//    public float quadYToPixel() {
-//        float normY = (float) quady / 5;
-//        float transY = normY * customCanvas.getHeight();
-//        float yCoord = (-transY + customCanvas.getCenterY());
-//
-//        return yCoord;
-//    }
-//
-//    public float swordXToPixel() {
-//        float normX = (float) swordx / 3;
-//        float transX = normX * customCanvas.getWidth();
-//        float xCoord = transX + customCanvas.getCenterX();
-//
-//        return xCoord;
-//    }
-//
-//    public float swordYToPixel() {
-//        float normY = (float) swordy / 5;
-//        float transY = normY * customCanvas.getHeight();
-//        float yCoord = (-transY + customCanvas.getCenterY());
-//
-//        return yCoord;
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -457,7 +380,7 @@ public class MainActivity extends AppCompatRosActivity {
             startActivity(new Intent(MainActivity.this, ROSCam.class));
         }
 
-        else if (id == R.id.checkbox) {
+        else if (id == R.id.action_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
 

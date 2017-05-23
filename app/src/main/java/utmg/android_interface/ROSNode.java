@@ -188,7 +188,6 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
 
-
                 // listener
                 Subscriber<TransformStamped> subscriberQuad = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
                 subscriberQuad.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
@@ -250,32 +249,5 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
         Log.i("Traj","Arrays transferred to node");
     }
-//
-//    double getQuadPosX() { return quadx; }
-//
-//    double getQuadPosY() { return quady; }
-//
-//    double getQuadPosZ() { return quadz; }
-//
-//
-//    double getSwordPosX() { return swordx; }
-//
-//    double getSwordPosY() { return swordy; }
-//
-//    double getSwordPosZ() { return swordz; }
-//
-//
-//    double getObstable1PosX() { return obstacle1x; }
-//
-//    double getObstable1PosY() { return obstacle1y; }
-//
-//    double getObstable1PosZ() { return obstacle1z; }
-//
-//
-//    double getObstable2PosX() { return obstacle2x; }
-//
-//    double getObstable2PosY() { return obstacle2y; }
-//
-//    double getObstable2PosZ() { return obstacle2z; }
 
 }
