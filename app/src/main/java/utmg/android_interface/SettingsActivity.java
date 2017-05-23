@@ -2,11 +2,14 @@ package utmg.android_interface;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -29,6 +32,10 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         setupActionBar();
 
+        newWidth = 0;
+        newHeight = 0;
+        newAltitude = 0;
+
         pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
@@ -37,18 +44,27 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         final EditText h = (EditText) findViewById(R.id.resize_height);
         final EditText a = (EditText) findViewById(R.id.resize_altitude);
 
-        w.setText(Float.toString(pref.getFloat("newWidth",3)));
-        h.setText(Float.toString(pref.getFloat("newHeight",5)));
+        w.setText(Float.toString(pref.getFloat("newWidth",5)));
+        h.setText(Float.toString(pref.getFloat("newHeight",3)));
         a.setText(Float.toString(pref.getFloat("newAltitude",2)));
 
-        newWidth = Float.valueOf(w.getText().toString());
-        newHeight = Float.valueOf(h.getText().toString());
-        newAltitude = Float.valueOf(a.getText().toString());
+        Button done = (Button) findViewById(R.id.button);
+        done.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                newWidth = Float.valueOf(w.getText().toString());
+                newHeight = Float.valueOf(h.getText().toString());
+                newAltitude = Float.valueOf(a.getText().toString());
 
-        prefEditor.putFloat("newWidth", newWidth);
-        prefEditor.putFloat("newHeight", newHeight);
-        prefEditor.putFloat("newAltitude", newAltitude);
-        prefEditor.commit();
+                prefEditor.putFloat("newWidth", newWidth);
+                prefEditor.putFloat("newHeight", newHeight);
+                prefEditor.putFloat("newAltitude", newAltitude);
+                prefEditor.commit();
+
+                finish();
+            }
+        });
 
 
         final CheckBox isQuadChecked = (CheckBox) findViewById(R.id.quad_checkbox);

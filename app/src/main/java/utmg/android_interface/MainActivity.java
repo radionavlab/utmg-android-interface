@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatRosActivity {
                 newDimension.setText(Float.toString(canvasWidth) + "m, " + Float.toString(canvasHeight) + "m");
 
                 newDimension(canvasWidth, canvasHeight);
-                canvasH.postDelayed(this, 10);
+                canvasH.postDelayed(this, 0);
             }
         };
         canvasR.run();
