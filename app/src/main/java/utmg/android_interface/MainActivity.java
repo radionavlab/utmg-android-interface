@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -37,27 +38,6 @@ public class MainActivity extends AppCompatRosActivity {
 
     private float mX;
     private float mY;
-    //zObj zObject = new zObj();
-
-    private double quadx = 0;
-    private double quady = 0;
-    private double quadz = 0;
-
-
-    private double swordx = 0;
-    private double swordy = 0;
-    private double swordz = 0;
-
-
-    private double obstacle1x = 0;
-    private double obstacle1y = 0;
-    private double obstacle1z = 0;
-
-
-    private double obstacle2x = 0;
-    private double obstacle2y = 0;
-    private double obstacle2z = 0;
-
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
@@ -67,8 +47,6 @@ public class MainActivity extends AppCompatRosActivity {
     private int screenWidth;
     private float canvasWidth;
     private float canvasHeight;
-
-    int mode;
 
     public static Context contextOfApplication;
 
@@ -106,13 +84,6 @@ public class MainActivity extends AppCompatRosActivity {
         pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
-
-        // TODO control modes //////////////////////////////////////////////////////////////////////
-//        mode = 1; // waypoint control
-//        mode = 0; // trajectory control
-//        prefEditor.putInt("mode", mode);
-//        prefEditor.commit();
-        ////////////////////////////////////////////////////////////////////////////////////////////
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -194,8 +165,8 @@ public class MainActivity extends AppCompatRosActivity {
         Runnable canvasR = new Runnable() {
             @Override
             public void run() {
-                canvasWidth = pref.getFloat("newWidth", 0);
-                canvasHeight = pref.getFloat("newHeight", 0);
+                canvasWidth = pref.getFloat("newWidth", 5);
+                canvasHeight = pref.getFloat("newHeight", 3);
                 newDimension.setText(Float.toString(canvasWidth) + "m, " + Float.toString(canvasHeight) + "m");
 
                 newDimension(canvasWidth, canvasHeight);
@@ -224,50 +195,52 @@ public class MainActivity extends AppCompatRosActivity {
         runnable.run();
 
 
-        // Thread for pinging quad's position in meters
-        final Handler quadPosHandler = new Handler();
-        Runnable quadPosRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (node != null) {
-
-                    quadx = node.getQuadPosX();
-                    quady = node.getQuadPosY();
-                    quadz = node.getQuadPosZ();
-
-                    //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
-                }
-                quadPosHandler.postDelayed(this, 100);
-            }
-        };
-        quadPosRunnable.run();
-
-
-        // Thread for pinging obstacle's position in meters
-        final Handler obstaclePosHandler = new Handler();
-        Runnable obstaclePosRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (node != null) {
-
-                    swordx = node.getSwordPosX();
-                    swordy = node.getSwordPosY();
-                    swordz = node.getSwordPosZ();
-
-                    obstacle1x = node.getObstable1PosX();
-                    obstacle1y = node.getObstable1PosY();
-                    obstacle1z = node.getObstable1PosZ();
-
-                    obstacle2x = node.getObstable2PosX();
-                    obstacle2y = node.getObstable2PosY();
-                    obstacle2z = node.getObstable2PosZ();
-
-
-                }
-                obstaclePosHandler.postDelayed(this, 0);
-            }
-        };
-        obstaclePosRunnable.run();
+//        // Thread for pinging quad's position in meters
+//        final Handler quadPosHandler = new Handler();
+//        Runnable quadPosRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                if (node != null) {
+//
+//                    // TODO: DONT NEED TO DO THIS HERE; DO IT IN ROSNODE
+//                    Thing quad1 = DataShare.getInstance("quad1");
+//                    quad1.setX(node.getQuadPosX());
+//                    quad1.setY(node.getQuadPosX());
+//                    quad1.setZ(node.getQuadPosX());
+//
+//                    //Log.i("QuadPos", Double.toString(quadx) + "\t" + Double.toString(quady) + "\t\t" + Double.toString(quadz));
+//                }
+//                quadPosHandler.postDelayed(this, 100);
+//            }
+//        };
+//        quadPosRunnable.run();
+//
+//
+//        // Thread for pinging obstacle's position in meters
+//        final Handler obstaclePosHandler = new Handler();
+//        Runnable obstaclePosRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                if (node != null) {
+//
+//                    swordx = node.getSwordPosX();
+//                    swordy = node.getSwordPosY();
+//                    swordz = node.getSwordPosZ();
+//
+//                    obstacle1x = node.getObstable1PosX();
+//                    obstacle1y = node.getObstable1PosY();
+//                    obstacle1z = node.getObstable1PosZ();
+//
+//                    obstacle2x = node.getObstable2PosX();
+//                    obstacle2y = node.getObstable2PosY();
+//                    obstacle2z = node.getObstable2PosZ();
+//
+//
+//                }
+//                obstaclePosHandler.postDelayed(this, 0);
+//            }
+//        };
+//        obstaclePosRunnable.run();
 
 
         // Denormalize coordinates from quad
@@ -383,16 +356,20 @@ public class MainActivity extends AppCompatRosActivity {
         float normX = 0;
 
         if (item.equals("quad")) {
-            normX = (float) quady / -5;
+            Thing quad1 = DataShare.getInstance("quad1");
+            normX = (float) quad1.getY() / -5;
         }
         else if (item.equals("sword")) {
-            normX = (float) swordy / -5;
+            Thing sword = DataShare.getInstance("sword");
+            normX = (float) sword.getY() / -5;
         }
         else if (item.equals("obstacle1")) {
-            normX = (float) obstacle1y / -5;
+            Thing obstacle1 = DataShare.getInstance("obstacle1");
+            normX = (float) obstacle1.getY() / -5;
         }
         else if (item.equals("obstacle2")) {
-            normX = (float) obstacle2y / -5;
+            Thing obstacle2 = DataShare.getInstance("obstacle2");
+            normX = (float) obstacle2.getY() / -5;
         }
 
         float transX = normX * customCanvas.getWidth();
@@ -407,16 +384,20 @@ public class MainActivity extends AppCompatRosActivity {
         float normY = 0;
 
         if (item.equals("quad")) {
-            normY = (float) quadx / 3;
+            Thing quad1 = DataShare.getInstance("quad1");
+            normY = (float) quad1.getX() / 3;
         }
         else if (item.equals("sword")) {
-            normY = (float) swordx / 3;
+            Thing sword = DataShare.getInstance("sword");
+            normY = (float) sword.getX() / 3;
         }
         else if (item.equals("obstacle1")) {
-            normY = (float) obstacle1x / 3;
+            Thing obstacle1 = DataShare.getInstance("obstacle1");
+            normY = (float) obstacle1.getX() / 3;
         }
         else if (item.equals("obstacle2")) {
-            normY = (float) obstacle2x / 3;
+            Thing obstacle2 = DataShare.getInstance("obstacle2");
+            normY = (float) obstacle2.getX() / 3;
         }
 
         float transY = normY * customCanvas.getHeight();
