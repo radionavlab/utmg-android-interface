@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.ToggleButton;
 
@@ -16,6 +17,10 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
+
+    public float newWidth;
+    public float newHeight;
+    public float newAltitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,24 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
+
+        // Get user input to resize canvas
+        final EditText w = (EditText) findViewById(R.id.resize_width);
+        final EditText h = (EditText) findViewById(R.id.resize_height);
+        final EditText a = (EditText) findViewById(R.id.resize_altitude);
+
+        w.setText(Float.toString(pref.getFloat("newWidth",3)));
+        h.setText(Float.toString(pref.getFloat("newHeight",5)));
+        a.setText(Float.toString(pref.getFloat("newAltitude",2)));
+
+        newWidth = Float.valueOf(w.getText().toString());
+        newHeight = Float.valueOf(h.getText().toString());
+        newAltitude = Float.valueOf(a.getText().toString());
+
+        prefEditor.putFloat("newWidth", newWidth);
+        prefEditor.putFloat("newHeight", newHeight);
+        prefEditor.putFloat("newAltitude", newAltitude);
+        prefEditor.commit();
 
 
         final CheckBox isQuadChecked = (CheckBox) findViewById(R.id.quad_checkbox);
