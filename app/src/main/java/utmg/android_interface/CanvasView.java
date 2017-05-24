@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -21,11 +22,14 @@ public class CanvasView extends View {
     private Path mPath;
     Context context;
     private Paint mPaint;
+    private Paint mPaintWP;
     private float mX, mY;
     private static final float TOLERANCE = 5;
     ArrayList<Float> xCoordVec;
     ArrayList<Float> yCoordVec;
     ArrayList<Float> zCoordVec;
+    ArrayList<Float> xWaypoint;
+    ArrayList<Float> yWaypoint;
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
     int mode;
@@ -49,11 +53,22 @@ public class CanvasView extends View {
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
 
+        // paint for waypoint
+        mPaintWP = new Paint();
+        mPaintWP.setAntiAlias(true);
+        mPaintWP.setStyle(Paint.Style.STROKE);
+        mPaintWP.setStrokeWidth(1);
+        mPaintWP.setStyle(Paint.Style.FILL);
+        mPaintWP.setColor(Color.BLACK);
+        mPaintWP.setTextSize(25);
 
         // instantiate x, y arrays
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
         zCoordVec = new ArrayList<>();
+
+        xWaypoint = new ArrayList<>();
+        yWaypoint = new ArrayList<>();
     }
 
     // override onSizeChanged
@@ -72,7 +87,15 @@ public class CanvasView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         // draw the mPath with the mPaint on the canvas when onDraw
-        canvas.drawPath(mPath, mPaint);
+        if (mode == 0) {
+            canvas.drawPath(mPath, mPaint);
+        }
+        else if (mode == 1) {
+            for (int i = 0; i < xWaypoint.size(); i++) {
+
+                canvas.drawText(Integer.toString(i+1), xWaypoint.get(i),yWaypoint.get(i), mPaintWP);
+            }
+        }
     }
 
     // when ACTION_DOWN start touch according to the x,y values
@@ -88,15 +111,17 @@ public class CanvasView extends View {
 
         }
 
-
         mPath.moveTo(x, y);
         mX = x;
         mY = y;
 
         if (mode == 1) {
-            xCoordVec.add(yMeters());
+            xWaypoint.add(mX);
+            yWaypoint.add(mY);
+            xCoordVec.add(yMeters()); // x-y swap due to screen rotation... or something. I dunno.
             yCoordVec.add(xMeters());
-            zCoordVec.add((float) 1.0);
+            zCoordVec.add(zObject.getInstance().getZ());
+            super.onDraw(mCanvas);
         }
 
     }
@@ -133,6 +158,8 @@ public class CanvasView extends View {
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
         zCoordVec = new ArrayList<>();
+        xWaypoint = new ArrayList<>();
+        yWaypoint = new ArrayList<>();
 
         mPath.reset();
         invalidate();

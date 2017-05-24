@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -19,12 +18,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import org.ros.android.AppCompatRosActivity;
-import org.ros.android.view.RosTextView;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -50,9 +46,6 @@ public class MainActivity extends AppCompatRosActivity {
 
     public static Context contextOfApplication;
 
-    private RosTextView<std_msgs.String> rosTextView;
-
-
     public MainActivity() { super("MainActivity", "MainActivity"); }
 
     @Override
@@ -62,6 +55,7 @@ public class MainActivity extends AppCompatRosActivity {
 
         contextOfApplication = getApplicationContext();
 
+        // instantiating canvas
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
 
         screenHeight = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -70,21 +64,24 @@ public class MainActivity extends AppCompatRosActivity {
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
 
+        customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
+
+        // instantiating z control slider
         FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
         sbLayout.getLayoutParams().height = (int) (screenWidth * 0.6);
 
         SeekBar sb = (SeekBar) findViewById(R.id.slider);
         sb.getLayoutParams().width = sbLayout.getLayoutParams().height;
 
-        customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
+        // instantiating local copy of input time history vectors
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
 
-
+        // instantiating SharedPreferences
         pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
-
+        // instantiating toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -104,9 +101,9 @@ public class MainActivity extends AppCompatRosActivity {
 
                 node.setTraj(xCoordVec, yCoordVec, zCoordVec);
 
-                if (pref.getInt("mode", 0) == 1) {
-                    customCanvas.clearCanvas();
-                }
+//                if (pref.getInt("mode", 0) == 1) {
+//                    customCanvas.clearCanvas();
+//                }
                 //org.ros.message.std_msgs.String str = new org.ros.message.std_msgs.String();
 
             }
@@ -125,7 +122,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
-
+        // TextView for displaying z control slider value
         final TextView seekbarValue = (TextView) findViewById(R.id.seekbar_value);
         final SeekBar slider = (SeekBar) findViewById(R.id.slider);
         final Handler seekbarH = new Handler();
@@ -136,18 +133,11 @@ public class MainActivity extends AppCompatRosActivity {
                 slider.setMax(max * 100);
                 slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                        // TODO Auto-generated method stub
-                    }
-
+                    public void onStopTrackingTouch(SeekBar seekBar) { }
                     @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                        // TODO Auto-generated method stub
-                    }
-
+                    public void onStartTrackingTouch(SeekBar seekBar) { }
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        // TODO Auto-generated method stub
                         float value = ((float) progress / 100);
                         seekbarValue.setText(Float.toString(value));
                         zObject.getInstance().setZ(value);
@@ -157,7 +147,6 @@ public class MainActivity extends AppCompatRosActivity {
             }
         };
         seekbarR.run();
-
 
         // Get new dimensions from CanvasSizeActivity
         final TextView newDimension = (TextView) findViewById(R.id.new_dimensions);
@@ -203,8 +192,6 @@ public class MainActivity extends AppCompatRosActivity {
             }
         };
         runnable1.run();
-
-
 
         // quad display config
         {
