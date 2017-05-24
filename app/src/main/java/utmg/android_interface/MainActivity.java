@@ -162,30 +162,35 @@ public class MainActivity extends AppCompatRosActivity {
         // display position of quad in meters
         final TextView xMeters = (TextView) findViewById(R.id.meterX);
         final TextView yMeters = (TextView) findViewById(R.id.meterY);
+        final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                mX = customCanvas.xMeters();
-                mY = customCanvas.yMeters();
-                xMeters.setText(Float.toString(mX) + "m     ");
-                yMeters.setText(Float.toString(mY) + "m     ");
-                handler.postDelayed(this, 10);
+
+                if (pref.getBoolean("debugMode", false) == false) {
+                    xMeters.setVisibility(View.INVISIBLE);
+                    yMeters.setVisibility(View.INVISIBLE);
+                    quad2Pixel.setVisibility(View.INVISIBLE);
+                }
+                else if (pref.getBoolean("debugMode", false) == true) {
+                    xMeters.setVisibility(View.VISIBLE);
+                    yMeters.setVisibility(View.VISIBLE);
+                    quad2Pixel.setVisibility(View.VISIBLE);
+
+                    mX = customCanvas.xMeters();
+                    mY = customCanvas.yMeters();
+                    xMeters.setText(Float.toString(mX) + "m     ");
+                    yMeters.setText(Float.toString(mY) + "m     ");
+
+                    quad2Pixel.setText(Float.toString(objectXToPixel("quad")) + "xdp    " + Float.toString(objectYToPixel("quad")) + "ydp");
+
+                    handler.postDelayed(this, 10);
+
+                }
             }
         };
         runnable.run();
-
-        // display denormalised coordinates of quad in dp
-        final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
-        final Handler handler1 = new Handler();
-        Runnable runnable1 = new Runnable() {
-            @Override
-            public void run() {
-                quad2Pixel.setText(Float.toString(objectXToPixel("quad")) + "xdp    " + Float.toString(objectYToPixel("quad")) + "ydp");
-                handler1.postDelayed(this, 10);
-            }
-        };
-        runnable1.run();
 
         // quad display config
         {
