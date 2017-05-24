@@ -65,30 +65,20 @@ public class MainActivity extends AppCompatRosActivity {
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
 
         int orientation = this.getResources().getConfiguration().orientation;
-//        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            screenHeight = Resources.getSystem().getDisplayMetrics().widthPixels;
-//            screenWidth = Resources.getSystem().getDisplayMetrics().heightPixels;
-//
-//            Log.i("orient",Integer.toString(screenHeight) + "\t" + Integer.toString(screenWidth));
-//        }
-//        else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-//            screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-//            screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-//        }
+
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
-        canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
+        canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
 
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
 
         Log.i("canvasSize", canvasSize.getLayoutParams().width + "\t" + canvasSize.getLayoutParams().height);
 
-
         // instantiating z control slider
         FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
-        sbLayout.getLayoutParams().height = (int) (screenWidth * 0.6);
+        sbLayout.getLayoutParams().height = (int) (screenHeight * 0.6);
 
         SeekBar sb = (SeekBar) findViewById(R.id.slider);
         sb.getLayoutParams().width = sbLayout.getLayoutParams().height;
@@ -135,7 +125,7 @@ public class MainActivity extends AppCompatRosActivity {
         // TextView for displaying z control slider value
         final TextView seekbarValue = (TextView) findViewById(R.id.seekbar_value);
         final SeekBar slider = (SeekBar) findViewById(R.id.slider);
-        slider.getLayoutParams().width = (int)(screenHeight * 0.65);
+//        slider.getLayoutParams().width = (int)(screenHeight * 0.65);
         final Handler seekbarH = new Handler();
         Runnable seekbarR = new Runnable() {
             @Override
