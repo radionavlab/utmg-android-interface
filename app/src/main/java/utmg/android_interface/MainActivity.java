@@ -100,12 +100,6 @@ public class MainActivity extends AppCompatRosActivity {
                 zCoordVec = customCanvas.getzCoordVec();
 
                 node.setTraj(xCoordVec, yCoordVec, zCoordVec);
-
-//                if (pref.getInt("mode", 0) == 1) {
-//                    customCanvas.clearCanvas();
-//                }
-                //org.ros.message.std_msgs.String str = new org.ros.message.std_msgs.String();
-
             }
         });
 
