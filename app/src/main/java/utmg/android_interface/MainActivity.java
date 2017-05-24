@@ -1,8 +1,10 @@
 package utmg.android_interface;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -55,16 +57,34 @@ public class MainActivity extends AppCompatRosActivity {
 
         contextOfApplication = getApplicationContext();
 
+        // instantiating SharedPreferences
+        pref = getSharedPreferences("Pref", 0);
+        prefEditor = pref.edit();
+
         // instantiating canvas
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
 
-        screenHeight = Resources.getSystem().getDisplayMetrics().widthPixels;
-        screenWidth = Resources.getSystem().getDisplayMetrics().heightPixels;
+        int orientation = this.getResources().getConfiguration().orientation;
+//        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            screenHeight = Resources.getSystem().getDisplayMetrics().widthPixels;
+//            screenWidth = Resources.getSystem().getDisplayMetrics().heightPixels;
+//
+//            Log.i("orient",Integer.toString(screenHeight) + "\t" + Integer.toString(screenWidth));
+//        }
+//        else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+//            screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+//        }
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
-        canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / 1.6);
+        canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
 
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
+
+        Log.i("canvasSize", canvasSize.getLayoutParams().width + "\t" + canvasSize.getLayoutParams().height);
+
 
         // instantiating z control slider
         FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
@@ -76,10 +96,6 @@ public class MainActivity extends AppCompatRosActivity {
         // instantiating local copy of input time history vectors
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
-
-        // instantiating SharedPreferences
-        pref = getSharedPreferences("Pref", 0);
-        prefEditor = pref.edit();
 
         // instantiating toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -119,6 +135,7 @@ public class MainActivity extends AppCompatRosActivity {
         // TextView for displaying z control slider value
         final TextView seekbarValue = (TextView) findViewById(R.id.seekbar_value);
         final SeekBar slider = (SeekBar) findViewById(R.id.slider);
+        slider.getLayoutParams().width = (int)(screenHeight * 0.65);
         final Handler seekbarH = new Handler();
         Runnable seekbarR = new Runnable() {
             @Override
@@ -143,17 +160,17 @@ public class MainActivity extends AppCompatRosActivity {
         seekbarR.run();
 
         // Get new dimensions from CanvasSizeActivity
-        final TextView newDimension = (TextView) findViewById(R.id.new_dimensions);
+        final TextView newDimensionText = (TextView) findViewById(R.id.new_dimensions);
         final Handler canvasH = new Handler();
         Runnable canvasR = new Runnable() {
             @Override
             public void run() {
                 canvasWidth = pref.getFloat("newWidth", 5);
                 canvasHeight = pref.getFloat("newHeight", 3);
-                newDimension.setText(Float.toString(canvasWidth) + "m, " + Float.toString(canvasHeight) + "m");
+                newDimensionText.setText(Float.toString(canvasWidth) + "m, " + Float.toString(canvasHeight) + "m");
 
                 newDimension(canvasWidth, canvasHeight);
-                canvasH.postDelayed(this, 0);
+                canvasH.postDelayed(this, 1000);
             }
         };
         canvasR.run();
@@ -275,16 +292,23 @@ public class MainActivity extends AppCompatRosActivity {
     // rescaling canvas proportions to (somewhat) fit screen depending on screen orientation
     // TODO
     public void newDimension(float w, float h) {
-        if (h > w) {
-            float scale = h/w;
-            canvasSize.getLayoutParams().height = (int) (screenHeight * 0.75);
-            canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / scale);
-        }
-        else if (w > h) {
-            float scale = w/h;
-            canvasSize.getLayoutParams().width = (int) (screenWidth * .95);
-            canvasSize.getLayoutParams().height = (int) (canvasSize.getLayoutParams().width / scale);
-        }
+
+        float scale = w/h;
+        canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
+        canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * scale);
+
+//        if (h > w) {
+//            float scale = h/w;
+//            canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
+//            canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / scale);
+//        }
+//        else if (w > h) {
+//            float scale = w/h;
+//            canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
+//            canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * scale);
+//            canvasSize.getLayoutParams().width = (int) (screenWidth * 0.95);
+//            canvasSize.getLayoutParams().height = (int) (canvasSize.getLayoutParams().width / scale);
+//        }
     }
 
     // transform specified object's x position to pixels

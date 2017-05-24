@@ -111,9 +111,9 @@
     <LinearLayout
         android:id="@+id/linLay"
         android:layout_width="fill_parent"
-        android:layout_height="727dp"
+        android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <utmg.android_interface.CanvasView
             android:id="@+id/signature_canvas"
