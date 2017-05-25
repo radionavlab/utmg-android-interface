@@ -79,7 +79,7 @@
         android:adjustViewBounds="true"
         android:layout_gravity="center"
         android:src="@drawable/quad"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/sword"

@@ -100,15 +100,12 @@ public class CanvasView extends View {
 
     // when ACTION_DOWN start touch according to the x,y values
     private void startTouch(float x, float y) {
-
         if (mode == 0) {
             mPath.reset();
-
             // instantiate x, y arrays
             xCoordVec = new ArrayList<>();
             yCoordVec = new ArrayList<>();
             zCoordVec = new ArrayList<>();
-
         }
 
         mPath.moveTo(x, y);
@@ -128,7 +125,6 @@ public class CanvasView extends View {
 
     // when ACTION_MOVE move touch according to the x,y values
     private void moveTouch(float x, float y) {
-
         if (mode == 0) {
             float dx = Math.abs(x - mX);
             float dy = Math.abs(y - mY);
@@ -142,7 +138,6 @@ public class CanvasView extends View {
                 mPaint.setStrokeWidth(4f);
 
                 Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
-
             }
         }
     }
@@ -154,7 +149,6 @@ public class CanvasView extends View {
     }
 
     public void clearCanvas() {
-
         xCoordVec = new ArrayList<>();
         yCoordVec = new ArrayList<>();
         zCoordVec = new ArrayList<>();

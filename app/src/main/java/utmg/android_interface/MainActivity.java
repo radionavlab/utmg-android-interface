@@ -203,8 +203,8 @@ public class MainActivity extends AppCompatRosActivity {
         {
             // set quad size
             final ImageView quad = (ImageView) findViewById(R.id.quad);
-            quad.setMaxHeight((int) (screenHeight * 0.05));
-            quad.setMaxWidth((int) (screenWidth * 0.05));
+            quad.setMaxHeight((int) (screenHeight * 0.5));
+            quad.setMaxWidth((int) (screenWidth * 0.5));
 
             // show real-time location of the quad
             final Handler handler2 = new Handler();
@@ -235,12 +235,12 @@ public class MainActivity extends AppCompatRosActivity {
             sword.setMaxWidth((int) (screenWidth * 0.5));
 
             final ImageView obstacle1 = (ImageView) findViewById(R.id.obstacle1);
-            obstacle1.setMaxHeight((int) (screenHeight * 0.5));
-            obstacle1.setMaxWidth((int) (screenWidth * 0.5));
+            obstacle1.setMaxHeight((int) (screenHeight * 0.25));
+            obstacle1.setMaxWidth((int) (screenWidth * 0.25));
 
             final ImageView obstacle2 = (ImageView) findViewById(R.id.obstacle2);
-            obstacle2.setMaxHeight((int) (screenHeight * 0.5));
-            obstacle2.setMaxWidth((int) (screenWidth * 0.5));
+            obstacle2.setMaxHeight((int) (screenHeight * 0.25));
+            obstacle2.setMaxWidth((int) (screenWidth * 0.25));
 
             // show location of the obstacle
             final Handler handlerObstacles = new Handler();
