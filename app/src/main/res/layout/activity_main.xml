@@ -86,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:adjustViewBounds="true"
-        android:layout_gravity="center|right"
+        android:layout_gravity="center"
         android:src="@drawable/sword"
         android:visibility="gone"/>
 
@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:adjustViewBounds="true"
-        android:layout_gravity="center|right"
+        android:layout_gravity="center"
         android:src="@drawable/obstacle"
         android:visibility="gone"/>
 
@@ -104,7 +104,7 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:adjustViewBounds="true"
-        android:layout_gravity="center|right"
+        android:layout_gravity="center"
         android:src="@drawable/obstacle"
         android:visibility="gone"/>
 

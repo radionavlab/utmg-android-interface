@@ -135,6 +135,7 @@ public class CanvasView extends View {
                 xCoordVec.add(yMeters());
                 yCoordVec.add(xMeters());
                 zCoordVec.add(zObject.getInstance().getZ());
+//                mPaint.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
                 mPaint.setStrokeWidth(4f);
 
                 Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));

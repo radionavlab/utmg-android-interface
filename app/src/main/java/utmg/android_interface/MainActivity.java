@@ -203,8 +203,9 @@ public class MainActivity extends AppCompatRosActivity {
         {
             // set quad size
             final ImageView quad = (ImageView) findViewById(R.id.quad);
-            quad.setMaxHeight((int) (screenHeight * 0.5));
-            quad.setMaxWidth((int) (screenWidth * 0.5));
+
+            quad.getLayoutParams().height = (int) (screenHeight * 0.1);
+            quad.getLayoutParams().width = (int) (screenWidth * 0.1);
 
             // show real-time location of the quad
             final Handler handler2 = new Handler();
@@ -213,8 +214,9 @@ public class MainActivity extends AppCompatRosActivity {
                 public void run() {
                     if (pref.getBoolean("quad", false) == true) {
                         quad.setVisibility(View.VISIBLE);
-                        quad.setX(objectXToPixel("quad"));// + quad.getWidth()/2);
-                        quad.setY(objectYToPixel("quad"));// + quad.getHeight()/2);
+                        quad.setX(objectXToPixel("quad") - quad.getWidth()/2);
+                        quad.setY(objectYToPixel("quad") - quad.getHeight()/2);
+                        quad.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                     } else if (pref.getBoolean("quad", false) == false) {
                         quad.setVisibility((View.INVISIBLE));
                     }
@@ -230,6 +232,7 @@ public class MainActivity extends AppCompatRosActivity {
         // obstacle display config
         {
             // set obstacle size
+            // TODO change height/width spec to getLayoutParams()
             final ImageView sword = (ImageView) findViewById(R.id.sword);
             sword.setMaxHeight((int) (screenHeight * 0.5));
             sword.setMaxWidth((int) (screenWidth * 0.5));
@@ -282,23 +285,9 @@ public class MainActivity extends AppCompatRosActivity {
     // rescaling canvas proportions to (somewhat) fit screen depending on screen orientation
     // TODO
     public void newDimension(float w, float h) {
-
         float scale = w/h;
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * scale);
-
-//        if (h > w) {
-//            float scale = h/w;
-//            canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
-//            canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height / scale);
-//        }
-//        else if (w > h) {
-//            float scale = w/h;
-//            canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
-//            canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * scale);
-//            canvasSize.getLayoutParams().width = (int) (screenWidth * 0.95);
-//            canvasSize.getLayoutParams().height = (int) (canvasSize.getLayoutParams().width / scale);
-//        }
     }
 
     // transform specified object's x position to pixels
@@ -309,23 +298,23 @@ public class MainActivity extends AppCompatRosActivity {
 
         if (item.equals("quad")) {
             Thing quad1 = DataShare.getInstance("quad1");
-            normX = (float) quad1.getY() / -5;
+            normX = (float) quad1.getY() / -pref.getFloat("newWidth",5);
         }
         else if (item.equals("sword")) {
             Thing sword = DataShare.getInstance("sword");
-            normX = (float) sword.getY() / -5;
+            normX = (float) sword.getY() / -pref.getFloat("newWidth",5);
         }
         else if (item.equals("obstacle1")) {
             Thing obstacle1 = DataShare.getInstance("obstacle1");
-            normX = (float) obstacle1.getY() / -5;
+            normX = (float) obstacle1.getY() / -pref.getFloat("newWidth",5);
         }
         else if (item.equals("obstacle2")) {
             Thing obstacle2 = DataShare.getInstance("obstacle2");
-            normX = (float) obstacle2.getY() / -5;
+            normX = (float) obstacle2.getY() / -pref.getFloat("newWidth",5);
         }
 
-        float transX = normX * customCanvas.getWidth();
-        float xCoord = transX + customCanvas.getCenterX() + customCanvas.getLeft();
+        float transX = normX * canvasSize.getLayoutParams().width;
+        float xCoord = transX + canvasSize.getLayoutParams().width;
 
         return xCoord;
     }
@@ -338,23 +327,25 @@ public class MainActivity extends AppCompatRosActivity {
 
         if (item.equals("quad")) {
             Thing quad1 = DataShare.getInstance("quad1");
-            normY = (float) quad1.getX() / 3;
+            normY = (float) quad1.getX() / pref.getFloat("newHeight",3);
         }
         else if (item.equals("sword")) {
             Thing sword = DataShare.getInstance("sword");
-            normY = (float) sword.getX() / 3;
+            normY = (float) sword.getX() / pref.getFloat("newHeight",3);
         }
         else if (item.equals("obstacle1")) {
             Thing obstacle1 = DataShare.getInstance("obstacle1");
-            normY = (float) obstacle1.getX() / 3;
+            normY = (float) obstacle1.getX() / pref.getFloat("newHeight",3);
         }
         else if (item.equals("obstacle2")) {
             Thing obstacle2 = DataShare.getInstance("obstacle2");
-            normY = (float) obstacle2.getX() / 3;
+            normY = (float) obstacle2.getX() / pref.getFloat("newHeight",3);
         }
 
-        float transY = normY * customCanvas.getHeight();
-        float yCoord = (-transY + customCanvas.getCenterY() + customCanvas.getTop());
+        float transY = normY * canvasSize.getLayoutParams().height;
+        float yCoord = -transY + canvasSize.getLayoutParams().height - canvasSize.getTop();
+
+        //Log.i("yCoord",Float.toString(yCoord));
 
         return yCoord;
     }
