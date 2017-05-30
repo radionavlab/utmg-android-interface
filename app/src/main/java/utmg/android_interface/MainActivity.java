@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatRosActivity {
                 yCoordVec = customCanvas.getyCoordVec();
                 zCoordVec = customCanvas.getzCoordVec();
 
-                node.setTraj(xCoordVec, yCoordVec, zCoordVec);
+                node.setTraj1(xCoordVec, yCoordVec, zCoordVec);
             }
         });
 
