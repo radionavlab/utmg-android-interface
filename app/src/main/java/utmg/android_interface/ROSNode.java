@@ -63,17 +63,15 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
         //final Publisher<std_msgs.String> publisher = connectedNode.newPublisher(GraphName.of("time"), std_msgs.String._TYPE);
 
-        final Publisher<geometry_msgs.PoseArray> publisherTrajectory1 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisherTrajectory1 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory/Quad1"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisherTrajectory2 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory/Quad2"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisherTrajectory3 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory/Quad3"), PoseArray._TYPE);
+
+        final Publisher<geometry_msgs.PoseArray> publisherWaypoints1 = connectedNode.newPublisher(GraphName.of("PosControl/Waypoints/Quad1"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisherWaypoints2 = connectedNode.newPublisher(GraphName.of("PosControl/Waypoints/Quad2"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisherWaypoints3 = connectedNode.newPublisher(GraphName.of("PosControl/Waypoints/Quad3"), PoseArray._TYPE);
+
         final Publisher<geometry_msgs.PoseArray> publisherObstacles1 = connectedNode.newPublisher(GraphName.of("PosControl/Obstacles"), PoseArray._TYPE);
-        final Publisher<geometry_msgs.PoseArray> publisherWaypoints1 = connectedNode.newPublisher(GraphName.of("PosControl/Waypoints"), PoseArray._TYPE);
-
-        final Publisher<geometry_msgs.PoseArray> publisherTrajectory2 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory"), PoseArray._TYPE);
-        final Publisher<geometry_msgs.PoseArray> publisherObstacles2 = connectedNode.newPublisher(GraphName.of("PosControl/Obstacles"), PoseArray._TYPE);
-        final Publisher<geometry_msgs.PoseArray> publisherWaypoints2 = connectedNode.newPublisher(GraphName.of("PosControl/Waypoints"), PoseArray._TYPE);
-
-        final Publisher<geometry_msgs.PoseArray> publisherTrajectory3 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory"), PoseArray._TYPE);
-        final Publisher<geometry_msgs.PoseArray> publisherObstacles3 = connectedNode.newPublisher(GraphName.of("PosControl/Obstacles"), PoseArray._TYPE);
-        final Publisher<geometry_msgs.PoseArray> publisherWaypoints3 = connectedNode.newPublisher(GraphName.of("PosControl/Waypoints"), PoseArray._TYPE);
         //final Publisher<nav_msgs.Path> publisherPath = connectedNode.newPublisher(GraphName.of("android_quad_trajectory"), Path._TYPE);
 
         // local instantiation of objects
@@ -277,7 +275,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                     mPoseArrayObstacles.getHeader().setSeq(seq1);
                     mPoseArrayObstacles.getHeader().setStamp(new Time());
                     ArrayList<Pose> posesObstacles = new ArrayList<>();
-                    // TODO add in loop to cover all obstacles
+
                     geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
                     geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
                     mPoint.setX(sword.getX());
