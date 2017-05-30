@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -202,37 +203,67 @@ public class MainActivity extends AppCompatRosActivity {
         // quad display config
         {
             // set quad size
-            final ImageView quad = (ImageView) findViewById(R.id.quad);
+            final ImageView quad1 = (ImageView) findViewById(R.id.quad1);
+            final ImageView quad2 = (ImageView) findViewById(R.id.quad2);
+            final ImageView quad3 = (ImageView) findViewById(R.id.quad3);
 
-            quad.getLayoutParams().height = (int) (screenHeight * 0.1);
-            quad.getLayoutParams().width = (int) (screenWidth * 0.1);
+            quad1.getLayoutParams().height = (int) (screenHeight * 0.1);
+            quad1.getLayoutParams().width = (int) (screenWidth * 0.1);
+            quad1.setColorFilter(DataShare.getInstance("quad1").getQuadColour());
 
-            // show real-time location of the quad
-            final Handler handler2 = new Handler();
-            Runnable runnable2 = new Runnable() {
+            quad2.getLayoutParams().height = (int) (screenHeight * 0.1);
+            quad2.getLayoutParams().width = (int) (screenWidth * 0.1);
+            quad2.setColorFilter(DataShare.getInstance("quad2").getQuadColour());
+
+            quad3.getLayoutParams().height = (int) (screenHeight * 0.1);
+            quad3.getLayoutParams().width = (int) (screenWidth * 0.1);
+            quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
+
+            // show real-time location of the quads
+            final Handler handlerQuad = new Handler();
+            Runnable runnableQuad = new Runnable() {
                 @Override
                 public void run() {
-                    if (pref.getBoolean("quad", false) == true) {
-                        quad.setVisibility(View.VISIBLE);
-                        quad.setX(objectXToPixel("quad") - quad.getWidth()/2);
-                        quad.setY(objectYToPixel("quad") - quad.getHeight()/2);
-                        quad.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
-                    } else if (pref.getBoolean("quad", false) == false) {
-                        quad.setVisibility((View.INVISIBLE));
+                    // quad 1
+                    if (pref.getBoolean("quad1", false) == true) {
+                        quad1.setVisibility(View.VISIBLE);
+                        quad1.setX(objectXToPixel("quad1") - quad1.getWidth()/2);
+                        quad1.setY(objectYToPixel("quad1") - quad1.getHeight()/2);
+                        quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
+                    } else if (pref.getBoolean("quad1", false) == false) {
+                        quad1.setVisibility((View.INVISIBLE));
+                    }
+
+                    // quad 2
+                    if (pref.getBoolean("quad2", false) == true) {
+                        quad2.setVisibility(View.VISIBLE);
+                        quad2.setX(objectXToPixel("quad2") - quad2.getWidth()/2);
+                        quad2.setY(objectYToPixel("quad2") - quad2.getHeight()/2);
+                        quad2.setImageAlpha( (int)(((DataShare.getInstance("quad2").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
+                    } else if (pref.getBoolean("quad2", false) == false) {
+                        quad1.setVisibility((View.INVISIBLE));
+                    }
+
+                    // quad 3
+                    if (pref.getBoolean("quad3", false) == true) {
+                        quad3.setVisibility(View.VISIBLE);
+                        quad3.setX(objectXToPixel("quad3") - quad3.getWidth()/2);
+                        quad3.setY(objectYToPixel("quad3") - quad3.getHeight()/2);
+                        quad3.setImageAlpha( (int)(((DataShare.getInstance("quad3").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
+                    } else if (pref.getBoolean("quad3", false) == false) {
+                        quad3.setVisibility((View.INVISIBLE));
                     }
                     //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
 
-
-                    handler2.postDelayed(this, 0);
+                    handlerQuad.postDelayed(this, 0);
                 }
             };
-            runnable2.run();
+            runnableQuad.run();
         }
 
-        // obstacle display config
+        // obstacle display config TODO fix to match quad config
         {
             // set obstacle size
-            // TODO change height/width spec to getLayoutParams()
             final ImageView sword = (ImageView) findViewById(R.id.sword);
             sword.setMaxHeight((int) (screenHeight * 0.5));
             sword.setMaxWidth((int) (screenWidth * 0.5));
@@ -296,9 +327,17 @@ public class MainActivity extends AppCompatRosActivity {
 
         float normX = 0;
 
-        if (item.equals("quad")) {
+        if (item.equals("quad1")) {
             Thing quad1 = DataShare.getInstance("quad1");
             normX = (float) quad1.getY() / -pref.getFloat("newWidth",5);
+        }
+        else if (item.equals("quad2")) {
+            Thing quad2 = DataShare.getInstance("quad2");
+            normX = (float) quad2.getY() / -pref.getFloat("newWidth",5);
+        }
+        else if (item.equals("quad3")) {
+            Thing quad3 = DataShare.getInstance("quad3");
+            normX = (float) quad3.getY() / -pref.getFloat("newWidth",5);
         }
         else if (item.equals("sword")) {
             Thing sword = DataShare.getInstance("sword");
@@ -320,7 +359,6 @@ public class MainActivity extends AppCompatRosActivity {
     }
 
     // transform specified object's y position to pixels
-    // TODO redo to match new design architecture
     public float objectYToPixel(String item) {
 
         float normY = 0;

@@ -67,7 +67,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         });
 
 
-        final CheckBox isQuadChecked = (CheckBox) findViewById(R.id.quad_checkbox);
+        final CheckBox isQuad1Checked = (CheckBox) findViewById(R.id.quad_checkbox);
         final CheckBox isSwordChecked = (CheckBox) findViewById(R.id.sword_checkbox);
         final CheckBox isObstacle1Checked = (CheckBox) findViewById(R.id.obstacle1_checkbox);
         final CheckBox isObstacle2Checked = (CheckBox) findViewById(R.id.obstacle2_checkbox);
@@ -75,17 +75,17 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         final ToggleButton debugModeToggle = (ToggleButton) findViewById(R.id.debug_mode_toggle);
 
 
-        isQuadChecked.setChecked(pref.getBoolean("quad", false));
+        isQuad1Checked.setChecked(pref.getBoolean("quad1", false));
         isSwordChecked.setChecked(pref.getBoolean("sword", false));
         isObstacle1Checked.setChecked(pref.getBoolean("obstacle1", false));
         isObstacle2Checked.setChecked(pref.getBoolean("obstacle2", false));
         obstaclePublishToggle.setChecked((pref.getBoolean("obstaclePublish", false)));
         debugModeToggle.setChecked((pref.getBoolean("debugMode", false)));
 
-        isQuadChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        isQuad1Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("quad", isQuadChecked.isChecked());
+                prefEditor.putBoolean("quad1", isQuad1Checked.isChecked());
                 prefEditor.commit();
                 //Log.i("quadvis",Boolean.toString(pref.getBoolean("quad",false)));
             }

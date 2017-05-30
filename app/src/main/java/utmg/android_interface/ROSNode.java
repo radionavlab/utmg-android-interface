@@ -52,10 +52,18 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
         //final Publisher<std_msgs.String> publisher = connectedNode.newPublisher(GraphName.of("time"), std_msgs.String._TYPE);
 
-        final Publisher<geometry_msgs.PoseArray> publisher1 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory"), PoseArray._TYPE);
-        final Publisher<geometry_msgs.PoseArray> publisher2 = connectedNode.newPublisher(GraphName.of("PosControl/Obstacles"), PoseArray._TYPE);
-        final Publisher<geometry_msgs.PoseArray> publisher3 = connectedNode.newPublisher(GraphName.of("PosControl/Waypoints"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisherTrajectory = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisherObstacles = connectedNode.newPublisher(GraphName.of("PosControl/Obstacles"), PoseArray._TYPE);
+        final Publisher<geometry_msgs.PoseArray> publisherWaypoints = connectedNode.newPublisher(GraphName.of("PosControl/Waypoints"), PoseArray._TYPE);
         //final Publisher<nav_msgs.Path> publisherPath = connectedNode.newPublisher(GraphName.of("android_quad_trajectory"), Path._TYPE);
+
+        // local instantiation of objects
+        final Thing quad1 = DataShare.getInstance("quad1");
+        final Thing quad2 = DataShare.getInstance("quad2");
+        final Thing quad3 = DataShare.getInstance("quad3");
+        final Thing sword = DataShare.getInstance("sword");
+        final Thing obstacle1 = DataShare.getInstance("obstacle1");
+        final Thing obstacle2 = DataShare.getInstance("obstacle2");
 
         final CancellableLoop loop = new CancellableLoop() {
             @Override
@@ -72,8 +80,8 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
                 // trajectory publisher
-                geometry_msgs.PoseArray mPoseArray = publisher1.newMessage();
-                geometry_msgs.PoseArray mWaypointArray = publisher3.newMessage();
+                geometry_msgs.PoseArray mPoseArray = publisherTrajectory.newMessage();
+                geometry_msgs.PoseArray mWaypointArray = publisherWaypoints.newMessage();
 
                 //nav_msgs.Path xyPath = publisherPath.newMessage();
 
@@ -93,12 +101,6 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 //                xyPath.getHeader().setStamp(new Time());
 
                 ArrayList<Pose> poses = new ArrayList<>();
-
-                // local instantiation of objects
-                final Thing quad1 = DataShare.getInstance("quad1");
-                final Thing sword = DataShare.getInstance("sword");
-                final Thing obstacle1 = DataShare.getInstance("obstacle1");
-                final Thing obstacle2 = DataShare.getInstance("obstacle2");
 
                 //Log.i("RosNode",obstacle1.getX() + "\t" + obstacle1.getY());
 
@@ -122,7 +124,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         mPoseArray.setPoses(poses);
 
                         if (publishToggle == true) {
-                            publisher1.publish(mPoseArray);
+                            publisherTrajectory.publish(mPoseArray);
 
                             seq = seq + 1;
                         }
@@ -133,7 +135,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         mWaypointArray.setPoses(poses);
 
                         if (publishToggle == true) {
-                            publisher3.publish(mWaypointArray);
+                            publisherWaypoints.publish(mWaypointArray);
 
                             seq = seq + 1;
                         }
@@ -146,7 +148,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
                     if (pref.getBoolean("obstaclePublish", false) == true) {
                         // obstacle publisher //////////////////////////////////////////////////////////////
-                        geometry_msgs.PoseArray mPoseArrayObstacles = publisher2.newMessage();
+                        geometry_msgs.PoseArray mPoseArrayObstacles = publisherObstacles.newMessage();
                         mPoseArrayObstacles.getHeader().setFrameId("world");
                         mPoseArrayObstacles.getHeader().setSeq(seq);
                         mPoseArrayObstacles.getHeader().setStamp(new Time());
@@ -177,7 +179,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         posesObstacles.add(mPose2);
                         // add and publish
                         mPoseArrayObstacles.setPoses(posesObstacles);
-                        publisher2.publish(mPoseArrayObstacles);
+                        publisherObstacles.publish(mPoseArrayObstacles);
 
 
                     }
@@ -189,13 +191,37 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
                 // listener
-                Subscriber<TransformStamped> subscriberQuad = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
-                subscriberQuad.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                Subscriber<TransformStamped> subscriberQuad1 = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
+                subscriberQuad1.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
                     public void onNewMessage(geometry_msgs.TransformStamped message) {
                         quad1.setX(message.getTransform().getTranslation().getX());
                         quad1.setY(message.getTransform().getTranslation().getY());
                         quad1.setZ(message.getTransform().getTranslation().getZ());
+
+                    }
+                });
+
+                // TODO CHANGE ROSTOPIC
+                Subscriber<TransformStamped> subscriberQuad2 = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
+                subscriberQuad2.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                    @Override
+                    public void onNewMessage(geometry_msgs.TransformStamped message) {
+                        quad2.setX(message.getTransform().getTranslation().getX());
+                        quad2.setY(message.getTransform().getTranslation().getY());
+                        quad2.setZ(message.getTransform().getTranslation().getZ());
+
+                    }
+                });
+
+                // TODO CHANGE ROSTOPIC
+                Subscriber<TransformStamped> subscriberQuad3 = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
+                subscriberQuad3.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                    @Override
+                    public void onNewMessage(geometry_msgs.TransformStamped message) {
+                        quad3.setX(message.getTransform().getTranslation().getX());
+                        quad3.setY(message.getTransform().getTranslation().getY());
+                        quad3.setZ(message.getTransform().getTranslation().getZ());
 
                     }
                 });

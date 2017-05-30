@@ -144,9 +144,7 @@ public class CanvasView extends View {
     }
 
     // when ACTION_UP stop touch
-    private void upTouch() {
-        //mPath.lineTo(mX, mY);
-        // TODO DO SOMETHING WITH ARRAYS
+    private void upTouch() { //mPath.lineTo(mX, mY);
     }
 
     public void clearCanvas() {
@@ -200,18 +198,6 @@ public class CanvasView extends View {
     public ArrayList<Float> getzCoordVec() {
 
         return zCoordVec;
-    }
-
-    // current x coordinate
-    public float getxCoord() {
-
-        return mX;
-    }
-
-    // current y coordinate
-    public float getyCoord() {
-
-        return mY;
     }
 
     // center x coordinate of bitmap

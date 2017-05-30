@@ -73,7 +73,43 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/quad"
+        android:id="@+id/quad1"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/quad"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/quad2"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/quad"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/quad3"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/quad"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/quad4"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/quad"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/quad5"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
