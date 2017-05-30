@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatRosActivity {
                         quad2.setY(objectYToPixel("quad2") - quad2.getHeight()/2);
                         quad2.setImageAlpha( (int)(((DataShare.getInstance("quad2").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                     } else if (pref.getBoolean("quad2", false) == false) {
-                        quad1.setVisibility((View.INVISIBLE));
+                        quad2.setVisibility((View.INVISIBLE));
                     }
 
                     // quad 3
