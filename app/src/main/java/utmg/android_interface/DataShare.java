@@ -2,7 +2,7 @@ package utmg.android_interface;
 
 import android.app.Application;
 import android.graphics.Color;
-import android.provider.ContactsContract;
+import java.util.ArrayList;
 
 public class DataShare extends Application {
 
@@ -16,6 +16,23 @@ public class DataShare extends Application {
     private static Thing sword = new Thing();
     private static Thing obstacle1 = new Thing();
     private static Thing obstacle2 = new Thing();
+
+    ArrayList<Float> xCoordVec1 = new ArrayList<>();
+    ArrayList<Float> yCoordVec1 = new ArrayList<>();
+    ArrayList<Float> zCoordVec1 = new ArrayList<>();
+    ArrayList<Float> xWaypoint1 = new ArrayList<>();
+    ArrayList<Float> yWaypoint1 = new ArrayList<>();
+
+    ArrayList<Float> xCoordVec2 = new ArrayList<>();
+    ArrayList<Float> yCoordVec2 = new ArrayList<>();
+    ArrayList<Float> zCoordVec2 = new ArrayList<>();
+    ArrayList<Float> xWaypoint2 = new ArrayList<>();
+    ArrayList<Float> yWaypoint2 = new ArrayList<>();
+
+    ArrayList<Float> xCoordVec3 = new ArrayList<>();
+    ArrayList<Float> yCoordVec3 = new ArrayList<>();
+    ArrayList<Float> zCoordVec3 = new ArrayList<>();
+    ArrayList<Float> xWaypoint3 = new ArrayList<>();
 
     public DataShare() {
 

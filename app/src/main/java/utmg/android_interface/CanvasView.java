@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -25,11 +24,25 @@ public class CanvasView extends View {
     private Paint mPaintWP;
     private float mX, mY;
     private static final float TOLERANCE = 5;
-    ArrayList<Float> xCoordVec;
-    ArrayList<Float> yCoordVec;
-    ArrayList<Float> zCoordVec;
-    ArrayList<Float> xWaypoint;
-    ArrayList<Float> yWaypoint;
+
+    ArrayList<Float> xCoordVec1;
+    ArrayList<Float> yCoordVec1;
+    ArrayList<Float> zCoordVec1;
+    ArrayList<Float> xWaypoint1;
+    ArrayList<Float> yWaypoint1;
+
+    ArrayList<Float> xCoordVec2;
+    ArrayList<Float> yCoordVec2;
+    ArrayList<Float> zCoordVec2;
+    ArrayList<Float> xWaypoint2;
+    ArrayList<Float> yWaypoint2;
+
+    ArrayList<Float> xCoordVec3;
+    ArrayList<Float> yCoordVec3;
+    ArrayList<Float> zCoordVec3;
+    ArrayList<Float> xWaypoint3;
+    ArrayList<Float> yWaypoint3;
+
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
     int mode;
@@ -63,12 +76,23 @@ public class CanvasView extends View {
         mPaintWP.setTextSize(25);
 
         // instantiate x, y arrays
-        xCoordVec = new ArrayList<>();
-        yCoordVec = new ArrayList<>();
-        zCoordVec = new ArrayList<>();
+        xCoordVec1 = new ArrayList<>();
+        yCoordVec1 = new ArrayList<>();
+        zCoordVec1 = new ArrayList<>();
+        xWaypoint1 = new ArrayList<>();
+        yWaypoint1 = new ArrayList<>();
 
-        xWaypoint = new ArrayList<>();
-        yWaypoint = new ArrayList<>();
+        xCoordVec2 = new ArrayList<>();
+        yCoordVec2 = new ArrayList<>();
+        zCoordVec2 = new ArrayList<>();
+        xWaypoint2 = new ArrayList<>();
+        yWaypoint2 = new ArrayList<>();
+
+        xCoordVec3 = new ArrayList<>();
+        yCoordVec3 = new ArrayList<>();
+        zCoordVec3 = new ArrayList<>();
+        xWaypoint3 = new ArrayList<>();
+        yWaypoint3 = new ArrayList<>();
     }
 
     // override onSizeChanged
@@ -91,9 +115,9 @@ public class CanvasView extends View {
             canvas.drawPath(mPath, mPaint);
         }
         else if (mode == 1) {
-            for (int i = 0; i < xWaypoint.size(); i++) {
+            for (int i = 0; i < xWaypoint1.size(); i++) {
 
-                canvas.drawText(Integer.toString(i+1), xWaypoint.get(i),yWaypoint.get(i), mPaintWP);
+                canvas.drawText(Integer.toString(i+1), xWaypoint1.get(i), yWaypoint1.get(i), mPaintWP);
             }
         }
     }
@@ -103,9 +127,9 @@ public class CanvasView extends View {
         if (mode == 0) {
             mPath.reset();
             // instantiate x, y arrays
-            xCoordVec = new ArrayList<>();
-            yCoordVec = new ArrayList<>();
-            zCoordVec = new ArrayList<>();
+            xCoordVec1 = new ArrayList<>();
+            yCoordVec1 = new ArrayList<>();
+            zCoordVec1 = new ArrayList<>();
         }
 
         mPath.moveTo(x, y);
@@ -113,11 +137,11 @@ public class CanvasView extends View {
         mY = y;
 
         if (mode == 1) {
-            xWaypoint.add(mX);
-            yWaypoint.add(mY);
-            xCoordVec.add(yMeters()); // x-y swap due to screen rotation... or something. I dunno.
-            yCoordVec.add(xMeters());
-            zCoordVec.add(zObject.getInstance().getZ());
+            xWaypoint1.add(mX);
+            yWaypoint1.add(mY);
+            xCoordVec1.add(yMeters()); // x-y swap due to screen rotation... or something. I dunno.
+            yCoordVec1.add(xMeters());
+            zCoordVec1.add(zObject.getInstance().getZ());
             super.onDraw(mCanvas);
         }
 
@@ -132,9 +156,9 @@ public class CanvasView extends View {
                 mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
                 mX = x;
                 mY = y;
-                xCoordVec.add(yMeters());
-                yCoordVec.add(xMeters());
-                zCoordVec.add(zObject.getInstance().getZ());
+                xCoordVec1.add(yMeters());
+                yCoordVec1.add(xMeters());
+                zCoordVec1.add(zObject.getInstance().getZ());
 //                mPaint.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
                 mPaint.setStrokeWidth(4f);
 
@@ -148,11 +172,11 @@ public class CanvasView extends View {
     }
 
     public void clearCanvas() {
-        xCoordVec = new ArrayList<>();
-        yCoordVec = new ArrayList<>();
-        zCoordVec = new ArrayList<>();
-        xWaypoint = new ArrayList<>();
-        yWaypoint = new ArrayList<>();
+        xCoordVec1 = new ArrayList<>();
+        yCoordVec1 = new ArrayList<>();
+        zCoordVec1 = new ArrayList<>();
+        xWaypoint1 = new ArrayList<>();
+        yWaypoint1 = new ArrayList<>();
 
         mPath.reset();
         invalidate();
@@ -183,22 +207,13 @@ public class CanvasView extends View {
     }
 
     // current ArrayList of x coordinate vectors
-    public ArrayList<Float> getxCoordVec() {
-
-        return xCoordVec;
-    }
+    public ArrayList<Float> getxCoordVec1() { return xCoordVec1; }
 
     // current ArrayList of y coordinate vectors
-    public ArrayList<Float> getyCoordVec() {
-
-        return yCoordVec;
-    }
+    public ArrayList<Float> getyCoordVec1() { return yCoordVec1; }
 
     // current ArrayList of z coordinate vectors
-    public ArrayList<Float> getzCoordVec() {
-
-        return zCoordVec;
-    }
+    public ArrayList<Float> getzCoordVec1() { return zCoordVec1; }
 
     // center x coordinate of bitmap
     public int getCenterX() {

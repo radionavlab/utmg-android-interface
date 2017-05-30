@@ -126,20 +126,20 @@ public class MainActivity extends AppCompatRosActivity {
                 Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                xCoordVec1 = customCanvas.getxCoordVec();
-                yCoordVec1 = customCanvas.getyCoordVec();
-                zCoordVec1 = customCanvas.getzCoordVec();
-                node.setTraj(xCoordVec1, yCoordVec1, zCoordVec1);
+                xCoordVec1 = customCanvas.getxCoordVec1();
+                yCoordVec1 = customCanvas.getyCoordVec1();
+                zCoordVec1 = customCanvas.getzCoordVec1();
+                node.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1);
 
-                xCoordVec2 = customCanvas.getxCoordVec();
-                yCoordVec2 = customCanvas.getyCoordVec();
-                zCoordVec2 = customCanvas.getzCoordVec();
-                node.setTraj(xCoordVec2, yCoordVec2, zCoordVec2);
+                xCoordVec2 = customCanvas.getxCoordVec2();
+                yCoordVec2 = customCanvas.getyCoordVec2();
+                zCoordVec2 = customCanvas.getzCoordVec2();
+                node.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2);
 
-                xCoordVec3 = customCanvas.getxCoordVec();
-                yCoordVec3 = customCanvas.getyCoordVec();
-                zCoordVec3 = customCanvas.getzCoordVec();
-                node.setTraj(xCoordVec3, yCoordVec3, zCoordVec3);
+                xCoordVec3 = customCanvas.getxCoordVec3();
+                yCoordVec3 = customCanvas.getyCoordVec3();
+                zCoordVec3 = customCanvas.getzCoordVec3();
+                node.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3);
             }
         });
 
@@ -149,10 +149,10 @@ public class MainActivity extends AppCompatRosActivity {
                 Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                xCoordVec1 = customCanvas.getxCoordVec();
-                yCoordVec1 = customCanvas.getyCoordVec();
-                zCoordVec1 = customCanvas.getzCoordVec();
-                node.setTraj(xCoordVec1, yCoordVec1, zCoordVec1);
+                xCoordVec1 = customCanvas.getxCoordVec1();
+                yCoordVec1 = customCanvas.getyCoordVec1();
+                zCoordVec1 = customCanvas.getzCoordVec1();
+                node.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1);
             }
         });
 
@@ -162,10 +162,10 @@ public class MainActivity extends AppCompatRosActivity {
                 Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                xCoordVec2 = customCanvas.getxCoordVec();
-                yCoordVec2 = customCanvas.getyCoordVec();
-                zCoordVec2 = customCanvas.getzCoordVec();
-                node.setTraj(xCoordVec2, yCoordVec2, zCoordVec2);
+                xCoordVec2 = customCanvas.getxCoordVec2();
+                yCoordVec2 = customCanvas.getyCoordVec2();
+                zCoordVec2 = customCanvas.getzCoordVec2();
+                node.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2);
             }
         });
 
@@ -175,10 +175,10 @@ public class MainActivity extends AppCompatRosActivity {
                 Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                xCoordVec3 = customCanvas.getxCoordVec();
-                yCoordVec3 = customCanvas.getyCoordVec();
-                zCoordVec3 = customCanvas.getzCoordVec();
-                node.setTraj(xCoordVec3, yCoordVec3, zCoordVec3);
+                xCoordVec3 = customCanvas.getxCoordVec3();
+                yCoordVec3 = customCanvas.getyCoordVec3();
+                zCoordVec3 = customCanvas.getzCoordVec3();
+                node.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3);
             }
         });
 
