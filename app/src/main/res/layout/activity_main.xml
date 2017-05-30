@@ -122,8 +122,9 @@
         android:layout_height="80dp"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:src="@drawable/sword"
-        android:visibility="gone"/>
+        android:src="@drawable/quad"
+        android:visibility="gone"
+        android:tint="@android:color/holo_red_light"/>
 
     <ImageView
         android:id="@+id/quad2"
@@ -132,7 +133,8 @@
         android:adjustViewBounds="true"
         android:layout_gravity="center"
         android:src="@drawable/quad"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:tint="@android:color/holo_green_light"/>
 
     <ImageView
         android:id="@+id/quad3"
@@ -141,7 +143,8 @@
         android:adjustViewBounds="true"
         android:layout_gravity="center"
         android:src="@drawable/quad"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:tint="@android:color/holo_blue_light"/>
 
     <ImageView
         android:id="@+id/sword"

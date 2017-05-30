@@ -2,10 +2,8 @@ package utmg.android_interface;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -70,7 +68,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         });
 
 
-        final CheckBox isQuad1Checked = (CheckBox) findViewById(R.id.quad_checkbox);
+        final CheckBox isQuad1Checked = (CheckBox) findViewById(R.id.quad1_checkbox);
+        final CheckBox isQuad2Checked = (CheckBox) findViewById(R.id.quad2_checkbox);
+        final CheckBox isQuad3Checked = (CheckBox) findViewById(R.id.quad3_checkbox);
         final CheckBox isSwordChecked = (CheckBox) findViewById(R.id.sword_checkbox);
         final CheckBox isObstacle1Checked = (CheckBox) findViewById(R.id.obstacle1_checkbox);
         final CheckBox isObstacle2Checked = (CheckBox) findViewById(R.id.obstacle2_checkbox);
@@ -79,6 +79,8 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
 
         isQuad1Checked.setChecked(pref.getBoolean("quad1", false));
+        isQuad2Checked.setChecked(pref.getBoolean("quad2", false));
+        isQuad3Checked.setChecked(pref.getBoolean("quad3", false));
         isSwordChecked.setChecked(pref.getBoolean("sword", false));
         isObstacle1Checked.setChecked(pref.getBoolean("obstacle1", false));
         isObstacle2Checked.setChecked(pref.getBoolean("obstacle2", false));
@@ -89,6 +91,24 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("quad1", isQuad1Checked.isChecked());
+                prefEditor.commit();
+                //Log.i("quadvis",Boolean.toString(pref.getBoolean("quad",false)));
+            }
+        });
+
+        isQuad2Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                prefEditor.putBoolean("quad2", isQuad2Checked.isChecked());
+                prefEditor.commit();
+                //Log.i("quadvis",Boolean.toString(pref.getBoolean("quad",false)));
+            }
+        });
+
+        isQuad3Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                prefEditor.putBoolean("quad3", isQuad3Checked.isChecked());
                 prefEditor.commit();
                 //Log.i("quadvis",Boolean.toString(pref.getBoolean("quad",false)));
             }

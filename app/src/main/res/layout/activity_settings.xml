@@ -97,13 +97,34 @@
                         android:text="Objects to display:" />
 
                     <CheckBox
-                        android:id="@+id/quad_checkbox"
+                        android:id="@+id/quad1_checkbox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Quad"
+                        android:text="Quad1"
                         android:textSize="20dp"
                         android:layout_marginTop="10dp"
-                        android:checked="false"/>
+                        android:checked="false"
+                        android:textColor="@android:color/holo_red_light"/>
+
+                    <CheckBox
+                        android:id="@+id/quad2_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Quad2"
+                        android:textSize="20dp"
+                        android:layout_marginTop="10dp"
+                        android:checked="false"
+                        android:textColor="@android:color/holo_green_light"/>
+
+                    <CheckBox
+                        android:id="@+id/quad3_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Quad3"
+                        android:textSize="20dp"
+                        android:layout_marginTop="10dp"
+                        android:checked="false"
+                        android:textColor="@android:color/holo_blue_light"/>
 
                     <CheckBox
                         android:id="@+id/sword_checkbox"
