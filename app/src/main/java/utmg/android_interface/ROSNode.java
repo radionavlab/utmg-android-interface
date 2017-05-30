@@ -1,6 +1,5 @@
 package utmg.android_interface;
 
-//import org.apache.commons.logging.Log;
 import android.content.SharedPreferences;
 import android.content.Context;
 import android.util.Log;

@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,6 +44,8 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         final EditText w = (EditText) findViewById(R.id.resize_width);
         final EditText h = (EditText) findViewById(R.id.resize_height);
         final EditText a = (EditText) findViewById(R.id.resize_altitude);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         w.setText(Float.toString(pref.getFloat("newWidth",5)));
         h.setText(Float.toString(pref.getFloat("newHeight",3)));
