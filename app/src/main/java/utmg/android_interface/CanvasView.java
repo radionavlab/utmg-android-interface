@@ -206,14 +206,20 @@ public class CanvasView extends View {
         return true;
     }
 
-    // current ArrayList of x coordinate vectors
+    // current ArrayList of coordinate vectors for quad1
     public ArrayList<Float> getxCoordVec1() { return xCoordVec1; }
-
-    // current ArrayList of y coordinate vectors
     public ArrayList<Float> getyCoordVec1() { return yCoordVec1; }
-
-    // current ArrayList of z coordinate vectors
     public ArrayList<Float> getzCoordVec1() { return zCoordVec1; }
+
+    // current ArrayList of coordinate vectors for quad2
+    public ArrayList<Float> getxCoordVec2() { return xCoordVec2; }
+    public ArrayList<Float> getyCoordVec2() { return yCoordVec2; }
+    public ArrayList<Float> getzCoordVec2() { return zCoordVec2; }
+
+    // current ArrayList of coordinate vectors for quad3
+    public ArrayList<Float> getxCoordVec3() { return xCoordVec3; }
+    public ArrayList<Float> getyCoordVec3() { return yCoordVec3; }
+    public ArrayList<Float> getzCoordVec3() { return zCoordVec3; }
 
     // center x coordinate of bitmap
     public int getCenterX() {
