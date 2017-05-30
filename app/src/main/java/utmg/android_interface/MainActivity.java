@@ -1,12 +1,9 @@
 package utmg.android_interface;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -31,9 +28,17 @@ public class MainActivity extends AppCompatRosActivity {
 
     ROSNode node;
     private CanvasView customCanvas;
-    private ArrayList<Float> xCoordVec;
-    private ArrayList<Float> yCoordVec;
-    private ArrayList<Float> zCoordVec;
+    private ArrayList<Float> xCoordVec1;
+    private ArrayList<Float> yCoordVec1;
+    private ArrayList<Float> zCoordVec1;
+
+    private ArrayList<Float> xCoordVec2;
+    private ArrayList<Float> yCoordVec2;
+    private ArrayList<Float> zCoordVec2;
+
+    private ArrayList<Float> xCoordVec3;
+    private ArrayList<Float> yCoordVec3;
+    private ArrayList<Float> zCoordVec3;
 
     private float mX;
     private float mY;
@@ -85,30 +90,98 @@ public class MainActivity extends AppCompatRosActivity {
         sb.getLayoutParams().width = sbLayout.getLayoutParams().height;
 
         // instantiating local copy of input time history vectors
-        xCoordVec = new ArrayList<>();
-        yCoordVec = new ArrayList<>();
+        xCoordVec1 = new ArrayList<>();
+        yCoordVec1 = new ArrayList<>();
+
+        xCoordVec2 = new ArrayList<>();
+        yCoordVec2 = new ArrayList<>();
+
+        xCoordVec3 = new ArrayList<>();
+        yCoordVec3 = new ArrayList<>();
 
         // instantiating toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Send FAB
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
+        final FloatingActionButton fabSent = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton sendAll = (FloatingActionButton) findViewById(R.id.sendAll);
+        final FloatingActionButton sendQuad1 = (FloatingActionButton) findViewById(R.id.sendQuad1);
+        final FloatingActionButton sendQuad2 = (FloatingActionButton) findViewById(R.id.sendQuad2);
+        final FloatingActionButton sendQuad3 = (FloatingActionButton) findViewById(R.id.sendQuad3);
+
+        final boolean fabOpen = false;
+        fabSent.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Snackbar.make(view, "Sent!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
 
-                xCoordVec = customCanvas.getxCoordVec();
-                yCoordVec = customCanvas.getyCoordVec();
-                zCoordVec = customCanvas.getzCoordVec();
-
-                node.setTraj(xCoordVec, yCoordVec, zCoordVec);
             }
         });
+
+        sendAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                xCoordVec1 = customCanvas.getxCoordVec();
+                yCoordVec1 = customCanvas.getyCoordVec();
+                zCoordVec1 = customCanvas.getzCoordVec();
+                node.setTraj(xCoordVec1, yCoordVec1, zCoordVec1);
+
+                xCoordVec2 = customCanvas.getxCoordVec();
+                yCoordVec2 = customCanvas.getyCoordVec();
+                zCoordVec2 = customCanvas.getzCoordVec();
+                node.setTraj(xCoordVec2, yCoordVec2, zCoordVec2);
+
+                xCoordVec3 = customCanvas.getxCoordVec();
+                yCoordVec3 = customCanvas.getyCoordVec();
+                zCoordVec3 = customCanvas.getzCoordVec();
+                node.setTraj(xCoordVec3, yCoordVec3, zCoordVec3);
+            }
+        });
+
+        sendQuad1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                xCoordVec1 = customCanvas.getxCoordVec();
+                yCoordVec1 = customCanvas.getyCoordVec();
+                zCoordVec1 = customCanvas.getzCoordVec();
+                node.setTraj(xCoordVec1, yCoordVec1, zCoordVec1);
+            }
+        });
+
+        sendQuad2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                xCoordVec2 = customCanvas.getxCoordVec();
+                yCoordVec2 = customCanvas.getyCoordVec();
+                zCoordVec2 = customCanvas.getzCoordVec();
+                node.setTraj(xCoordVec2, yCoordVec2, zCoordVec2);
+            }
+        });
+
+        sendQuad3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                xCoordVec3 = customCanvas.getxCoordVec();
+                yCoordVec3 = customCanvas.getyCoordVec();
+                zCoordVec3 = customCanvas.getzCoordVec();
+                node.setTraj(xCoordVec3, yCoordVec3, zCoordVec3);
+            }
+        });
+
 
         // Clear FAB
         FloatingActionButton fabClear = (FloatingActionButton) findViewById(R.id.fab_clear);
