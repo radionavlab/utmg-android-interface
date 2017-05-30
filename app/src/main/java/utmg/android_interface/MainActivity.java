@@ -24,6 +24,8 @@ import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import std_msgs.Bool;
+
 public class MainActivity extends AppCompatRosActivity {
 
     ROSNode node;
@@ -300,9 +302,12 @@ public class MainActivity extends AppCompatRosActivity {
                     // quad 1
                     if (pref.getBoolean("quad1", false) == true) {
                         quad1.setVisibility(View.VISIBLE);
-                        quad1.setX(objectXToPixel("quad1") - quad1.getWidth()/2);
-                        quad1.setY(objectYToPixel("quad1") - quad1.getHeight()/2);
-                        quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
+                        quad1.setX(objectXToPixel("quad1"));// - quad1.getWidth()/2);
+                        quad1.setY(objectYToPixel("quad1"));// - quad1.getHeight()/2);
+
+                        Log.d("MA Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
+
+                        //quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                     } else if (pref.getBoolean("quad1", false) == false) {
                         quad1.setVisibility((View.INVISIBLE));
                     }
@@ -363,6 +368,7 @@ public class MainActivity extends AppCompatRosActivity {
                         sword.setVisibility((View.INVISIBLE));
                     }
                     if (pref.getBoolean("obstacle1", false) == true) {
+                        Log.d("MA Obst1", "x: " + Float.toString(obstacle1.getX()) + "\ty:" + Float.toString(obstacle1.getY()));
                         obstacle1.setVisibility(View.VISIBLE);
                         obstacle1.setX((objectXToPixel("obstacle1")));
                         obstacle1.setY((objectYToPixel("obstacle1")));
@@ -377,7 +383,6 @@ public class MainActivity extends AppCompatRosActivity {
                     } else if (pref.getBoolean("obstacle2", false) == false) {
                         obstacle2.setVisibility((View.INVISIBLE));
                     }
-
                     handlerObstacles.postDelayed(this, 0);
                 }
             };
@@ -401,8 +406,7 @@ public class MainActivity extends AppCompatRosActivity {
         float normX = 0;
 
         if (item.equals("quad1")) {
-            Thing quad1 = DataShare.getInstance("quad1");
-            normX = (float) quad1.getY() / -pref.getFloat("newWidth",5);
+            normX = (float) DataShare.getInstance("quad1").getY() / -pref.getFloat("newWidth",5);
         }
         else if (item.equals("quad2")) {
             Thing quad2 = DataShare.getInstance("quad2");
@@ -426,7 +430,7 @@ public class MainActivity extends AppCompatRosActivity {
         }
 
         float transX = normX * canvasSize.getLayoutParams().width;
-        float xCoord = transX + canvasSize.getLayoutParams().width;
+        float xCoord = transX + canvasSize.getLayoutParams().width/2 + canvasSize.getLeft()/2;
 
         return xCoord;
     }
@@ -436,9 +440,17 @@ public class MainActivity extends AppCompatRosActivity {
 
         float normY = 0;
 
-        if (item.equals("quad")) {
+        if (item.equals("quad1")) {
             Thing quad1 = DataShare.getInstance("quad1");
             normY = (float) quad1.getX() / pref.getFloat("newHeight",3);
+        }
+        else if (item.equals("quad2")) {
+            Thing quad2 = DataShare.getInstance("quad2");
+            normY = (float) quad2.getX() / pref.getFloat("newHeight",3);
+        }
+        else if (item.equals("quad3")) {
+            Thing quad3 = DataShare.getInstance("quad3");
+            normY = (float) quad3.getX() / pref.getFloat("newHeight",3);
         }
         else if (item.equals("sword")) {
             Thing sword = DataShare.getInstance("sword");
@@ -454,7 +466,7 @@ public class MainActivity extends AppCompatRosActivity {
         }
 
         float transY = normY * canvasSize.getLayoutParams().height;
-        float yCoord = -transY + canvasSize.getLayoutParams().height - canvasSize.getTop();
+        float yCoord = -transY + canvasSize.getLayoutParams().height/2 + canvasSize.getTop()/2;
 
         //Log.i("yCoord",Float.toString(yCoord));
 

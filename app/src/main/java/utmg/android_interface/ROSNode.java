@@ -323,7 +323,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                 });
 
                 // TODO CHANGE ROSTOPIC
-                Subscriber<TransformStamped> subscriberQuad2 = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
+                Subscriber<TransformStamped> subscriberQuad2 = connectedNode.newSubscriber("vicon/crazyflie1/crazyflie1", geometry_msgs.TransformStamped._TYPE);
                 subscriberQuad2.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
                     public void onNewMessage(geometry_msgs.TransformStamped message) {
@@ -335,7 +335,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                 });
 
                 // TODO CHANGE ROSTOPIC
-                Subscriber<TransformStamped> subscriberQuad3 = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
+                Subscriber<TransformStamped> subscriberQuad3 = connectedNode.newSubscriber("vicon/crazyflie2/crazyflie2", geometry_msgs.TransformStamped._TYPE);
                 subscriberQuad3.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
                     public void onNewMessage(geometry_msgs.TransformStamped message) {
