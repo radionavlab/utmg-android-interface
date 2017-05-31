@@ -24,6 +24,22 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <LinearLayout
+        android:id="@+id/linLay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <utmg.android_interface.CanvasView
+            android:id="@+id/signature_canvas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/canvas_border"/>
+
+    </LinearLayout>
+
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -173,7 +189,7 @@
         android:layout_gravity="center"
         android:src="@drawable/quad"
         android:visibility="gone"
-        android:tint="@android:color/holo_red_light"/>
+        android:tint="@android:color/holo_red_dark"/>
 
     <ImageView
         android:id="@+id/quad2"
@@ -183,7 +199,7 @@
         android:layout_gravity="center"
         android:src="@drawable/quad"
         android:visibility="gone"
-        android:tint="@android:color/holo_green_light"/>
+        android:tint="@android:color/holo_green_dark"/>
 
     <ImageView
         android:id="@+id/quad3"
@@ -193,7 +209,7 @@
         android:layout_gravity="center"
         android:src="@drawable/quad"
         android:visibility="gone"
-        android:tint="@android:color/holo_blue_light"/>
+        android:tint="@android:color/holo_blue_dark"/>
 
     <ImageView
         android:id="@+id/sword"
@@ -222,21 +238,6 @@
         android:src="@drawable/obstacle"
         android:visibility="gone"/>
 
-    <LinearLayout
-        android:id="@+id/linLay"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <utmg.android_interface.CanvasView
-            android:id="@+id/signature_canvas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/canvas_border"/>
-
-    </LinearLayout>
 
     <TextView
         android:id="@+id/seekbar_value"
