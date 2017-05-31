@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
 import org.ros.android.AppCompatRosActivity;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
@@ -107,13 +110,11 @@ public class MainActivity extends AppCompatRosActivity {
         setSupportActionBar(toolbar);
 
         // Send FAB
-        final FloatingActionButton fabSent = (FloatingActionButton) findViewById(R.id.fab);
-        final FloatingActionButton sendAll = (FloatingActionButton) findViewById(R.id.sendAll);
-        final FloatingActionButton sendQuad1 = (FloatingActionButton) findViewById(R.id.sendQuad1);
-        final FloatingActionButton sendQuad2 = (FloatingActionButton) findViewById(R.id.sendQuad2);
-        final FloatingActionButton sendQuad3 = (FloatingActionButton) findViewById(R.id.sendQuad3);
-
-        final boolean fabOpen = false;
+        final FloatingActionsMenu fabSent = (FloatingActionsMenu) findViewById(R.id.fab);
+        final com.getbase.floatingactionbutton.FloatingActionButton sendAll = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendAll);
+        final com.getbase.floatingactionbutton.FloatingActionButton sendQuad1 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendQuad1);
+        final com.getbase.floatingactionbutton.FloatingActionButton sendQuad2 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendQuad2);
+        final com.getbase.floatingactionbutton.FloatingActionButton sendQuad3 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendQuad3);
         fabSent.setOnClickListener(new View.OnClickListener()
         {
             @Override
