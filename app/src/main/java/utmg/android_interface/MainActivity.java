@@ -302,10 +302,10 @@ public class MainActivity extends AppCompatRosActivity {
                     // quad 1
                     if (pref.getBoolean("quad1", false) == true) {
                         quad1.setVisibility(View.VISIBLE);
-                        quad1.setX(objectXToPixel("quad1"));// - quad1.getWidth()/2);
-                        quad1.setY(objectYToPixel("quad1"));// - quad1.getHeight()/2);
+                        quad1.setX(objectXToPixel("quad1") - quad1.getWidth()/2);
+                        quad1.setY(objectYToPixel("quad1") - quad1.getHeight()/2);
 
-                        Log.d("MA Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
+                        //Log.d("MA Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
 
                         //quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                     } else if (pref.getBoolean("quad1", false) == false) {
@@ -429,8 +429,11 @@ public class MainActivity extends AppCompatRosActivity {
             normX = (float) obstacle2.getY() / -pref.getFloat("newWidth",5);
         }
 
-        float transX = normX * canvasSize.getLayoutParams().width;
-        float xCoord = transX + canvasSize.getLayoutParams().width/2 + canvasSize.getLeft()/2;
+//        float transX = normX * canvasSize.getLayoutParams().width;
+//        float xCoord = transX + canvasSize.getLayoutParams().width/2 + canvasSize.getLeft()/2;
+
+        float transX = normX * canvasSize.getWidth();
+        float xCoord = canvasSize.getX() + canvasSize.getWidth()/2 + transX;
 
         return xCoord;
     }
@@ -465,8 +468,11 @@ public class MainActivity extends AppCompatRosActivity {
             normY = (float) obstacle2.getX() / pref.getFloat("newHeight",3);
         }
 
-        float transY = normY * canvasSize.getLayoutParams().height;
-        float yCoord = -transY + canvasSize.getLayoutParams().height/2 + canvasSize.getTop()/2;
+//        float transY = normY * canvasSize.getLayoutParams().height;
+//        float yCoord = -transY + canvasSize.getLayoutParams().height/2 + canvasSize.getTop()/2;
+
+        float transY = normY * canvasSize.getHeight();
+        float yCoord = canvasSize.getY() + canvasSize.getHeight()/2 - transY;
 
         //Log.i("yCoord",Float.toString(yCoord));
 
