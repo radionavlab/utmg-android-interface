@@ -105,6 +105,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
                 //nav_msgs.Path xyPath = publisherPath.newMessage();
 
+                // configure for trajectory or waypoint mode
                 if (pref.getInt("mode", 0) == 0) {
                     mPoseArray1.getHeader().setFrameId("world");
                     mPoseArray1.getHeader().setSeq(seq1);
@@ -141,7 +142,8 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                 ArrayList<Pose> poses3 = new ArrayList<>();
 
 
-                // package each trajectory/waypoint into ROS message and send for quad1
+
+                // package each trajectory/waypoint into ROS message and send for quad1 ////////////
                 if (xes1 == null || yes1 == null || zes1 == null) { } else {
                     for (int i = 0; i < xes1.size(); i++) {
                         geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
@@ -179,10 +181,10 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         publishToggle1 = false;
                     }
                 }
+                ////////////////////////////////////////////////////////////////////////////////////
 
 
-
-                // package each trajectory/waypoint into ROS message and send for quad2
+                // package each trajectory/waypoint into ROS message and send for quad2 ////////////
                 if (xes2 == null || yes2 == null || zes2 == null) { } else {
                     for (int i = 0; i < xes2.size(); i++) {
                         geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
@@ -220,11 +222,10 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         publishToggle2 = false;
                     }
                 }
+                ////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
-                // package each trajectory/waypoint into ROS message and send for quad3
+                // package each trajectory/waypoint into ROS message and send for quad3 ////////////
                 if (xes3 == null || yes3 == null || zes3 == null) { } else {
                     for (int i = 0; i < xes3.size(); i++) {
                         geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
@@ -262,9 +263,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         publishToggle3 = false;
                     }
                 }
-
-
-
+                ////////////////////////////////////////////////////////////////////////////////////
 
 
                 // obstacle publisher //////////////////////////////////////////////////////////////
@@ -307,10 +306,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
 
-
-
-
-                // listener
+                // listeners ///////////////////////////////////////////////////////////////////////
                 Subscriber<TransformStamped> subscriberQuad1 = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
                 subscriberQuad1.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
@@ -322,7 +318,6 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                     }
                 });
 
-                // TODO CHANGE ROSTOPIC
                 Subscriber<TransformStamped> subscriberQuad2 = connectedNode.newSubscriber("vicon/crazyflie1/crazyflie1", geometry_msgs.TransformStamped._TYPE);
                 subscriberQuad2.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
@@ -334,7 +329,6 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                     }
                 });
 
-                // TODO CHANGE ROSTOPIC
                 Subscriber<TransformStamped> subscriberQuad3 = connectedNode.newSubscriber("vicon/crazyflie2/crazyflie2", geometry_msgs.TransformStamped._TYPE);
                 subscriberQuad3.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                     @Override
@@ -378,6 +372,9 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         obstacle2.setZ(message.getTransform().getTranslation().getZ());
                     }
                 });
+                ////////////////////////////////////////////////////////////////////////////////////
+
+
 
                 // go to sleep for one second TODO for live mode reduce this time!
                 Thread.sleep(1000);
@@ -391,9 +388,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
         xes1 = x;
         yes1 = y;
         zes1 = z;
-
         publishToggle1 = true;
-
         Log.i("Traj1","Arrays transferred to node");
     }
 
@@ -401,9 +396,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
         xes2 = x;
         yes2 = y;
         zes2 = z;
-
         publishToggle2 = true;
-
         Log.i("Traj2","Arrays transferred to node");
     }
 
@@ -411,9 +404,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
         xes3 = x;
         yes3 = y;
         zes3 = z;
-
         publishToggle3 = true;
-
         Log.i("Traj3","Arrays transferred to node");
     }
 

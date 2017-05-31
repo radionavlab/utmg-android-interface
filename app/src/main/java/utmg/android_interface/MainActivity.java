@@ -362,24 +362,24 @@ public class MainActivity extends AppCompatRosActivity {
 
                     if (pref.getBoolean("sword", false) == true) {
                         sword.setVisibility(View.VISIBLE);
-                        sword.setX(objectXToPixel("sword"));// + sword.getWidth()/2);
-                        sword.setY(objectYToPixel("sword"));// + sword.getHeight()/2);
+                        sword.setX(objectXToPixel("sword") - sword.getWidth()/2);
+                        sword.setY(objectYToPixel("sword") - sword.getHeight()/2);
                     } else if (pref.getBoolean("sword", false) == false) {
                         sword.setVisibility((View.INVISIBLE));
                     }
                     if (pref.getBoolean("obstacle1", false) == true) {
                         Log.d("MA Obst1", "x: " + Float.toString(obstacle1.getX()) + "\ty:" + Float.toString(obstacle1.getY()));
                         obstacle1.setVisibility(View.VISIBLE);
-                        obstacle1.setX((objectXToPixel("obstacle1")));
-                        obstacle1.setY((objectYToPixel("obstacle1")));
+                        obstacle1.setX(objectXToPixel("obstacle1") - obstacle1.getWidth()/2);
+                        obstacle1.setY(objectYToPixel("obstacle1") - obstacle1.getHeight()/2);
 
                     } else if (pref.getBoolean("obstacle1", false) == false) {
                         obstacle1.setVisibility((View.INVISIBLE));
                     }
                     if (pref.getBoolean("obstacle2", false) == true) {
                         obstacle2.setVisibility(View.VISIBLE);
-                        obstacle2.setX((objectXToPixel("obstacle2")));
-                        obstacle2.setY((objectYToPixel("obstacle2")));
+                        obstacle2.setX(objectXToPixel("obstacle2") - obstacle2.getWidth()/2);
+                        obstacle2.setY(objectYToPixel("obstacle2") - obstacle2.getHeight()/2);
                     } else if (pref.getBoolean("obstacle2", false) == false) {
                         obstacle2.setVisibility((View.INVISIBLE));
                     }
