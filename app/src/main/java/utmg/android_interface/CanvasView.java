@@ -3,6 +3,7 @@ package utmg.android_interface;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -68,6 +69,11 @@ public class CanvasView extends View {
         mPath1 = new Path();
         mPath2 = new Path();
         mPath3 = new Path();
+
+        // TODO change colours to holo colours
+        DataShare.getInstance("quad1").setQuadColour(Color.RED);
+        DataShare.getInstance("quad2").setQuadColour(Color.GREEN);
+        DataShare.getInstance("quad3").setQuadColour(Color.BLUE);
 
         // Paint instantiations for trajectories ///////////////////////////////////////////////////
         mPaint1 = new Paint();
@@ -156,36 +162,45 @@ public class CanvasView extends View {
         // draw the mPath1 with the mPaint1 on the canvas when onDraw
         if (mode == 0) {
 
-            switch (pref.getInt("quadControl",1)) {
-                case 1:
-                    canvas.drawPath(mPath1, mPaint1);
-                    break;
-                case 2:
-                    canvas.drawPath(mPath2, mPaint2);
-                    break;
-                case 3:
-                    canvas.drawPath(mPath3, mPaint3);
-                    break;
-                default:
-                    break;
-            }
+            canvas.drawPath(mPath1, mPaint1);
+            canvas.drawPath(mPath2, mPaint2);
+            canvas.drawPath(mPath3, mPaint3);
+
+//            switch (pref.getInt("quadControl",1)) {
+//                case 1:
+//                    canvas.drawPath(mPath1, mPaint1);
+//                    break;
+//                case 2:
+//                    canvas.drawPath(mPath2, mPaint2);
+//                    break;
+//                case 3:
+//                    canvas.drawPath(mPath3, mPaint3);
+//                    break;
+//                default:
+//                    break;
+//            }
 
         }
         else if (mode == 1) {
 
-            switch (pref.getInt("quadControl",1)) {
-                case 1:
-                    for (int i = 0; i < xWaypoint1.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint1.get(i), yWaypoint1.get(i), mPaintWP1); }
-                    break;
-                case 2:
-                    for (int i = 0; i < xWaypoint2.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint2.get(i), yWaypoint2.get(i), mPaintWP2); }
-                    break;
-                case 3:
-                    for (int i = 0; i < xWaypoint3.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint3.get(i), yWaypoint3.get(i), mPaintWP3); }
-                    break;
-                default:
-                    break;
-            }
+            for (int i = 0; i < xWaypoint1.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint1.get(i), yWaypoint1.get(i), mPaintWP1); }
+            for (int i = 0; i < xWaypoint2.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint2.get(i), yWaypoint2.get(i), mPaintWP2); }
+            for (int i = 0; i < xWaypoint3.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint3.get(i), yWaypoint3.get(i), mPaintWP3); }
+
+
+//            switch (pref.getInt("quadControl",1)) {
+//                case 1:
+//                    for (int i = 0; i < xWaypoint1.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint1.get(i), yWaypoint1.get(i), mPaintWP1); }
+//                    break;
+//                case 2:
+//                    for (int i = 0; i < xWaypoint2.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint2.get(i), yWaypoint2.get(i), mPaintWP2); }
+//                    break;
+//                case 3:
+//                    for (int i = 0; i < xWaypoint3.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint3.get(i), yWaypoint3.get(i), mPaintWP3); }
+//                    break;
+//                default:
+//                    break;
+//            }
         }
     }
 
@@ -276,7 +291,6 @@ public class CanvasView extends View {
                         yCoordVec1.add(xMeters());
                         zCoordVec1.add(zObject.getInstance().getZ());
 //                mPaint1.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
-                        mPaint1.setStrokeWidth(4f);
                         break;
                     case 2:
                         mPath2.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
@@ -286,7 +300,6 @@ public class CanvasView extends View {
                         yCoordVec2.add(xMeters());
                         zCoordVec2.add(zObject.getInstance().getZ());
 //                mPaint2.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
-                        mPaint2.setStrokeWidth(4f);
                         break;
                     case 3:
                         mPath3.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
@@ -296,7 +309,6 @@ public class CanvasView extends View {
                         yCoordVec3.add(xMeters());
                         zCoordVec3.add(zObject.getInstance().getZ());
 //                mPaint3.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
-                        mPaint3.setStrokeWidth(4f);
                         break;
                     default:
                         break;

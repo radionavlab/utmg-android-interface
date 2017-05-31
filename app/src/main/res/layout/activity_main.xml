@@ -24,6 +24,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
     <LinearLayout
         android:id="@+id/linLay"
         android:layout_width="fill_parent"
@@ -40,6 +41,7 @@
 
     </LinearLayout>
 
+
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -52,7 +54,7 @@
         fab:fab_addButtonColorNormal="@android:color/holo_orange_dark"
         fab:fab_colorPressed="@android:color/holo_orange_light"
         fab:fab_icon="@android:drawable/ic_menu_send"
-        fab:fab_expandDirection="up">
+        fab:fab_expandDirection="left">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/sendQuad1"
@@ -108,7 +110,7 @@
         fab:fab_addButtonColorNormal="@android:color/holo_purple"
         fab:fab_colorPressed="@android:color/holo_orange_light"
         fab:fab_icon="@android:drawable/ic_menu_send"
-        fab:fab_expandDirection="up">
+        fab:fab_expandDirection="right">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/clearQuad1"
@@ -248,6 +250,7 @@
         android:layout_marginBottom="100dp"
         android:text="0"
         android:textSize="20dp"/>
+
 
     <FrameLayout
         android:id="@+id/slider_frame_layout"
