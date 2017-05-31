@@ -319,11 +319,6 @@ public class MainActivity extends AppCompatRosActivity {
         // quad display config
         {
 
-            // set quadColour attribute
-            DataShare.getInstance("quad1").setQuadColour(Color.RED);
-            DataShare.getInstance("quad2").setQuadColour(Color.GREEN);
-            DataShare.getInstance("quad3").setQuadColour(Color.BLUE);
-
             // set quad size
             final ImageView quad1 = (ImageView) findViewById(R.id.quad1);
             final ImageView quad2 = (ImageView) findViewById(R.id.quad2);
