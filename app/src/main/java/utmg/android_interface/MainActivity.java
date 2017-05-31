@@ -429,9 +429,6 @@ public class MainActivity extends AppCompatRosActivity {
             normX = (float) obstacle2.getY() / -pref.getFloat("newWidth",5);
         }
 
-//        float transX = normX * canvasSize.getLayoutParams().width;
-//        float xCoord = transX + canvasSize.getLayoutParams().width/2 + canvasSize.getLeft()/2;
-
         float transX = normX * canvasSize.getWidth();
         float xCoord = canvasSize.getX() + canvasSize.getWidth()/2 + transX;
 
@@ -468,13 +465,8 @@ public class MainActivity extends AppCompatRosActivity {
             normY = (float) obstacle2.getX() / pref.getFloat("newHeight",3);
         }
 
-//        float transY = normY * canvasSize.getLayoutParams().height;
-//        float yCoord = -transY + canvasSize.getLayoutParams().height/2 + canvasSize.getTop()/2;
-
         float transY = normY * canvasSize.getHeight();
         float yCoord = canvasSize.getY() + canvasSize.getHeight()/2 - transY;
-
-        //Log.i("yCoord",Float.toString(yCoord));
 
         return yCoord;
     }
