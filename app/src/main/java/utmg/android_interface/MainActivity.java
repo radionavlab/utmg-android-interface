@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatRosActivity {
         sendAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Sent All!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
                 xCoordVec1 = customCanvas.getxCoordVec1();
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatRosActivity {
         sendQuad1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Sent Quad1!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
                 xCoordVec1 = customCanvas.getxCoordVec1();
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatRosActivity {
         sendQuad2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Sent Quad2!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
                 xCoordVec2 = customCanvas.getxCoordVec2();
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatRosActivity {
         sendQuad3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Sent!", Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Sent Quad3!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
                 xCoordVec3 = customCanvas.getxCoordVec3();
@@ -188,14 +188,53 @@ public class MainActivity extends AppCompatRosActivity {
 
 
         // Clear FAB
-        FloatingActionButton fabClear = (FloatingActionButton) findViewById(R.id.fab_clear);
+        FloatingActionsMenu fabClear = (FloatingActionsMenu) findViewById(R.id.fab_clear);
+        final com.getbase.floatingactionbutton.FloatingActionButton clearAll = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.clearAll);
+        final com.getbase.floatingactionbutton.FloatingActionButton clearQuad1 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.clearQuad1);
+        final com.getbase.floatingactionbutton.FloatingActionButton clearQuad2 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.clearQuad2);
+        final com.getbase.floatingactionbutton.FloatingActionButton clearQuad3 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.clearQuad3);
         fabClear.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+
+
+            }
+        });
+
+        clearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 customCanvas.clearCanvas();
-                Snackbar.make(view, "Cleared!", Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Cleared All!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        clearQuad1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customCanvas.clearCanvasQuad1();
+                Snackbar.make(v, "Cleared Quad1!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        clearQuad2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customCanvas.clearCanvasQuad2();
+                Snackbar.make(v, "Cleared Quad2!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        clearQuad3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customCanvas.clearCanvasQuad3();
+                Snackbar.make(v, "Cleared Quad3!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
