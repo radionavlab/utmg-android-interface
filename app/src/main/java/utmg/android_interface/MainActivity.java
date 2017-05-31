@@ -284,15 +284,15 @@ public class MainActivity extends AppCompatRosActivity {
 
             quad1.getLayoutParams().height = (int) (screenHeight * 0.1);
             quad1.getLayoutParams().width = (int) (screenWidth * 0.1);
-            quad1.setColorFilter(DataShare.getInstance("quad1").getQuadColour());
+            //quad1.setColorFilter(DataShare.getInstance("quad1").getQuadColour());
 
             quad2.getLayoutParams().height = (int) (screenHeight * 0.1);
             quad2.getLayoutParams().width = (int) (screenWidth * 0.1);
-            quad2.setColorFilter(DataShare.getInstance("quad2").getQuadColour());
+            //quad2.setColorFilter(DataShare.getInstance("quad2").getQuadColour());
 
             quad3.getLayoutParams().height = (int) (screenHeight * 0.1);
             quad3.getLayoutParams().width = (int) (screenWidth * 0.1);
-            quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
+            //quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
 
             // show real-time location of the quads
             final Handler handlerQuad = new Handler();

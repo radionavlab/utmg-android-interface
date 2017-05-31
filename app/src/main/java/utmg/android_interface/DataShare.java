@@ -20,9 +20,9 @@ public class DataShare extends Application {
 
     public DataShare() {
 
-        quad1.setQuadColour(Color.RED);
-        quad2.setQuadColour(Color.GREEN);
-        quad3.setQuadColour(Color.BLUE);
+//        quad1.setQuadColour(Color.RED);
+//        quad2.setQuadColour(Color.GREEN);
+//        quad3.setQuadColour(Color.BLUE);
 
     }
 
