@@ -3,7 +3,6 @@ package utmg.android_interface;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -18,8 +17,11 @@ public class CanvasView extends View {
 
     private Bitmap mBitmap;
     private Canvas mCanvas;
-    private Path mPath;
     Context context;
+
+    private Path mPath1;
+    private Path mPath2;
+    private Path mPath3;
 
     private Paint mPaint1;
     private Paint mPaint2;
@@ -63,7 +65,9 @@ public class CanvasView extends View {
         mode = pref.getInt("mode", 0);
 
         // we set a new Path
-        mPath = new Path();
+        mPath1 = new Path();
+        mPath2 = new Path();
+        mPath3 = new Path();
 
         // Paint instantiations for trajectories ///////////////////////////////////////////////////
         mPaint1 = new Paint();
@@ -149,14 +153,38 @@ public class CanvasView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // draw the mPath with the mPaint1 on the canvas when onDraw
+        // draw the mPath1 with the mPaint1 on the canvas when onDraw
         if (mode == 0) {
-            canvas.drawPath(mPath, mPaint1);
+
+            switch (pref.getInt("quadControl",1)) {
+                case 1:
+                    canvas.drawPath(mPath1, mPaint1);
+                    break;
+                case 2:
+                    canvas.drawPath(mPath2, mPaint2);
+                    break;
+                case 3:
+                    canvas.drawPath(mPath3, mPaint3);
+                    break;
+                default:
+                    break;
+            }
+
         }
         else if (mode == 1) {
-            for (int i = 0; i < xWaypoint1.size(); i++) {
 
-                canvas.drawText(Integer.toString(i+1), xWaypoint1.get(i), yWaypoint1.get(i), mPaintWP1);
+            switch (pref.getInt("quadControl",1)) {
+                case 1:
+                    for (int i = 0; i < xWaypoint1.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint1.get(i), yWaypoint1.get(i), mPaintWP1); }
+                    break;
+                case 2:
+                    for (int i = 0; i < xWaypoint2.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint2.get(i), yWaypoint2.get(i), mPaintWP2); }
+                    break;
+                case 3:
+                    for (int i = 0; i < xWaypoint3.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint3.get(i), yWaypoint3.get(i), mPaintWP3); }
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -164,24 +192,69 @@ public class CanvasView extends View {
     // when ACTION_DOWN start touch according to the x,y values
     private void startTouch(float x, float y) {
         if (mode == 0) {
-            mPath.reset();
-            // instantiate x, y arrays
-            xCoordVec1 = new ArrayList<>();
-            yCoordVec1 = new ArrayList<>();
-            zCoordVec1 = new ArrayList<>();
+
+            switch (pref.getInt("quadControl",1)) {
+                case 1:
+                    mPath1.reset();
+                    xCoordVec1 = new ArrayList<>();
+                    yCoordVec1 = new ArrayList<>();
+                    zCoordVec1 = new ArrayList<>();
+                    mPath1.moveTo(x, y);
+                    break;
+                case 2:
+                    mPath2.reset();
+                    xCoordVec2 = new ArrayList<>();
+                    yCoordVec2 = new ArrayList<>();
+                    zCoordVec2 = new ArrayList<>();
+                    mPath2.moveTo(x, y);
+                    break;
+                case 3:
+                    mPath3.reset();
+                    xCoordVec3 = new ArrayList<>();
+                    yCoordVec3 = new ArrayList<>();
+                    zCoordVec3 = new ArrayList<>();
+                    mPath3.moveTo(x, y);
+                    break;
+                default:
+                    break;
+            }
         }
 
-        mPath.moveTo(x, y);
         mX = x;
         mY = y;
 
         if (mode == 1) {
-            xWaypoint1.add(mX);
-            yWaypoint1.add(mY);
-            xCoordVec1.add(yMeters()); // x-y swap due to screen rotation... or something. I dunno.
-            yCoordVec1.add(xMeters());
-            zCoordVec1.add(zObject.getInstance().getZ());
-            super.onDraw(mCanvas);
+
+
+            switch (pref.getInt("quadControl",1)) {
+                case 1:
+                    xWaypoint1.add(mX);
+                    yWaypoint1.add(mY);
+                    xCoordVec1.add(yMeters()); // x-y swap due to screen rotation... or something. I dunno.
+                    yCoordVec1.add(xMeters());
+                    zCoordVec1.add(zObject.getInstance().getZ());
+                    super.onDraw(mCanvas);
+                    break;
+                case 2:
+                    xWaypoint2.add(mX);
+                    yWaypoint2.add(mY);
+                    xCoordVec2.add(yMeters()); // x-y swap due to screen rotation... or something. I dunno.
+                    yCoordVec2.add(xMeters());
+                    zCoordVec2.add(zObject.getInstance().getZ());
+                    super.onDraw(mCanvas);
+                    break;
+                case 3:
+                    xWaypoint3.add(mX);
+                    yWaypoint3.add(mY);
+                    xCoordVec3.add(yMeters()); // x-y swap due to screen rotation... or something. I dunno.
+                    yCoordVec3.add(xMeters());
+                    zCoordVec3.add(zObject.getInstance().getZ());
+                    super.onDraw(mCanvas);
+                    break;
+                default:
+                    break;
+            }
+
         }
 
     }
@@ -192,14 +265,42 @@ public class CanvasView extends View {
             float dx = Math.abs(x - mX);
             float dy = Math.abs(y - mY);
             if (dx >= TOLERANCE || dy >= TOLERANCE) {
-                mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-                mX = x;
-                mY = y;
-                xCoordVec1.add(yMeters());
-                yCoordVec1.add(xMeters());
-                zCoordVec1.add(zObject.getInstance().getZ());
+
+
+                switch (pref.getInt("quadControl",1)) {
+                    case 1:
+                        mPath1.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                        mX = x;
+                        mY = y;
+                        xCoordVec1.add(yMeters());
+                        yCoordVec1.add(xMeters());
+                        zCoordVec1.add(zObject.getInstance().getZ());
 //                mPaint1.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
-                mPaint1.setStrokeWidth(4f);
+                        mPaint1.setStrokeWidth(4f);
+                        break;
+                    case 2:
+                        mPath2.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                        mX = x;
+                        mY = y;
+                        xCoordVec2.add(yMeters());
+                        yCoordVec2.add(xMeters());
+                        zCoordVec2.add(zObject.getInstance().getZ());
+//                mPaint2.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
+                        mPaint2.setStrokeWidth(4f);
+                        break;
+                    case 3:
+                        mPath3.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                        mX = x;
+                        mY = y;
+                        xCoordVec3.add(yMeters());
+                        yCoordVec3.add(xMeters());
+                        zCoordVec3.add(zObject.getInstance().getZ());
+//                mPaint3.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
+                        mPaint3.setStrokeWidth(4f);
+                        break;
+                    default:
+                        break;
+                }
 
                 Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
             }
@@ -207,7 +308,7 @@ public class CanvasView extends View {
     }
 
     // when ACTION_UP stop touch
-    private void upTouch() { //mPath.lineTo(mX, mY);
+    private void upTouch() { //mPath1.lineTo(mX, mY);
     }
 
     public void clearCanvas() {
@@ -217,9 +318,54 @@ public class CanvasView extends View {
         xWaypoint1 = new ArrayList<>();
         yWaypoint1 = new ArrayList<>();
 
-        mPath.reset();
+        xCoordVec2 = new ArrayList<>();
+        yCoordVec2 = new ArrayList<>();
+        zCoordVec2 = new ArrayList<>();
+        xWaypoint2 = new ArrayList<>();
+        yWaypoint2 = new ArrayList<>();
+
+        xCoordVec3 = new ArrayList<>();
+        yCoordVec3 = new ArrayList<>();
+        zCoordVec3 = new ArrayList<>();
+        xWaypoint3 = new ArrayList<>();
+        yWaypoint3 = new ArrayList<>();
+
+        mPath1.reset();
+        mPath2.reset();
+        mPath3.reset();
         invalidate();
     }
+
+    public void clearCanvasQuad1() {
+        xCoordVec1 = new ArrayList<>();
+        yCoordVec1 = new ArrayList<>();
+        zCoordVec1 = new ArrayList<>();
+        xWaypoint1 = new ArrayList<>();
+        yWaypoint1 = new ArrayList<>();
+        mPath1.reset();
+        invalidate();
+    }
+
+    public void clearCanvasQuad2() {
+        xCoordVec2 = new ArrayList<>();
+        yCoordVec2 = new ArrayList<>();
+        zCoordVec2 = new ArrayList<>();
+        xWaypoint2 = new ArrayList<>();
+        yWaypoint2 = new ArrayList<>();
+        mPath2.reset();
+        invalidate();
+    }
+
+    public void clearCanvasQuad3() {
+        xCoordVec3 = new ArrayList<>();
+        yCoordVec3 = new ArrayList<>();
+        zCoordVec3 = new ArrayList<>();
+        xWaypoint3 = new ArrayList<>();
+        yWaypoint3 = new ArrayList<>();
+        mPath3.reset();
+        invalidate();
+    }
+
 
     //override the onTouchEvent
     @Override

@@ -302,6 +302,27 @@ public class MainActivity extends AppCompatRosActivity {
             quad3.getLayoutParams().width = (int) (screenWidth * 0.1);
             //quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
 
+
+            // onclick listeners for quad imageviews
+            quad1.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    prefEditor.putInt("quadControl",1);
+                    prefEditor.commit();
+                }
+            });
+            quad2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    prefEditor.putInt("quadControl",2);
+                    prefEditor.commit();
+                }
+            });
+            quad3.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    prefEditor.putInt("quadControl",3);
+                    prefEditor.commit();
+                }
+            });
+
             // show real-time location of the quads
             final Handler handlerQuad = new Handler();
             Runnable runnableQuad = new Runnable() {
@@ -345,6 +366,7 @@ public class MainActivity extends AppCompatRosActivity {
                 }
             };
             runnableQuad.run();
+
         }
 
         // obstacle display config TODO fix to match quad config
