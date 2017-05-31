@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -277,6 +278,12 @@ public class MainActivity extends AppCompatRosActivity {
 
         // quad display config
         {
+
+            // set quadColour attribute
+            DataShare.getInstance("quad1").setQuadColour(Color.RED);
+            DataShare.getInstance("quad2").setQuadColour(Color.GREEN);
+            DataShare.getInstance("quad3").setQuadColour(Color.BLUE);
+
             // set quad size
             final ImageView quad1 = (ImageView) findViewById(R.id.quad1);
             final ImageView quad2 = (ImageView) findViewById(R.id.quad2);

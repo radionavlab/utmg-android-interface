@@ -20,8 +20,15 @@ public class CanvasView extends View {
     private Canvas mCanvas;
     private Path mPath;
     Context context;
-    private Paint mPaint;
-    private Paint mPaintWP;
+
+    private Paint mPaint1;
+    private Paint mPaint2;
+    private Paint mPaint3;
+
+    private Paint mPaintWP1;
+    private Paint mPaintWP2;
+    private Paint mPaintWP3;
+
     private float mX, mY;
     private static final float TOLERANCE = 5;
 
@@ -58,22 +65,54 @@ public class CanvasView extends View {
         // we set a new Path
         mPath = new Path();
 
-        // and we set a new Paint with the desired attributes
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.BLACK);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setStrokeWidth(4f);
+        // Paint instantiations for trajectories ///////////////////////////////////////////////////
+        mPaint1 = new Paint();
+        mPaint1.setAntiAlias(true);
+        mPaint1.setColor(DataShare.getInstance("quad1").getQuadColour());
+        mPaint1.setStyle(Paint.Style.STROKE);
+        mPaint1.setStrokeJoin(Paint.Join.ROUND);
+        mPaint1.setStrokeWidth(4f);
 
-        // paint for waypoint
-        mPaintWP = new Paint();
-        mPaintWP.setAntiAlias(true);
-        mPaintWP.setStyle(Paint.Style.STROKE);
-        mPaintWP.setStrokeWidth(1);
-        mPaintWP.setStyle(Paint.Style.FILL);
-        mPaintWP.setColor(Color.BLACK);
-        mPaintWP.setTextSize(25);
+        mPaint2 = new Paint();
+        mPaint2.setAntiAlias(true);
+        mPaint2.setColor(DataShare.getInstance("quad2").getQuadColour());
+        mPaint2.setStyle(Paint.Style.STROKE);
+        mPaint2.setStrokeJoin(Paint.Join.ROUND);
+        mPaint2.setStrokeWidth(4f);
+
+        mPaint3 = new Paint();
+        mPaint3.setAntiAlias(true);
+        mPaint3.setColor(DataShare.getInstance("quad3").getQuadColour());
+        mPaint3.setStyle(Paint.Style.STROKE);
+        mPaint3.setStrokeJoin(Paint.Join.ROUND);
+        mPaint3.setStrokeWidth(4f);
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Paint instantiations for waypoints //////////////////////////////////////////////////////
+        mPaintWP1 = new Paint();
+        mPaintWP1.setAntiAlias(true);
+        mPaintWP1.setStyle(Paint.Style.STROKE);
+        mPaintWP1.setStrokeWidth(1);
+        mPaintWP1.setStyle(Paint.Style.FILL);
+        mPaintWP1.setColor(DataShare.getInstance("quad1").getQuadColour());
+        mPaintWP1.setTextSize(25);
+
+        mPaintWP2 = new Paint();
+        mPaintWP2.setAntiAlias(true);
+        mPaintWP2.setStyle(Paint.Style.STROKE);
+        mPaintWP2.setStrokeWidth(1);
+        mPaintWP2.setStyle(Paint.Style.FILL);
+        mPaintWP2.setColor(DataShare.getInstance("quad2").getQuadColour());
+        mPaintWP2.setTextSize(25);
+
+        mPaintWP3 = new Paint();
+        mPaintWP3.setAntiAlias(true);
+        mPaintWP3.setStyle(Paint.Style.STROKE);
+        mPaintWP3.setStrokeWidth(1);
+        mPaintWP3.setStyle(Paint.Style.FILL);
+        mPaintWP3.setColor(DataShare.getInstance("quad3").getQuadColour());
+        mPaintWP3.setTextSize(25);
+        ////////////////////////////////////////////////////////////////////////////////////////////
 
         // instantiate x, y arrays
         xCoordVec1 = new ArrayList<>();
@@ -110,14 +149,14 @@ public class CanvasView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // draw the mPath with the mPaint on the canvas when onDraw
+        // draw the mPath with the mPaint1 on the canvas when onDraw
         if (mode == 0) {
-            canvas.drawPath(mPath, mPaint);
+            canvas.drawPath(mPath, mPaint1);
         }
         else if (mode == 1) {
             for (int i = 0; i < xWaypoint1.size(); i++) {
 
-                canvas.drawText(Integer.toString(i+1), xWaypoint1.get(i), yWaypoint1.get(i), mPaintWP);
+                canvas.drawText(Integer.toString(i+1), xWaypoint1.get(i), yWaypoint1.get(i), mPaintWP1);
             }
         }
     }
@@ -159,8 +198,8 @@ public class CanvasView extends View {
                 xCoordVec1.add(yMeters());
                 yCoordVec1.add(xMeters());
                 zCoordVec1.add(zObject.getInstance().getZ());
-//                mPaint.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
-                mPaint.setStrokeWidth(4f);
+//                mPaint1.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
+                mPaint1.setStrokeWidth(4f);
 
                 Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
             }
