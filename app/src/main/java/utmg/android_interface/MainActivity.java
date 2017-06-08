@@ -14,10 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -341,25 +343,25 @@ public class MainActivity extends AppCompatRosActivity {
             //quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
 
 
-            // onclick listeners for quad imageviews
-            quad1.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    prefEditor.putInt("quadControl",1);
-                    prefEditor.commit();
-                }
-            });
-            quad2.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    prefEditor.putInt("quadControl",2);
-                    prefEditor.commit();
-                }
-            });
-            quad3.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    prefEditor.putInt("quadControl",3);
-                    prefEditor.commit();
-                }
-            });
+//            // onclick listeners for quad imageviews
+//            quad1.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    prefEditor.putInt("quadControl",1);
+//                    prefEditor.commit();
+//                }
+//            });
+//            quad2.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    prefEditor.putInt("quadControl",2);
+//                    prefEditor.commit();
+//                }
+//            });
+//            quad3.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    prefEditor.putInt("quadControl",3);
+//                    prefEditor.commit();
+//                }
+//            });
 
             // show real-time location of the quads
             final Handler handlerQuad = new Handler();
@@ -457,6 +459,47 @@ public class MainActivity extends AppCompatRosActivity {
             runnableObstacles.run();
         }
 
+
+        // quad control toggle switches
+        final Switch quad1Switch = (Switch) findViewById(R.id.quad1Switch);
+        final Switch quad2Switch = (Switch) findViewById(R.id.quad2Switch);
+        final Switch quad3Switch = (Switch) findViewById(R.id.quad3Switch);
+
+        quad1Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    prefEditor.putInt("quadControl",1);
+                    prefEditor.commit();
+
+                    quad2Switch.setChecked(false);
+                    quad3Switch.setChecked(false);
+                }
+            }
+        });
+
+        quad2Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    prefEditor.putInt("quadControl",2);
+                    prefEditor.commit();
+
+                    quad1Switch.setChecked(false);
+                    quad3Switch.setChecked(false);
+                }
+            }
+        });
+
+        quad3Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    prefEditor.putInt("quadControl",3);
+                    prefEditor.commit();
+
+                    quad1Switch.setChecked(false);
+                    quad2Switch.setChecked(false);
+                }
+            }
+        });
     }
 
     // rescaling canvas proportions to (somewhat) fit screen depending on screen orientation
@@ -556,11 +599,11 @@ public class MainActivity extends AppCompatRosActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_roscam) {
-            startActivity(new Intent(MainActivity.this, ROSCam.class));
-        }
+//        if (id == R.id.action_roscam) {
+//            startActivity(new Intent(MainActivity.this, ROSCam.class));
+//        }
 
-        else if (id == R.id.action_settings) {
+        if (id == R.id.action_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
 

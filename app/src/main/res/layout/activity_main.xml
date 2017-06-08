@@ -25,22 +25,6 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <LinearLayout
-        android:id="@+id/linLay"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <utmg.android_interface.CanvasView
-            android:id="@+id/signature_canvas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/canvas_border"/>
-
-    </LinearLayout>
-
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab"
@@ -202,7 +186,7 @@
             android:layout_gravity="bottom"
             android:layout_weight=".2"
             android:text="Quad2"
-            android:textColor="@android:color/holo_green_dark"/>/>
+            android:textColor="@android:color/holo_green_dark"/>
 
         <Switch
             android:id="@+id/quad3Switch"
@@ -211,7 +195,7 @@
             android:layout_gravity="bottom"
             android:layout_weight=".2"
             android:text="Quad3"
-            android:textColor="@android:color/holo_blue_dark"/>/>
+            android:textColor="@android:color/holo_blue_dark"/>
     </LinearLayout>
 
     <ImageView
@@ -310,5 +294,21 @@
         android:layout_marginBottom="30dp"
         android:text="New Dimensions"/>
 
+
+    <LinearLayout
+        android:id="@+id/linLay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <utmg.android_interface.CanvasView
+            android:id="@+id/signature_canvas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/canvas_border"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
