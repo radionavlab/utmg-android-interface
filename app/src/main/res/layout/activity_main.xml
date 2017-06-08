@@ -24,6 +24,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
     <LinearLayout
         android:id="@+id/linLay"
         android:layout_width="fill_parent"
@@ -39,6 +40,7 @@
             android:background="@drawable/canvas_border"/>
 
     </LinearLayout>
+
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab"
@@ -279,6 +281,7 @@
         android:layout_marginBottom="100dp"
         android:text="0"
         android:textSize="20dp"/>
+
 
     <FrameLayout
         android:id="@+id/slider_frame_layout"
