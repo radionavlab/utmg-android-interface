@@ -7,13 +7,13 @@ UT Machine Games Android Interface for quadcopter trajectory input by user.
 * Siddarth Kaki
 
 ## Dependencies
-* Vicon package [TODO]
+* Vicon package
 
   EITHER:
-  * vicon_bridge ros package adapted from ETH Zurich: https://github.com/radionavlab/vicon_bridge
+  * CURRENTLY SUPPORTED -`vicon_bridge` ros package adapted from ETH Zurich: https://github.com/radionavlab/vicon_bridge
   
   OR:
-  * vicon ros package adapted from KumarRobotics: https://github.com/radionavlab/vicon
+  * SUPPORT TO BE IMPLEMENTED - vicon ros package adapted from KumarRobotics: https://github.com/radionavlab/vicon
 
 ## Usage
 
