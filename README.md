@@ -18,9 +18,12 @@ UT Machine Games Android Interface for quadcopter trajectory input by user.
 ## Setup
 
 * Set ROS variables regarding network in each terminal used (or alternatively add these lines to `~/.bashrc`), where `192.168.1.XX` is your system's network IP address
+
     * run: `export ROS_HOSTNAME=192.168.1.XX`
     * run: `export ROS_MASTER_URI=http://192.168.1.XX:11311`
+
 * Configure ROS launch files to listen to VICON on the network, and to listen to the proper topic for each quadcopter
+
     If using `vicon_bridge`:
         * [TODO]
     If using `vicon`/`vicon_odom`:
