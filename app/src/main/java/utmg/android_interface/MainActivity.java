@@ -284,8 +284,9 @@ public class MainActivity extends AppCompatRosActivity {
 
 
         // display position of quad in meters
-        final TextView xMeters = (TextView) findViewById(R.id.meterX);
-        final TextView yMeters = (TextView) findViewById(R.id.meterY);
+//        final TextView xMeters = (TextView) findViewById(R.id.meterX);
+//        final TextView yMeters = (TextView) findViewById(R.id.meterY);
+        final TextView inMeters = (TextView) findViewById(R.id.inMeters);
         final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
@@ -293,20 +294,23 @@ public class MainActivity extends AppCompatRosActivity {
             public void run() {
 
                 if (pref.getBoolean("debugMode", false) == false) {
-                    xMeters.setVisibility(View.INVISIBLE);
-                    yMeters.setVisibility(View.INVISIBLE);
+//                    xMeters.setVisibility(View.INVISIBLE);
+//                    yMeters.setVisibility(View.INVISIBLE);
+                    inMeters.setVisibility(View.INVISIBLE);
                     quad2Pixel.setVisibility(View.INVISIBLE);
                 }
                 else if (pref.getBoolean("debugMode", false) == true) {
-                    xMeters.setVisibility(View.VISIBLE);
-                    yMeters.setVisibility(View.VISIBLE);
+//                    xMeters.setVisibility(View.VISIBLE);
+//                    yMeters.setVisibility(View.VISIBLE);
+                    inMeters.setVisibility(View.VISIBLE);
                     quad2Pixel.setVisibility(View.VISIBLE);
 
                     mX = customCanvas.xMeters();
                     mY = customCanvas.yMeters();
-                    xMeters.setText(Float.toString(mX) + "m     ");
-                    yMeters.setText(Float.toString(mY) + "m     ");
+//                    xMeters.setText(Float.toString(mX) + "m     ");
+//                    yMeters.setText(Float.toString(mY) + "m     ");
 
+                    inMeters.setText(Float.toString(mX) + "mX   " + Float.toString(mY) + "mY    ");
                     quad2Pixel.setText(Float.toString(objectXToPixel("quad")) + "xdp    " + Float.toString(objectYToPixel("quad")) + "ydp");
 
                     handler.postDelayed(this, 10);

@@ -52,7 +52,7 @@
         fab:fab_addButtonColorNormal="@android:color/holo_orange_dark"
         fab:fab_colorPressed="@android:color/holo_orange_light"
         fab:fab_icon="@android:drawable/ic_menu_send"
-        fab:fab_expandDirection="up">
+        fab:fab_expandDirection="left">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/sendQuad1"
@@ -108,7 +108,7 @@
         fab:fab_addButtonColorNormal="@android:color/holo_purple"
         fab:fab_colorPressed="@android:color/holo_orange_light"
         fab:fab_icon="@android:drawable/ic_menu_send"
-        fab:fab_expandDirection="up">
+        fab:fab_expandDirection="right">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/clearQuad1"
@@ -154,23 +154,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="73dp">
+        android:layout_height="73dp"
+        android:weightSum="1">
 
         <TextView
-            android:id="@+id/meterX"
+            android:id="@+id/inMeters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:text="xMeters"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:layout_weight=".2"/>
 
-        <TextView
-            android:id="@+id/meterY"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:text="      yMeters"
-            android:textSize="15dp" />
+        <!--<TextView-->
+            <!--android:id="@+id/meterY"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|right"-->
+            <!--android:text="      yMeters"-->
+            <!--android:textSize="15dp"-->
+            <!--android:layout_weight=".166"/>-->
 
         <TextView
             android:id="@+id/quad2pixel"
@@ -178,7 +181,35 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:textSize="15dp"
-            android:text="      quad2pixel"/>
+            android:text="      quad2pixel"
+            android:layout_weight=".2"/>
+
+        <Switch
+            android:id="@+id/quad1Switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight=".2"
+            android:text="Quad1"
+            android:textColor="@android:color/holo_red_dark"/>
+
+        <Switch
+            android:id="@+id/quad2Switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight=".2"
+            android:text="Quad2"
+            android:textColor="@android:color/holo_green_dark"/>/>
+
+        <Switch
+            android:id="@+id/quad3Switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight=".2"
+            android:text="Quad3"
+            android:textColor="@android:color/holo_blue_dark"/>/>
     </LinearLayout>
 
     <ImageView
@@ -266,7 +297,6 @@
             android:rotation="270"
             android:progressTint="@android:color/holo_blue_dark"
             android:thumbTint="@android:color/holo_blue_dark"/>
-
     </FrameLayout>
 
     <TextView

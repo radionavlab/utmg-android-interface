@@ -225,7 +225,6 @@ public class CanvasView extends View {
 
         if (mode == 1) {
 
-
             switch (pref.getInt("quadControl",1)) {
                 case 1:
                     xWaypoint1.add(mX);
