@@ -140,7 +140,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="73dp"
+        android:layout_height="85dp"
         android:weightSum="1">
 
         <TextView
@@ -150,7 +150,7 @@
             android:layout_gravity="bottom"
             android:text="xMeters"
             android:textSize="15dp"
-            android:layout_weight=".2"/>
+            android:layout_weight="0.4"/>
 
         <!--<TextView-->
             <!--android:id="@+id/meterY"-->
@@ -168,34 +168,41 @@
             android:layout_gravity="bottom|right"
             android:textSize="15dp"
             android:text="      quad2pixel"
-            android:layout_weight=".2"/>
+            android:layout_weight="0.4"/>
 
-        <Switch
-            android:id="@+id/quad1Switch"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight=".2"
-            android:text="Quad1"
-            android:textColor="@android:color/holo_red_dark"/>
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.2">
 
-        <Switch
-            android:id="@+id/quad2Switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight=".2"
-            android:text="Quad2"
-            android:textColor="@android:color/holo_green_dark"/>
+            <Switch
+                android:id="@+id/quad1Switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:text="Quad1"
+                android:textColor="@android:color/holo_red_dark"/>
 
-        <Switch
-            android:id="@+id/quad3Switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight=".2"
-            android:text="Quad3"
-            android:textColor="@android:color/holo_blue_dark"/>
+            <Switch
+                android:id="@+id/quad2Switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginLeft="50dp"
+                android:text="Quad2"
+                android:textColor="@android:color/holo_green_dark"/>
+
+            <Switch
+                android:id="@+id/quad3Switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginLeft="50dp"
+                android:text="Quad3"
+                android:textColor="@android:color/holo_blue_dark"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <ImageView

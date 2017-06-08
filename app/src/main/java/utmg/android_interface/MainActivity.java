@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatRosActivity {
     private ArrayList<Float> yCoordVec3;
     private ArrayList<Float> zCoordVec3;
 
+    private Switch quad1Switch;
+    private Switch quad2Switch;
+    private Switch quad3Switch;
+
     private float mX;
     private float mY;
 
@@ -343,25 +347,46 @@ public class MainActivity extends AppCompatRosActivity {
             //quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
 
 
-//            // onclick listeners for quad imageviews
-//            quad1.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    prefEditor.putInt("quadControl",1);
-//                    prefEditor.commit();
-//                }
-//            });
-//            quad2.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    prefEditor.putInt("quadControl",2);
-//                    prefEditor.commit();
-//                }
-//            });
-//            quad3.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    prefEditor.putInt("quadControl",3);
-//                    prefEditor.commit();
-//                }
-//            });
+            // quad control toggle switches
+            quad1Switch = (Switch) findViewById(R.id.quad1Switch);
+            quad2Switch = (Switch) findViewById(R.id.quad2Switch);
+            quad3Switch = (Switch) findViewById(R.id.quad3Switch);
+
+            quad1Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        prefEditor.putInt("quadControl",1);
+                        prefEditor.commit();
+
+                        quad2Switch.setChecked(false);
+                        quad3Switch.setChecked(false);
+                    }
+                }
+            });
+
+            quad2Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        prefEditor.putInt("quadControl",2);
+                        prefEditor.commit();
+
+                        quad1Switch.setChecked(false);
+                        quad3Switch.setChecked(false);
+                    }
+                }
+            });
+
+            quad3Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        prefEditor.putInt("quadControl",3);
+                        prefEditor.commit();
+
+                        quad1Switch.setChecked(false);
+                        quad2Switch.setChecked(false);
+                    }
+                }
+            });
 
             // show real-time location of the quads
             final Handler handlerQuad = new Handler();
@@ -371,6 +396,7 @@ public class MainActivity extends AppCompatRosActivity {
                     // quad 1
                     if (pref.getBoolean("quad1", false) == true) {
                         quad1.setVisibility(View.VISIBLE);
+                        quad1Switch.setEnabled(true);
                         quad1.setX(objectXToPixel("quad1") - quad1.getWidth()/2);
                         quad1.setY(objectYToPixel("quad1") - quad1.getHeight()/2);
 
@@ -379,26 +405,31 @@ public class MainActivity extends AppCompatRosActivity {
                         //quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                     } else if (pref.getBoolean("quad1", false) == false) {
                         quad1.setVisibility((View.INVISIBLE));
+                        quad1Switch.setEnabled(false);
                     }
 
                     // quad 2
                     if (pref.getBoolean("quad2", false) == true) {
                         quad2.setVisibility(View.VISIBLE);
+                        quad2Switch.setEnabled(true);
                         quad2.setX(objectXToPixel("quad2") - quad2.getWidth()/2);
                         quad2.setY(objectYToPixel("quad2") - quad2.getHeight()/2);
                         quad2.setImageAlpha( (int)(((DataShare.getInstance("quad2").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                     } else if (pref.getBoolean("quad2", false) == false) {
                         quad2.setVisibility((View.INVISIBLE));
+                        quad2Switch.setEnabled(false);
                     }
 
                     // quad 3
                     if (pref.getBoolean("quad3", false) == true) {
                         quad3.setVisibility(View.VISIBLE);
+                        quad3Switch.setEnabled(true);
                         quad3.setX(objectXToPixel("quad3") - quad3.getWidth()/2);
                         quad3.setY(objectYToPixel("quad3") - quad3.getHeight()/2);
                         quad3.setImageAlpha( (int)(((DataShare.getInstance("quad3").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                     } else if (pref.getBoolean("quad3", false) == false) {
                         quad3.setVisibility((View.INVISIBLE));
+                        quad3Switch.setEnabled(false);
                     }
                     //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
 
@@ -459,47 +490,6 @@ public class MainActivity extends AppCompatRosActivity {
             runnableObstacles.run();
         }
 
-
-        // quad control toggle switches
-        final Switch quad1Switch = (Switch) findViewById(R.id.quad1Switch);
-        final Switch quad2Switch = (Switch) findViewById(R.id.quad2Switch);
-        final Switch quad3Switch = (Switch) findViewById(R.id.quad3Switch);
-
-        quad1Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    prefEditor.putInt("quadControl",1);
-                    prefEditor.commit();
-
-                    quad2Switch.setChecked(false);
-                    quad3Switch.setChecked(false);
-                }
-            }
-        });
-
-        quad2Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    prefEditor.putInt("quadControl",2);
-                    prefEditor.commit();
-
-                    quad1Switch.setChecked(false);
-                    quad3Switch.setChecked(false);
-                }
-            }
-        });
-
-        quad3Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    prefEditor.putInt("quadControl",3);
-                    prefEditor.commit();
-
-                    quad1Switch.setChecked(false);
-                    quad2Switch.setChecked(false);
-                }
-            }
-        });
     }
 
     // rescaling canvas proportions to (somewhat) fit screen depending on screen orientation
