@@ -40,6 +40,10 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     private ArrayList<Float> yes3;
     private ArrayList<Float> zes3;
 
+    private ArrayList<Time> tes1;
+    private ArrayList<Time> tes2;
+    private ArrayList<Time> tes3;
+
     private boolean publishToggle1 = false;
     private boolean publishToggle2 = false;
     private boolean publishToggle3 = false;
@@ -76,6 +80,8 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
         final Publisher<geometry_msgs.PoseArray> publisherObstacles1 = connectedNode.newPublisher(GraphName.of("PosControl/Obstacles"), PoseArray._TYPE);
 
         final Publisher<nav_msgs.Path> publisherPath1 = connectedNode.newPublisher(GraphName.of("PosControl/Path/Quad1"), Path._TYPE);
+        final Publisher<nav_msgs.Path> publisherPath2 = connectedNode.newPublisher(GraphName.of("PosControl/Path/Quad2"), Path._TYPE);
+        final Publisher<nav_msgs.Path> publisherPath3 = connectedNode.newPublisher(GraphName.of("PosControl/Path/Quad3"), Path._TYPE);
 
         // local instantiation of objects
         final Thing quad1 = DataShare.getInstance("quad1");
@@ -108,6 +114,8 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                 geometry_msgs.PoseArray mWaypointArray3 = publisherWaypoints3.newMessage();
 
                 nav_msgs.Path mPath1 = publisherPath1.newMessage();
+                nav_msgs.Path mPath2 = publisherPath2.newMessage();
+                nav_msgs.Path mPath3 = publisherPath3.newMessage();
 
                 // configure for trajectory or waypoint mode
                 if (pref.getInt("mode", 0) == 0) {
@@ -123,9 +131,19 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                     mPoseArray3.getHeader().setSeq(seq1);
                     mPoseArray3.getHeader().setStamp(new Time());
 
+
+
                     mPath1.getHeader().setFrameId("world");
                     mPath1.getHeader().setSeq(seq1);
-                    mPath1.getHeader().setStamp(getCurrentTime());
+                    mPath1.getHeader().setStamp(new Time());
+
+                    mPath2.getHeader().setFrameId("world");
+                    mPath2.getHeader().setSeq(seq2);
+                    mPath2.getHeader().setStamp(new Time());
+
+                    mPath3.getHeader().setFrameId("world");
+                    mPath3.getHeader().setSeq(seq3);
+                    mPath3.getHeader().setStamp(new Time());
 
                 }
                 else if (pref.getInt("mode", 0) == 1) {
@@ -148,10 +166,12 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                 ArrayList<Pose> poses3 = new ArrayList<>();
 
                 ArrayList<PoseStamped> poseStamped1 = new ArrayList<>();
+                ArrayList<PoseStamped> poseStamped2 = new ArrayList<>();
+                ArrayList<PoseStamped> poseStamped3 = new ArrayList<>();
 
 
                 // package each trajectory/waypoint into ROS message and send for quad1 ////////////
-                if (xes1 == null || yes1 == null || zes1 == null) { } else {
+                if (xes1 == null || yes1 == null || zes1 == null || tes1 == null) { } else {
                     for (int i = 0; i < xes1.size(); i++) {
                         geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
                         geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
@@ -162,7 +182,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         poses1.add(mPose);
 
                         geometry_msgs.PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
-                        mPoseStamped.getHeader().setStamp(getCurrentTime());
+                        mPoseStamped.getHeader().setStamp(tes1.get(i));
                         mPoseStamped.setPose(mPose);
                         poseStamped1.add(mPoseStamped);
                     }
@@ -196,25 +216,29 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
                 // package each trajectory/waypoint into ROS message and send for quad2 ////////////
-                if (xes2 == null || yes2 == null || zes2 == null) { } else {
+                if (xes2 == null || yes2 == null || zes2 == null || tes2 == null) { } else {
                     for (int i = 0; i < xes2.size(); i++) {
                         geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
                         geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
-
                         mPoint.setX(xes2.get(i));
                         mPoint.setY(yes2.get(i));
                         mPoint.setZ(zes2.get(i));
-
                         mPose.setPosition(mPoint);
-
                         poses2.add(mPose);
+
+                        geometry_msgs.PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+                        mPoseStamped.getHeader().setStamp(tes2.get(i));
+                        mPoseStamped.setPose(mPose);
+                        poseStamped2.add(mPoseStamped);
                     }
 
                     if (pref.getInt("mode", 0) == 0) {
                         mPoseArray2.setPoses(poses2);
+                        mPath2.setPoses(poseStamped2);
 
                         if (publishToggle2 == true) {
                             publisherTrajectory2.publish(mPoseArray2);
+                            publisherPath2.publish(mPath2);
 
                             seq2 = seq2 + 1;
                         }
@@ -237,22 +261,25 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
 
 
                 // package each trajectory/waypoint into ROS message and send for quad3 ////////////
-                if (xes3 == null || yes3 == null || zes3 == null) { } else {
+                if (xes3 == null || yes3 == null || zes3 == null || tes3 == null) { } else {
                     for (int i = 0; i < xes3.size(); i++) {
                         geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
                         geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
-
                         mPoint.setX(xes3.get(i));
                         mPoint.setY(yes3.get(i));
                         mPoint.setZ(zes3.get(i));
-
                         mPose.setPosition(mPoint);
-
                         poses3.add(mPose);
+
+                        geometry_msgs.PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+                        mPoseStamped.getHeader().setStamp(tes3.get(i));
+                        mPoseStamped.setPose(mPose);
+                        poseStamped3.add(mPoseStamped);
                     }
 
                     if (pref.getInt("mode", 0) == 0) {
                         mPoseArray3.setPoses(poses3);
+                        mPath3.setPoses(poseStamped3);
 
                         if (publishToggle3 == true) {
                             publisherTrajectory3.publish(mPoseArray3);
@@ -386,7 +413,6 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                 ////////////////////////////////////////////////////////////////////////////////////
 
 
-
                 // go to sleep for one second TODO for live mode reduce this time!
                 Thread.sleep(1000);
             }
@@ -395,36 +421,31 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     }
 
     // MainActivity FAB sends vector of coordinates to here
-    void setTraj1(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z) {
+    void setTraj1(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
         xes1 = x;
         yes1 = y;
         zes1 = z;
+        tes1 = t;
         publishToggle1 = true;
         Log.i("Traj1","Arrays transferred to node");
     }
 
-    void setTraj2(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z) {
+    void setTraj2(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
         xes2 = x;
         yes2 = y;
         zes2 = z;
+        tes2 = t;
         publishToggle2 = true;
         Log.i("Traj2","Arrays transferred to node");
     }
 
-    void setTraj3(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z) {
+    void setTraj3(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
         xes3 = x;
         yes3 = y;
         zes3 = z;
+        tes3 = t;
         publishToggle3 = true;
         Log.i("Traj3","Arrays transferred to node");
     }
 
-    Time getCurrentTime() {
-        Date mDate = new Date();
-        long msecs = mDate.getTime();
-        Time mTime = new Time();
-        mTime.secs = (int) Math.floor(msecs / 1000);
-        mTime.nsecs = (int)((msecs % 1000) * 1000000);
-        return mTime;
-    }
 }

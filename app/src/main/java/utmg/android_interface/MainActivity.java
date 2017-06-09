@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import org.ros.android.AppCompatRosActivity;
+import org.ros.message.Time;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
@@ -47,6 +48,10 @@ public class MainActivity extends AppCompatRosActivity {
     private ArrayList<Float> xCoordVec3;
     private ArrayList<Float> yCoordVec3;
     private ArrayList<Float> zCoordVec3;
+
+    private ArrayList<Time> timesVec1;
+    private ArrayList<Time> timesVec2;
+    private ArrayList<Time> timesVec3;
 
     private Switch quad1Switch;
     private Switch quad2Switch;
@@ -111,6 +116,11 @@ public class MainActivity extends AppCompatRosActivity {
         xCoordVec3 = new ArrayList<>();
         yCoordVec3 = new ArrayList<>();
 
+        // instantiating local copy of time vectors
+        timesVec1 = new ArrayList<>();
+        timesVec2 = new ArrayList<>();
+        timesVec3 = new ArrayList<>();
+
         // instantiating toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -139,17 +149,20 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec1 = customCanvas.getxCoordVec1();
                 yCoordVec1 = customCanvas.getyCoordVec1();
                 zCoordVec1 = customCanvas.getzCoordVec1();
-                node.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1);
+                timesVec1 = customCanvas.getTimesVec1();
+                node.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
 
                 xCoordVec2 = customCanvas.getxCoordVec2();
                 yCoordVec2 = customCanvas.getyCoordVec2();
                 zCoordVec2 = customCanvas.getzCoordVec2();
-                node.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2);
+                timesVec2 = customCanvas.getTimesVec2();
+                node.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
 
                 xCoordVec3 = customCanvas.getxCoordVec3();
                 yCoordVec3 = customCanvas.getyCoordVec3();
                 zCoordVec3 = customCanvas.getzCoordVec3();
-                node.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3);
+                timesVec3 = customCanvas.getTimesVec3();
+                node.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
             }
         });
 
@@ -162,7 +175,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec1 = customCanvas.getxCoordVec1();
                 yCoordVec1 = customCanvas.getyCoordVec1();
                 zCoordVec1 = customCanvas.getzCoordVec1();
-                node.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1);
+                node.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
             }
         });
 
@@ -175,7 +188,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec2 = customCanvas.getxCoordVec2();
                 yCoordVec2 = customCanvas.getyCoordVec2();
                 zCoordVec2 = customCanvas.getzCoordVec2();
-                node.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2);
+                node.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
             }
         });
 
@@ -188,7 +201,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec3 = customCanvas.getxCoordVec3();
                 yCoordVec3 = customCanvas.getyCoordVec3();
                 zCoordVec3 = customCanvas.getzCoordVec3();
-                node.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3);
+                node.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
             }
         });
 

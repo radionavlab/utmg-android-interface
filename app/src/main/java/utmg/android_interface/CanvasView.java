@@ -11,7 +11,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
+import java.util.Date;
+
 import android.content.SharedPreferences;
+
+import org.ros.message.Time;
 
 
 public class CanvasView extends View {
@@ -52,6 +56,10 @@ public class CanvasView extends View {
     ArrayList<Float> zCoordVec3;
     ArrayList<Float> xWaypoint3;
     ArrayList<Float> yWaypoint3;
+
+    ArrayList<Time> timesVec1;
+    ArrayList<Time> timesVec2;
+    ArrayList<Time> timesVec3;
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
@@ -142,6 +150,11 @@ public class CanvasView extends View {
         zCoordVec3 = new ArrayList<>();
         xWaypoint3 = new ArrayList<>();
         yWaypoint3 = new ArrayList<>();
+
+        // instantiate time arrays
+        timesVec1 = new ArrayList<>();
+        timesVec2 = new ArrayList<>();
+        timesVec3 = new ArrayList<>();
     }
 
     // override onSizeChanged
@@ -166,20 +179,6 @@ public class CanvasView extends View {
             canvas.drawPath(mPath2, mPaint2);
             canvas.drawPath(mPath3, mPaint3);
 
-//            switch (pref.getInt("quadControl",1)) {
-//                case 1:
-//                    canvas.drawPath(mPath1, mPaint1);
-//                    break;
-//                case 2:
-//                    canvas.drawPath(mPath2, mPaint2);
-//                    break;
-//                case 3:
-//                    canvas.drawPath(mPath3, mPaint3);
-//                    break;
-//                default:
-//                    break;
-//            }
-
         }
         else if (mode == 1) {
 
@@ -187,20 +186,6 @@ public class CanvasView extends View {
             for (int i = 0; i < xWaypoint2.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint2.get(i), yWaypoint2.get(i), mPaintWP2); }
             for (int i = 0; i < xWaypoint3.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint3.get(i), yWaypoint3.get(i), mPaintWP3); }
 
-
-//            switch (pref.getInt("quadControl",1)) {
-//                case 1:
-//                    for (int i = 0; i < xWaypoint1.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint1.get(i), yWaypoint1.get(i), mPaintWP1); }
-//                    break;
-//                case 2:
-//                    for (int i = 0; i < xWaypoint2.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint2.get(i), yWaypoint2.get(i), mPaintWP2); }
-//                    break;
-//                case 3:
-//                    for (int i = 0; i < xWaypoint3.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint3.get(i), yWaypoint3.get(i), mPaintWP3); }
-//                    break;
-//                default:
-//                    break;
-//            }
         }
     }
 
@@ -214,6 +199,7 @@ public class CanvasView extends View {
                     xCoordVec1 = new ArrayList<>();
                     yCoordVec1 = new ArrayList<>();
                     zCoordVec1 = new ArrayList<>();
+                    timesVec1 = new ArrayList<>();
                     mPath1.moveTo(x, y);
                     break;
                 case 2:
@@ -221,6 +207,7 @@ public class CanvasView extends View {
                     xCoordVec2 = new ArrayList<>();
                     yCoordVec2 = new ArrayList<>();
                     zCoordVec2 = new ArrayList<>();
+                    timesVec2 = new ArrayList<>();
                     mPath2.moveTo(x, y);
                     break;
                 case 3:
@@ -228,6 +215,7 @@ public class CanvasView extends View {
                     xCoordVec3 = new ArrayList<>();
                     yCoordVec3 = new ArrayList<>();
                     zCoordVec3 = new ArrayList<>();
+                    timesVec3 = new ArrayList<>();
                     mPath3.moveTo(x, y);
                     break;
                 default:
@@ -289,6 +277,7 @@ public class CanvasView extends View {
                         xCoordVec1.add(yMeters());
                         yCoordVec1.add(xMeters());
                         zCoordVec1.add(zObject.getInstance().getZ());
+                        timesVec1.add(getCurrentTime());
 //                mPaint1.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
                         break;
                     case 2:
@@ -298,6 +287,7 @@ public class CanvasView extends View {
                         xCoordVec2.add(yMeters());
                         yCoordVec2.add(xMeters());
                         zCoordVec2.add(zObject.getInstance().getZ());
+                        timesVec2.add(getCurrentTime());
 //                mPaint2.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
                         break;
                     case 3:
@@ -307,6 +297,7 @@ public class CanvasView extends View {
                         xCoordVec3.add(yMeters());
                         yCoordVec3.add(xMeters());
                         zCoordVec3.add(zObject.getInstance().getZ());
+                        timesVec3.add(getCurrentTime());
 //                mPaint3.setAlpha(  (int)((zObject.getInstance().getZ()/pref.getFloat("newAltitude",2))*255.0)  );
                         break;
                     default:
@@ -341,6 +332,10 @@ public class CanvasView extends View {
         xWaypoint3 = new ArrayList<>();
         yWaypoint3 = new ArrayList<>();
 
+        timesVec1 = new ArrayList<>();
+        timesVec2 = new ArrayList<>();
+        timesVec3 = new ArrayList<>();
+
         mPath1.reset();
         mPath2.reset();
         mPath3.reset();
@@ -353,6 +348,7 @@ public class CanvasView extends View {
         zCoordVec1 = new ArrayList<>();
         xWaypoint1 = new ArrayList<>();
         yWaypoint1 = new ArrayList<>();
+        timesVec1 = new ArrayList<>();
         mPath1.reset();
         invalidate();
     }
@@ -363,6 +359,7 @@ public class CanvasView extends View {
         zCoordVec2 = new ArrayList<>();
         xWaypoint2 = new ArrayList<>();
         yWaypoint2 = new ArrayList<>();
+        timesVec2 = new ArrayList<>();
         mPath2.reset();
         invalidate();
     }
@@ -373,6 +370,7 @@ public class CanvasView extends View {
         zCoordVec3 = new ArrayList<>();
         xWaypoint3 = new ArrayList<>();
         yWaypoint3 = new ArrayList<>();
+        timesVec3 = new ArrayList<>();
         mPath3.reset();
         invalidate();
     }
@@ -417,6 +415,11 @@ public class CanvasView extends View {
     public ArrayList<Float> getyCoordVec3() { return yCoordVec3; }
     public ArrayList<Float> getzCoordVec3() { return zCoordVec3; }
 
+    // current ArrayList of time vectors
+    public ArrayList<Time> getTimesVec1() { return timesVec1; }
+    public ArrayList<Time> getTimesVec2() { return timesVec2; }
+    public ArrayList<Time> getTimesVec3() { return timesVec3; }
+
     // center x coordinate of bitmap
     public int getCenterX() {
         if(mBitmap != null) {
@@ -454,6 +457,15 @@ public class CanvasView extends View {
         }
         return 0;
 
+    }
+
+    Time getCurrentTime() {
+        Date mDateNow = new Date();
+        long msecs = System.currentTimeMillis(); //mDateNow.getTime();
+        Time mTime = new Time();
+        mTime.secs = (int) (msecs / 1000);
+        mTime.nsecs = (int)((msecs % 1000) * 1000000);
+        return mTime;
     }
 
 }
