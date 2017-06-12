@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="1_nav_msgs-1.12.5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/nav_msgs-1.12.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
