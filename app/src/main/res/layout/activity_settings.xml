@@ -166,7 +166,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:text="Edit canvas size:" />
+                        android:text="Edit canvas size (Press Done!):" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -215,6 +215,7 @@
                 </LinearLayout>
 
             </TableRow>
+
         </TableLayout>
 
     </ScrollView>

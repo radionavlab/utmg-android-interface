@@ -25,7 +25,6 @@
     </android.support.design.widget.AppBarLayout>
 
 
-
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -140,7 +139,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="85dp"
+        android:layout_height="80dp"
         android:weightSum="1">
 
         <TextView
@@ -151,15 +150,6 @@
             android:text="xMeters"
             android:textSize="15dp"
             android:layout_weight="0.4"/>
-
-        <!--<TextView-->
-            <!--android:id="@+id/meterY"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom|right"-->
-            <!--android:text="      yMeters"-->
-            <!--android:textSize="15dp"-->
-            <!--android:layout_weight=".166"/>-->
 
         <TextView
             android:id="@+id/quad2pixel"
@@ -173,7 +163,6 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:layout_weight="0.2">
 
             <Switch
@@ -203,6 +192,7 @@
                 android:textColor="@android:color/holo_blue_dark"/>
 
         </LinearLayout>
+
     </LinearLayout>
 
     <ImageView
@@ -279,13 +269,13 @@
         android:layout_width="32dp"
         android:layout_height="400dp"
         android:orientation="vertical"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="30dp"
         android:layout_gravity="center|left">
 
         <SeekBar
             android:id="@+id/slider"
             android:layout_width="320dp"
-            android:layout_height="32dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:max="2"
             android:rotation="270"
@@ -301,6 +291,13 @@
         android:layout_marginBottom="30dp"
         android:text="New Dimensions"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/linLay"
@@ -315,7 +312,7 @@
             android:layout_height="match_parent"
             android:textColor="#FFFFFF"
             android:background="@drawable/canvas_border"/>
-
     </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

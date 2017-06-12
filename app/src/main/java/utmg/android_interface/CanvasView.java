@@ -61,6 +61,10 @@ public class CanvasView extends View {
     ArrayList<Time> timesVec2;
     ArrayList<Time> timesVec3;
 
+    private long mRef1;
+    private long mRef2;
+    private long mRef3;
+
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
     int mode;
@@ -200,6 +204,7 @@ public class CanvasView extends View {
                     yCoordVec1 = new ArrayList<>();
                     zCoordVec1 = new ArrayList<>();
                     timesVec1 = new ArrayList<>();
+                    mRef1 = System.currentTimeMillis();
                     mPath1.moveTo(x, y);
                     break;
                 case 2:
@@ -208,6 +213,7 @@ public class CanvasView extends View {
                     yCoordVec2 = new ArrayList<>();
                     zCoordVec2 = new ArrayList<>();
                     timesVec2 = new ArrayList<>();
+                    mRef2 = System.currentTimeMillis();
                     mPath2.moveTo(x, y);
                     break;
                 case 3:
@@ -216,6 +222,7 @@ public class CanvasView extends View {
                     yCoordVec3 = new ArrayList<>();
                     zCoordVec3 = new ArrayList<>();
                     timesVec3 = new ArrayList<>();
+                    mRef3 = System.currentTimeMillis();
                     mPath3.moveTo(x, y);
                     break;
                 default:
@@ -460,11 +467,24 @@ public class CanvasView extends View {
     }
 
     Time getCurrentTime() {
-        Date mDateNow = new Date();
-        long msecs = System.currentTimeMillis(); //mDateNow.getTime();
+
+        long msecs = System.currentTimeMillis();
+        switch (pref.getInt("quadControl", 1)) {
+            case 1:
+                msecs = msecs - mRef1;
+                break;
+            case 2:
+                msecs = msecs - mRef2;
+                break;
+            case 3:
+                msecs = msecs - mRef3;
+                break;
+        }
+
         Time mTime = new Time();
         mTime.secs = (int) (msecs / 1000);
         mTime.nsecs = (int)((msecs % 1000) * 1000000);
+
         return mTime;
     }
 
