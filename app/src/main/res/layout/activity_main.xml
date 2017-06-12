@@ -8,21 +8,211 @@
     tools:context="utmg.android_interface.MainActivity">
 
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/toolbarLayout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="?attr/colorPrimary"
-            android:elevation="14dp"
-            android:minHeight="170dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-    </android.support.design.widget.AppBarLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="?attr/colorPrimary"
+                android:elevation="14dp"
+                android:minHeight="170dp"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.AppBarLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_below="@id/toolbarLayout"
+            android:layout_height="40dp"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/inMeters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="xMeters"
+                android:textSize="15dp"
+                android:layout_weight="0.4"/>
+
+            <!--<TextView-->
+                <!--android:id="@+id/meterY"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="bottom|right"-->
+                <!--android:text="      yMeters"-->
+                <!--android:textSize="15dp"-->
+                <!--android:layout_weight=".166"/>-->
+
+            <TextView
+                android:id="@+id/quad2pixel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:textSize="15dp"
+                android:text="      quad2pixel"
+                android:layout_weight="0.4"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.2">
+
+                <Switch
+                    android:id="@+id/quad1Switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:text="Quad1"
+                    android:textColor="@android:color/holo_red_dark"/>
+
+                <Switch
+                    android:id="@+id/quad2Switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginLeft="50dp"
+                    android:text="Quad2"
+                    android:textColor="@android:color/holo_green_dark"/>
+
+                <Switch
+                    android:id="@+id/quad3Switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginLeft="50dp"
+                    android:text="Quad3"
+                    android:textColor="@android:color/holo_blue_dark"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/quad1"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/quad"
+        android:visibility="gone"
+        android:tint="@android:color/holo_red_dark"/>
+
+    <ImageView
+        android:id="@+id/quad2"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/quad"
+        android:visibility="gone"
+        android:tint="@android:color/holo_green_dark"/>
+
+    <ImageView
+        android:id="@+id/quad3"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/quad"
+        android:visibility="gone"
+        android:tint="@android:color/holo_blue_dark"/>
+
+    <ImageView
+        android:id="@+id/sword"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/sword"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/obstacle1"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/obstacle"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/obstacle2"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/obstacle"
+        android:visibility="gone"/>
+
+
+    <TextView
+        android:id="@+id/seekbar_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginBottom="100dp"
+        android:text="0"
+        android:textSize="20dp"/>
+
+
+    <FrameLayout
+        android:id="@+id/slider_frame_layout"
+        android:layout_width="32dp"
+        android:layout_height="400dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center|left">
+
+        <SeekBar
+            android:id="@+id/slider"
+            android:layout_width="320dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:max="2"
+            android:rotation="270"
+            android:progressTint="@android:color/holo_blue_dark"
+            android:thumbTint="@android:color/holo_blue_dark"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/new_dimensions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="30dp"
+        android:text="New Dimensions"/>
+
+
+    <LinearLayout
+        android:id="@+id/linLay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <utmg.android_interface.CanvasView
+            android:id="@+id/signature_canvas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/canvas_border"/>
+
+    </LinearLayout>
+
 
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
@@ -135,184 +325,5 @@
             fab:fab_icon="@android:drawable/ic_menu_close_clear_cancel"
             fab:fab_size="mini"/>
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:weightSum="1">
-
-        <TextView
-            android:id="@+id/inMeters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="xMeters"
-            android:textSize="15dp"
-            android:layout_weight="0.4"/>
-
-        <TextView
-            android:id="@+id/quad2pixel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:textSize="15dp"
-            android:text="      quad2pixel"
-            android:layout_weight="0.4"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2">
-
-            <Switch
-                android:id="@+id/quad1Switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:text="Quad1"
-                android:textColor="@android:color/holo_red_dark"/>
-
-            <Switch
-                android:id="@+id/quad2Switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_marginLeft="50dp"
-                android:text="Quad2"
-                android:textColor="@android:color/holo_green_dark"/>
-
-            <Switch
-                android:id="@+id/quad3Switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_marginLeft="50dp"
-                android:text="Quad3"
-                android:textColor="@android:color/holo_blue_dark"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/quad1"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/quad"
-        android:visibility="gone"
-        android:tint="@android:color/holo_red_dark"/>
-
-    <ImageView
-        android:id="@+id/quad2"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/quad"
-        android:visibility="gone"
-        android:tint="@android:color/holo_green_dark"/>
-
-    <ImageView
-        android:id="@+id/quad3"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/quad"
-        android:visibility="gone"
-        android:tint="@android:color/holo_blue_dark"/>
-
-    <ImageView
-        android:id="@+id/sword"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/sword"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/obstacle1"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/obstacle"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/obstacle2"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/obstacle"
-        android:visibility="gone"/>
-
-
-    <TextView
-        android:id="@+id/seekbar_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginBottom="100dp"
-        android:text="0"
-        android:textSize="20dp"/>
-
-
-    <FrameLayout
-        android:id="@+id/slider_frame_layout"
-        android:layout_width="32dp"
-        android:layout_height="400dp"
-        android:orientation="vertical"
-        android:layout_marginLeft="30dp"
-        android:layout_gravity="center|left">
-
-        <SeekBar
-            android:id="@+id/slider"
-            android:layout_width="320dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:max="2"
-            android:rotation="270"
-            android:progressTint="@android:color/holo_blue_dark"
-            android:thumbTint="@android:color/holo_blue_dark"/>
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/new_dimensions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="30dp"
-        android:text="New Dimensions"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/linLay"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <utmg.android_interface.CanvasView
-            android:id="@+id/signature_canvas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/canvas_border"/>
-    </LinearLayout>
-
 
 </android.support.design.widget.CoordinatorLayout>
