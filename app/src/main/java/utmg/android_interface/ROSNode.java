@@ -181,10 +181,12 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         mPose.setPosition(mPoint);
                         poses1.add(mPose);
 
-                        geometry_msgs.PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
-                        mPoseStamped.getHeader().setStamp(tes1.get(i));
-                        mPoseStamped.setPose(mPose);
-                        poseStamped1.add(mPoseStamped);
+                        if (pref.getInt("mode", 0) == 0) {
+                            geometry_msgs.PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+                            mPoseStamped.getHeader().setStamp(tes1.get(i));
+                            mPoseStamped.setPose(mPose);
+                            poseStamped1.add(mPoseStamped);
+                        }
                     }
 
                     if (pref.getInt("mode", 0) == 0) {
@@ -226,10 +228,12 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         mPose.setPosition(mPoint);
                         poses2.add(mPose);
 
-                        geometry_msgs.PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
-                        mPoseStamped.getHeader().setStamp(tes2.get(i));
-                        mPoseStamped.setPose(mPose);
-                        poseStamped2.add(mPoseStamped);
+                        if (pref.getInt("mode", 0) == 0) {
+                            geometry_msgs.PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+                            mPoseStamped.getHeader().setStamp(tes2.get(i));
+                            mPoseStamped.setPose(mPose);
+                            poseStamped2.add(mPoseStamped);
+                        }
                     }
 
                     if (pref.getInt("mode", 0) == 0) {
@@ -271,10 +275,12 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         mPose.setPosition(mPoint);
                         poses3.add(mPose);
 
-                        geometry_msgs.PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
-                        mPoseStamped.getHeader().setStamp(tes3.get(i));
-                        mPoseStamped.setPose(mPose);
-                        poseStamped3.add(mPoseStamped);
+                        if (pref.getInt("mode", 0) == 0) {
+                            geometry_msgs.PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+                            mPoseStamped.getHeader().setStamp(tes3.get(i));
+                            mPoseStamped.setPose(mPose);
+                            poseStamped3.add(mPoseStamped);
+                        }
                     }
 
                     if (pref.getInt("mode", 0) == 0) {
