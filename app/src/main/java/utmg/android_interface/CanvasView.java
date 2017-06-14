@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -18,7 +20,7 @@ import android.content.SharedPreferences;
 import org.ros.message.Time;
 
 
-public class CanvasView extends View {
+public class CanvasView extends View implements Parcelable {
 
     private Bitmap mBitmap;
     private Canvas mCanvas;
@@ -467,7 +469,6 @@ public class CanvasView extends View {
     }
 
     Time getCurrentTime() {
-
         long msecs = System.currentTimeMillis();
         switch (pref.getInt("quadControl", 1)) {
             case 1:
@@ -487,5 +488,36 @@ public class CanvasView extends View {
 
         return mTime;
     }
+
+    Path getmPath1() {
+        return mPath1;
+    }
+
+    Path getmPath2() {
+        return mPath2;
+    }
+
+    Path getmPath3() {
+        return mPath3;
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+    }
+
+    public static final Parcelable.Creator<CanvasView> CREATOR
+            = new Parcelable.Creator<CanvasView>() {
+        public CanvasView createFromParcel(Parcel in) {
+            return null;
+        }
+
+        public CanvasView[] newArray(int size) {
+            return null;
+        }
+    };
+
 
 }

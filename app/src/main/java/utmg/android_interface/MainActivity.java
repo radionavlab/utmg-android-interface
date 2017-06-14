@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -124,6 +126,27 @@ public class MainActivity extends AppCompatRosActivity {
         // instantiating toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Preview Button
+        final Button preview = (Button) findViewById(R.id.previewButton);
+        preview.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+//                Path path1 = customCanvas.getmPath1();
+//                Path path2 = customCanvas.getmPath2();
+//                Path path3 = customCanvas.getmPath3();
+                Intent intent = new Intent();
+                Bundle b = new Bundle();
+                b.putParcelable("canvasBundle", customCanvas);
+                intent.putExtras(b);
+                intent.setClass(MainActivity.getContextOfApplication(), Preview.class);
+                intent.putExtra("Canvas", customCanvas);
+                startActivity(intent);
+
+                finish();
+            }
+        });
 
         // Send FAB
         final FloatingActionsMenu fabSent = (FloatingActionsMenu) findViewById(R.id.fab);

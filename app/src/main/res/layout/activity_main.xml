@@ -184,9 +184,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="15dp"
         android:text="New Dimensions"/>
 
+    <Button
+        android:id="@+id/previewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="35dp"
+        android:text="PREVIEW"/>
 
     <LinearLayout
         android:id="@+id/linLay"

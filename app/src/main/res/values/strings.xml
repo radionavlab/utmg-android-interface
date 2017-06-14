@@ -90,4 +90,5 @@
         <item>Trajectory</item>
         <item>Waypoint</item>
     </string-array>
+    <string name="title_activity_preview">Preview</string>
 </resources>
