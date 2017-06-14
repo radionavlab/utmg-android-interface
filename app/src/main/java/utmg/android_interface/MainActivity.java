@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -32,8 +29,6 @@ import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import std_msgs.Bool;
 
 public class MainActivity extends AppCompatRosActivity {
 
@@ -127,7 +122,7 @@ public class MainActivity extends AppCompatRosActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Preview Button
+        // PreviewActivity Button
         final Button preview = (Button) findViewById(R.id.previewButton);
         preview.setOnClickListener(new View.OnClickListener()
         {
@@ -136,15 +131,12 @@ public class MainActivity extends AppCompatRosActivity {
 //                Path path1 = customCanvas.getmPath1();
 //                Path path2 = customCanvas.getmPath2();
 //                Path path3 = customCanvas.getmPath3();
-                Intent intent = new Intent();
+                Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
                 Bundle b = new Bundle();
                 b.putParcelable("canvasBundle", customCanvas);
                 intent.putExtras(b);
-                intent.setClass(MainActivity.getContextOfApplication(), Preview.class);
-                intent.putExtra("Canvas", customCanvas);
+                //intent.putExtra("Canvas", customCanvas);
                 startActivity(intent);
-
-                finish();
             }
         });
 
@@ -303,7 +295,7 @@ public class MainActivity extends AppCompatRosActivity {
                         zObject.getInstance().setZ(value);
                     }
                 });
-                seekbarH.postDelayed(this, 0);
+                seekbarH.postDelayed(this, 10);
             }
         };
         seekbarR.run();
@@ -461,7 +453,7 @@ public class MainActivity extends AppCompatRosActivity {
                     }
                     //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
 
-                    handlerQuad.postDelayed(this, 0);
+                    handlerQuad.postDelayed(this, 10);
                 }
             };
             runnableQuad.run();
@@ -512,7 +504,7 @@ public class MainActivity extends AppCompatRosActivity {
                     } else if (pref.getBoolean("obstacle2", false) == false) {
                         obstacle2.setVisibility((View.INVISIBLE));
                     }
-                    handlerObstacles.postDelayed(this, 0);
+                    handlerObstacles.postDelayed(this, 10);
                 }
             };
             runnableObstacles.run();

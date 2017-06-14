@@ -63,9 +63,14 @@
                 android:value="utmg.android_interface.MainActivity" />
         </activity>
         <activity
-            android:name=".Preview"
+            android:name=".PreviewActivity"
             android:label="@string/title_activity_preview"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="utmg.android_interface.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

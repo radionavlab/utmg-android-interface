@@ -198,7 +198,4 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
     }
-
-
-
 }
