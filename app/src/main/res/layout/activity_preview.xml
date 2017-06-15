@@ -1,69 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/preview_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="utmg.android_interface.PreviewActivity">
 
-    <!--<android.support.design.widget.AppBarLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:theme="@style/AppTheme.AppBarOverlay">-->
-
-        <!--<android.support.v7.widget.Toolbar-->
-            <!--android:id="@+id/toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="?attr/actionBarSize"-->
-            <!--android:background="?attr/colorPrimary"-->
-            <!--app:popupTheme="@style/AppTheme.PopupOverlay" />-->
-
-    <!--</android.support.design.widget.AppBarLayout>-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
 
-        <SeekBar
-            android:id="@+id/quad1Seek"
+        <LinearLayout
+            android:id="@+id/linLay"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <utmg.android_interface.PreviewCanvas
+                android:id="@+id/preview_canvas"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/canvas_border"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/seekbar_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:thumb="@drawable/preview_seekbar_thumb1"
-            android:progressDrawable="@drawable/preview_seekbar_progress1"/>
+            android:layout_below="@id/linLay">
 
-        <SeekBar
-            android:id="@+id/quad2Seek"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_below="@id/quad1Seek"
-            android:paddingTop="20dp"
-            android:thumb="@drawable/preview_seekbar_thumb2"
-            android:progressDrawable="@drawable/preview_seekbar_progress2"/>
+            <SeekBar
+                android:id="@+id/quad1Seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/preview_seekbar_progress1"
+                android:thumb="@drawable/preview_seekbar_thumb1" />
 
-        <SeekBar
-            android:id="@+id/quad3Seek"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_below="@id/quad2Seek"
-            android:paddingTop="20dp"
-            android:thumb="@drawable/preview_seekbar_thumb3"
-            android:progressDrawable="@drawable/preview_seekbar_progress3"/>
+            <SeekBar
+                android:id="@+id/quad2Seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/quad1Seek"
+                android:layout_gravity="center"
+                android:paddingTop="20dp"
+                android:progressDrawable="@drawable/preview_seekbar_progress2"
+                android:thumb="@drawable/preview_seekbar_thumb2" />
 
-        <SeekBar
-            android:id="@+id/quadAllSeek"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_below="@id/quad3Seek"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:thumb="@drawable/preview_seekbar_thumb4"
-            android:progressDrawable="@drawable/preview_seekbar_progress4"/>
+            <SeekBar
+                android:id="@+id/quad3Seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/quad2Seek"
+                android:layout_gravity="center"
+                android:paddingTop="20dp"
+                android:progressDrawable="@drawable/preview_seekbar_progress3"
+                android:thumb="@drawable/preview_seekbar_thumb3" />
 
+            <SeekBar
+                android:id="@+id/quadAllSeek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/quad3Seek"
+                android:layout_gravity="center"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:progressDrawable="@drawable/preview_seekbar_progress4"
+                android:thumb="@drawable/preview_seekbar_thumb4" />
+        </RelativeLayout>
 
     </RelativeLayout>
 

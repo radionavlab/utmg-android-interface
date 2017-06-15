@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -84,8 +86,6 @@ public class MainActivity extends AppCompatRosActivity {
         // instantiating canvas
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
 
-        int orientation = this.getResources().getConfiguration().orientation;
-
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
@@ -128,14 +128,17 @@ public class MainActivity extends AppCompatRosActivity {
         {
             @Override
             public void onClick(View view) {
-//                Path path1 = customCanvas.getmPath1();
-//                Path path2 = customCanvas.getmPath2();
-//                Path path3 = customCanvas.getmPath3();
+                DataShare.setPath(1, customCanvas.getmPath1());
+                DataShare.setPath(2, customCanvas.getmPath2());
+                DataShare.setPath(3, customCanvas.getmPath3());
+
+                DataShare.setPaint(1, customCanvas.getmPaint1());
+                DataShare.setPaint(2, customCanvas.getmPaint2());
+                DataShare.setPaint(3, customCanvas.getmPaint3());
+
+
+
                 Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
-                Bundle b = new Bundle();
-                b.putParcelable("canvasBundle", customCanvas);
-                intent.putExtras(b);
-                //intent.putExtra("Canvas", customCanvas);
                 startActivity(intent);
             }
         });
