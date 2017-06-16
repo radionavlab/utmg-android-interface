@@ -26,7 +26,7 @@ UT Machine Games Android Interface for quadcopter trajectory input by user.
 * Configure ROS launch files to listen to VICON on the network, and to listen to the proper topic for each quadcopter
 
     If using `vicon_bridge`:
-    * [TODO]
+    * Edit `~/catkin_ws/src/vicon_bridge/launch/vicon.launch` to reflect IP address of the VICON host computer (the `datastream_hostport` parameter should be set to `192.168.1.100:801`)
 
     If using `vicon`/`vicon_odom`:
     * [TODO]
