@@ -43,9 +43,8 @@ public class PreviewActivity extends AppCompatActivity {
         pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
-        previewCanvas = (PreviewCanvas) findViewById(R.id.preview_canvas);
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
-        previewCanvas.callOnDraw();
+        previewCanvas = (PreviewCanvas) findViewById(R.id.preview_canvas);
 
         seekbarRelative = (RelativeLayout) findViewById(R.id.seekbar_relative);
         final SeekBar quad1Seek = (SeekBar) findViewById(R.id.quad1Seek);
@@ -53,8 +52,8 @@ public class PreviewActivity extends AppCompatActivity {
         final SeekBar quad3Seek = (SeekBar) findViewById(R.id.quad3Seek);
         final SeekBar quadAllSeek = (SeekBar) findViewById(R.id.quadAllSeek);
 
-        seekSum = quad1Seek.getHeight() + quad2Seek.getHeight() + quad3Seek.getHeight() + quadAllSeek.getHeight()
-        + quad2Seek.getPaddingTop() + quad3Seek.getPaddingTop() + quadAllSeek.getPaddingTop() + quadAllSeek.getPaddingBottom() ;
+        //seekSum = quad1Seek.getHeight() + quad2Seek.getHeight() + quad3Seek.getHeight() + quadAllSeek.getHeight()
+        //+ quad2Seek.getPaddingTop() + quad3Seek.getPaddingTop() + quadAllSeek.getPaddingTop() + quadAllSeek.getPaddingBottom() ;
 
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -62,22 +61,26 @@ public class PreviewActivity extends AppCompatActivity {
 //        Log.i("seekBarHeight", Float.toString(seekbarRelative.getHeight()));
 //        Log.i("screenHeight", Float.toString(screenHeight));
 
-        final ViewTreeObserver observer= seekbarRelative.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
+        seekbarRelative.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
-                seekbarRelative.getHeight();
-
-                canvasSize.getLayoutParams().height = ((screenHeight - seekbarRelative.getHeight()));
-                canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
+                // read height with myLinearLayout.getHeight() etc.
 
                 Log.i("seekBarHeight", Float.toString(seekbarRelative.getHeight()));
-                Log.i("screenHeight", Float.toString(screenHeight));
-                Log.i("canvasHeight", Float.toString(canvasSize.getLayoutParams().height));
-                Log.i("canvasWidth", Float.toString(canvasSize.getLayoutParams().width));
-                //observer.removeGlobalOnLayoutListener(this);
+
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) canvasSize.getLayoutParams();
+                params.height = (int)(screenHeight - seekbarRelative.getHeight() - (getSupportActionBar().getHeight()*1.5));
+                params.width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
+                canvasSize.setLayoutParams(params);
+
+                // remember to remove the listener if possible
+                ViewTreeObserver viewTreeObserver = seekbarRelative.getViewTreeObserver();
+                if (viewTreeObserver.isAlive()) {
+                        viewTreeObserver.removeOnGlobalLayoutListener(this);
+                }
             }
         });
+
+        previewCanvas.callOnDraw();
 
         final Handler seekbarH = new Handler();
         Runnable seekbarR = new Runnable() {

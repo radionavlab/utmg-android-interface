@@ -20,8 +20,6 @@ public class DataShare extends Application {
     private static Thing obstacle1 = new Thing();
     private static Thing obstacle2 = new Thing();
 
-    private static CanvasView hackyCanvas;
-
     private static Path mPath1;
     private static Path mPath2;
     private static Path mPath3;
@@ -31,7 +29,6 @@ public class DataShare extends Application {
     private static Paint mPaint3;
 
     public DataShare() {
-        hackyCanvas = null;
 
         quad1.setQuadColour(Color.RED);
         quad2.setQuadColour(Color.GREEN);
@@ -58,14 +55,6 @@ public class DataShare extends Application {
                 return null;
         }
 
-    }
-
-    public static void setCanvas(CanvasView c) {
-        hackyCanvas = c;
-    }
-
-    public static CanvasView getHackyCanvas() {
-        return hackyCanvas;
     }
 
     public static void setPaint(int i, Paint p) {

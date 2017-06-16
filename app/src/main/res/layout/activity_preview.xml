@@ -6,17 +6,11 @@
     android:layout_height="match_parent"
     tools:context="utmg.android_interface.PreviewActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal">
-
         <LinearLayout
             android:id="@+id/linLay"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal|top"
             android:orientation="horizontal">
 
             <utmg.android_interface.PreviewCanvas
@@ -32,7 +26,7 @@
             android:id="@+id/seekbar_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/linLay">
+            android:layout_gravity="bottom">
 
             <SeekBar
                 android:id="@+id/quad1Seek"
@@ -73,9 +67,6 @@
                 android:progressDrawable="@drawable/preview_seekbar_progress4"
                 android:thumb="@drawable/preview_seekbar_thumb4" />
         </RelativeLayout>
-
-    </RelativeLayout>
-
     <!--<include layout="@layout/content_preview" />-->
 
 </android.support.design.widget.CoordinatorLayout>
