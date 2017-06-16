@@ -5,8 +5,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 
-import java.util.ArrayList;
-
 public class DataShare extends Application {
 
     // so purty

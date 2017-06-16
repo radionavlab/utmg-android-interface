@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatRosActivity {
         FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
         sbLayout.getLayoutParams().height = (int) (screenHeight * 0.6);
 
-        SeekBar sb = (SeekBar) findViewById(R.id.slider);
-        sb.getLayoutParams().width = sbLayout.getLayoutParams().height;
+//        SeekBar sb = (SeekBar) findViewById(R.id.slider);
+//        sb.getLayoutParams().width = sbLayout.getLayoutParams().height;
 
         // instantiating local copy of input time history vectors
         xCoordVec1 = new ArrayList<>();
@@ -279,6 +279,7 @@ public class MainActivity extends AppCompatRosActivity {
         // TextView for displaying z control slider value
         final TextView seekbarValue = (TextView) findViewById(R.id.seekbar_value);
         final SeekBar slider = (SeekBar) findViewById(R.id.slider);
+        slider.getLayoutParams().width = sbLayout.getLayoutParams().height;
 //        slider.getLayoutParams().width = (int)(screenHeight * 0.65);
         final Handler seekbarH = new Handler();
         Runnable seekbarR = new Runnable() {
