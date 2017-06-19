@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/quad1Seek"
                 android:layout_gravity="center"
-                android:paddingTop="20dp"
+                android:paddingTop="15dp"
                 android:progressDrawable="@drawable/preview_seekbar_progress2"
                 android:thumb="@drawable/preview_seekbar_thumb2" />
 
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/quad2Seek"
                 android:layout_gravity="center"
-                android:paddingTop="20dp"
+                android:paddingTop="15dp"
                 android:progressDrawable="@drawable/preview_seekbar_progress3"
                 android:thumb="@drawable/preview_seekbar_thumb3" />
 
@@ -63,8 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/quad3Seek"
                 android:layout_gravity="center"
-                android:paddingBottom="20dp"
-                android:paddingTop="20dp"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
                 android:progressDrawable="@drawable/preview_seekbar_progress4"
                 android:thumb="@drawable/preview_seekbar_thumb4" />
         </RelativeLayout>

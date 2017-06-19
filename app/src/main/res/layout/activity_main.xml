@@ -153,12 +153,11 @@
         android:id="@+id/seekbar_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="250dp"
-        android:layout_marginBottom="100dp"
         android:text="0"
-        android:textSize="20dp"/>
-
+        android:textSize="20dp" />
 
     <FrameLayout
         android:id="@+id/slider_frame_layout"
@@ -173,10 +172,12 @@
             android:layout_width="320dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
+            android:foreground="@android:co"
             android:max="2"
-            android:rotation="270"
             android:progressTint="@android:color/holo_blue_dark"
-            android:thumbTint="@android:color/holo_blue_dark"/>
+            android:rotation="270"
+            android:thumbTint="@android:color/holo_blue_dark"
+            android:visibility="visible" />
     </FrameLayout>
 
     <TextView
@@ -206,8 +207,9 @@
             android:id="@+id/signature_canvas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/canvas_border"/>
+            android:background="@drawable/canvas_border"
+            android:clickable="false"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 
