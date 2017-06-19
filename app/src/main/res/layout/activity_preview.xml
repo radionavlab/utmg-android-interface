@@ -122,7 +122,7 @@
                     android:layout_height="150dp"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/toggle_selector"
-                    android:textOff=""
+                    android:textOff=" "
                     android:textOn="" />
             </LinearLayout>
 
