@@ -172,7 +172,6 @@
             android:layout_width="320dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
-            android:foreground="@android:co"
             android:max="2"
             android:progressTint="@android:color/holo_blue_dark"
             android:rotation="270"

@@ -6,68 +6,129 @@
     android:layout_height="match_parent"
     tools:context="utmg.android_interface.PreviewActivity">
 
-        <LinearLayout
-            android:id="@+id/linLay"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center_horizontal|top"
-            android:paddingTop="5dp"
-            android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/linLay"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal|top"
+        android:paddingTop="5dp"
+        android:orientation="horizontal">
 
-            <utmg.android_interface.PreviewCanvas
-                android:id="@+id/preview_canvas"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/canvas_border"
-                android:textColor="#FFFFFF" />
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/seekbar_relative"
+        <utmg.android_interface.PreviewCanvas
+            android:id="@+id/preview_canvas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            android:layout_height="match_parent"
+            android:background="@drawable/canvas_border"
+            android:textColor="#FFFFFF" />
 
-            <SeekBar
-                android:id="@+id/quad1Seek"
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/demo_quad1"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/quad"
+        android:visibility="gone"
+        android:tint="@android:color/holo_red_dark"/>
+
+    <ImageView
+        android:id="@+id/demo_quad2"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/quad"
+        android:visibility="gone"
+        android:tint="@android:color/holo_green_dark"/>
+
+    <ImageView
+        android:id="@+id/demo_quad3"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/quad"
+        android:visibility="gone"
+        android:tint="@android:color/holo_blue_dark"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <TableRow>
+            <RelativeLayout
+                android:id="@+id/seekbar_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:progressDrawable="@drawable/preview_seekbar_progress1"
-                android:thumb="@drawable/preview_seekbar_thumb1" />
+                android:layout_gravity="bottom"
+                android:layout_weight="1">
 
-            <SeekBar
-                android:id="@+id/quad2Seek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/quad1Seek"
-                android:layout_gravity="center"
-                android:paddingTop="15dp"
-                android:progressDrawable="@drawable/preview_seekbar_progress2"
-                android:thumb="@drawable/preview_seekbar_thumb2" />
+                <SeekBar
+                    android:id="@+id/quad1Seek"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:progressDrawable="@drawable/preview_seekbar_progress1"
+                    android:thumb="@drawable/preview_seekbar_thumb1" />
 
-            <SeekBar
-                android:id="@+id/quad3Seek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/quad2Seek"
-                android:layout_gravity="center"
-                android:paddingTop="15dp"
-                android:progressDrawable="@drawable/preview_seekbar_progress3"
-                android:thumb="@drawable/preview_seekbar_thumb3" />
+                <SeekBar
+                    android:id="@+id/quad2Seek"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/quad1Seek"
+                    android:layout_gravity="center"
+                    android:paddingTop="15dp"
+                    android:progressDrawable="@drawable/preview_seekbar_progress2"
+                    android:thumb="@drawable/preview_seekbar_thumb2" />
 
-            <SeekBar
-                android:id="@+id/quadAllSeek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/quad3Seek"
+                <SeekBar
+                    android:id="@+id/quad3Seek"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/quad2Seek"
+                    android:layout_gravity="center"
+                    android:paddingTop="15dp"
+                    android:progressDrawable="@drawable/preview_seekbar_progress3"
+                    android:thumb="@drawable/preview_seekbar_thumb3" />
+
+                <SeekBar
+                    android:id="@+id/quadAllSeek"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/quad3Seek"
+                    android:layout_gravity="center"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:progressDrawable="@drawable/preview_seekbar_progress4"
+                    android:thumb="@drawable/preview_seekbar_thumb4" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp"
-                android:progressDrawable="@drawable/preview_seekbar_progress4"
-                android:thumb="@drawable/preview_seekbar_thumb4" />
-        </RelativeLayout>
+                android:paddingBottom="7.5dp"
+                android:paddingTop="7.5dp"
+                android:paddingRight="15dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/toggle_selector"
+                    android:textOff=""
+                    android:textOn="" />
+            </LinearLayout>
+
+        </TableRow>
+
+    </TableLayout>
     <!--<include layout="@layout/content_preview" />-->
 
 </android.support.design.widget.CoordinatorLayout>
