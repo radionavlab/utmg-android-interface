@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.TranslateAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -144,14 +145,13 @@ public class PreviewActivity extends AppCompatActivity {
             public void run() {
                 // quad 1
                 if (pref.getBoolean("quad1", false) == true) {
-                    quad1.setVisibility(View.VISIBLE);
                     if(xPixelVec1 == null || yPixelVec1 == null) {
                         quad1.setVisibility(View.INVISIBLE);
                     }
                     else {
                         quad1.setVisibility(View.VISIBLE);
-                        quad1.setX(xPixelVec1.get(0));
-                        quad1.setY(yPixelVec1.get(0));
+                        //quad1.setX(xPixelVec1.get(0));
+                        //quad1.setY(yPixelVec1.get(0));
                     }
                     //Log.d("MA Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
 
@@ -160,7 +160,6 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 2
                 if (pref.getBoolean("quad2", false) == true) {
-                    quad2.setVisibility(View.VISIBLE);
                     if(xPixelVec2 == null || yPixelVec2 == null) {
                         quad2.setVisibility(View.INVISIBLE);
                     }
@@ -174,7 +173,6 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 3
                 if (pref.getBoolean("quad3", false) == true) {
-                    quad3.setVisibility(View.VISIBLE);
                     if(xPixelVec3 == null || yPixelVec3 == null) {
                         quad3.setVisibility(View.INVISIBLE);
                     }
@@ -190,20 +188,40 @@ public class PreviewActivity extends AppCompatActivity {
             }
         };
         runnableQuad.run();
+
+        final ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
+        Runnable quadToggle = new Runnable() {
+            @Override
+            public void run() {
+                toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                        float x = xPixelVec1.get(0);
+                        float y = yPixelVec1.get(0);
+                        if(isChecked) {
+                            for(int i = 0; i < xPixelVec1.size(); i++) {
+                                x = xPixelVec1.get(i);
+                                y = yPixelVec1.get(i);
+
+                                quad1.setX(x);
+                                quad1.setY(y);
+                            }
+                        }
+                        else if(!isChecked) {
+                            quad1.setX(x);
+                            quad1.setY(y);
+                        }
+                    }
+                });
+            }
+        };
+        quadToggle.run();
+
     }
 
 
-//    ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
-//        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    // When it is playing
-//                } else {
-//                    // When it is on pause
-//                }
-//            }
-//        });
-//    }
+
+
 
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
