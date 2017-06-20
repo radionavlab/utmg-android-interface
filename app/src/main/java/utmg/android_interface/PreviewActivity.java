@@ -16,10 +16,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.ToggleButton;
 
 public class PreviewActivity extends AppCompatActivity {
 
@@ -120,6 +122,17 @@ public class PreviewActivity extends AppCompatActivity {
         quad3.getLayoutParams().height = (int) (screenHeight * 0.025);
         quad3.getLayoutParams().width = (int) (screenWidth * 0.025);
         //quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
+
+        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
+        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // When it is playing
+                } else {
+                    // When it is on pause
+                }
+            }
+        });
     }
 
     private void setupActionBar() {
