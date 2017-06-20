@@ -176,7 +176,8 @@
             android:progressTint="@android:color/holo_blue_dark"
             android:rotation="270"
             android:thumbTint="@android:color/holo_blue_dark"
-            android:visibility="visible" />
+            android:background="@android:color/darker_gray"
+            />
     </FrameLayout>
 
     <TextView
