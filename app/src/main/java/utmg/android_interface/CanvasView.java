@@ -481,7 +481,9 @@ CanvasView extends View {
     public ArrayList<Float> getzPixelVec3() { return zCoordVec3; }
 
     // current ArrayList of time vectors
-    public ArrayList<Time> getTimesVec1() { return timesVec1; }
+    public ArrayList<Time> getTimesVec1() {
+        return timesVec1;
+    }
     public ArrayList<Time> getTimesVec2() { return timesVec2; }
     public ArrayList<Time> getTimesVec3() { return timesVec3; }
 

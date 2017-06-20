@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 
+import java.sql.Time;
+import java.util.ArrayList;
+
 public class DataShare extends Application {
 
     // so purty
@@ -25,6 +28,18 @@ public class DataShare extends Application {
     private static Paint mPaint1;
     private static Paint mPaint2;
     private static Paint mPaint3;
+
+    private static ArrayList<Time> mTime1;
+    private static ArrayList<Time> mTime2;
+    private static ArrayList<Time> mTime3;
+
+    private static ArrayList<Float> xPixel1;
+    private static ArrayList<Float> xPixel2;
+    private static ArrayList<Float> xPixel3;
+
+    private static ArrayList<Float> yPixel1;
+    private static ArrayList<Float> yPixel2;
+    private static ArrayList<Float> yPixel3;
 
     public DataShare() {
 
@@ -107,7 +122,91 @@ public class DataShare extends Application {
             case 3:
                 return mPath3;
             default:
-                return mPath1;
+                return null;
+        }
+    }
+
+    public static void setCurrentTime (int i, ArrayList<Time> t) {
+        switch (i) {
+            case 1:
+                mTime1 = t;
+                break;
+            case 2:
+                mTime2 = t;
+                break;
+            case 3:
+                mTime3 = t;
+                break;
+            default:
+        }
+    }
+
+    public static ArrayList<Time> getCurrentTime (int i) {
+        switch (i) {
+            case 1:
+                return mTime1;
+            case 2:
+                return mTime2;
+            case 3:
+                return mTime3;
+            default:
+                return null;
+        }
+    }
+
+    public static void setXPixelVec (int i, ArrayList<Float> p) {
+        switch (i) {
+            case 1:
+                xPixel1 = p;
+                break;
+            case 2:
+                xPixel2 = p;
+                break;
+            case 3:
+                xPixel3 = p;
+                break;
+            default:
+        }
+    }
+
+    public static ArrayList<Float> getXPixelVec (int i) {
+        switch (i) {
+            case 1:
+                return xPixel1;
+            case 2:
+                return xPixel2;
+            case 3:
+                return xPixel3;
+            default:
+                return null;
+        }
+    }
+
+    public static void setYPixelVec (int i, ArrayList<Float> p) {
+        switch (i) {
+            case 1:
+                yPixel1 = p;
+                break;
+            case 2:
+                yPixel2 = p;
+                break;
+            case 3:
+                yPixel3 = p;
+                break;
+            default:
+        }
+    }
+
+    public static ArrayList<Float> getYPixelVec (int i) {
+        switch (i) {
+            case 1:
+                return yPixel1;
+            case 2:
+                return yPixel2;
+            case 3:
+                return yPixel3;
+            default:
+                return null;
         }
     }
 

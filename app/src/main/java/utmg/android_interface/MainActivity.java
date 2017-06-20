@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -100,9 +101,6 @@ public class MainActivity extends AppCompatRosActivity {
         FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
         sbLayout.getLayoutParams().height = (int) (screenHeight * 0.6);
 
-//        SeekBar sb = (SeekBar) findViewById(R.id.slider);
-//        sb.getLayoutParams().width = sbLayout.getLayoutParams().height;
-
         // instantiating local copy of input time history vectors
         xCoordVec1 = new ArrayList<>();
         yCoordVec1 = new ArrayList<>();
@@ -136,7 +134,13 @@ public class MainActivity extends AppCompatRosActivity {
                 DataShare.setPaint(2, customCanvas.getmPaint2());
                 DataShare.setPaint(3, customCanvas.getmPaint3());
 
+                DataShare.setXPixelVec(1, customCanvas.xPixelVec1);
+                DataShare.setXPixelVec(2, customCanvas.xPixelVec2);
+                DataShare.setXPixelVec(3, customCanvas.xPixelVec3);
 
+                DataShare.setYPixelVec(1, customCanvas.yPixelVec1);
+                DataShare.setYPixelVec(2, customCanvas.yPixelVec2);
+                DataShare.setYPixelVec(3, customCanvas.yPixelVec3);
 
                 Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
                 startActivity(intent);

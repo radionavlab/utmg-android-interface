@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.ToggleButton;
 
+import java.util.ArrayList;
+
 public class PreviewActivity extends AppCompatActivity {
 
     private PreviewCanvas previewCanvas;
@@ -31,7 +34,17 @@ public class PreviewActivity extends AppCompatActivity {
     private int screenHeight;
     private int screenWidth;
 
-    private float seekSum;
+    private ArrayList<Float> xPixelVec1;
+    private ArrayList<Float> yPixelVec1;
+    private ArrayList<Float> zPixelVec1;
+
+    private ArrayList<Float> xPixelVec2;
+    private ArrayList<Float> yPixelVec2;
+    private ArrayList<Float> zPixelVec2;
+
+    private ArrayList<Float> xPixelVec3;
+    private ArrayList<Float> yPixelVec3;
+    private ArrayList<Float> zPixelVec3;
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
@@ -49,25 +62,27 @@ public class PreviewActivity extends AppCompatActivity {
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
         previewCanvas = (PreviewCanvas) findViewById(R.id.preview_canvas);
 
+        xPixelVec1 = DataShare.getXPixelVec(1);
+        yPixelVec1 = DataShare.getYPixelVec(1);
+
+        xPixelVec2 = DataShare.getXPixelVec(2);
+        yPixelVec2 = DataShare.getYPixelVec(2);
+
+        xPixelVec3 = DataShare.getXPixelVec(3);
+        yPixelVec3 = DataShare.getYPixelVec(3);
+
         seekbarRelative = (RelativeLayout) findViewById(R.id.seekbar_relative);
         final SeekBar quad1Seek = (SeekBar) findViewById(R.id.quad1Seek);
         final SeekBar quad2Seek = (SeekBar) findViewById(R.id.quad2Seek);
         final SeekBar quad3Seek = (SeekBar) findViewById(R.id.quad3Seek);
         final SeekBar quadAllSeek = (SeekBar) findViewById(R.id.quadAllSeek);
 
-        //seekSum = quad1Seek.getHeight() + quad2Seek.getHeight() + quad3Seek.getHeight() + quadAllSeek.getHeight()
-        //+ quad2Seek.getPaddingTop() + quad3Seek.getPaddingTop() + quadAllSeek.getPaddingTop() + quadAllSeek.getPaddingBottom() ;
-
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-//
-//        Log.i("seekBarHeight", Float.toString(seekbarRelative.getHeight()));
-//        Log.i("screenHeight", Float.toString(screenHeight));
 
         seekbarRelative.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
                 // read height with myLinearLayout.getHeight() etc.
-
                 Log.i("seekBarHeight", Float.toString(seekbarRelative.getHeight()));
 
                 CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) canvasSize.getLayoutParams();
@@ -111,29 +126,84 @@ public class PreviewActivity extends AppCompatActivity {
         final ImageView quad2 = (ImageView) findViewById(R.id.demo_quad2);
         final ImageView quad3 = (ImageView) findViewById(R.id.demo_quad3);
 
-        quad1.getLayoutParams().height = (int) (screenHeight * 0.025);
-        quad1.getLayoutParams().width = (int) (screenWidth * 0.025);
+        quad1.getLayoutParams().height = (int) (screenHeight * 0.05);
+        quad1.getLayoutParams().width = (int) (screenWidth * 0.05);
         //quad1.setColorFilter(DataShare.getInstance("quad1").getQuadColour());
 
-        quad2.getLayoutParams().height = (int) (screenHeight * 0.025);
-        quad2.getLayoutParams().width = (int) (screenWidth * 0.025);
+        quad2.getLayoutParams().height = (int) (screenHeight * 0.05);
+        quad2.getLayoutParams().width = (int) (screenWidth * 0.05);
         //quad2.setColorFilter(DataShare.getInstance("quad2").getQuadColour());
 
-        quad3.getLayoutParams().height = (int) (screenHeight * 0.025);
-        quad3.getLayoutParams().width = (int) (screenWidth * 0.025);
+        quad3.getLayoutParams().height = (int) (screenHeight * 0.05);
+        quad3.getLayoutParams().width = (int) (screenWidth * 0.05);
         //quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
 
-        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
-        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // When it is playing
-                } else {
-                    // When it is on pause
+        final Handler handlerQuad = new Handler();
+        Runnable runnableQuad = new Runnable() {
+            @Override
+            public void run() {
+                // quad 1
+                if (pref.getBoolean("quad1", false) == true) {
+                    quad1.setVisibility(View.VISIBLE);
+                    if(xPixelVec1 == null || yPixelVec1 == null) {
+                        quad1.setVisibility(View.INVISIBLE);
+                    }
+                    else {
+                        quad1.setVisibility(View.VISIBLE);
+                        quad1.setX(xPixelVec1.get(0));
+                        quad1.setY(yPixelVec1.get(0));
+                    }
+                    //Log.d("MA Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
+
+                    //quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                 }
+
+                // quad 2
+                if (pref.getBoolean("quad2", false) == true) {
+                    quad2.setVisibility(View.VISIBLE);
+                    if(xPixelVec2 == null || yPixelVec2 == null) {
+                        quad2.setVisibility(View.INVISIBLE);
+                    }
+                    else {
+                        quad2.setVisibility(View.VISIBLE);
+                        quad2.setX(xPixelVec2.get(0));
+                        quad2.setY(yPixelVec2.get(0));
+                    }
+//                    quad2.setImageAlpha( (int)(((DataShare.getInstance("quad2").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
+                }
+
+                // quad 3
+                if (pref.getBoolean("quad3", false) == true) {
+                    quad3.setVisibility(View.VISIBLE);
+                    if(xPixelVec3 == null || yPixelVec3 == null) {
+                        quad3.setVisibility(View.INVISIBLE);
+                    }
+                    else {
+                        quad3.setVisibility(View.VISIBLE);
+                        quad3.setX(xPixelVec3.get(0));
+                        quad3.setY(yPixelVec3.get(0));
+                    }
+//                    quad3.setImageAlpha( (int)(((DataShare.getInstance("quad3").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
+                }
+                //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
+                handlerQuad.postDelayed(this, 10);
             }
-        });
+        };
+        runnableQuad.run();
     }
+
+
+//    ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
+//        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    // When it is playing
+//                } else {
+//                    // When it is on pause
+//                }
+//            }
+//        });
+//    }
 
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
