@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -45,6 +46,9 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<Float> xPixelVec3;
     private ArrayList<Float> yPixelVec3;
     private ArrayList<Float> zPixelVec3;
+
+    public int x = 0;
+    public int y = 0;
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
@@ -150,9 +154,13 @@ public class PreviewActivity extends AppCompatActivity {
                     }
                     else {
                         quad1.setVisibility(View.VISIBLE);
-                        quad1.setX(xPixelVec1.get(0));
-                        quad1.setY(yPixelVec1.get(0));
+                       quad1.setX(xPixelVec1.get(x));
+                        quad1.setY(yPixelVec1.get(y));
+
+
+
                     }
+
                     //Log.d("MA Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
 
                     //quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
@@ -190,20 +198,38 @@ public class PreviewActivity extends AppCompatActivity {
             }
         };
         runnableQuad.run();
+        Log.d("Quad X",Float.toString(quad1.getX()));
+        Log.d("Quad Y",Float.toString(quad1.getY()));
+        Log.d("Line Start X",Float.toString(xPixelVec1.get(0)));
+        Log.d("Line Start Y",Float.toString(yPixelVec1.get(0)));
+
+        final ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
+        final Handler toggleHandler = new Handler();
+        Runnable toggleRunnable = new Runnable() {
+            @Override
+            public void run() {
+                toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                        if (isChecked) {
+                            while(x < xPixelVec1.size()-1) {
+                                x++;
+                                y++;
+                                quad1.setX(xPixelVec1.get(x));
+                                quad1.setY(yPixelVec1.get(y));
+
+                            }
+                        } else {
+                        }
+                    }
+                });
+            }
+        };
+        toggleHandler.postDelayed(toggleRunnable,1000);
+        toggleRunnable.run();
+
+
     }
-
-
-//    ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
-//        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    // When it is playing
-//                } else {
-//                    // When it is on pause
-//                }
-//            }
-//        });
-//    }
 
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
