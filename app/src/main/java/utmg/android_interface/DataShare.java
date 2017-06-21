@@ -29,9 +29,9 @@ public class DataShare extends Application {
     private static Paint mPaint2;
     private static Paint mPaint3;
 
-    private static ArrayList<Time> mTime1;
-    private static ArrayList<Time> mTime2;
-    private static ArrayList<Time> mTime3;
+    private static ArrayList<org.ros.message.Time> mTime1;
+    private static ArrayList<org.ros.message.Time> mTime2;
+    private static ArrayList<org.ros.message.Time> mTime3;
 
     private static ArrayList<Float> xPixel1;
     private static ArrayList<Float> xPixel2;
@@ -126,7 +126,7 @@ public class DataShare extends Application {
         }
     }
 
-    public static void setCurrentTime (int i, ArrayList<Time> t) {
+    public static void setCurrentTime (int i, ArrayList<org.ros.message.Time> t) {
         switch (i) {
             case 1:
                 mTime1 = t;
@@ -141,7 +141,7 @@ public class DataShare extends Application {
         }
     }
 
-    public static ArrayList<Time> getCurrentTime (int i) {
+    public static ArrayList<org.ros.message.Time> getCurrentTime (int i) {
         switch (i) {
             case 1:
                 return mTime1;
