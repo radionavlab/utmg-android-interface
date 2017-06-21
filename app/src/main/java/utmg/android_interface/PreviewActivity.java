@@ -4,7 +4,9 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -196,18 +198,40 @@ public class PreviewActivity extends AppCompatActivity {
                 toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                        float x = xPixelVec1.get(0);
-                        float y = yPixelVec1.get(0);
-                        if(isChecked) {
-                            for(int i = 0; i < xPixelVec1.size(); i++) {
-                                x = xPixelVec1.get(i);
-                                y = yPixelVec1.get(i);
 
-                                quad1.setX(x - quad1.getWidth()/2);
-                                quad1.setY(y - quad1.getHeight()/2);
-                            }
+
+                        if(isChecked) {
+
+                            final Handler updateH = new Handler();
+                            Runnable updateR = new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (int i = 0; i < xPixelVec1.size(); i++) {
+                                        final int value = i;
+                                        // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
+                                        try { Thread.sleep(100); }
+                                        catch (InterruptedException e) { e.printStackTrace(); }
+                                        updateH.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                quad1.setX(xPixelVec1.get(value) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                                                quad1.setY(yPixelVec1.get(value) - quad1.getHeight() / 2);
+
+                                            }
+                                        });
+                                    }
+                                }
+                            };
+                            new Thread(updateR).start();
+
+                            toggle.setChecked(false);
+
                         }
                         else if(!isChecked) {
+
+                            float x = xPixelVec1.get(0);
+                            float y = yPixelVec1.get(0);
+
                             quad1.setX(x - quad1.getWidth()/2);
                             quad1.setY(y - quad1.getHeight()/2);
                         }
@@ -218,9 +242,6 @@ public class PreviewActivity extends AppCompatActivity {
         quadToggle.run();
 
     }
-
-
-
 
 
     private void setupActionBar() {
