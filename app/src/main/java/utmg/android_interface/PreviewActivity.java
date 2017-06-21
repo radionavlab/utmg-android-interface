@@ -37,6 +37,10 @@ public class PreviewActivity extends AppCompatActivity {
     private int screenHeight;
     private int screenWidth;
 
+    private ImageView quad1;
+    private ImageView quad2;
+    private ImageView quad3;
+
     private ArrayList<Float> xPixelVec1;
     private ArrayList<Float> yPixelVec1;
     private ArrayList<Float> zPixelVec1;
@@ -48,6 +52,15 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<Float> xPixelVec3;
     private ArrayList<Float> yPixelVec3;
     private ArrayList<Float> zPixelVec3;
+
+    private int x1;
+    private int y1;
+
+    private int x2;
+    private int y2;
+
+    private int x3;
+    private int y3;
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
@@ -125,9 +138,9 @@ public class PreviewActivity extends AppCompatActivity {
         };
         seekbarR.run();
 
-        final ImageView quad1 = (ImageView) findViewById(R.id.demo_quad1);
-        final ImageView quad2 = (ImageView) findViewById(R.id.demo_quad2);
-        final ImageView quad3 = (ImageView) findViewById(R.id.demo_quad3);
+        quad1 = (ImageView) findViewById(R.id.demo_quad1);
+        quad2 = (ImageView) findViewById(R.id.demo_quad2);
+        quad3 = (ImageView) findViewById(R.id.demo_quad3);
 
         quad1.getLayoutParams().height = (int) (screenHeight * 0.05);
         quad1.getLayoutParams().width = (int) (screenWidth * 0.05);
@@ -167,8 +180,8 @@ public class PreviewActivity extends AppCompatActivity {
                     }
                     else {
                         quad2.setVisibility(View.VISIBLE);
-                        quad2.setX(xPixelVec2.get(0));
-                        quad2.setY(yPixelVec2.get(0));
+//                        quad2.setX(xPixelVec2.get(0));
+//                        quad2.setY(yPixelVec2.get(0));
                     }
 //                    quad2.setImageAlpha( (int)(((DataShare.getInstance("quad2").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                 }
@@ -180,8 +193,8 @@ public class PreviewActivity extends AppCompatActivity {
                     }
                     else {
                         quad3.setVisibility(View.VISIBLE);
-                        quad3.setX(xPixelVec3.get(0));
-                        quad3.setY(yPixelVec3.get(0));
+//                        quad3.setX(xPixelVec3.get(0));
+//                        quad3.setY(yPixelVec3.get(0));
                     }
 //                    quad3.setImageAlpha( (int)(((DataShare.getInstance("quad3").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                 }
@@ -197,41 +210,44 @@ public class PreviewActivity extends AppCompatActivity {
             public void run() {
                 toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                        if(isChecked) {
-
-                            final Handler updateH = new Handler();
-                            Runnable updateR = new Runnable() {
-                                @Override
-                                public void run() {
-                                    for (int i = 0; i < xPixelVec1.size(); i++) {
-                                        final int value = i;
-                                        // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
-                                        try { Thread.sleep(100); }
-                                        catch (InterruptedException e) { e.printStackTrace(); }
-                                        updateH.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                quad1.setX(xPixelVec1.get(value) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                                                quad1.setY(yPixelVec1.get(value) - quad1.getHeight() / 2);
-
-                                            }
-                                        });
-                                    }
-                                }
-                            };
-                            new Thread(updateR).start();
-
-                            toggle.setChecked(false);
-
-                        }
-                        else if(!isChecked) {
+                        if (isChecked) {
+                            if ((xPixelVec1 != null) && (xPixelVec2 != null) && (xPixelVec3 != null)) {
+                                runQuad1();
+                                runQuad2();
+                                runQuad3();
+                                toggle.setChecked(false);
+                            } else if ((xPixelVec1 != null) && (xPixelVec2 != null) && (xPixelVec3 == null)) {
+                                runQuad1();
+                                runQuad2();
+                                toggle.setChecked(false);
+                            } else if ((xPixelVec1 == null) && (xPixelVec2 != null) && (xPixelVec3 != null)) {
+                                runQuad2();
+                                runQuad3();
+                                toggle.setChecked(false);
+                            } else if ((xPixelVec1 != null) && (xPixelVec2 == null) && (xPixelVec3 != null)) {
+                                runQuad1();
+                                runQuad3();
+                                toggle.setChecked(false);
+                            }
+                            else if ((xPixelVec1 != null) && (xPixelVec2 == null) && (xPixelVec3 == null)) {
+                                runQuad1();
+                                toggle.setChecked(false);
+                            }
+                            else if(((xPixelVec1 == null) && (xPixelVec2 != null) && (xPixelVec3 == null))) {
+                                runQuad2();
+                                toggle.setChecked(false);
+                            }
+                            else if ((xPixelVec1 == null) && (xPixelVec2 == null) && (xPixelVec3 != null)) {
+                                runQuad3();
+                                toggle.setChecked(false);
+                            }
+                        } else if (!isChecked) {
 
                             float x = xPixelVec1.get(0);
                             float y = yPixelVec1.get(0);
 
-                            quad1.setX(x - quad1.getWidth()/2);
-                            quad1.setY(y - quad1.getHeight()/2);
+                            quad1.setX(x - quad1.getWidth() / 2);
+                            quad1.setY(y - quad1.getHeight() / 2);
                         }
                     }
                 });
@@ -239,6 +255,87 @@ public class PreviewActivity extends AppCompatActivity {
         };
         quadToggle.run();
 
+    }
+
+    private void runQuad1() {
+        final Handler updateH1 = new Handler();
+        Runnable updateR1 = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < xPixelVec1.size(); i++) {
+                    final int value = i;
+                    // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    updateH1.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            quad1.setX(xPixelVec1.get(value) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                            quad1.setY(yPixelVec1.get(value) - quad1.getHeight() / 2);
+
+                        }
+                    });
+                }
+            }
+        };
+        new Thread(updateR1).start();
+    }
+
+    private void runQuad2() {
+        final Handler updateH2 = new Handler();
+        Runnable updateR2 = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < xPixelVec2.size(); i++) {
+                    final int value = i;
+                    // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    updateH2.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            quad2.setX(xPixelVec2.get(value) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                            quad2.setY(yPixelVec2.get(value) - quad2.getHeight() / 2);
+
+                        }
+                    });
+                }
+            }
+        };
+        new Thread(updateR2).start();
+    }
+
+    private void runQuad3() {
+        final Handler updateH3 = new Handler();
+        Runnable updateR3 = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < xPixelVec3.size(); i++) {
+                    final int value = i;
+                    // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    updateH3.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            quad3.setX(xPixelVec3.get(value) - quad3.getWidth() / 2 + canvasSize.getLeft());
+                            quad3.setY(yPixelVec3.get(value) - quad3.getHeight() / 2);
+
+                        }
+                    });
+                }
+            }
+        };
+        new Thread(updateR3).start();
     }
 
 
