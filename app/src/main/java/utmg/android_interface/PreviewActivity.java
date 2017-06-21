@@ -198,8 +198,6 @@ public class PreviewActivity extends AppCompatActivity {
                 toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-
-
                         if(isChecked) {
 
                             final Handler updateH = new Handler();
