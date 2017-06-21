@@ -203,13 +203,13 @@ public class PreviewActivity extends AppCompatActivity {
                                 x = xPixelVec1.get(i);
                                 y = yPixelVec1.get(i);
 
-                                quad1.setX(x);
-                                quad1.setY(y);
+                                quad1.setX(x - quad1.getWidth()/2);
+                                quad1.setY(y - quad1.getHeight()/2);
                             }
                         }
                         else if(!isChecked) {
-                            quad1.setX(x);
-                            quad1.setY(y);
+                            quad1.setX(x - quad1.getWidth()/2);
+                            quad1.setY(y - quad1.getHeight()/2);
                         }
                     }
                 });
