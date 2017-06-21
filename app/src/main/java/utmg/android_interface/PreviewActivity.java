@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.TranslateAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,9 +48,6 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<Float> xPixelVec3;
     private ArrayList<Float> yPixelVec3;
     private ArrayList<Float> zPixelVec3;
-
-    public int x = 0;
-    public int y = 0;
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
@@ -148,19 +147,14 @@ public class PreviewActivity extends AppCompatActivity {
             public void run() {
                 // quad 1
                 if (pref.getBoolean("quad1", false) == true) {
-                    quad1.setVisibility(View.VISIBLE);
                     if(xPixelVec1 == null || yPixelVec1 == null) {
                         quad1.setVisibility(View.INVISIBLE);
                     }
                     else {
                         quad1.setVisibility(View.VISIBLE);
-                       quad1.setX(xPixelVec1.get(x));
-                        quad1.setY(yPixelVec1.get(y));
-
-
-
+                        //quad1.setX(xPixelVec1.get(0));
+                        //quad1.setY(yPixelVec1.get(0));
                     }
-
                     //Log.d("MA Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
 
                     //quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
@@ -168,7 +162,6 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 2
                 if (pref.getBoolean("quad2", false) == true) {
-                    quad2.setVisibility(View.VISIBLE);
                     if(xPixelVec2 == null || yPixelVec2 == null) {
                         quad2.setVisibility(View.INVISIBLE);
                     }
@@ -182,7 +175,6 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 3
                 if (pref.getBoolean("quad3", false) == true) {
-                    quad3.setVisibility(View.VISIBLE);
                     if(xPixelVec3 == null || yPixelVec3 == null) {
                         quad3.setVisibility(View.INVISIBLE);
                     }
@@ -198,38 +190,59 @@ public class PreviewActivity extends AppCompatActivity {
             }
         };
         runnableQuad.run();
-        Log.d("Quad X",Float.toString(quad1.getX()));
-        Log.d("Quad Y",Float.toString(quad1.getY()));
-        Log.d("Line Start X",Float.toString(xPixelVec1.get(0)));
-        Log.d("Line Start Y",Float.toString(yPixelVec1.get(0)));
 
         final ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
-        final Handler toggleHandler = new Handler();
-        Runnable toggleRunnable = new Runnable() {
+        Runnable quadToggle = new Runnable() {
             @Override
             public void run() {
                 toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                        if (isChecked) {
-                            while(x < xPixelVec1.size()-1) {
-                                x++;
-                                y++;
-                                quad1.setX(xPixelVec1.get(x));
-                                quad1.setY(yPixelVec1.get(y));
 
-                            }
-                        } else {
+
+                        if(isChecked) {
+
+                            final Handler updateH = new Handler();
+                            Runnable updateR = new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (int i = 0; i < xPixelVec1.size(); i++) {
+                                        final int value = i;
+                                        // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
+                                        try { Thread.sleep(100); }
+                                        catch (InterruptedException e) { e.printStackTrace(); }
+                                        updateH.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                quad1.setX(xPixelVec1.get(value) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                                                quad1.setY(yPixelVec1.get(value) - quad1.getHeight() / 2);
+
+                                            }
+                                        });
+                                    }
+                                }
+                            };
+                            new Thread(updateR).start();
+
+                            toggle.setChecked(false);
+
+                        }
+                        else if(!isChecked) {
+
+                            float x = xPixelVec1.get(0);
+                            float y = yPixelVec1.get(0);
+
+                            quad1.setX(x - quad1.getWidth()/2);
+                            quad1.setY(y - quad1.getHeight()/2);
                         }
                     }
                 });
             }
         };
-        toggleHandler.postDelayed(toggleRunnable,1000);
-        toggleRunnable.run();
-
+        quadToggle.run();
 
     }
+
 
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
