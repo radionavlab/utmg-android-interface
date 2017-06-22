@@ -221,40 +221,34 @@ public class PreviewActivity extends AppCompatActivity {
                                 runQuad1();
                                 runQuad2();
                                 runQuad3();
-                                toggle.setChecked(false);
+//                                toggle.setChecked(false);
                             } else if ((xPixelVec1 != null) && (xPixelVec2 != null) && (xPixelVec3 == null)) {
                                 runQuad1();
                                 runQuad2();
-                                toggle.setChecked(false);
+//                                toggle.setChecked(false);
                             } else if ((xPixelVec1 == null) && (xPixelVec2 != null) && (xPixelVec3 != null)) {
                                 runQuad2();
                                 runQuad3();
-                                toggle.setChecked(false);
+//                                toggle.setChecked(false);
                             } else if ((xPixelVec1 != null) && (xPixelVec2 == null) && (xPixelVec3 != null)) {
                                 runQuad1();
                                 runQuad3();
-                                toggle.setChecked(false);
+//                                toggle.setChecked(false);
                             }
                             else if ((xPixelVec1 != null) && (xPixelVec2 == null) && (xPixelVec3 == null)) {
                                 runQuad1();
-                                toggle.setChecked(false);
+//                                toggle.setChecked(false);
                             }
                             else if(((xPixelVec1 == null) && (xPixelVec2 != null) && (xPixelVec3 == null))) {
                                 runQuad2();
-                                toggle.setChecked(false);
+//                                toggle.setChecked(false);
                             }
                             else if ((xPixelVec1 == null) && (xPixelVec2 == null) && (xPixelVec3 != null)) {
                                 runQuad3();
-                                toggle.setChecked(false);
+//                                toggle.setChecked(false);
                             }
                         } else if (!isChecked) {
-                            toggle.setChecked(false);
 
-                            float x = xPixelVec1.get(0);
-                            float y = yPixelVec1.get(0);
-
-                            quad1.setX(x - quad1.getWidth() / 2);
-                            quad1.setY(y - quad1.getHeight() / 2);
                         }
                     }
                 });
