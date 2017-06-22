@@ -5,6 +5,7 @@
             <gradient android:useLevel="true"
                 android:startColor="@android:color/holo_green_light"
                 android:endColor="#000000"/>
+            <corners android:radius="50dp"/>
         </shape>
     </item>
 </layer-list>

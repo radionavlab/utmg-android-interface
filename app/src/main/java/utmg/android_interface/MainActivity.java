@@ -142,6 +142,10 @@ public class MainActivity extends AppCompatRosActivity {
                 DataShare.setYPixelVec(2, customCanvas.yPixelVec2);
                 DataShare.setYPixelVec(3, customCanvas.yPixelVec3);
 
+                DataShare.setCurrentTime(1, customCanvas.getTimesVec1());
+                DataShare.setCurrentTime(2, customCanvas.getTimesVec2());
+                DataShare.setCurrentTime(3, customCanvas.getTimesVec3());
+
                 Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
                 startActivity(intent);
             }

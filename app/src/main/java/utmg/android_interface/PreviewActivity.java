@@ -53,14 +53,14 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<Float> yPixelVec3;
     private ArrayList<Float> zPixelVec3;
 
-    private int x1;
-    private int y1;
+    private float x1;
+    private float y1;
 
-    private int x2;
-    private int y2;
+    private float x2;
+    private float y2;
 
-    private int x3;
-    private int y3;
+    private float x3;
+    private float y3;
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
@@ -116,6 +116,12 @@ public class PreviewActivity extends AppCompatActivity {
 
         previewCanvas.callOnDraw();
 
+
+        quadAllSeek.setMax(Math.max(Math.max(DataShare.getCurrentTime(1).size(), DataShare.getCurrentTime(2).size()), DataShare.getCurrentTime(3).size()));
+        Log.i("OOOOOOOOOOOOOOOOOOOOOO", Float.toString(DataShare.getCurrentTime(1).size()));
+        Log.i("WWWWWWWWWWWWWWWWWWWWWW", Float.toString(DataShare.getCurrentTime(2).size()));
+        Log.i("HHHHHHHHHHHHHHHHHHHHHH", Float.toString(DataShare.getCurrentTime(3).size()));
+        Log.i("MMMMMMMMMMMMMMMMMMMMMM", Float.toString(quadAllSeek.getMax()));
         final Handler seekbarH = new Handler();
         Runnable seekbarR = new Runnable() {
             @Override
@@ -128,9 +134,9 @@ public class PreviewActivity extends AppCompatActivity {
                     public void onStartTrackingTouch(SeekBar seekBar) { }
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        quad1Seek.setProgress(progress);
-                        quad2Seek.setProgress(progress);
-                        quad3Seek.setProgress(progress);
+//                        quad1Seek.setProgress(progress);
+//                        quad2Seek.setProgress(progress);
+//                        quad3Seek.setProgress(progress);
                     }
                 });
                 seekbarH.postDelayed(this, 1000);
@@ -242,6 +248,7 @@ public class PreviewActivity extends AppCompatActivity {
                                 toggle.setChecked(false);
                             }
                         } else if (!isChecked) {
+                            toggle.setChecked(false);
 
                             float x = xPixelVec1.get(0);
                             float y = yPixelVec1.get(0);
@@ -276,6 +283,8 @@ public class PreviewActivity extends AppCompatActivity {
                             quad1.setX(xPixelVec1.get(value) - quad1.getWidth() / 2 + canvasSize.getLeft());
                             quad1.setY(yPixelVec1.get(value) - quad1.getHeight() / 2);
 
+                            x1 = xPixelVec1.get(value) - quad1.getWidth()/2 + canvasSize.getLeft();
+                            y1 = yPixelVec1.get(value) - quad1.getHeight()/2;
                         }
                     });
                 }
@@ -303,6 +312,8 @@ public class PreviewActivity extends AppCompatActivity {
                             quad2.setX(xPixelVec2.get(value) - quad2.getWidth() / 2 + canvasSize.getLeft());
                             quad2.setY(yPixelVec2.get(value) - quad2.getHeight() / 2);
 
+                            x2 = xPixelVec2.get(value) - quad2.getWidth()/2 + canvasSize.getLeft();
+                            y2 = yPixelVec2.get(value) - quad2.getHeight()/2;
                         }
                     });
                 }
@@ -330,6 +341,8 @@ public class PreviewActivity extends AppCompatActivity {
                             quad3.setX(xPixelVec3.get(value) - quad3.getWidth() / 2 + canvasSize.getLeft());
                             quad3.setY(yPixelVec3.get(value) - quad3.getHeight() / 2);
 
+                            x3 = xPixelVec3.get(value) - quad3.getWidth()/2 + canvasSize.getLeft();
+                            y3 = yPixelVec3.get(value) - quad3.getHeight()/2;
                         }
                     });
                 }
