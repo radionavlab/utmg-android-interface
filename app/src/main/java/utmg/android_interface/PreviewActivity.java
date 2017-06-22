@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
@@ -36,6 +37,8 @@ public class PreviewActivity extends AppCompatActivity {
     private RelativeLayout seekbarRelative;
     private int screenHeight;
     private int screenWidth;
+
+    private ToggleButton toggle;
 
     private ImageView quad1;
     private ImageView quad2;
@@ -87,6 +90,12 @@ public class PreviewActivity extends AppCompatActivity {
         xPixelVec3 = DataShare.getXPixelVec(3);
         yPixelVec3 = DataShare.getYPixelVec(3);
 
+        DataShare.setSeekLoc(1, 0);
+        DataShare.setSeekLoc(2, 0);
+        DataShare.setSeekLoc(3, 0);
+
+        DataShare.setPlayBackState(true);
+
         seekbarRelative = (RelativeLayout) findViewById(R.id.seekbar_relative);
         final SeekBar quad1Seek = (SeekBar) findViewById(R.id.quad1Seek);
         final SeekBar quad2Seek = (SeekBar) findViewById(R.id.quad2Seek);
@@ -116,7 +125,7 @@ public class PreviewActivity extends AppCompatActivity {
 
         previewCanvas.callOnDraw();
 
-
+        // What even is this.... XD
         quadAllSeek.setMax(Math.max(Math.max(DataShare.getCurrentTime(1).size(), DataShare.getCurrentTime(2).size()), DataShare.getCurrentTime(3).size()));
         Log.i("OOOOOOOOOOOOOOOOOOOOOO", Float.toString(DataShare.getCurrentTime(1).size()));
         Log.i("WWWWWWWWWWWWWWWWWWWWWW", Float.toString(DataShare.getCurrentTime(2).size()));
@@ -165,7 +174,7 @@ public class PreviewActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // quad 1
-                if (pref.getBoolean("quad1", false) == true) {
+                if (pref.getBoolean("quad1", false)) {
                     if(xPixelVec1 == null || yPixelVec1 == null) {
                         quad1.setVisibility(View.INVISIBLE);
                     }
@@ -180,7 +189,7 @@ public class PreviewActivity extends AppCompatActivity {
                 }
 
                 // quad 2
-                if (pref.getBoolean("quad2", false) == true) {
+                if (pref.getBoolean("quad2", false)) {
                     if(xPixelVec2 == null || yPixelVec2 == null) {
                         quad2.setVisibility(View.INVISIBLE);
                     }
@@ -193,7 +202,7 @@ public class PreviewActivity extends AppCompatActivity {
                 }
 
                 // quad 3
-                if (pref.getBoolean("quad3", false) == true) {
+                if (pref.getBoolean("quad3", false)) {
                     if(xPixelVec3 == null || yPixelVec3 == null) {
                         quad3.setVisibility(View.INVISIBLE);
                     }
@@ -210,46 +219,59 @@ public class PreviewActivity extends AppCompatActivity {
         };
         runnableQuad.run();
 
-        final ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
+        toggle = (ToggleButton) findViewById(R.id.toggleButton);
         Runnable quadToggle = new Runnable() {
             @Override
             public void run() {
                 toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            if ((xPixelVec1 != null) && (xPixelVec2 != null) && (xPixelVec3 != null)) {
-                                runQuad1();
-                                runQuad2();
-                                runQuad3();
-//                                toggle.setChecked(false);
-                            } else if ((xPixelVec1 != null) && (xPixelVec2 != null) && (xPixelVec3 == null)) {
-                                runQuad1();
-                                runQuad2();
-//                                toggle.setChecked(false);
-                            } else if ((xPixelVec1 == null) && (xPixelVec2 != null) && (xPixelVec3 != null)) {
-                                runQuad2();
-                                runQuad3();
-//                                toggle.setChecked(false);
-                            } else if ((xPixelVec1 != null) && (xPixelVec2 == null) && (xPixelVec3 != null)) {
-                                runQuad1();
-                                runQuad3();
-//                                toggle.setChecked(false);
-                            }
-                            else if ((xPixelVec1 != null) && (xPixelVec2 == null) && (xPixelVec3 == null)) {
-                                runQuad1();
-//                                toggle.setChecked(false);
-                            }
-                            else if(((xPixelVec1 == null) && (xPixelVec2 != null) && (xPixelVec3 == null))) {
-                                runQuad2();
-//                                toggle.setChecked(false);
-                            }
-                            else if ((xPixelVec1 == null) && (xPixelVec2 == null) && (xPixelVec3 != null)) {
-                                runQuad3();
-//                                toggle.setChecked(false);
-                            }
-                        } else if (!isChecked) {
+                        if (isChecked && DataShare.getPlayBackState()) {
 
+                            if(xPixelVec1 != null) { runQuad1(); }
+
+                            if(xPixelVec2 != null) { runQuad2(); }
+
+                            if(xPixelVec3 != null) { runQuad3(); }
+
+//                            if ((xPixelVec1 != null) && (xPixelVec2 != null) && (xPixelVec3 != null)) {
+//
+//                                runQuad2();
+//                                runQuad3();
+//                                toggle.setChecked(false);
+//                            } else if ((xPixelVec1 != null) && (xPixelVec2 != null) && (xPixelVec3 == null)) {
+//                                runQuad1();
+//                                runQuad2();
+//                                toggle.setChecked(false);
+//                            } else if ((xPixelVec1 == null) && (xPixelVec2 != null) && (xPixelVec3 != null)) {
+//                                runQuad2();
+//                                runQuad3();
+//                                toggle.setChecked(false);
+//                            } else if ((xPixelVec1 != null) && (xPixelVec2 == null) && (xPixelVec3 != null)) {
+//                                runQuad1();
+//                                runQuad3();
+//                                toggle.setChecked(false);
+//                            }
+//                            else if ((xPixelVec1 != null) && (xPixelVec2 == null) && (xPixelVec3 == null)) {
+//                                runQuad1();
+//                                toggle.setChecked(false);
+//                            }
+//                            else if(((xPixelVec1 == null) && (xPixelVec2 != null) && (xPixelVec3 == null))) {
+//                                runQuad2();
+//                                toggle.setChecked(false);
+//                            }
+//                            else if ((xPixelVec1 == null) && (xPixelVec2 == null) && (xPixelVec3 != null)) {
+//                                runQuad3();
+//                                toggle.setChecked(false);
+//                            }
                         }
+//                        else if (!isChecked && !DataShare.getPlayBackState()) {
+//                            //toggle.setChecked(false);
+//                            float x = xPixelVec1.get(0);
+//                            float y = yPixelVec1.get(0);
+//
+//                            quad1.setX(x - quad1.getWidth() / 2 + canvasSize.getLeft());
+//                            quad1.setY(y - quad1.getHeight() / 2);
+//                        }
                     }
                 });
             }
@@ -263,8 +285,8 @@ public class PreviewActivity extends AppCompatActivity {
         Runnable updateR1 = new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < xPixelVec1.size(); i++) {
-                    final int value = i;
+
+                while (DataShare.getSeekLoc(1) < xPixelVec1.size())  {
                     // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
                     try {
                         Thread.sleep(100);
@@ -274,11 +296,28 @@ public class PreviewActivity extends AppCompatActivity {
                     updateH1.post(new Runnable() {
                         @Override
                         public void run() {
+
+                            int value = DataShare.getSeekLoc(1);
+
                             quad1.setX(xPixelVec1.get(value) - quad1.getWidth() / 2 + canvasSize.getLeft());
                             quad1.setY(yPixelVec1.get(value) - quad1.getHeight() / 2);
 
                             x1 = xPixelVec1.get(value) - quad1.getWidth()/2 + canvasSize.getLeft();
                             y1 = yPixelVec1.get(value) - quad1.getHeight()/2;
+
+                            if (toggle.isChecked()) {
+                                DataShare.setSeekLoc(1, value + 1);
+                            }
+                            else {
+                                DataShare.setPlayBackState(false);
+                            }
+
+                            if (value >= xPixelVec1.size()-1) {
+                                DataShare.setSeekLoc(1, 0);
+//                                quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+//                                quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
+                                DataShare.setPlayBackState(true);
+                            }
                         }
                     });
                 }
@@ -292,8 +331,8 @@ public class PreviewActivity extends AppCompatActivity {
         Runnable updateR2 = new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < xPixelVec2.size(); i++) {
-                    final int value = i;
+
+                while (DataShare.getSeekLoc(1) < xPixelVec2.size())  {
                     // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
                     try {
                         Thread.sleep(100);
@@ -303,11 +342,28 @@ public class PreviewActivity extends AppCompatActivity {
                     updateH2.post(new Runnable() {
                         @Override
                         public void run() {
+
+                            int value = DataShare.getSeekLoc(1);
+
                             quad2.setX(xPixelVec2.get(value) - quad2.getWidth() / 2 + canvasSize.getLeft());
                             quad2.setY(yPixelVec2.get(value) - quad2.getHeight() / 2);
 
                             x2 = xPixelVec2.get(value) - quad2.getWidth()/2 + canvasSize.getLeft();
                             y2 = yPixelVec2.get(value) - quad2.getHeight()/2;
+
+                            if (toggle.isChecked()) {
+                                DataShare.setSeekLoc(1, value + 1);
+                            }
+                            else {
+                                DataShare.setPlayBackState(false);
+                            }
+
+                            if (value >= xPixelVec2.size()-1) {
+                                DataShare.setSeekLoc(1, 0);
+//                                quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+//                                quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
+                                DataShare.setPlayBackState(true);
+                            }
                         }
                     });
                 }
@@ -321,8 +377,8 @@ public class PreviewActivity extends AppCompatActivity {
         Runnable updateR3 = new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < xPixelVec3.size(); i++) {
-                    final int value = i;
+
+                while (DataShare.getSeekLoc(1) < xPixelVec3.size())  {
                     // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
                     try {
                         Thread.sleep(100);
@@ -332,11 +388,28 @@ public class PreviewActivity extends AppCompatActivity {
                     updateH3.post(new Runnable() {
                         @Override
                         public void run() {
+
+                            int value = DataShare.getSeekLoc(1);
+
                             quad3.setX(xPixelVec3.get(value) - quad3.getWidth() / 2 + canvasSize.getLeft());
                             quad3.setY(yPixelVec3.get(value) - quad3.getHeight() / 2);
 
                             x3 = xPixelVec3.get(value) - quad3.getWidth()/2 + canvasSize.getLeft();
                             y3 = yPixelVec3.get(value) - quad3.getHeight()/2;
+
+                            if (toggle.isChecked()) {
+                                DataShare.setSeekLoc(1, value + 1);
+                            }
+                            else {
+                                DataShare.setPlayBackState(false);
+                            }
+
+                            if (value >= xPixelVec3.size()-1) {
+                                DataShare.setSeekLoc(1, 0);
+//                                quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+//                                quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
+                                DataShare.setPlayBackState(true);
+                            }
                         }
                     });
                 }
