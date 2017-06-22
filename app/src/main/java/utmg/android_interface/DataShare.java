@@ -41,6 +41,12 @@ public class DataShare extends Application {
     private static ArrayList<Float> yPixel2;
     private static ArrayList<Float> yPixel3;
 
+    private static int seekLoc1;
+    private static int seekLoc2;
+    private static int seekLoc3;
+
+    private static boolean playBackState;
+
     public DataShare() {
 
         quad1.setQuadColour(Color.RED);
@@ -208,6 +214,42 @@ public class DataShare extends Application {
             default:
                 return null;
         }
+    }
+
+    public static void setSeekLoc(int i, int x) {
+        switch (i) {
+            case 1:
+                seekLoc1 = x;
+                break;
+            case 2:
+                seekLoc2 = x;
+                break;
+            case 3:
+                seekLoc3 = x;
+                break;
+            default:
+        }
+    }
+
+    public static int getSeekLoc(int i) {
+        switch (i) {
+            case 1:
+                return seekLoc1;
+            case 2:
+                return seekLoc2;
+            case 3:
+                return seekLoc3;
+            default:
+                return seekLoc1;
+        }
+    }
+
+    public static void setPlayBackState(boolean x) {
+        playBackState = x;
+    }
+
+    public static boolean getPlayBackState() {
+        return playBackState;
     }
 
 }
