@@ -38,16 +38,16 @@
 
     <LinearLayout
         android:id="@+id/linLay"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="655dp"
+        android:layout_height="396dp"
         android:layout_gravity="center_horizontal|top"
         android:paddingTop="5dp"
         android:orientation="horizontal">
 
         <utmg.android_interface.PreviewCanvas
             android:id="@+id/preview_canvas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/canvas_border"
             android:textColor="#FFFFFF" />
 
@@ -105,7 +105,29 @@
                     android:paddingBottom="15dp"
                     android:paddingTop="15dp"
                     android:progressDrawable="@drawable/ruler"
-                    android:thumb="@drawable/preview_seekbar_thumb4" />
+                    android:thumb="@drawable/preview_seekbar_thumb1" />
+
+                <SeekBar
+                    android:id="@+id/quadAllSeek2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/quad3Seek"
+                    android:layout_gravity="center"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:progressDrawable="@android:color/transparent"
+                    android:thumb="@drawable/preview_seekbar_thumb2" />
+
+                <SeekBar
+                    android:id="@+id/quadAllSeek3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/quad3Seek"
+                    android:layout_gravity="center"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:progressDrawable="@android:color/transparent"
+                    android:thumb="@drawable/preview_seekbar_thumb3" />
             </RelativeLayout>
 
             <LinearLayout
