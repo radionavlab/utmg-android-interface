@@ -56,14 +56,15 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<Float> yPixelVec3;
     private ArrayList<Float> zPixelVec3;
 
-    private float x1;
-    private float y1;
+    private SeekBar quadAllSeek;
+//    private SeekBar quad1Seek;
+//    private SeekBar quad2Seek;
+//    private SeekBar quad3Seek;
+
+    private int quadMax = 0;
 
     private float x2;
     private float y2;
-
-    private float x3;
-    private float y3;
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
@@ -97,10 +98,10 @@ public class PreviewActivity extends AppCompatActivity {
         DataShare.setPlayBackState(true);
 
         seekbarRelative = (RelativeLayout) findViewById(R.id.seekbar_relative);
-        final SeekBar quad1Seek = (SeekBar) findViewById(R.id.quad1Seek);
-        final SeekBar quad2Seek = (SeekBar) findViewById(R.id.quad2Seek);
-        final SeekBar quad3Seek = (SeekBar) findViewById(R.id.quad3Seek);
-        final SeekBar quadAllSeek = (SeekBar) findViewById(R.id.quadAllSeek);
+//        quad1Seek = (SeekBar) findViewById(R.id.quad1Seek);
+//        quad2Seek = (SeekBar) findViewById(R.id.quad2Seek);
+//        quad3Seek = (SeekBar) findViewById(R.id.quad3Seek);
+        quadAllSeek = (SeekBar) findViewById(R.id.quadAllSeek);
 
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -125,29 +126,6 @@ public class PreviewActivity extends AppCompatActivity {
 
         previewCanvas.callOnDraw();
 
-        // What even is this.... XD
-        quadAllSeek.setMax(Math.max(Math.max(DataShare.getCurrentTime(1).size(), DataShare.getCurrentTime(2).size()), DataShare.getCurrentTime(3).size()));
-        final Handler seekbarH = new Handler();
-        Runnable seekbarR = new Runnable() {
-            @Override
-            public void run() {
-
-                quadAllSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) { }
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) { }
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                        quad1Seek.setProgress(progress);
-//                        quad2Seek.setProgress(progress);
-//                        quad3Seek.setProgress(progress);
-                    }
-                });
-                seekbarH.postDelayed(this, 1000);
-            }
-        };
-        seekbarR.run();
 
         quad1 = (ImageView) findViewById(R.id.demo_quad1);
         quad2 = (ImageView) findViewById(R.id.demo_quad2);
@@ -225,14 +203,17 @@ public class PreviewActivity extends AppCompatActivity {
 
                             if (xPixelVec1 != null) {
                                 runQuad1();
+                                seekAll();
                             }
 
                             if (xPixelVec2 != null) {
                                 runQuad2();
+                                seekAll();
                             }
 
                             if (xPixelVec3 != null) {
                                 runQuad3();
+                                seekAll();
                             }
                         }
                     }
@@ -240,7 +221,6 @@ public class PreviewActivity extends AppCompatActivity {
             }
         };
         quadToggle.run();
-
     }
 
     private void runQuad1() {
@@ -265,8 +245,6 @@ public class PreviewActivity extends AppCompatActivity {
                             quad1.setX(xPixelVec1.get(value) - quad1.getWidth() / 2 + canvasSize.getLeft());
                             quad1.setY(yPixelVec1.get(value) - quad1.getHeight() / 2);
 
-                            x1 = xPixelVec1.get(value) - quad1.getWidth()/2 + canvasSize.getLeft();
-                            y1 = yPixelVec1.get(value) - quad1.getHeight()/2;
 
                             if (toggle.isChecked()) {
                                 DataShare.setSeekLoc(1, value + 1);
@@ -311,9 +289,6 @@ public class PreviewActivity extends AppCompatActivity {
                             quad2.setX(xPixelVec2.get(value) - quad2.getWidth() / 2 + canvasSize.getLeft());
                             quad2.setY(yPixelVec2.get(value) - quad2.getHeight() / 2);
 
-                            x2 = xPixelVec2.get(value) - quad2.getWidth()/2 + canvasSize.getLeft();
-                            y2 = yPixelVec2.get(value) - quad2.getHeight()/2;
-
                             if (toggle.isChecked()) {
                                 DataShare.setSeekLoc(2, value + 1);
                             }
@@ -357,9 +332,6 @@ public class PreviewActivity extends AppCompatActivity {
                             quad3.setX(xPixelVec3.get(value) - quad3.getWidth() / 2 + canvasSize.getLeft());
                             quad3.setY(yPixelVec3.get(value) - quad3.getHeight() / 2);
 
-                            x3 = xPixelVec3.get(value) - quad3.getWidth()/2 + canvasSize.getLeft();
-                            y3 = yPixelVec3.get(value) - quad3.getHeight()/2;
-
                             if (toggle.isChecked()) {
                                 DataShare.setSeekLoc(3, value + 1);
                             }
@@ -380,6 +352,56 @@ public class PreviewActivity extends AppCompatActivity {
         };
         new Thread(updateR3).start();
     }
+
+    private void seekAll() {
+        quadMax = 0;
+        quadAllSeek.setMax(Math.max(Math.max(DataShare.getCurrentTime(1).size(), DataShare.getCurrentTime(2).size()), DataShare.getCurrentTime(3).size()));
+
+        Log.i("11111111111", Float.toString(DataShare.getCurrentTime(1).size()));
+        Log.i("22222222222", Float.toString(DataShare.getCurrentTime(2).size()));
+        Log.i("33333333333", Float.toString(DataShare.getCurrentTime(3).size()));
+        Log.i("MMMMMMMMMMM", Float.toString(Math.max(Math.max(DataShare.getCurrentTime(1).size(), DataShare.getCurrentTime(2).size()), DataShare.getCurrentTime(3).size())));
+        final Handler seekH = new Handler();
+        Runnable seekR = new Runnable() {
+            @Override
+            public void run() {
+                if (DataShare.getCurrentTime(1).size() == quadAllSeek.getMax()) {
+                    quadMax = 1;
+                }
+                else if (DataShare.getCurrentTime(2).size() == quadAllSeek.getMax()) {
+                    quadMax = 2;
+                }
+                else {
+                    quadMax = 3;
+                }
+                while(quadMax < quadAllSeek.getMax() - 1) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    seekH.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            int value = DataShare.getSeekLoc(quadMax);
+                            quadAllSeek.setProgress(value);
+                        }
+                    });
+                }
+            }
+        };
+        new Thread(seekR).start();
+    }
+
+//    private void quad1Velocity() {
+//        final Handler quad1H = new Handler();
+//        Runnable quad1R = new Runnable() {
+//            @Override
+//            public void run() {
+//                while (DataShare.getSeekLoc(1) < xPixelVec1.size() - 1)
+//            }
+//        }
+//    }
 
 
     private void setupActionBar() {
