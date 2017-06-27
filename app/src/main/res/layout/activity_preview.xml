@@ -66,68 +66,45 @@
                 android:layout_gravity="bottom"
                 android:layout_weight="1">
 
-                <SeekBar
-                    android:id="@+id/quad1Seek"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:progressDrawable="@drawable/preview_seekbar_progress1"
-                    android:thumb="@drawable/preview_seekbar_thumb1" />
+                <!--<SeekBar-->
+                    <!--android:id="@+id/quad1Seek"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:progressDrawable="@drawable/preview_seekbar_progress1"-->
+                    <!--android:thumb="@drawable/preview_seekbar_thumb1" />-->
 
-                <SeekBar
-                    android:id="@+id/quad2Seek"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@id/quad1Seek"
-                    android:layout_gravity="center"
-                    android:paddingTop="15dp"
-                    android:progressDrawable="@drawable/preview_seekbar_progress2"
-                    android:thumb="@drawable/preview_seekbar_thumb2" />
+                <!--<SeekBar-->
+                    <!--android:id="@+id/quad2Seek"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentLeft="true"-->
+                    <!--android:layout_alignParentStart="true"-->
+                    <!--android:layout_below="@id/quad1Seek"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:paddingTop="15dp"-->
+                    <!--android:progressDrawable="@drawable/preview_seekbar_progress2"-->
+                    <!--android:thumb="@drawable/preview_seekbar_thumb2" />-->
 
-                <SeekBar
-                    android:id="@+id/quad3Seek"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/quad2Seek"
-                    android:layout_gravity="center"
-                    android:paddingTop="15dp"
-                    android:progressDrawable="@drawable/preview_seekbar_progress3"
-                    android:thumb="@drawable/preview_seekbar_thumb3" />
+                <!--<SeekBar-->
+                    <!--android:id="@+id/quad3Seek"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@id/quad2Seek"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:paddingTop="15dp"-->
+                    <!--android:progressDrawable="@drawable/preview_seekbar_progress3"-->
+                    <!--android:thumb="@drawable/preview_seekbar_thumb3" />-->
 
                 <SeekBar
                     android:id="@+id/quadAllSeek"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/quad3Seek"
                     android:layout_gravity="center"
                     android:paddingBottom="15dp"
                     android:paddingTop="15dp"
                     android:progressDrawable="@drawable/ruler"
-                    android:thumb="@drawable/preview_seekbar_thumb1" />
-
-                <SeekBar
-                    android:id="@+id/quadAllSeek2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/quad3Seek"
-                    android:layout_gravity="center"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
-                    android:progressDrawable="@android:color/transparent"
-                    android:thumb="@drawable/preview_seekbar_thumb2" />
-
-                <SeekBar
-                    android:id="@+id/quadAllSeek3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/quad3Seek"
-                    android:layout_gravity="center"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
-                    android:progressDrawable="@android:color/transparent"
-                    android:thumb="@drawable/preview_seekbar_thumb3" />
+                    android:thumb="@drawable/preview_seekbar_thumb4" />
             </RelativeLayout>
 
             <LinearLayout
@@ -140,8 +117,8 @@
 
                 <ToggleButton
                     android:id="@+id/toggleButton"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="114dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/toggle_selector"
                     android:textOff=" "
