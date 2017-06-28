@@ -211,7 +211,7 @@ public class PreviewActivity extends AppCompatActivity {
                 int index = quadAllSeek.getProgress();
                 if (toggle.isChecked() == false) {
                     if (xPixelVec1 != null) {
-
+                        //TODO
                     }
                 }
             }
