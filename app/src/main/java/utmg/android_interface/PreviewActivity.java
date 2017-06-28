@@ -61,6 +61,7 @@ public class PreviewActivity extends AppCompatActivity {
 //    private SeekBar quad2Seek;
 //    private SeekBar quad3Seek;
 
+    private int togglei = 0;
     private int quadMax = 0;
 
     private float x2;
@@ -126,21 +127,61 @@ public class PreviewActivity extends AppCompatActivity {
 
         previewCanvas.callOnDraw();
 
+        final SeekBar time = (SeekBar) findViewById(R.id.quadAllSeek);
+        //time.getLayoutParams().width = seekbarRelative.getLayoutParams().height;
+//        slider.getLayoutParams().width = (int)(screenHeight * 0.65);
+        final Handler seekbarH = new Handler();
+        Runnable seekbarR = new Runnable() {
+            @Override
+            public void run() {
+
+                time.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) { }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) { }
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        int progess = quadAllSeek.getProgress();
+                        togglei = 1;
+                        // Idea is to get the time from the seekbar, find the index of that time in the array then take that index and use it to //
+                        // set the quads to that position specified by the index //
+                        if (xPixelVec1 != null){
+
+                            quad1.setX(xPixelVec1.get(progress) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                            quad1.setY(yPixelVec1.get(progress) - quad1.getHeight() / 2);
+                       }
+                        if (xPixelVec2 != null){
+
+                            quad2.setX(xPixelVec2.get(progress) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                            quad2.setY(yPixelVec2.get(progress) - quad2.getHeight() / 2);
+                        }
+                        if (xPixelVec3 != null){
+
+                            quad3.setX(xPixelVec3.get(progress) - quad3.getWidth() / 2 + canvasSize.getLeft());
+                            quad3.setY(yPixelVec3.get(progress) - quad3.getHeight() / 2);
+                        }
+                    }
+                });
+                seekbarH.postDelayed(this, 10);
+            }
+        };
+        seekbarR.run();
 
         quad1 = (ImageView) findViewById(R.id.demo_quad1);
         quad2 = (ImageView) findViewById(R.id.demo_quad2);
         quad3 = (ImageView) findViewById(R.id.demo_quad3);
 
-        quad1.getLayoutParams().height = (int) (screenHeight * 0.05);
-        quad1.getLayoutParams().width = (int) (screenWidth * 0.05);
+        quad1.getLayoutParams().height = (int) (screenHeight * 0.02);
+        quad1.getLayoutParams().width = (int) (screenWidth * 0.02);
         //quad1.setColorFilter(DataShare.getInstance("quad1").getQuadColour());
 
-        quad2.getLayoutParams().height = (int) (screenHeight * 0.05);
-        quad2.getLayoutParams().width = (int) (screenWidth * 0.05);
+        quad2.getLayoutParams().height = (int) (screenHeight * 0.02);
+        quad2.getLayoutParams().width = (int) (screenWidth * 0.02);
         //quad2.setColorFilter(DataShare.getInstance("quad2").getQuadColour());
 
-        quad3.getLayoutParams().height = (int) (screenHeight * 0.05);
-        quad3.getLayoutParams().width = (int) (screenWidth * 0.05);
+        quad3.getLayoutParams().height = (int) (screenHeight * 0.02);
+        quad3.getLayoutParams().width = (int) (screenWidth * 0.02);
         //quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
 
         final Handler handlerQuad = new Handler();
@@ -153,9 +194,12 @@ public class PreviewActivity extends AppCompatActivity {
                         quad1.setVisibility(View.INVISIBLE);
                     }
                     else {
-                        quad1.setVisibility(View.VISIBLE);
-                        //quad1.setX(xPixelVec1.get(0));
-                        //quad1.setY(yPixelVec1.get(0));
+                        if(togglei==0){
+                            quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                            quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
+                            quad1.setVisibility(View.VISIBLE);
+                        }
+
                     }
                     //Log.d("MA Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
 
@@ -168,9 +212,11 @@ public class PreviewActivity extends AppCompatActivity {
                         quad2.setVisibility(View.INVISIBLE);
                     }
                     else {
-                        quad2.setVisibility(View.VISIBLE);
-//                        quad2.setX(xPixelVec2.get(0));
-//                        quad2.setY(yPixelVec2.get(0));
+                        if(togglei==0){
+                            quad2.setX(xPixelVec2.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                            quad2.setY(yPixelVec2.get(0) - quad1.getHeight() / 2);
+                            quad2.setVisibility(View.VISIBLE);
+                        }
                     }
 //                    quad2.setImageAlpha( (int)(((DataShare.getInstance("quad2").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                 }
@@ -181,9 +227,11 @@ public class PreviewActivity extends AppCompatActivity {
                         quad3.setVisibility(View.INVISIBLE);
                     }
                     else {
-                        quad3.setVisibility(View.VISIBLE);
-//                        quad3.setX(xPixelVec3.get(0));
-//                        quad3.setY(yPixelVec3.get(0));
+                        if(togglei==0){
+                            quad3.setX(xPixelVec3.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                            quad3.setY(yPixelVec3.get(0) - quad1.getHeight() / 2);
+                            quad3.setVisibility(View.VISIBLE);
+                        }
                     }
 //                    quad3.setImageAlpha( (int)(((DataShare.getInstance("quad3").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                 }
@@ -200,7 +248,7 @@ public class PreviewActivity extends AppCompatActivity {
                 toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked && DataShare.getPlayBackState()) {
-
+                            togglei = 1;
                             if (xPixelVec1 != null) {
                                 runQuad1();
                                 seekAll();

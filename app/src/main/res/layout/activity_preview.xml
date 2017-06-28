@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:src="@drawable/quad"
+        android:src="@drawable/whitecircle"
         android:visibility="gone"
         android:tint="@android:color/holo_red_dark"/>
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:src="@drawable/quad"
+        android:src="@drawable/whitecircle"
         android:visibility="gone"
         android:tint="@android:color/holo_green_dark"/>
 
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:src="@drawable/quad"
+        android:src="@drawable/whitecircle"
         android:visibility="gone"
         android:tint="@android:color/holo_blue_dark"/>
 
@@ -117,7 +117,7 @@
 
                 <ToggleButton
                     android:id="@+id/toggleButton"
-                    android:layout_width="114dp"
+                    android:layout_width="90dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/toggle_selector"

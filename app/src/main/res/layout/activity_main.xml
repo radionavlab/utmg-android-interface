@@ -154,29 +154,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="75dp"
         android:layout_marginTop="250dp"
         android:text="0"
         android:textSize="20dp" />
 
     <FrameLayout
         android:id="@+id/slider_frame_layout"
-        android:layout_width="32dp"
+        android:layout_width="30dp"
         android:layout_height="400dp"
         android:orientation="vertical"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="40dp"
         android:layout_gravity="center|left">
 
         <SeekBar
             android:id="@+id/slider"
-            android:layout_width="320dp"
-            android:layout_height="32dp"
+            android:layout_width="300dp"
+            android:layout_height="20dp"
             android:layout_gravity="center"
             android:max="2"
-            android:progressTint="@android:color/holo_blue_dark"
             android:rotation="270"
-            android:thumbTint="@android:color/holo_blue_dark"
-            android:background="@android:color/darker_gray"
+            android:thumb="@drawable/altitude_seekbar_thumb"
+            android:background="@drawable/altitude_seekbar"
             />
     </FrameLayout>
 
