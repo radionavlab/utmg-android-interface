@@ -60,6 +60,7 @@ public class PreviewActivity extends AppCompatActivity {
 //    private SeekBar quad1Seek;
 //    private SeekBar quad2Seek;
 //    private SeekBar quad3Seek;
+    private int progresss;
 
     private int togglei = 0;
     private int quadMax = 0;
@@ -124,6 +125,7 @@ public class PreviewActivity extends AppCompatActivity {
                 }
             }
         });
+        quadAllSeek.setMax(Math.max(Math.max(DataShare.getCurrentTime(1).size(), DataShare.getCurrentTime(2).size()), DataShare.getCurrentTime(3).size()));
 
         previewCanvas.callOnDraw();
 
@@ -137,33 +139,42 @@ public class PreviewActivity extends AppCompatActivity {
 
                 time.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) { }
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        quadAllSeek.setProgress(progresss);
+
+                    }
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) { }
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        int progess = quadAllSeek.getProgress();
+                        progresss = progress;
                         togglei = 1;
                         // Idea is to get the time from the seekbar, find the index of that time in the array then take that index and use it to //
                         // set the quads to that position specified by the index //
                         if (xPixelVec1 != null){
 
-                            quad1.setX(xPixelVec1.get(progress) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                            quad1.setY(yPixelVec1.get(progress) - quad1.getHeight() / 2);
+                            try {
+                                quad1.setX(xPixelVec1.get(progresss) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                                quad1.setY(yPixelVec1.get(progresss) - quad1.getHeight() / 2);
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
                        }
                         if (xPixelVec2 != null){
 
-                            quad2.setX(xPixelVec2.get(progress) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                            quad2.setY(yPixelVec2.get(progress) - quad2.getHeight() / 2);
+                            quad2.setX(xPixelVec2.get(progresss) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                            quad2.setY(yPixelVec2.get(progresss) - quad2.getHeight() / 2);
                         }
                         if (xPixelVec3 != null){
-
-                            quad3.setX(xPixelVec3.get(progress) - quad3.getWidth() / 2 + canvasSize.getLeft());
-                            quad3.setY(yPixelVec3.get(progress) - quad3.getHeight() / 2);
+                            quad3.setX(xPixelVec3.get(progresss) - quad3.getWidth() / 2 + canvasSize.getLeft());
+                            quad3.setY(yPixelVec3.get(progresss) - quad3.getHeight() / 2);
                         }
+                        //quadAllSeek.setProgress(progresss);
                     }
                 });
-                seekbarH.postDelayed(this, 10);
+               seekbarH.postDelayed(this, 10);
             }
         };
         seekbarR.run();
@@ -236,7 +247,7 @@ public class PreviewActivity extends AppCompatActivity {
 //                    quad3.setImageAlpha( (int)(((DataShare.getInstance("quad3").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                 }
                 //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
-                handlerQuad.postDelayed(this, 10);
+               handlerQuad.postDelayed(this, 10);
             }
         };
         runnableQuad.run();
