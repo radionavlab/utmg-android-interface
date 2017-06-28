@@ -211,7 +211,8 @@ public class PreviewActivity extends AppCompatActivity {
                 int index = quadAllSeek.getProgress();
                 if (toggle.isChecked() == false) {
                     if (xPixelVec1 != null) {
-                        //TODO
+                        String i = "1";
+                        Log.i("1111", i);
                     }
                 }
             }
@@ -402,14 +403,28 @@ public class PreviewActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             int value = DataShare.getSeekLoc(quadMax);
-                            quadAllSeek.setProgress(value);
+                            int max = 0;
+                            if(value != 0){
+                                max = value;
+                                quadAllSeek.setProgress(max);
+                            }else{
+
+                            }
+                            if(max == quadAllSeek.getMax()-1){
+                                quadAllSeek.setProgress(max+1);
+                                toggle.setChecked(false);
+                                max = 0;
+                            }
+                            Log.i("VauleValueValue", Integer.toString(value));
+                            Log.i("MaxMaxMax", Integer.toString(max));
+                            Log.i("quadMaxquadMaxquadMax", Integer.toString(quadAllSeek.getMax()));
                         }
                     });
                 }
 
             }
         };
-        new Thread(seekR).start();
+         new Thread(seekR).start();
     }
 
 
