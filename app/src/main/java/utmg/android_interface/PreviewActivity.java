@@ -3,6 +3,8 @@ package utmg.android_interface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Point;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -18,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.TranslateAnimation;
@@ -197,8 +200,98 @@ public class PreviewActivity extends AppCompatActivity {
 
         quadAllSeek.setMax(Math.max(Math.max(DataShare.getCurrentTime(1).size(), DataShare.getCurrentTime(2).size()), DataShare.getCurrentTime(3).size()));
 
-        // Probably not the write place yet but it will be put in the write place
 
+        // TODO touch listeners only work for single paths, FIX THIS!
+        // ONLY WORKS AFTER RUNNING THROUGH ONCE
+        quad1.setOnTouchListener(new View.OnTouchListener() {
+            Point DownPT = new Point(); // Record mouse position when pressed down
+            Point StartPT = new Point(); // Record start position of quad1
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                int eid = event.getAction();
+                switch (eid)
+                {
+                    case MotionEvent.ACTION_MOVE :
+                        PointF mv = new PointF( event.getX() - DownPT.x, event.getY() - DownPT.y);
+                        quad1.setX((int)(StartPT.x+mv.x));
+                        quad1.setY((int)(StartPT.y+mv.y));
+                        StartPT = new Point((int) quad1.getX(), (int) quad1.getY());
+                        break;
+                    case MotionEvent.ACTION_DOWN :
+                        DownPT.x = (int) event.getX();
+                        DownPT.y = (int) event.getY();
+                        StartPT = new Point((int) quad1.getX(), (int) quad1.getY());
+                        break;
+                    case MotionEvent.ACTION_UP :
+                        // Nothing have to do
+                        break;
+                    default :
+                        break;
+                }
+                return true;
+            }
+        });
+
+        quad2.setOnTouchListener(new View.OnTouchListener() {
+            Point DownPT = new Point(); // Record mouse position when pressed down
+            Point StartPT = new Point(); // Record start position of quad1
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                int eid = event.getAction();
+                switch (eid)
+                {
+                    case MotionEvent.ACTION_MOVE :
+                        PointF mv = new PointF( event.getX() - DownPT.x, event.getY() - DownPT.y);
+                        quad2.setX((int)(StartPT.x+mv.x));
+                        quad2.setY((int)(StartPT.y+mv.y));
+                        StartPT = new Point((int) quad2.getX(), (int) quad2.getY());
+                        break;
+                    case MotionEvent.ACTION_DOWN :
+                        DownPT.x = (int) event.getX();
+                        DownPT.y = (int) event.getY();
+                        StartPT = new Point((int) quad2.getX(), (int) quad2.getY());
+                        break;
+                    case MotionEvent.ACTION_UP :
+                        // Nothing have to do
+                        break;
+                    default :
+                        break;
+                }
+                return true;
+            }
+        });
+
+        quad3.setOnTouchListener(new View.OnTouchListener() {
+            Point DownPT = new Point(); // Record mouse position when pressed down
+            Point StartPT = new Point(); // Record start position of quad1
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                int eid = event.getAction();
+                switch (eid)
+                {
+                    case MotionEvent.ACTION_MOVE :
+                        PointF mv = new PointF( event.getX() - DownPT.x, event.getY() - DownPT.y);
+                        quad3.setX((int)(StartPT.x+mv.x));
+                        quad3.setY((int)(StartPT.y+mv.y));
+                        StartPT = new Point((int) quad3.getX(), (int) quad3.getY());
+                        break;
+                    case MotionEvent.ACTION_DOWN :
+                        DownPT.x = (int) event.getX();
+                        DownPT.y = (int) event.getY();
+                        StartPT = new Point((int) quad3.getX(), (int) quad3.getY());
+                        break;
+                    case MotionEvent.ACTION_UP :
+                        // Nothing have to do
+                        break;
+                    default :
+                        break;
+                }
+                return true;
+            }
+        });
         toggle = (ToggleButton) findViewById(R.id.toggleButton);
         Runnable quadToggle = new Runnable() {
             @Override
