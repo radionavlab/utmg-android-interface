@@ -196,27 +196,8 @@ public class PreviewActivity extends AppCompatActivity {
         runnableQuad.run();
 
         quadAllSeek.setMax(Math.max(Math.max(DataShare.getCurrentTime(1).size(), DataShare.getCurrentTime(2).size()), DataShare.getCurrentTime(3).size()));
-        quadAllSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
 
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int index = quadAllSeek.getProgress();
-                if (toggle.isChecked() == false) {
-                    if (xPixelVec1 != null) {
-                        String i = "1";
-                        Log.i("1111", i);
-                    }
-                }
-            }
-        });
+        // Probably not the write place yet but it will be put in the write place
 
         toggle = (ToggleButton) findViewById(R.id.toggleButton);
         Runnable quadToggle = new Runnable() {
@@ -240,6 +221,54 @@ public class PreviewActivity extends AppCompatActivity {
                                 runQuad3();
                                 seekAll();
                             }
+                        }else if(!isChecked && DataShare.getPlayBackState()) {
+                            quadAllSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                                @Override
+                                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                                }
+
+                                @Override
+                                public void onStartTrackingTouch(SeekBar seekBar) {
+                                }
+
+                                @Override
+                                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                    int index = quadAllSeek.getProgress();
+                                    if (toggle.isChecked() == false) {
+                                        if (xPixelVec1 != null) {
+
+                                            if(index == quadAllSeek.getMax()){
+                                                // This will handle the error
+
+                                            }else {
+                                                quad1.setX(xPixelVec1.get(index) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                                                quad1.setY(yPixelVec1.get(index) - quad1.getHeight() / 2);
+                                            }
+                                        }
+                                        if (xPixelVec2 != null) {
+
+                                            if(index == quadAllSeek.getMax()){
+                                                // This will handle the error
+
+                                            }else {
+                                                quad2.setX(xPixelVec2.get(index) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                                                quad2.setY(yPixelVec2.get(index) - quad2.getHeight() / 2);
+                                            }
+                                        }
+                                        if (xPixelVec3 != null) {
+
+                                            if(index == quadAllSeek.getMax()){
+                                                // This will handle the error
+
+                                            }else {
+                                                quad3.setX(xPixelVec3.get(index) - quad3.getWidth() / 2 + canvasSize.getLeft());
+                                                quad3.setY(yPixelVec3.get(index) - quad3.getHeight() / 2);
+                                            }
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
                 });
