@@ -35,40 +35,31 @@ import java.util.ArrayList;
 
 public class PreviewActivity extends AppCompatActivity {
 
+    SharedPreferences pref;
+    SharedPreferences.Editor prefEditor;
     private PreviewCanvas previewCanvas;
     private LinearLayout canvasSize;
     private RelativeLayout seekbarRelative;
     private int screenHeight;
     private int screenWidth;
-
     private ToggleButton toggle;
-
     private ImageView quad1;
     private ImageView quad2;
     private ImageView quad3;
-
     private ArrayList<Float> xPixelVec1;
     private ArrayList<Float> yPixelVec1;
     private ArrayList<Float> zPixelVec1;
-
     private ArrayList<Float> xPixelVec2;
     private ArrayList<Float> yPixelVec2;
     private ArrayList<Float> zPixelVec2;
-
     private ArrayList<Float> xPixelVec3;
     private ArrayList<Float> yPixelVec3;
     private ArrayList<Float> zPixelVec3;
-
     private SeekBar quadAllSeek;
-
     private int togglei = 0;
     private int quadMax = 0;
-
     private float x2;
     private float y2;
-
-    SharedPreferences pref;
-    SharedPreferences.Editor prefEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +101,8 @@ public class PreviewActivity extends AppCompatActivity {
                 Log.i("seekBarHeight", Float.toString(seekbarRelative.getHeight()));
 
                 CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) canvasSize.getLayoutParams();
-                params.height = (int)(screenHeight - seekbarRelative.getHeight() - (getSupportActionBar().getHeight()*1.5));
-                params.width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
+                params.height = (int) (screenHeight - seekbarRelative.getHeight() - (getSupportActionBar().getHeight() * 1.5));
+                params.width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5) / pref.getFloat("newHeight", 3)));
                 canvasSize.setLayoutParams(params);
 
                 // remember to remove the listener if possible
@@ -146,12 +137,11 @@ public class PreviewActivity extends AppCompatActivity {
             public void run() {
                 // quad 1
                 if (pref.getBoolean("quad1", false)) {
-                    if(xPixelVec1 == null || yPixelVec1 == null) {
+                    if (xPixelVec1 == null || yPixelVec1 == null) {
                         quad1.setVisibility(View.INVISIBLE);
-                    }
-                    else {
+                    } else {
                         // place imageView at start of path on beginning of PreviewActivity
-                        if(togglei==0){
+                        if (togglei == 0) {
                             quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
                             quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
                             quad1.setVisibility(View.VISIBLE);
@@ -163,12 +153,11 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 2
                 if (pref.getBoolean("quad2", false)) {
-                    if(xPixelVec2 == null || yPixelVec2 == null) {
+                    if (xPixelVec2 == null || yPixelVec2 == null) {
                         quad2.setVisibility(View.INVISIBLE);
-                    }
-                    else {
+                    } else {
                         // place imageView at start of path on beginning of PreviewActivity
-                        if(togglei==0){
+                        if (togglei == 0) {
                             quad2.setX(xPixelVec2.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
                             quad2.setY(yPixelVec2.get(0) - quad1.getHeight() / 2);
                             quad2.setVisibility(View.VISIBLE);
@@ -179,12 +168,11 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 3
                 if (pref.getBoolean("quad3", false)) {
-                    if(xPixelVec3 == null || yPixelVec3 == null) {
+                    if (xPixelVec3 == null || yPixelVec3 == null) {
                         quad3.setVisibility(View.INVISIBLE);
-                    }
-                    else {
+                    } else {
                         // place imageView at start of path on beginning of PreviewActivity
-                        if(togglei==0){
+                        if (togglei == 0) {
                             quad3.setX(xPixelVec3.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
                             quad3.setY(yPixelVec3.get(0) - quad1.getHeight() / 2);
                             quad3.setVisibility(View.VISIBLE);
@@ -193,7 +181,7 @@ public class PreviewActivity extends AppCompatActivity {
 //                    quad3.setImageAlpha( (int)(((DataShare.getInstance("quad3").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
                 }
                 //Log.i("vis", Boolean.toString(pref.getBoolean("quad",false)));
-               handlerQuad.postDelayed(this, 10);
+                handlerQuad.postDelayed(this, 10);
             }
         };
         runnableQuad.run();
@@ -206,27 +194,26 @@ public class PreviewActivity extends AppCompatActivity {
         quad1.setOnTouchListener(new View.OnTouchListener() {
             Point DownPT = new Point(); // Record mouse position when pressed down
             Point StartPT = new Point(); // Record start position of quad1
+
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onTouch(View v, MotionEvent event) {
                 int eid = event.getAction();
-                switch (eid)
-                {
-                    case MotionEvent.ACTION_MOVE :
-                        PointF mv = new PointF( event.getX() - DownPT.x, event.getY() - DownPT.y);
-                        quad1.setX((int)(StartPT.x+mv.x));
-                        quad1.setY((int)(StartPT.y+mv.y));
+                switch (eid) {
+                    case MotionEvent.ACTION_MOVE:
+                        PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
+                        quad1.setX((int) (StartPT.x + mv.x));
+                        quad1.setY((int) (StartPT.y + mv.y));
                         StartPT = new Point((int) quad1.getX(), (int) quad1.getY());
                         break;
-                    case MotionEvent.ACTION_DOWN :
+                    case MotionEvent.ACTION_DOWN:
                         DownPT.x = (int) event.getX();
                         DownPT.y = (int) event.getY();
                         StartPT = new Point((int) quad1.getX(), (int) quad1.getY());
                         break;
-                    case MotionEvent.ACTION_UP :
+                    case MotionEvent.ACTION_UP:
                         // Nothing have to do
                         break;
-                    default :
+                    default:
                         break;
                 }
                 return true;
@@ -236,27 +223,26 @@ public class PreviewActivity extends AppCompatActivity {
         quad2.setOnTouchListener(new View.OnTouchListener() {
             Point DownPT = new Point(); // Record mouse position when pressed down
             Point StartPT = new Point(); // Record start position of quad1
+
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onTouch(View v, MotionEvent event) {
                 int eid = event.getAction();
-                switch (eid)
-                {
-                    case MotionEvent.ACTION_MOVE :
-                        PointF mv = new PointF( event.getX() - DownPT.x, event.getY() - DownPT.y);
-                        quad2.setX((int)(StartPT.x+mv.x));
-                        quad2.setY((int)(StartPT.y+mv.y));
+                switch (eid) {
+                    case MotionEvent.ACTION_MOVE:
+                        PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
+                        quad2.setX((int) (StartPT.x + mv.x));
+                        quad2.setY((int) (StartPT.y + mv.y));
                         StartPT = new Point((int) quad2.getX(), (int) quad2.getY());
                         break;
-                    case MotionEvent.ACTION_DOWN :
+                    case MotionEvent.ACTION_DOWN:
                         DownPT.x = (int) event.getX();
                         DownPT.y = (int) event.getY();
                         StartPT = new Point((int) quad2.getX(), (int) quad2.getY());
                         break;
-                    case MotionEvent.ACTION_UP :
+                    case MotionEvent.ACTION_UP:
                         // Nothing have to do
                         break;
-                    default :
+                    default:
                         break;
                 }
                 return true;
@@ -266,27 +252,26 @@ public class PreviewActivity extends AppCompatActivity {
         quad3.setOnTouchListener(new View.OnTouchListener() {
             Point DownPT = new Point(); // Record mouse position when pressed down
             Point StartPT = new Point(); // Record start position of quad1
+
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onTouch(View v, MotionEvent event) {
                 int eid = event.getAction();
-                switch (eid)
-                {
-                    case MotionEvent.ACTION_MOVE :
-                        PointF mv = new PointF( event.getX() - DownPT.x, event.getY() - DownPT.y);
-                        quad3.setX((int)(StartPT.x+mv.x));
-                        quad3.setY((int)(StartPT.y+mv.y));
+                switch (eid) {
+                    case MotionEvent.ACTION_MOVE:
+                        PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
+                        quad3.setX((int) (StartPT.x + mv.x));
+                        quad3.setY((int) (StartPT.y + mv.y));
                         StartPT = new Point((int) quad3.getX(), (int) quad3.getY());
                         break;
-                    case MotionEvent.ACTION_DOWN :
+                    case MotionEvent.ACTION_DOWN:
                         DownPT.x = (int) event.getX();
                         DownPT.y = (int) event.getY();
                         StartPT = new Point((int) quad3.getX(), (int) quad3.getY());
                         break;
-                    case MotionEvent.ACTION_UP :
+                    case MotionEvent.ACTION_UP:
                         // Nothing have to do
                         break;
-                    default :
+                    default:
                         break;
                 }
                 return true;
@@ -314,7 +299,7 @@ public class PreviewActivity extends AppCompatActivity {
                                 runQuad3();
                                 seekAll();
                             }
-                        }else if(!isChecked && DataShare.getPlayBackState()) {
+                        } else if (!isChecked && DataShare.getPlayBackState()) {
                             quadAllSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                                 @Override
                                 public void onStopTrackingTouch(SeekBar seekBar) {
@@ -331,30 +316,42 @@ public class PreviewActivity extends AppCompatActivity {
                                     if (toggle.isChecked() == false) {
                                         if (xPixelVec1 != null) {
 
-                                            if(index == quadAllSeek.getMax()){
+                                            if (index == DataShare.getCurrentTime(1).size()) {
                                                 // This will handle the error
 
-                                            }else {
+                                            } else if (index > DataShare.getCurrentTime(1).size()) {
+                                                quad1.setX(xPixelVec1.size() - quad1.getWidth() / 1 + canvasSize.getLeft());
+                                                quad1.setY(yPixelVec1.size() - quad1.getHeight() / 1);
+
+                                            } else {
                                                 quad1.setX(xPixelVec1.get(index) - quad1.getWidth() / 2 + canvasSize.getLeft());
                                                 quad1.setY(yPixelVec1.get(index) - quad1.getHeight() / 2);
                                             }
                                         }
                                         if (xPixelVec2 != null) {
 
-                                            if(index == quadAllSeek.getMax()){
+                                            if (index == DataShare.getCurrentTime(2).size()) {
                                                 // This will handle the error
 
-                                            }else {
+                                            } else if (index > DataShare.getCurrentTime(2).size()) {
+                                                quad2.setX(xPixelVec2.size() - quad2.getWidth() / 2 + canvasSize.getLeft());
+                                                quad2.setY(yPixelVec2.size() - quad2.getHeight() / 2);
+
+                                            } else {
                                                 quad2.setX(xPixelVec2.get(index) - quad2.getWidth() / 2 + canvasSize.getLeft());
                                                 quad2.setY(yPixelVec2.get(index) - quad2.getHeight() / 2);
                                             }
                                         }
                                         if (xPixelVec3 != null) {
 
-                                            if(index == quadAllSeek.getMax()){
+                                            if (index == DataShare.getCurrentTime(3).size()) {
                                                 // This will handle the error
 
-                                            }else {
+                                            } else if (index > DataShare.getCurrentTime(3).size()) {
+                                                quad3.setX(xPixelVec3.size() - quad3.getWidth() / 2 + canvasSize.getLeft());
+                                                quad3.setY(yPixelVec3.size() - quad3.getHeight() / 2);
+
+                                            } else {
                                                 quad3.setX(xPixelVec3.get(index) - quad3.getWidth() / 2 + canvasSize.getLeft());
                                                 quad3.setY(yPixelVec3.get(index) - quad3.getHeight() / 2);
                                             }
@@ -376,7 +373,7 @@ public class PreviewActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                while (DataShare.getSeekLoc(1) < xPixelVec1.size() - 1)  {
+                while (DataShare.getSeekLoc(1) < xPixelVec1.size() - 1) {
                     // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
                     try {
                         Thread.sleep(100);
@@ -395,12 +392,11 @@ public class PreviewActivity extends AppCompatActivity {
 
                             if (toggle.isChecked()) {
                                 DataShare.setSeekLoc(1, value + 1);
-                            }
-                            else {
+                            } else {
                                 DataShare.setPlayBackState(false);
                             }
 
-                            if (value >= xPixelVec1.size()-1) {
+                            if (value >= xPixelVec1.size() - 1) {
                                 DataShare.setSeekLoc(1, 0);
                                 DataShare.setPlayBackState(true);
                             }
@@ -418,7 +414,7 @@ public class PreviewActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                while (DataShare.getSeekLoc(2) < xPixelVec2.size() - 1)  {
+                while (DataShare.getSeekLoc(2) < xPixelVec2.size() - 1) {
                     // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
                     try {
                         Thread.sleep(100);
@@ -436,12 +432,11 @@ public class PreviewActivity extends AppCompatActivity {
 
                             if (toggle.isChecked()) {
                                 DataShare.setSeekLoc(2, value + 1);
-                            }
-                            else {
+                            } else {
                                 DataShare.setPlayBackState(false);
                             }
 
-                            if (value >= xPixelVec2.size()-1) {
+                            if (value >= xPixelVec2.size() - 1) {
                                 DataShare.setSeekLoc(2, 0);
                                 DataShare.setPlayBackState(true);
                             }
@@ -459,7 +454,7 @@ public class PreviewActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                while (DataShare.getSeekLoc(3) < xPixelVec3.size() - 1)  {
+                while (DataShare.getSeekLoc(3) < xPixelVec3.size() - 1) {
                     // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
                     try {
                         Thread.sleep(100);
@@ -477,12 +472,11 @@ public class PreviewActivity extends AppCompatActivity {
 
                             if (toggle.isChecked()) {
                                 DataShare.setSeekLoc(3, value + 1);
-                            }
-                            else {
+                            } else {
                                 DataShare.setPlayBackState(false);
                             }
 
-                            if (value >= xPixelVec3.size()-1) {
+                            if (value >= xPixelVec3.size() - 1) {
                                 DataShare.setSeekLoc(3, 0);
                                 DataShare.setPlayBackState(true);
                             }
@@ -508,14 +502,12 @@ public class PreviewActivity extends AppCompatActivity {
             public void run() {
                 if (DataShare.getCurrentTime(1).size() == quadAllSeek.getMax()) {
                     quadMax = 1;
-                }
-                else if (DataShare.getCurrentTime(2).size() == quadAllSeek.getMax()) {
+                } else if (DataShare.getCurrentTime(2).size() == quadAllSeek.getMax()) {
                     quadMax = 2;
-                }
-                else {
+                } else {
                     quadMax = 3;
                 }
-                while(quadMax < quadAllSeek.getMax() - 1) {
+                while (quadMax < quadAllSeek.getMax() - 1) {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
@@ -526,14 +518,14 @@ public class PreviewActivity extends AppCompatActivity {
                         public void run() {
                             int value = DataShare.getSeekLoc(quadMax);
                             int max = 0;
-                            if(value != 0){
+                            if (value != 0) {
                                 max = value;
                                 quadAllSeek.setProgress(max);
-                            }else{
+                            } else {
 
                             }
-                            if(max == quadAllSeek.getMax()-1){
-                                quadAllSeek.setProgress(max+1);
+                            if (max == quadAllSeek.getMax() - 1) {
+                                quadAllSeek.setProgress(max + 1);
                                 toggle.setChecked(false);
                                 max = 0;
                             }
@@ -546,7 +538,7 @@ public class PreviewActivity extends AppCompatActivity {
 
             }
         };
-         new Thread(seekR).start();
+        new Thread(seekR).start();
     }
 
 
