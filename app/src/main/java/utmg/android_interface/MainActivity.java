@@ -20,9 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
 import org.ros.android.AppCompatRosActivity;
 import org.ros.message.Time;
 import org.ros.node.NodeConfiguration;
@@ -32,7 +30,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatRosActivity {
 
-    ROSNodeMain node;
+    ROSNodeMain nodeMain;
     ROSNodeService nodeService;
     private CanvasView customCanvas;
     private ArrayList<Float> xCoordVec1;
@@ -180,19 +178,19 @@ public class MainActivity extends AppCompatRosActivity {
                 yCoordVec1 = customCanvas.getyCoordVec1();
                 zCoordVec1 = customCanvas.getzCoordVec1();
                 timesVec1 = customCanvas.getTimesVec1();
-                node.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
+                nodeMain.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
 
                 xCoordVec2 = customCanvas.getxCoordVec2();
                 yCoordVec2 = customCanvas.getyCoordVec2();
                 zCoordVec2 = customCanvas.getzCoordVec2();
                 timesVec2 = customCanvas.getTimesVec2();
-                node.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
+                nodeMain.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
 
                 xCoordVec3 = customCanvas.getxCoordVec3();
                 yCoordVec3 = customCanvas.getyCoordVec3();
                 zCoordVec3 = customCanvas.getzCoordVec3();
                 timesVec3 = customCanvas.getTimesVec3();
-                node.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
+                nodeMain.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
             }
         });
 
@@ -205,7 +203,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec1 = customCanvas.getxCoordVec1();
                 yCoordVec1 = customCanvas.getyCoordVec1();
                 zCoordVec1 = customCanvas.getzCoordVec1();
-                node.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
+                nodeMain.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
             }
         });
 
@@ -218,7 +216,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec2 = customCanvas.getxCoordVec2();
                 yCoordVec2 = customCanvas.getyCoordVec2();
                 zCoordVec2 = customCanvas.getzCoordVec2();
-                node.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
+                nodeMain.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
             }
         });
 
@@ -231,7 +229,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec3 = customCanvas.getxCoordVec3();
                 yCoordVec3 = customCanvas.getyCoordVec3();
                 zCoordVec3 = customCanvas.getzCoordVec3();
-                node.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
+                nodeMain.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
             }
         });
 
@@ -341,11 +339,11 @@ public class MainActivity extends AppCompatRosActivity {
             @Override
             public void run() {
 
-                if (pref.getBoolean("debugMode", false) == false) {
+                if (!pref.getBoolean("debugMode", false)) {
                     inMeters.setVisibility(View.INVISIBLE);
                     quad2Pixel.setVisibility(View.INVISIBLE);
                 }
-                else if (pref.getBoolean("debugMode", false) == true) {
+                else {
                     inMeters.setVisibility(View.VISIBLE);
                     quad2Pixel.setVisibility(View.VISIBLE);
 
@@ -430,7 +428,7 @@ public class MainActivity extends AppCompatRosActivity {
                 @Override
                 public void run() {
                     // quad 1
-                    if (pref.getBoolean("quad1", false) == true) {
+                    if (pref.getBoolean("quad1", false)) {
                         quad1.setVisibility(View.VISIBLE);
                         quad1Switch.setEnabled(true);
                         quad1.setX(objectXToPixel("quad1") - quad1.getWidth()/2);
@@ -439,31 +437,31 @@ public class MainActivity extends AppCompatRosActivity {
                         //Log.d("MA Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
 
                         //quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
-                    } else if (pref.getBoolean("quad1", false) == false) {
+                    } else {
                         quad1.setVisibility((View.INVISIBLE));
                         quad1Switch.setEnabled(false);
                     }
 
                     // quad 2
-                    if (pref.getBoolean("quad2", false) == true) {
+                    if (pref.getBoolean("quad2", false)) {
                         quad2.setVisibility(View.VISIBLE);
                         quad2Switch.setEnabled(true);
                         quad2.setX(objectXToPixel("quad2") - quad2.getWidth()/2);
                         quad2.setY(objectYToPixel("quad2") - quad2.getHeight()/2);
                         quad2.setImageAlpha( (int)(((DataShare.getInstance("quad2").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
-                    } else if (pref.getBoolean("quad2", false) == false) {
+                    } else {
                         quad2.setVisibility((View.INVISIBLE));
                         quad2Switch.setEnabled(false);
                     }
 
                     // quad 3
-                    if (pref.getBoolean("quad3", false) == true) {
+                    if (pref.getBoolean("quad3", false)) {
                         quad3.setVisibility(View.VISIBLE);
                         quad3Switch.setEnabled(true);
                         quad3.setX(objectXToPixel("quad3") - quad3.getWidth()/2);
                         quad3.setY(objectYToPixel("quad3") - quad3.getHeight()/2);
                         quad3.setImageAlpha( (int)(((DataShare.getInstance("quad3").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
-                    } else if (pref.getBoolean("quad3", false) == false) {
+                    } else {
                         quad3.setVisibility((View.INVISIBLE));
                         quad3Switch.setEnabled(false);
                     }
@@ -497,27 +495,27 @@ public class MainActivity extends AppCompatRosActivity {
                 @Override
                 public void run() {
 
-                    if (pref.getBoolean("sword", false) == true) {
+                    if (pref.getBoolean("sword", false)) {
                         sword.setVisibility(View.VISIBLE);
                         sword.setX(objectXToPixel("sword") - sword.getWidth()/2);
                         sword.setY(objectYToPixel("sword") - sword.getHeight()/2);
-                    } else if (pref.getBoolean("sword", false) == false) {
+                    } else {
                         sword.setVisibility((View.INVISIBLE));
                     }
-                    if (pref.getBoolean("obstacle1", false) == true) {
+                    if (pref.getBoolean("obstacle1", false)) {
                         Log.d("MA Obst1", "x: " + Float.toString(obstacle1.getX()) + "\ty:" + Float.toString(obstacle1.getY()));
                         obstacle1.setVisibility(View.VISIBLE);
                         obstacle1.setX(objectXToPixel("obstacle1") - obstacle1.getWidth()/2);
                         obstacle1.setY(objectYToPixel("obstacle1") - obstacle1.getHeight()/2);
 
-                    } else if (pref.getBoolean("obstacle1", false) == false) {
+                    } else {
                         obstacle1.setVisibility((View.INVISIBLE));
                     }
-                    if (pref.getBoolean("obstacle2", false) == true) {
+                    if (pref.getBoolean("obstacle2", false)) {
                         obstacle2.setVisibility(View.VISIBLE);
                         obstacle2.setX(objectXToPixel("obstacle2") - obstacle2.getWidth()/2);
                         obstacle2.setY(objectYToPixel("obstacle2") - obstacle2.getHeight()/2);
-                    } else if (pref.getBoolean("obstacle2", false) == false) {
+                    } else {
                         obstacle2.setVisibility((View.INVISIBLE));
                     }
                     handlerObstacles.postDelayed(this, 10);
@@ -647,7 +645,7 @@ public class MainActivity extends AppCompatRosActivity {
 //        rosTextView.setTopicName("testtopic");
 //        rosTextView.setMessageType("std_msgs/String");
 
-        node = new ROSNodeMain();
+        nodeMain = new ROSNodeMain();
         nodeService = new ROSNodeService();
 
         try {
@@ -659,7 +657,7 @@ public class MainActivity extends AppCompatRosActivity {
 
             //nodeConfiguration.setNodeName()
 
-            nodeMainExecutor.execute(node, nodeConfiguration);
+            nodeMainExecutor.execute(nodeMain, nodeConfiguration);
             nodeMainExecutor.execute(nodeService, nodeConfiguration);
         } catch (IOException e) {
             // Socket problem

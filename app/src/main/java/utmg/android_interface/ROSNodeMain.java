@@ -428,7 +428,7 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
         zes1 = z;
         tes1 = t;
         publishToggle1 = true;
-        Log.i("Traj1","Arrays transferred to node");
+        Log.i("Traj1","Arrays transferred to nodeMain");
     }
 
     void setTraj2(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
@@ -437,7 +437,7 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
         zes2 = z;
         tes2 = t;
         publishToggle2 = true;
-        Log.i("Traj2","Arrays transferred to node");
+        Log.i("Traj2","Arrays transferred to nodeMain");
     }
 
     void setTraj3(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
@@ -446,6 +446,6 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
         zes3 = z;
         tes3 = t;
         publishToggle3 = true;
-        Log.i("Traj3","Arrays transferred to node");
+        Log.i("Traj3","Arrays transferred to nodeMain");
     }
 }

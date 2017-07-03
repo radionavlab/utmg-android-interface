@@ -261,6 +261,19 @@ public class DataShare extends Application {
         }
     }
 
+    public nav_msgs.Path getServicedPath(int i) {
+        switch (i) {
+            case 1:
+                return servicedPath1;
+            case 2:
+                return servicedPath2;
+            case 3:
+                return servicedPath3;
+            default:
+                return servicedPath1;
+        }
+    }
+
     public static void setPlayBackState(boolean x) {
         playBackState = x;
     }

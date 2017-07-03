@@ -169,6 +169,6 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
         zes1 = z;
         tes1 = t;
         serviceToggle1 = true;
-        Log.i("Traj1","Arrays transferred to node");
+        Log.i("Traj1","Arrays transferred to nodeMain");
     }
 }

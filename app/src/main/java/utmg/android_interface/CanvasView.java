@@ -11,14 +11,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
-
 import android.content.SharedPreferences;
-
 import org.ros.message.Time;
 
-
-public class
-CanvasView extends View {
+public class CanvasView extends View {
 
     private Bitmap mBitmap;
     private Canvas mCanvas;
