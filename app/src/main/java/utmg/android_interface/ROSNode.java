@@ -2,23 +2,30 @@ package utmg.android_interface;
 
 import android.content.SharedPreferences;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.Log;
 import org.ros.concurrent.CancellableLoop;
+import org.ros.exception.RemoteException;
+import org.ros.exception.RosRuntimeException;
+import org.ros.exception.ServiceNotFoundException;
 import org.ros.message.MessageListener;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
 import org.ros.node.NodeMain;
+import org.ros.node.service.ServiceClient;
+import org.ros.node.service.ServiceResponseListener;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
-
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.StringTokenizer;
 
+import app_pathplanner_interface.PathPlanner;
+import app_pathplanner_interface.PathPlannerRequest;
+import app_pathplanner_interface.PathPlannerResponse;
 import geometry_msgs.Pose;
 import geometry_msgs.PoseArray;
-
 import geometry_msgs.PoseStamped;
 import geometry_msgs.TransformStamped;
 import nav_msgs.Path;
@@ -48,6 +55,8 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
     private boolean publishToggle2 = false;
     private boolean publishToggle3 = false;
 
+    private boolean serviceToggle1 = false;
+
     private int seq1 = 0;
     private int seq2 = 0;
     private int seq3 = 0;
@@ -67,8 +76,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
         pref = appCon.getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
-        //final Publisher<std_msgs.String> publisher = connectedNode.newPublisher(GraphName.of("time"), std_msgs.String._TYPE);
-
+        // publisher definitions
         final Publisher<geometry_msgs.PoseArray> publisherTrajectory1 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory/Quad1"), PoseArray._TYPE);
         final Publisher<geometry_msgs.PoseArray> publisherTrajectory2 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory/Quad2"), PoseArray._TYPE);
         final Publisher<geometry_msgs.PoseArray> publisherTrajectory3 = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory/Quad3"), PoseArray._TYPE);
@@ -90,6 +98,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
         final Thing sword = DataShare.getInstance("sword");
         final Thing obstacle1 = DataShare.getInstance("obstacle1");
         final Thing obstacle2 = DataShare.getInstance("obstacle2");
+
 
         final CancellableLoop loop = new CancellableLoop() {
             @Override
@@ -193,19 +202,49 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         mPoseArray1.setPoses(poses1);
                         mPath1.setPoses(poseStamped1);
 
-                        if (publishToggle1 == true) {
+                        if (publishToggle1) {
                             publisherTrajectory1.publish(mPoseArray1);
                             publisherPath1.publish(mPath1);
 
                             seq1 = seq1 + 1;
                         }
-
                         publishToggle1 = false;
+
+                        if(serviceToggle1 && pref.getBoolean("servicePublish",false)) {
+
+                            // service client definition
+                            final ServiceClient<PathPlannerRequest, PathPlannerResponse> serviceClient;
+                                try {
+                                    serviceClient = connectedNode.newServiceClient("app_pathplanner", PathPlanner._TYPE);
+                                } catch (ServiceNotFoundException e) {
+                                    throw new RosRuntimeException(e);
+                                }
+
+                            final PathPlannerRequest request = serviceClient.newMessage();
+                            //request.setA(2);
+                            request.setInput(mPoseArray1);
+                            serviceClient.call(request, new ServiceResponseListener<PathPlannerResponse>() {
+                                @Override
+                                public void onSuccess(PathPlannerResponse response) {
+                                    DataShare.setServicedPath(1, response.getOutput());
+                                    Log.i("ROSNode", "Received serviced Path.");
+                                    //connectedNode.getLog().info(
+                                    //        String.format("%d + %d = %d", request.getA(), request.getB(), response.getSum()));
+                                }
+
+                                @Override
+                                public void onFailure(RemoteException e) {
+                                    throw new RosRuntimeException(e);
+                                }
+                            });
+                        }
+                        serviceToggle1 = false;
+
                     }
                     else if (pref.getInt("mode", 0) == 1) {
                         mWaypointArray1.setPoses(poses1);
 
-                        if (publishToggle1 == true) {
+                        if (publishToggle1) {
                             publisherWaypoints1.publish(mWaypointArray1);
 
                             seq1 = seq1 + 1;
@@ -240,7 +279,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         mPoseArray2.setPoses(poses2);
                         mPath2.setPoses(poseStamped2);
 
-                        if (publishToggle2 == true) {
+                        if (publishToggle2) {
                             publisherTrajectory2.publish(mPoseArray2);
                             publisherPath2.publish(mPath2);
 
@@ -252,7 +291,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                     else if (pref.getInt("mode", 0) == 1) {
                         mWaypointArray2.setPoses(poses2);
 
-                        if (publishToggle2 == true) {
+                        if (publishToggle2) {
                             publisherWaypoints2.publish(mWaypointArray2);
 
                             seq2 = seq2 + 1;
@@ -287,7 +326,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                         mPoseArray3.setPoses(poses3);
                         mPath3.setPoses(poseStamped3);
 
-                        if (publishToggle3 == true) {
+                        if (publishToggle3) {
                             publisherTrajectory3.publish(mPoseArray3);
 
                             seq3 = seq3 + 1;
@@ -298,7 +337,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                     else if (pref.getInt("mode", 0) == 1) {
                         mWaypointArray3.setPoses(poses3);
 
-                        if (publishToggle3 == true) {
+                        if (publishToggle3) {
                             publisherWaypoints3.publish(mWaypointArray3);
 
                             seq3 = seq3 + 1;
@@ -419,11 +458,17 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
                 ////////////////////////////////////////////////////////////////////////////////////
 
 
+
+                // service calls ///////////////////////////////////////////////////////////////////
+
+                ////////////////////////////////////////////////////////////////////////////////////
+
                 // go to sleep for one second TODO for live mode reduce this time!
                 Thread.sleep(1000);
             }
         };
         connectedNode.executeCancellableLoop(loop);
+
     }
 
     // MainActivity FAB sends vector of coordinates to here
@@ -433,6 +478,7 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
         zes1 = z;
         tes1 = t;
         publishToggle1 = true;
+        serviceToggle1 = true;
         Log.i("Traj1","Arrays transferred to node");
     }
 
@@ -453,5 +499,4 @@ public class ROSNode extends AbstractNodeMain implements NodeMain {
         publishToggle3 = true;
         Log.i("Traj3","Arrays transferred to node");
     }
-
 }

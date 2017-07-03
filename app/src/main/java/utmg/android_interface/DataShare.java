@@ -4,8 +4,6 @@ import android.app.Application;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-
-import java.sql.Time;
 import java.util.ArrayList;
 
 public class DataShare extends Application {
@@ -44,6 +42,10 @@ public class DataShare extends Application {
     private static int seekLoc1;
     private static int seekLoc2;
     private static int seekLoc3;
+
+    private static nav_msgs.Path servicedPath1;
+    private static nav_msgs.Path servicedPath2;
+    private static nav_msgs.Path servicedPath3;
 
     private static boolean playBackState;
 
@@ -241,6 +243,21 @@ public class DataShare extends Application {
                 return seekLoc3;
             default:
                 return seekLoc1;
+        }
+    }
+
+    public static void setServicedPath(int i, nav_msgs.Path p) {
+        switch (i) {
+            case 1:
+                servicedPath1 = p;
+                break;
+            case 2:
+                servicedPath2 = p;
+                break;
+            case 3:
+                servicedPath3 = p;
+                break;
+            default:
         }
     }
 

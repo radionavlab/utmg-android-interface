@@ -74,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         final CheckBox isSwordChecked = (CheckBox) findViewById(R.id.sword_checkbox);
         final CheckBox isObstacle1Checked = (CheckBox) findViewById(R.id.obstacle1_checkbox);
         final CheckBox isObstacle2Checked = (CheckBox) findViewById(R.id.obstacle2_checkbox);
+        final ToggleButton serviceToggle = (ToggleButton) findViewById(R.id.service_toggle);
         final ToggleButton obstaclePublishToggle = (ToggleButton) findViewById(R.id.obstacle_publish_toggle);
         final ToggleButton debugModeToggle = (ToggleButton) findViewById(R.id.debug_mode_toggle);
 
@@ -84,6 +85,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         isSwordChecked.setChecked(pref.getBoolean("sword", false));
         isObstacle1Checked.setChecked(pref.getBoolean("obstacle1", false));
         isObstacle2Checked.setChecked(pref.getBoolean("obstacle2", false));
+        serviceToggle.setChecked((pref.getBoolean("servicePublish", false)));
         obstaclePublishToggle.setChecked((pref.getBoolean("obstaclePublish", false)));
         debugModeToggle.setChecked((pref.getBoolean("debugMode", false)));
 
@@ -134,6 +136,14 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("obstacle2", isObstacle2Checked.isChecked());
+                prefEditor.commit();
+            }
+        });
+
+        serviceToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                prefEditor.putBoolean("servicePublish", serviceToggle.isChecked());
                 prefEditor.commit();
             }
         });
