@@ -46,4 +46,4 @@ UT Machine Games Android Interface for quadcopter trajectory input by user.
     * Enter `http://192.168.1.XX:11311` into app's prompt for main computer's network address
     
 #### Icon Credit
-Icon adapted from [Adbul Karim from Noun Project](https://thenounproject.com/term/quadcopter/1054422/). [Creative Commons Attribution 3.0 Unported License](https://creativecommons.org/licenses/by/3.0/).
+Icon adapted from [Adbul Karim from Noun Project](https://thenounproject.com/term/quadcopter/1054422/) under the [Creative Commons Attribution 3.0 Unported License](https://creativecommons.org/licenses/by/3.0/).
