@@ -1,6 +1,6 @@
 # utmg-android-interface
 
-UT Machine Games Android Interface for quadcopter trajectory input by user.
+UT Machine Games Controller for quadcopter trajectory input by user.
 
 ## Authors
 * Nidhi Rathod
