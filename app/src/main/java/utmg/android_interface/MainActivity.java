@@ -32,7 +32,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatRosActivity {
 
-    ROSNode node;
+    ROSNodeMain node;
+    ROSNodeService nodeService;
     private CanvasView customCanvas;
     private ArrayList<Float> xCoordVec1;
     private ArrayList<Float> yCoordVec1;
@@ -142,6 +143,12 @@ public class MainActivity extends AppCompatRosActivity {
                 DataShare.setCurrentTime(1, customCanvas.getTimesVec1());
                 DataShare.setCurrentTime(2, customCanvas.getTimesVec2());
                 DataShare.setCurrentTime(3, customCanvas.getTimesVec3());
+
+                xCoordVec1 = customCanvas.getxCoordVec1();
+                yCoordVec1 = customCanvas.getyCoordVec1();
+                zCoordVec1 = customCanvas.getzCoordVec1();
+                timesVec1 = customCanvas.getTimesVec1();
+                nodeService.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
 
                 Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
                 startActivity(intent);
@@ -640,7 +647,8 @@ public class MainActivity extends AppCompatRosActivity {
 //        rosTextView.setTopicName("testtopic");
 //        rosTextView.setMessageType("std_msgs/String");
 
-        node = new ROSNode();
+        node = new ROSNodeMain();
+        nodeService = new ROSNodeService();
 
         try {
             java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
@@ -652,6 +660,7 @@ public class MainActivity extends AppCompatRosActivity {
             //nodeConfiguration.setNodeName()
 
             nodeMainExecutor.execute(node, nodeConfiguration);
+            nodeMainExecutor.execute(nodeService, nodeConfiguration);
         } catch (IOException e) {
             // Socket problem
             Log.e("MainActivity", "socket error trying to get networking information from the master uri");
