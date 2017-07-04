@@ -73,7 +73,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
             @Override
             protected void loop() throws InterruptedException {
 
-                if(serviceToggle1 && pref.getBoolean("servicePublish",false)) {
+                if(serviceToggle1 && pref.getBoolean("serviceToggle",false)) {
 
                     // trajectory publisher
                     PoseArray mPoseArray1 = connectedNode.getTopicMessageFactory().newFromType(PoseArray._TYPE);
@@ -108,17 +108,17 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                             mPose.setPosition(mPoint);
                             poses1.add(mPose);
 
-                            if (pref.getInt("mode", 0) == 0) {
-                                PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
-                                mPoseStamped.getHeader().setStamp(tes1.get(i));
-                                mPoseStamped.setPose(mPose);
-                                poseStamped1.add(mPoseStamped);
-                            }
+//                            if (pref.getInt("mode", 0) == 0) {
+//                                PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+//                                mPoseStamped.getHeader().setStamp(tes1.get(i));
+//                                mPoseStamped.setPose(mPose);
+//                                poseStamped1.add(mPoseStamped);
+//                            }
                         }
 
                         if (pref.getInt("mode", 0) == 0) {
                             mPoseArray1.setPoses(poses1);
-                            mPath1.setPoses(poseStamped1);
+                            //mPath1.setPoses(poseStamped1);
 
                             // service client definition
                             final ServiceClient<PathPlannerRequest, PathPlannerResponse> serviceClient;
@@ -133,8 +133,8 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                             serviceClient.call(request, new ServiceResponseListener<PathPlannerResponse>() {
                                 @Override
                                 public void onSuccess(PathPlannerResponse response) {
+                                    Log.i("ROSNodeService", "Received serviced Path. Size: " + Double.toString(response.getOutput().getPoses().size()));
                                     DataShare.setServicedPath(1, response.getOutput());
-                                    Log.i("ROSNodeService", "Received serviced Path.");
                                     //connectedNode.getLog().info(
                                     //        String.format("%d + %d = %d", request.getA(), request.getB(), response.getSum()));
                                 }
@@ -152,7 +152,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                     }
 
                     // go to sleep for one second TODO for live mode reduce this time!
-                    Thread.sleep(1000);
+                    Thread.sleep(10);
 
                 }
                 serviceToggle1 = false;
@@ -169,6 +169,6 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
         zes1 = z;
         tes1 = t;
         serviceToggle1 = true;
-        Log.i("Traj1","Arrays transferred to nodeMain");
+        Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
     }
 }

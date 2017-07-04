@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
@@ -347,7 +346,7 @@ public class CanvasView extends View {
                         break;
                 }
 
-                Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
+                //Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
             }
         }
     }
@@ -501,7 +500,7 @@ public class CanvasView extends View {
         float transX = -(mX - getCenterX());
         if(mBitmap != null) {
             float normX = transX/mBitmap.getWidth();
-            return normX * 5;
+            return normX * pref.getFloat("newWidth",5);
         }
         return 0;
 
@@ -513,7 +512,7 @@ public class CanvasView extends View {
         float transY = -(mY - getCenterY());
         if(mBitmap != null) {
             float normY = transY/mBitmap.getHeight();
-            return normY * 3;
+            return normY * pref.getFloat("newHeight",3);
         }
         return 0;
 

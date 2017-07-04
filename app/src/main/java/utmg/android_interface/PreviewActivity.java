@@ -2,28 +2,17 @@ package utmg.android_interface;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.SystemClock;
-import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.animation.TranslateAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -68,20 +57,12 @@ public class PreviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preview);
         setupActionBar();
 
+        Log.i("PreviewActivity", "PreviewActivity started.");
+
         pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
-        previewCanvas = (PreviewCanvas) findViewById(R.id.preview_canvas);
-
-        xPixelVec1 = DataShare.getXPixelVec(1);
-        yPixelVec1 = DataShare.getYPixelVec(1);
-
-        xPixelVec2 = DataShare.getXPixelVec(2);
-        yPixelVec2 = DataShare.getYPixelVec(2);
-
-        xPixelVec3 = DataShare.getXPixelVec(3);
-        yPixelVec3 = DataShare.getYPixelVec(3);
 
         DataShare.setSeekLoc(1, 0);
         DataShare.setSeekLoc(2, 0);
@@ -113,7 +94,27 @@ public class PreviewActivity extends AppCompatActivity {
             }
         });
 
+
+        xPixelVec1 = DataShare.getXPixelVec(1);
+        yPixelVec1 = DataShare.getYPixelVec(1);
+
+        xPixelVec2 = DataShare.getXPixelVec(2);
+        yPixelVec2 = DataShare.getYPixelVec(2);
+
+        xPixelVec3 = DataShare.getXPixelVec(3);
+        yPixelVec3 = DataShare.getYPixelVec(3);
+
+        // TODO if path planner servicing is enabled, redo the path
+        if (pref.getBoolean("serviceToggle", false)) {
+            xPixelVec1 = new ArrayList<>();
+            yPixelVec1 = new ArrayList<>();
+            convertROSPathToPixelVec(1, DataShare.getServicedPath(1));
+            //Log.i("PreviewActivity","Is Path null: " + Boolean.toString(DataShare.getPath(1) == null));
+        }
+
+        previewCanvas = (PreviewCanvas) findViewById(R.id.preview_canvas);
         previewCanvas.callOnDraw();
+
 
         quad1 = (ImageView) findViewById(R.id.demo_quad1);
         quad2 = (ImageView) findViewById(R.id.demo_quad2);
@@ -143,6 +144,7 @@ public class PreviewActivity extends AppCompatActivity {
                         // place imageView at start of path on beginning of PreviewActivity
                         if (togglei == 0) {
                             quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                            //
                             quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
                             quad1.setVisibility(View.VISIBLE);
                         }
@@ -529,9 +531,9 @@ public class PreviewActivity extends AppCompatActivity {
                                 toggle.setChecked(false);
                                 max = 0;
                             }
-                            Log.i("VauleValueValue", Integer.toString(value));
-                            Log.i("MaxMaxMax", Integer.toString(max));
-                            Log.i("quadMaxquadMaxquadMax", Integer.toString(quadAllSeek.getMax()));
+                            //Log.i("VauleValueValue", Integer.toString(value));
+                            //Log.i("MaxMaxMax", Integer.toString(max));
+                            //Log.i("quadMaxquadMaxquadMax", Integer.toString(quadAllSeek.getMax()));
                         }
                     });
                 }
@@ -541,6 +543,74 @@ public class PreviewActivity extends AppCompatActivity {
         new Thread(seekR).start();
     }
 
+    // convert nav_msgs/Path to ArrayList of pixels
+    private void convertROSPathToPixelVec(int k, nav_msgs.Path p) {
+
+        if (p == null) {
+            Log.i("PreviewActivity", "Received null nav_msgs/Path.");
+        } else {
+            Log.i("PreviewActivity", "Received valid nav_msgs/Path. Size: " + Double.toString(p.getPoses().size()));
+            switch (k) {
+                case 1:
+                    android.graphics.Path mPath1 = new android.graphics.Path();
+
+                    for (int i = 0; i < p.getPoses().size(); i++) {
+                        // TODO convert meters to pixels
+
+                        double xMeter = p.getPoses().get(i).getPose().getPosition().getX();
+                        double yMeter = p.getPoses().get(i).getPose().getPosition().getY();
+
+                        Log.i("PreviewActivity","xMeter: " + Double.toString(xMeter) + "\t yMeter: " + Double.toString(yMeter));
+
+                        float xPixel = (float) xMeterToPixel(xMeter, yMeter);
+                        float yPixel = (float) yMeterToPixel(xMeter, yMeter);
+
+//                        Log.i("PreviewActivity","xPixel: " + Float.toString(xPixel) + "\t yPixel: " + Float.toString(yPixel));
+
+                        xPixelVec1.add(xPixel);
+                        yPixelVec1.add(yPixel);
+
+                        if (i == 0) {
+                            mPath1.moveTo(xPixel, yPixel);
+                        } else {
+                            //mPath1.quadTo((xPixelVec1.get(i) + xPixelVec1.get(i - 1)) / 2, (yPixelVec1.get(i) + yPixelVec1.get(i - 1)) / 2, xPixelVec1.get(i), yPixelVec1.get(i));
+                            //mPath1.quadTo(xPixelVec1.get(i - 1), yPixelVec1.get(i - 1), (xPixelVec1.get(i) + xPixelVec1.get(i - 1)) / 2, (yPixelVec1.get(i) + yPixelVec1.get(i - 1)) / 2);
+                            mPath1.lineTo(xPixel, yPixel);
+                        }
+                    }
+
+                    DataShare.setPath(1, mPath1);
+                    //Log.i("convertROSPathToPxlVec","Is Path null: " + Boolean.toString(DataShare.getPath(1) == null));
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+        }
+    }
+
+    // transform specified object's y position to pixels
+    public double xMeterToPixel(double x, double y) {
+
+        double normX = y / -pref.getFloat("newWidth",5);
+        double transX = normX * canvasSize.getLayoutParams().width;
+        double xCoord = canvasSize.getX() + canvasSize.getLayoutParams().width/2 + transX;
+
+        //Log.i("xMeterToPixel", "canvasSize.getX(): " + Float.toString(canvasSize.getX()));
+
+        return xCoord;
+    }
+
+    // transform specified object's y position to pixels
+    public double yMeterToPixel(double x, double y) {
+
+        double normY = x / pref.getFloat("newHeight",3);
+        double transY = normY * canvasSize.getLayoutParams().height;
+        double yCoord = canvasSize.getY() + canvasSize.getLayoutParams().height/2 - transY;
+
+        return yCoord;
+    }
 
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();

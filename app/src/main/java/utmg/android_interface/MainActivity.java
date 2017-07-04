@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatRosActivity {
         {
             @Override
             public void onClick(View view) {
+                // TODO enable paths again for no servicing
                 DataShare.setPath(1, customCanvas.getmPath1());
                 DataShare.setPath(2, customCanvas.getmPath2());
                 DataShare.setPath(3, customCanvas.getmPath3());
@@ -147,6 +148,8 @@ public class MainActivity extends AppCompatRosActivity {
                 zCoordVec1 = customCanvas.getzCoordVec1();
                 timesVec1 = customCanvas.getTimesVec1();
                 nodeService.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
+
+                while (DataShare.getServicedPath(1) == null) { } // TODO fix the sync check
 
                 Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
                 startActivity(intent);

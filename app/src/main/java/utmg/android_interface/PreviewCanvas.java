@@ -26,17 +26,17 @@ public class PreviewCanvas extends View {
     private Canvas mCanvas;
     Context context;
 
-    private Path mPath1;
-    private Path mPath2;
-    private Path mPath3;
-
-    private Paint mPaint1;
-    private Paint mPaint2;
-    private Paint mPaint3;
-
-    private Paint mPaintWP1;
-    private Paint mPaintWP2;
-    private Paint mPaintWP3;
+//    private Path mPath1;
+//    private Path mPath2;
+//    private Path mPath3;
+//
+//    private Paint mPaint1;
+//    private Paint mPaint2;
+//    private Paint mPaint3;
+//
+//    private Paint mPaintWP1;
+//    private Paint mPaintWP2;
+//    private Paint mPaintWP3;
 
     private float mX, mY;
     private static final float TOLERANCE = 5;
@@ -92,11 +92,6 @@ public class PreviewCanvas extends View {
         pref = c.getSharedPreferences("Pref", 0);
         mode = pref.getInt("mode", 0);
 
-        // we set a new Path
-        mPath1 = new Path();
-        mPath2 = new Path();
-        mPath3 = new Path();
-
         // TODO change colours to holo colours
         DataShare.getInstance("quad1").setQuadColour(Color.RED);
         DataShare.getInstance("quad2").setQuadColour(Color.GREEN);
@@ -144,15 +139,21 @@ public class PreviewCanvas extends View {
         super.onDraw(canvas);
         // draw the mPath1 with the mPaint1 on the canvas when onDraw
         if (mode == 0) {
-
-            canvas.drawPath(DataShare.getPath(1), DataShare.getPaint(1));
-            canvas.drawPath(DataShare.getPath(2), DataShare.getPaint(2));
-            canvas.drawPath(DataShare.getPath(3), DataShare.getPaint(3));
-
-            Log.i("canvas.DrawPath", "HIIIIIIIIIIIIIIIIIIIIIIIII");
-
+            if (DataShare.getPath(1) != null) {
+                canvas.drawPath(DataShare.getPath(1), DataShare.getPaint(1));
+                Log.i("PreviewCanvas", "Graphics Path 1 drawn.");
+            }
+            if (DataShare.getPath(2) != null) {
+                canvas.drawPath(DataShare.getPath(2), DataShare.getPaint(2));
+                Log.i("PreviewCanvas", "Graphics Path 2 drawn.");
+            }
+            if (DataShare.getPath(3) != null) {
+                canvas.drawPath(DataShare.getPath(3), DataShare.getPaint(3));
+                Log.i("PreviewCanvas", "Graphics Path 3 drawn.");
+            }
         }
 //        else if (mode == 1) {
+//
 //
 //            for (int i = 0; i < xWaypoint1.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint1.get(i), yWaypoint1.get(i), mPaintWP1); }
 //            for (int i = 0; i < xWaypoint2.size(); i++) { canvas.drawText(Integer.toString(i+1), xWaypoint2.get(i), yWaypoint2.get(i), mPaintWP2); }
@@ -202,9 +203,9 @@ public class PreviewCanvas extends View {
         timesVec2 = new ArrayList<>();
         timesVec3 = new ArrayList<>();
 
-        mPath1.reset();
-        mPath2.reset();
-        mPath3.reset();
+//        mPath1.reset();
+//        mPath2.reset();
+//        mPath3.reset();
         invalidate();
     }
 
@@ -215,7 +216,7 @@ public class PreviewCanvas extends View {
         xWaypoint1 = new ArrayList<>();
         yWaypoint1 = new ArrayList<>();
         timesVec1 = new ArrayList<>();
-        mPath1.reset();
+//        mPath1.reset();
         invalidate();
     }
 
@@ -226,7 +227,7 @@ public class PreviewCanvas extends View {
         xWaypoint2 = new ArrayList<>();
         yWaypoint2 = new ArrayList<>();
         timesVec2 = new ArrayList<>();
-        mPath2.reset();
+//        mPath2.reset();
         invalidate();
     }
 
@@ -237,7 +238,7 @@ public class PreviewCanvas extends View {
         xWaypoint3 = new ArrayList<>();
         yWaypoint3 = new ArrayList<>();
         timesVec3 = new ArrayList<>();
-        mPath3.reset();
+//        mPath3.reset();
         invalidate();
     }
 

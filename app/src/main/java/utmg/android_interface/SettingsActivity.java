@@ -85,7 +85,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         isSwordChecked.setChecked(pref.getBoolean("sword", false));
         isObstacle1Checked.setChecked(pref.getBoolean("obstacle1", false));
         isObstacle2Checked.setChecked(pref.getBoolean("obstacle2", false));
-        serviceToggle.setChecked((pref.getBoolean("servicePublish", false)));
+        serviceToggle.setChecked((pref.getBoolean("serviceToggle", false)));
         obstaclePublishToggle.setChecked((pref.getBoolean("obstaclePublish", false)));
         debugModeToggle.setChecked((pref.getBoolean("debugMode", false)));
 
@@ -143,7 +143,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         serviceToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("servicePublish", serviceToggle.isChecked());
+                prefEditor.putBoolean("serviceToggle", serviceToggle.isChecked());
                 prefEditor.commit();
             }
         });

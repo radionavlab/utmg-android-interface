@@ -4,7 +4,13 @@ import android.app.Application;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.Log;
+
+import org.ros.node.ConnectedNode;
+
 import java.util.ArrayList;
+
+import geometry_msgs.PoseArray;
 
 public class DataShare extends Application {
 
@@ -19,9 +25,9 @@ public class DataShare extends Application {
     private static Thing obstacle1 = new Thing();
     private static Thing obstacle2 = new Thing();
 
-    private static Path mPath1;
-    private static Path mPath2;
-    private static Path mPath3;
+    private static android.graphics.Path mPath1;
+    private static android.graphics.Path mPath2;
+    private static android.graphics.Path mPath3;
 
     private static Paint mPaint1;
     private static Paint mPaint2;
@@ -102,11 +108,11 @@ public class DataShare extends Application {
             case 3:
                 return mPaint3;
             default:
-                return mPaint1;
+                return null;
         }
     }
 
-    public static void setPath(int i, Path p) {
+    public static void setPath(int i, android.graphics.Path p) {
         switch (i) {
             case 1:
                 mPath1 = p;
@@ -121,7 +127,7 @@ public class DataShare extends Application {
         }
     }
 
-    public static Path getPath(int i) {
+    public static android.graphics.Path getPath(int i) {
         switch (i) {
             case 1:
                 return mPath1;
@@ -242,7 +248,7 @@ public class DataShare extends Application {
             case 3:
                 return seekLoc3;
             default:
-                return seekLoc1;
+                return 0;
         }
     }
 
@@ -250,6 +256,7 @@ public class DataShare extends Application {
         switch (i) {
             case 1:
                 servicedPath1 = p;
+                //Log.i("DataShare1", Double.toString(servicedPath1.getPoses().size())); //get(0).getPose().getPosition().getX()));
                 break;
             case 2:
                 servicedPath2 = p;
@@ -261,16 +268,17 @@ public class DataShare extends Application {
         }
     }
 
-    public nav_msgs.Path getServicedPath(int i) {
+    public static nav_msgs.Path getServicedPath(int i) {
         switch (i) {
             case 1:
+                //Log.i("DataShare2", Double.toString(servicedPath1.getPoses().size())); //get(0).getPose().getPosition().getX()));
                 return servicedPath1;
             case 2:
                 return servicedPath2;
             case 3:
                 return servicedPath3;
             default:
-                return servicedPath1;
+                return null;
         }
     }
 
