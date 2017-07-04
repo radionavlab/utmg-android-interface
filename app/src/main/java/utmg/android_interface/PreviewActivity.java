@@ -565,8 +565,6 @@ public class PreviewActivity extends AppCompatActivity {
                         float xPixel = (float) xMeterToPixel(xMeter, yMeter);
                         float yPixel = (float) yMeterToPixel(xMeter, yMeter);
 
-//                        Log.i("PreviewActivity","xPixel: " + Float.toString(xPixel) + "\t yPixel: " + Float.toString(yPixel));
-
                         xPixelVec1.add(xPixel);
                         yPixelVec1.add(yPixel);
 
@@ -580,7 +578,6 @@ public class PreviewActivity extends AppCompatActivity {
                     }
 
                     DataShare.setPath(1, mPath1);
-                    //Log.i("convertROSPathToPxlVec","Is Path null: " + Boolean.toString(DataShare.getPath(1) == null));
                     break;
                 case 2:
                     break;
@@ -596,8 +593,6 @@ public class PreviewActivity extends AppCompatActivity {
         double normX = y / -pref.getFloat("newWidth",5);
         double transX = normX * canvasSize.getLayoutParams().width;
         double xCoord = canvasSize.getX() + canvasSize.getLayoutParams().width/2 + transX;
-
-        //Log.i("xMeterToPixel", "canvasSize.getX(): " + Float.toString(canvasSize.getX()));
 
         return xCoord;
     }
