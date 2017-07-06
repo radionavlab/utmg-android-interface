@@ -69,7 +69,7 @@
             android:label="@string/title_activity_preview"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="landscape"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="utmg.android_interface.MainActivity" />
