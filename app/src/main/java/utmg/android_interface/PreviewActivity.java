@@ -211,6 +211,51 @@ public class PreviewActivity extends AppCompatActivity {
                         DownPT.x = (int) event.getX();
                         DownPT.y = (int) event.getY();
                         StartPT = new Point((int) quad1.getX(), (int) quad1.getY());
+
+/////////////////////////////////////////////// This code should bring the dot to the nearest point of the path ////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////if it has no reference, no x that matches the path or y,////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////// and if it does have a reference set the dot to the closest point with the x of the dot ///////////////////////////////////////////////////////////////////////////
+
+                        int i = 0;// count variable to cycle through the xPixelVec1 array
+                        int t = 0;// count variable to cycle through possibilities array
+                        double distance = 0; // calculated distance variable
+                        double leastdistance = 0;// least calculated variabel
+                        int leastdistancei = 0; // index of the least distance
+                        double d = 0.0;// (x2 - x1)^2 + (y2 - y1)^2
+                        float possible = 0;// any x values in the path that are the same as x1
+                        ArrayList<Float> possiblitiesY = new ArrayList<>();// possible y values for x1
+                        float x1 = event.getX();// where the dot is along the x axis
+                        float x2 = x1;// same as x1
+                        float y2 = 0;// possible y value for x
+                        float y1 = event.getY();// y value of the dot
+
+                        if(xPixelVec1.contains(x1)){// for x of the dot find the equivalent x's in the path array
+                            while(i <=xPixelVec1.size()){// cycle through the array trying to find possible values
+                                possible = xPixelVec1.get(i);
+                                if(possible == x1){ // if there is a value in xPixelVec1 that matches the value of the dot's X position then
+                                    possiblitiesY.add(yPixelVec1.get(i));// add the Y value that matches the value of the dot's X position into the possibilities array
+                                }
+                                i++;
+                            }// once finished cycling through the array, the possible x values have been recorded into possibilities
+                            // objective is to find the closer point out of the possibilities
+                            while(t <= possiblitiesY.size()){
+                                y2 = possiblitiesY.get(t);// set y2 equal to one of the possibilities
+                                d = Math.pow(x2 - x1,2.0)+Math.pow(y2 - y1,2.0);// part 1 of the distance formula (x2 - x1)^2 + (y2 - y1)^2
+                                distance = Math.sqrt((float) d);// converts from double to float then does the square root of it
+                                // now plug in one of the possibilies
+                                t++;
+                                if(distance < leastdistance) {// if the distance found is smaller than the greatest
+                                    leastdistance = distance;// then it becomes the leastdistance
+                                    leastdistancei = t;
+                                }
+                            }
+                            // set the dot to the nearest point of the path
+                            quad1.setY(yPixelVec1.indexOf(possiblitiesY.get(t)));// set y equal to the y value along the path that is the closest
+                            quad1.setX(x1);//  set x value of the dot equal to the x value on the graph
+
+                        }else{// find the nearest point on the path and snap to it
+
+                        }
                         break;
                     case MotionEvent.ACTION_UP:
                         // Nothing have to do
