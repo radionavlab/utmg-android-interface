@@ -2,6 +2,8 @@ package utmg.android_interface;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Matrix;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -44,6 +46,12 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<Float> xPixelVec3;
     private ArrayList<Float> yPixelVec3;
     private ArrayList<Float> zPixelVec3;
+    private ArrayList<Float> xPixelVec1Scaled = new ArrayList<Float>();
+    private ArrayList<Float> yPixelVec1Scaled = new ArrayList<Float>();
+    private ArrayList<Float> xPixelVec2Scaled = new ArrayList<Float>();
+    private ArrayList<Float> yPixelVec2Scaled = new ArrayList<Float>();
+    private ArrayList<Float> xPixelVec3Scaled = new ArrayList<Float>();
+    private ArrayList<Float> yPixelVec3Scaled = new ArrayList<Float>();
     private SeekBar quadAllSeek;
     private int togglei = 0;
     private int quadMax = 0;
@@ -68,6 +76,15 @@ public class PreviewActivity extends AppCompatActivity {
         DataShare.setSeekLoc(2, 0);
         DataShare.setSeekLoc(3, 0);
 
+        xPixelVec1 = DataShare.getXPixelVec(1);
+        yPixelVec1 = DataShare.getYPixelVec(1);
+
+        xPixelVec2 = DataShare.getXPixelVec(2);
+        yPixelVec2 = DataShare.getYPixelVec(2);
+
+        xPixelVec3 = DataShare.getXPixelVec(3);
+        yPixelVec3 = DataShare.getYPixelVec(3);
+
         DataShare.setPlayBackState(true);
 
         seekbarRelative = (RelativeLayout) findViewById(R.id.seekbar_relative);
@@ -86,6 +103,84 @@ public class PreviewActivity extends AppCompatActivity {
                 params.width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5) / pref.getFloat("newHeight", 3)));
                 canvasSize.setLayoutParams(params);
 
+                Matrix transform = new Matrix();
+                float mainwidth = canvasSize.getWidth();
+                float mainheight = canvasSize.getHeight();
+                float previewheight = params.height;
+                float previewwidth = params.width;
+                float scaledwidth = previewwidth/mainwidth;
+                float scaledheight = previewheight/mainheight;
+
+                Path path1 = DataShare.getPath(1);
+                Path path2 = DataShare.getPath(2);
+                Path path3 = DataShare.getPath(3);
+
+                transform.postScale(scaledwidth, scaledheight);
+
+                path1.transform(transform);
+                path2.transform(transform);
+                path3.transform(transform);
+
+
+                if(xPixelVec1 != null) {
+                    float tempx1 = 0;
+                    for (int i = 0; i < xPixelVec1.size() - 1; i++) {
+                        tempx1 = xPixelVec1.get(i);
+                        tempx1 = tempx1 * scaledwidth;
+                        xPixelVec1Scaled.add(i, tempx1);
+                    }
+                    xPixelVec1 = xPixelVec1Scaled;
+                    xPixelVec1Scaled = null;
+
+                    float tempy1 = 0;
+                    for (int i = 0; i < yPixelVec1.size() - 1; i++) {
+                        tempy1 = yPixelVec1.get(i);
+                        tempy1 = tempy1 * scaledwidth;
+                        yPixelVec1Scaled.add(i, tempy1);
+                    }
+                    yPixelVec1 = yPixelVec1Scaled;
+                    yPixelVec1Scaled = null;
+                }
+
+                DataShare.setPath(1,path1);
+
+//                if(xPixelVec2 != null) {
+//                    float tempx2 = 0;
+//                    for (int i = 0; i < xPixelVec2.size() - 1; i++) {
+//                        tempx2 = xPixelVec2.get(i);
+//                        tempx2 = tempx2 * scaledwidth;
+//                        xPixelVec2Scaled.add(i, tempx2);
+//                    }
+//                    xPixelVec2 = xPixelVec2Scaled;
+//
+//                    float tempy2 = 0;
+//                    for (int i = 0; i < yPixelVec2.size() - 1; i++) {
+//                        tempy2 = yPixelVec2.get(i);
+//                        tempy2 = tempy2 * scaledwidth;
+//                        yPixelVec2Scaled.add(i, tempy2);
+//                    }
+//                    yPixelVec2 = yPixelVec2Scaled;
+//
+//                }
+//
+//                if(xPixelVec3 != null) {
+//                    float tempx3 = 0;
+//                    for (int i = 0; i < xPixelVec3.size() - 1; i++) {
+//                        tempx3 = xPixelVec3.get(i);
+//                        tempx3 = tempx3 * scaledwidth;
+//                        xPixelVec3Scaled.add(i, tempx3);
+//                    }
+//                    xPixelVec3 = xPixelVec3Scaled;
+//
+//                    float tempy3 = 0;
+//                    for (int i = 0; i < yPixelVec3.size() - 1; i++) {
+//                        tempy3 = yPixelVec3.get(i);
+//                        tempy3 = tempy3 * scaledwidth;
+//                        yPixelVec3Scaled.add(i, tempy3);
+//                    }
+//                    yPixelVec3 = yPixelVec3Scaled;
+//                }
+
                 // remember to remove the listener if possible
                 ViewTreeObserver viewTreeObserver = seekbarRelative.getViewTreeObserver();
                 if (viewTreeObserver.isAlive()) {
@@ -93,16 +188,6 @@ public class PreviewActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        xPixelVec1 = DataShare.getXPixelVec(1);
-        yPixelVec1 = DataShare.getYPixelVec(1);
-
-        xPixelVec2 = DataShare.getXPixelVec(2);
-        yPixelVec2 = DataShare.getYPixelVec(2);
-
-        xPixelVec3 = DataShare.getXPixelVec(3);
-        yPixelVec3 = DataShare.getYPixelVec(3);
 
         // TODO if path planner servicing is enabled, redo the path
         if (pref.getBoolean("serviceToggle", false)) {
@@ -202,63 +287,62 @@ public class PreviewActivity extends AppCompatActivity {
                 int eid = event.getAction();
                 switch (eid) {
                     case MotionEvent.ACTION_MOVE:
+                        Log.i("ACTION_MOVE","mmmmoooovvvveee");
                         PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
                         quad1.setX((int) (StartPT.x + mv.x));
                         quad1.setY((int) (StartPT.y + mv.y));
                         StartPT = new Point((int) quad1.getX(), (int) quad1.getY());
                         break;
                     case MotionEvent.ACTION_DOWN:
+                        Log.i("ACTION_DOWN","ddddoooowwwwnnnn");
                         DownPT.x = (int) event.getX();
                         DownPT.y = (int) event.getY();
                         StartPT = new Point((int) quad1.getX(), (int) quad1.getY());
 
-/////////////////////////////////////////////// This code should bring the dot to the nearest point of the path ////////////////////////////////////////////////////////////////////////////////////
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        /////////////////////// This code should bring the dot to the nearest point of the path ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////if it has no reference, no x that matches the path or y,////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// and if it does have a reference set the dot to the closest point with the x of the dot ///////////////////////////////////////////////////////////////////////////
 
+                        Log.i("ACTION_UP","uuuupppp");
                         int i = 0;// count variable to cycle through the xPixelVec1 array
                         int t = 0;// count variable to cycle through possibilities array
                         double distance = 0; // calculated distance variable
-                        double leastdistance = 0;// least calculated variabel
+                        double leastdistance = 100000000;// least calculated variabel
                         int leastdistancei = 0; // index of the least distance
                         double d = 0.0;// (x2 - x1)^2 + (y2 - y1)^2
                         float possible = 0;// any x values in the path that are the same as x1
                         ArrayList<Float> possiblitiesY = new ArrayList<>();// possible y values for x1
-                        float x1 = event.getX();// where the dot is along the x axis
+                        float x1 = quad1.getX()- quad1.getWidth()/2 - canvasSize.getLeft();// where the dot is along the x axis
                         float x2 = x1;// same as x1
                         float y2 = 0;// possible y value for x
-                        float y1 = event.getY();// y value of the dot
+                        float y1 = quad1.getY()- quad1.getHeight()/2;// y value of the dot
 
-                        if(xPixelVec1.contains(x1)){// for x of the dot find the equivalent x's in the path array
-                            while(i <=xPixelVec1.size()){// cycle through the array trying to find possible values
-                                possible = xPixelVec1.get(i);
-                                if(possible == x1){ // if there is a value in xPixelVec1 that matches the value of the dot's X position then
-                                    possiblitiesY.add(yPixelVec1.get(i));// add the Y value that matches the value of the dot's X position into the possibilities array
-                                }
-                                i++;
-                            }// once finished cycling through the array, the possible x values have been recorded into possibilities
-                            // objective is to find the closer point out of the possibilities
-                            while(t <= possiblitiesY.size()){
-                                y2 = possiblitiesY.get(t);// set y2 equal to one of the possibilities
-                                d = Math.pow(x2 - x1,2.0)+Math.pow(y2 - y1,2.0);// part 1 of the distance formula (x2 - x1)^2 + (y2 - y1)^2
-                                distance = Math.sqrt((float) d);// converts from double to float then does the square root of it
-                                // now plug in one of the possibilies
-                                t++;
-                                if(distance < leastdistance) {// if the distance found is smaller than the greatest
-                                    leastdistance = distance;// then it becomes the leastdistance
-                                    leastdistancei = t;
-                                }
-                            }
-                            // set the dot to the nearest point of the path
-                            quad1.setY(yPixelVec1.indexOf(possiblitiesY.get(t)));// set y equal to the y value along the path that is the closest
-                            quad1.setX(x1);//  set x value of the dot equal to the x value on the graph
-
-                        }else{// find the nearest point on the path and snap to it
-
+                        Log.i("x position of the quad",Float.toString(x1));
+                        int p = 0;
+                        while(p < xPixelVec1.size()){
+                            Log.i("all variables in string",Float.toString(xPixelVec1.get(p)));
+                            p ++;
                         }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        // Nothing have to do
+                        while(t < xPixelVec1.size()-1) {
+                            Log.i("while loop", "this is the while loop");
+                            x2 = xPixelVec1.get(t);
+                            y2 = yPixelVec1.get(t);
+
+                            d = Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0);// part 1 of the distance formula (x2 - x1)^2 + (y2 - y1)^2
+                            distance = Math.sqrt((float) d);// converts from double to float then does the square root of it
+                            // now plug in one of the possibilies
+                            Log.i("Distance", Double.toString(distance));
+                            if (distance < leastdistance) {// if the distance found is smaller than the greatest
+                                leastdistance = distance;// then it becomes the leastdistance
+                                leastdistancei = t;
+                                Log.i("Leastdistancei", Integer.toString(leastdistancei));
+                            }
+                            t++;
+                        }
+                        quad1.setX(xPixelVec1.get(leastdistancei) - quad1.getWidth()/2 + canvasSize.getLeft());
+                        quad1.setY(yPixelVec1.get(leastdistancei) - quad1.getHeight()/2 );
                         break;
                     default:
                         break;
@@ -364,11 +448,11 @@ public class PreviewActivity extends AppCompatActivity {
                                         if (xPixelVec1 != null) {
 
                                             if (index == DataShare.getCurrentTime(1).size()) {
-                                                // This will handle the error
+                                                // This will handle the error come back to this
 
                                             } else if (index > DataShare.getCurrentTime(1).size()) {
-                                                quad1.setX(xPixelVec1.size() - quad1.getWidth() / 1 + canvasSize.getLeft());
-                                                quad1.setY(yPixelVec1.size() - quad1.getHeight() / 1);
+                                                quad1.setX(xPixelVec1.size() - quad1.getWidth() / 2+ canvasSize.getLeft());
+                                                quad1.setY(yPixelVec1.size() - quad1.getHeight() / 2);
 
                                             } else {
                                                 quad1.setX(xPixelVec1.get(index) - quad1.getWidth() / 2 + canvasSize.getLeft());

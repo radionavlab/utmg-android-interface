@@ -79,9 +79,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         final ToggleButton debugModeToggle = (ToggleButton) findViewById(R.id.debug_mode_toggle);
 
 
-        isQuad1Checked.setChecked(pref.getBoolean("quad1", false));
-        isQuad2Checked.setChecked(pref.getBoolean("quad2", false));
-        isQuad3Checked.setChecked(pref.getBoolean("quad3", false));
+        isQuad1Checked.setChecked(pref.getBoolean("quad1", true));
+        isQuad2Checked.setChecked(pref.getBoolean("quad2", true));
+        isQuad3Checked.setChecked(pref.getBoolean("quad3", true));
         isSwordChecked.setChecked(pref.getBoolean("sword", false));
         isObstacle1Checked.setChecked(pref.getBoolean("obstacle1", false));
         isObstacle2Checked.setChecked(pref.getBoolean("obstacle2", false));
