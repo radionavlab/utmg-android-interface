@@ -27,6 +27,7 @@ import app_pathplanner_interface.PathPlannerResponse;
 import geometry_msgs.Pose;
 import geometry_msgs.PoseArray;
 import geometry_msgs.PoseStamped;
+import geometry_msgs.Quaternion;
 import geometry_msgs.TransformStamped;
 import nav_msgs.Path;
 
@@ -106,6 +107,10 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                             mPoint.setY(yes1.get(i));
                             mPoint.setZ(zes1.get(i));
                             mPose.setPosition(mPoint);
+                            Quaternion quat = connectedNode.getTopicMessageFactory().newFromType(Quaternion._TYPE);
+                            quat.setW(tes1.get(i).toSeconds());
+                            Log.i("Times", "" + tes1.get(i).toSeconds());
+                            mPose.setOrientation(quat);
                             poses1.add(mPose);
 
 //                            if (pref.getInt("mode", 0) == 0) {
@@ -168,6 +173,11 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
         yes1 = y;
         zes1 = z;
         tes1 = t;
+        int i = 0;
+       // while(i < tes1.size()){
+       //     Log.i("Times in array", ""+tes1.get(i));
+     //       i++;
+     //   }
         serviceToggle1 = true;
         Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
     }
