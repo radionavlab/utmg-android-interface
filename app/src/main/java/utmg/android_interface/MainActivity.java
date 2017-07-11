@@ -147,9 +147,11 @@ public class MainActivity extends AppCompatRosActivity {
                 yCoordVec1 = customCanvas.getyCoordVec1();
                 zCoordVec1 = customCanvas.getzCoordVec1();
                 timesVec1 = customCanvas.getTimesVec1();
-                nodeService.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
 
-                while (DataShare.getServicedPath(1) == null) { } // TODO fix the sync check
+                if (pref.getBoolean("serviceToggle", false)) {
+                    nodeService.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
+                    while (DataShare.getServicedPath(1) == null) { } // TODO fix the sync check
+                }
 
                 Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
                 startActivity(intent);

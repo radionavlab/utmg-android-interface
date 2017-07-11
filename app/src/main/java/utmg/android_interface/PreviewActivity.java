@@ -46,12 +46,12 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<Float> xPixelVec3;
     private ArrayList<Float> yPixelVec3;
     private ArrayList<Float> zPixelVec3;
-    private ArrayList<Float> xPixelVec1Scaled = new ArrayList<Float>();
-    private ArrayList<Float> yPixelVec1Scaled = new ArrayList<Float>();
-    private ArrayList<Float> xPixelVec2Scaled = new ArrayList<Float>();
-    private ArrayList<Float> yPixelVec2Scaled = new ArrayList<Float>();
-    private ArrayList<Float> xPixelVec3Scaled = new ArrayList<Float>();
-    private ArrayList<Float> yPixelVec3Scaled = new ArrayList<Float>();
+    private ArrayList<Float> xPixelVec1Scaled = new ArrayList<>();
+    private ArrayList<Float> yPixelVec1Scaled = new ArrayList<>();
+    private ArrayList<Float> xPixelVec2Scaled = new ArrayList<>();
+    private ArrayList<Float> yPixelVec2Scaled = new ArrayList<>();
+    private ArrayList<Float> xPixelVec3Scaled = new ArrayList<>();
+    private ArrayList<Float> yPixelVec3Scaled = new ArrayList<>();
     private SeekBar quadAllSeek;
     private int togglei = 0;
     private int quadMax = 0;
@@ -104,18 +104,18 @@ public class PreviewActivity extends AppCompatActivity {
                 canvasSize.setLayoutParams(params);
 
                 Matrix transform = new Matrix();
-                float mainwidth = canvasSize.getWidth();
-                float mainheight = canvasSize.getHeight();
-                float previewheight = params.height;
-                float previewwidth = params.width;
-                float scaledwidth = previewwidth/mainwidth;
-                float scaledheight = previewheight/mainheight;
+                float mainWidth = canvasSize.getWidth();
+                float mainHeight = canvasSize.getHeight();
+                float previewHeight = params.height;
+                float previewWidth = params.width;
+                float scaledWidth = previewWidth/mainWidth;
+                float scaledHeight = previewHeight/mainHeight;
 
                 Path path1 = DataShare.getPath(1);
                 Path path2 = DataShare.getPath(2);
                 Path path3 = DataShare.getPath(3);
 
-                transform.postScale(scaledwidth, scaledheight);
+                transform.postScale(scaledWidth, scaledHeight);
 
                 path1.transform(transform);
                 path2.transform(transform);
@@ -126,7 +126,7 @@ public class PreviewActivity extends AppCompatActivity {
                     float tempx1 = 0;
                     for (int i = 0; i < xPixelVec1.size() - 1; i++) {
                         tempx1 = xPixelVec1.get(i);
-                        tempx1 = tempx1 * scaledwidth;
+                        tempx1 = tempx1 * scaledWidth;
                         xPixelVec1Scaled.add(i, tempx1);
                     }
                     xPixelVec1 = xPixelVec1Scaled;
@@ -135,7 +135,7 @@ public class PreviewActivity extends AppCompatActivity {
                     float tempy1 = 0;
                     for (int i = 0; i < yPixelVec1.size() - 1; i++) {
                         tempy1 = yPixelVec1.get(i);
-                        tempy1 = tempy1 * scaledwidth;
+                        tempy1 = tempy1 * scaledWidth;
                         yPixelVec1Scaled.add(i, tempy1);
                     }
                     yPixelVec1 = yPixelVec1Scaled;
@@ -148,7 +148,7 @@ public class PreviewActivity extends AppCompatActivity {
 //                    float tempx2 = 0;
 //                    for (int i = 0; i < xPixelVec2.size() - 1; i++) {
 //                        tempx2 = xPixelVec2.get(i);
-//                        tempx2 = tempx2 * scaledwidth;
+//                        tempx2 = tempx2 * scaledWidth;
 //                        xPixelVec2Scaled.add(i, tempx2);
 //                    }
 //                    xPixelVec2 = xPixelVec2Scaled;
@@ -156,7 +156,7 @@ public class PreviewActivity extends AppCompatActivity {
 //                    float tempy2 = 0;
 //                    for (int i = 0; i < yPixelVec2.size() - 1; i++) {
 //                        tempy2 = yPixelVec2.get(i);
-//                        tempy2 = tempy2 * scaledwidth;
+//                        tempy2 = tempy2 * scaledWidth;
 //                        yPixelVec2Scaled.add(i, tempy2);
 //                    }
 //                    yPixelVec2 = yPixelVec2Scaled;
@@ -167,7 +167,7 @@ public class PreviewActivity extends AppCompatActivity {
 //                    float tempx3 = 0;
 //                    for (int i = 0; i < xPixelVec3.size() - 1; i++) {
 //                        tempx3 = xPixelVec3.get(i);
-//                        tempx3 = tempx3 * scaledwidth;
+//                        tempx3 = tempx3 * scaledWidth;
 //                        xPixelVec3Scaled.add(i, tempx3);
 //                    }
 //                    xPixelVec3 = xPixelVec3Scaled;
@@ -175,7 +175,7 @@ public class PreviewActivity extends AppCompatActivity {
 //                    float tempy3 = 0;
 //                    for (int i = 0; i < yPixelVec3.size() - 1; i++) {
 //                        tempy3 = yPixelVec3.get(i);
-//                        tempy3 = tempy3 * scaledwidth;
+//                        tempy3 = tempy3 * scaledWidth;
 //                        yPixelVec3Scaled.add(i, tempy3);
 //                    }
 //                    yPixelVec3 = yPixelVec3Scaled;
