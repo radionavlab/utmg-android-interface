@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatRosActivity {
     private ArrayList<Time> timesVec2;
     private ArrayList<Time> timesVec3;
 
+    private ArrayList<Float> xCompressed1;
+    private ArrayList<Float> yCompressed1;
+    private ArrayList<Float> zCompressed1;
+    private ArrayList<Time> timeCompressed1;
+
     private Switch quad1Switch;
     private Switch quad2Switch;
     private Switch quad3Switch;
@@ -112,9 +117,23 @@ public class MainActivity extends AppCompatRosActivity {
         timesVec2 = new ArrayList<>();
         timesVec3 = new ArrayList<>();
 
+        // instantiating compressed copy of coordinate arrays
+        xCompressed1 = new ArrayList<>();
+        yCompressed1 = new ArrayList<>();
+        zCompressed1 = new ArrayList<>();
+        timeCompressed1 = new ArrayList<>();
+
         // instantiating toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        xCoordVec1 = DataShare.getXPixelVec(1);
+        xCoordVec2 = DataShare.getXPixelVec(2);
+        xCoordVec3 = DataShare.getXPixelVec(3);
+
+        yCoordVec1 = DataShare.getYPixelVec(1);
+        yCoordVec2 = DataShare.getYPixelVec(2);
+        yCoordVec3 = DataShare.getYPixelVec(3);
 
         // PreviewActivity Button
         final Button preview = (Button) findViewById(R.id.previewButton);
@@ -148,10 +167,36 @@ public class MainActivity extends AppCompatRosActivity {
                 zCoordVec1 = customCanvas.getzCoordVec1();
                 timesVec1 = customCanvas.getTimesVec1();
 
-                if (pref.getBoolean("serviceToggle", false)) {
-                    nodeService.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
-                    while (DataShare.getServicedPath(1) == null) { } // TODO fix the sync check
+                Log.i(" SSSSSSSSSSSSSSS ", "" + xCoordVec1.size());
+                for(int i = 0; i < xCoordVec1.size() - 1; i++) {
+                    Log.i("X", "" + xCoordVec1.get(i));
+                    //Log.i("YYYYYYYYYYYYYYYY", "" + yCoordVec1.get(i));
+                    //Log.i("ZZZZZZZZZZZZZZZZ", "" + zCoordVec1.get(i));
+                    //Log.i("TTTTTTTTTTTTTTTT", "" + timesVec1.get(i));
                 }
+                for(int i = 0; i < xCoordVec1.size() - 1; i++) {
+                    //Log.i("XXXXXXXXXXXXXXXX", "" + xCoordVec1.get(i));
+                    Log.i("Y", "" + yCoordVec1.get(i));
+                    //Log.i("ZZZZZZZZZZZZZZZZ", "" + zCoordVec1.get(i));
+                    //Log.i("TTTTTTTTTTTTTTTT", "" + timesVec1.get(i));
+                }
+                compressArrays(1);
+                Log.i(" CCCCCCCCCCCCCCC ", "" + xCompressed1.size());
+                for(int i = 0; i < xCompressed1.size() - 1; i++) {
+                    Log.i("XC", "" + xCompressed1.get(i));
+                    //Log.i("YCYCYCYCYCYCYCYC", "" + yCompressed1.get(i));
+                    //Log.i("ZCZCZCZCZCZCZCZC", "" + zCompressed1.get(i));
+                    //Log.i("TCTCTCTCTCTCTCTC", "" + timeCompressed1.get(i));
+                }
+                for(int i = 0; i < xCompressed1.size() - 1; i++) {
+                    //Log.i("XCXCXCXCXCXCXCXC", "" + xCompressed1.get(i));
+                    Log.i("YC", "" + yCompressed1.get(i));
+                    //Log.i("ZCZCZCZCZCZCZCZC", "" + zCompressed1.get(i));
+                    //Log.i("TCTCTCTCTCTCTCTC", "" + timeCompressed1.get(i));
+                }
+                nodeService.setTraj1(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
+
+                while (DataShare.getServicedPath(1) == null) { } // TODO fix the sync check
 
                 Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
                 startActivity(intent);
@@ -529,6 +574,44 @@ public class MainActivity extends AppCompatRosActivity {
             runnableObstacles.run();
         }
 
+    }
+
+    public void compressArrays(int quad) {
+        int i = 0;
+        float siddarth = 2/3;
+        float x1, x2 = 0;
+        float y1, y2 = 0;
+        float slope1 = 0;
+        float slope2 = 0;
+        switch (quad) {
+            case 1:
+                xCompressed1.add(xCoordVec1.get(0));
+                yCompressed1.add(yCoordVec1.get(0));
+                zCompressed1.add(zCoordVec1.get(0));
+                timeCompressed1.add(timesVec1.get(0));
+                while (i + 1 < xCoordVec1.size() - 1) {
+                    x1 = xCoordVec1.get(i);
+                    x2 = xCoordVec1.get(i + 1);
+                    y1 = yCoordVec1.get(i);
+                    y2 = yCoordVec1.get(i + 1);
+                    slope1 = (y2 - y1)/(x2 - x1);
+                    if(Math.abs(slope1 - slope2) > siddarth) {
+                        Log.i(" IFIFIFIFIFIF ", "");
+                        xCompressed1.add(x2);
+                        yCompressed1.add(y2);
+                        timeCompressed1.add(timesVec1.get(i+1));
+                        zCompressed1.add(zCoordVec1.get(i+1));
+                    }
+                    slope2 = slope1;
+                    i++;
+                }
+                break;
+            case 2:
+
+                break;
+            case 3:
+                break;
+        }
     }
 
     // rescaling canvas proportions to (somewhat) fit screen depending on screen orientation

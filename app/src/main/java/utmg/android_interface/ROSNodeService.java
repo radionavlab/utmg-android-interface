@@ -109,7 +109,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                             mPose.setPosition(mPoint);
                             Quaternion quat = connectedNode.getTopicMessageFactory().newFromType(Quaternion._TYPE);
                             quat.setW(tes1.get(i).toSeconds());
-                            Log.i("Times", "" + tes1.get(i).toSeconds());
+                            //Log.i("Times", "" + tes1.get(i).toSeconds());
                             mPose.setOrientation(quat);
                             poses1.add(mPose);
 

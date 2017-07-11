@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,9 @@ public class PreviewActivity extends AppCompatActivity {
     private SeekBar quadAllSeek;
     private int togglei = 0;
     private int quadMax = 0;
+
+    private ArrayList<Double> xMeterVec1;
+    private ArrayList<Double> yMeterVec1;
     private float x2;
     private float y2;
 
@@ -128,7 +132,7 @@ public class PreviewActivity extends AppCompatActivity {
                         tempx1 = xPixelVec1.get(i);
                         tempx1 = tempx1 * scaledWidth;
                         xPixelVec1Scaled.add(i, tempx1);
-                        Log.i("xPixelVec1Scaled", Float.toString(xPixelVec1Scaled.get(i) - quad1.getWidth() / 2 + canvasSize.getLeft()));
+                        //Log.i("xPixelVec1Scaled", Float.toString(xPixelVec1Scaled.get(i) - quad1.getWidth() / 2 + canvasSize.getLeft()));
                     }
                     xPixelVec1 = xPixelVec1Scaled;
                     xPixelVec1Scaled = null;
@@ -138,7 +142,7 @@ public class PreviewActivity extends AppCompatActivity {
                         tempy1 = yPixelVec1.get(i);
                         tempy1 = tempy1 * scaledWidth;
                         yPixelVec1Scaled.add(i, tempy1);
-                        Log.i("yPixelVec1Scaled", Float.toString(yPixelVec1Scaled.get(i) - quad1.getHeight() / 2));
+                        //Log.i("yPixelVec1Scaled", Float.toString(yPixelVec1Scaled.get(i) - quad1.getHeight() / 2));
                     }
                     yPixelVec1 = yPixelVec1Scaled;
                     yPixelVec1Scaled = null;
@@ -195,7 +199,20 @@ public class PreviewActivity extends AppCompatActivity {
         if (pref.getBoolean("serviceToggle", false)) {
             xPixelVec1 = new ArrayList<>();
             yPixelVec1 = new ArrayList<>();
+
+            xMeterVec1 = new ArrayList<>();
+            yMeterVec1 = new ArrayList<>();
             convertROSPathToPixelVec(1, DataShare.getServicedPath(1));
+
+            Log.i("NNNNNNNNNNNNN", "" + xMeterVec1.size());
+            for(int i = 0; i < xMeterVec1.size() - 1; i++) {
+                Log.i("NX", "" + xMeterVec1.get(i));
+            }
+
+            for(int i = 0; i < yMeterVec1.size() - 1; i++) {
+                Log.i("NY", "" + yMeterVec1.get(i));
+            }
+
             //Log.i("PreviewActivity","Is Path null: " + Boolean.toString(DataShare.getPath(1) == null));
         }
 
@@ -657,7 +674,7 @@ public class PreviewActivity extends AppCompatActivity {
                             int value = DataShare.getSeekLoc(quadMax);
                             int max = 0;
                             if (value != 0) {
-                                //quadAllSeek.setProgress(value);
+                                quadAllSeek.setProgress(value);
                                 quadAllSeek.setProgress(quadAllSeek.getMax());
                             }
                             if (value == quadAllSeek.getMax()) {
@@ -700,7 +717,10 @@ public class PreviewActivity extends AppCompatActivity {
                         double xMeter = p.getPoses().get(i).getPose().getPosition().getX();
                         double yMeter = p.getPoses().get(i).getPose().getPosition().getY();
 
-                        Log.i("PreviewActivity","xMeter: " + Double.toString(xMeter) + "\t yMeter: " + Double.toString(yMeter) + " # " + Integer.toString(i + 1));
+                        xMeterVec1.add(xMeter);
+                        yMeterVec1.add(yMeter);
+
+                        //Log.i("PreviewActivity","xMeter: " + Double.toString(xMeter) + "\t yMeter: " + Double.toString(yMeter) + " # " + Integer.toString(i + 1));
 
                         float xPixel = (float) xMeterToPixel(xMeter, yMeter);
                         float yPixel = (float) yMeterToPixel(xMeter, yMeter);
