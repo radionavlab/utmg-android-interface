@@ -719,9 +719,6 @@ public class PreviewActivity extends AppCompatActivity {
     // SIDDARTH HELP! - seekbar is not moving on play
     private void seekAll() {
 
-        // longest quad
-        quadMax = 0;
-
         // set seekbar max equal to the longest quad length - should equal longest time
         quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
 
@@ -733,39 +730,71 @@ public class PreviewActivity extends AppCompatActivity {
                 // get longest quad and store it into quadMax
                 if (xPixelVec1.size() == quadAllSeek.getMax()) {
                     quadMax = 1;
+                    while (quadMax < quadAllSeek.getMax()) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        seekH.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                int value = DataShare.getSeekLoc(quadMax);
+                                if (value != 0) {
+                                    quadAllSeek.setProgress(value);
+                                }
+                                if (value == quadAllSeek.getMax()) {
+                                    quadAllSeek.setProgress(quadAllSeek.getMax());
+                                    toggle.setChecked(false);
+                                }
+                            }
+                        });
+                    }
                 } else if (xPixelVec2.size() == quadAllSeek.getMax()) {
                     quadMax = 2;
+                    while (quadMax < quadAllSeek.getMax()) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        seekH.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                int value = DataShare.getSeekLoc(quadMax);
+                                if (value != 0) {
+                                    quadAllSeek.setProgress(value);
+                                }
+                                if (value == quadAllSeek.getMax()) {
+                                    quadAllSeek.setProgress(quadAllSeek.getMax());
+                                    toggle.setChecked(false);
+                                }
+                            }
+                        });
+                    }
                 } else {
                     quadMax = 3;
-                }
-
-                while (quadMax < quadAllSeek.getMax()) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    seekH.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            int value = DataShare.getSeekLoc(quadMax);
-                            int max = 0;
-                            if (value != 0) {
-                                quadAllSeek.setProgress(value);
-                            }
-                            if (value == quadAllSeek.getMax()) {
-                                quadAllSeek.setProgress(quadAllSeek.getMax());
-                                toggle.setChecked(false);
-                            }
-//                            while(value < quadAllSeek.getMax()-1){
-//                                quadAllSeek.setProgress(value);
-//
-//                            }
-
+                    while (quadMax < quadAllSeek.getMax()) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    });
+                        seekH.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                int value = DataShare.getSeekLoc(quadMax);
+                                if (value != 0) {
+                                    quadAllSeek.setProgress(value);
+                                }
+                                if (value == quadAllSeek.getMax()) {
+                                    quadAllSeek.setProgress(quadAllSeek.getMax());
+                                    toggle.setChecked(false);
+                                }
+                            }
+                        });
+                    }
                 }
-
             }
         };
         new Thread(seekR).start();
