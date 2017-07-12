@@ -69,36 +69,6 @@
                 android:layout_gravity="bottom"
                 android:layout_weight="1">
 
-                <!--<SeekBar-->
-                    <!--android:id="@+id/quad1Seek"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:progressDrawable="@drawable/preview_seekbar_progress1"-->
-                    <!--android:thumb="@drawable/preview_seekbar_thumb1" />-->
-
-                <!--<SeekBar-->
-                    <!--android:id="@+id/quad2Seek"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignParentLeft="true"-->
-                    <!--android:layout_alignParentStart="true"-->
-                    <!--android:layout_below="@id/quad1Seek"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:paddingTop="15dp"-->
-                    <!--android:progressDrawable="@drawable/preview_seekbar_progress2"-->
-                    <!--android:thumb="@drawable/preview_seekbar_thumb2" />-->
-
-                <!--<SeekBar-->
-                    <!--android:id="@+id/quad3Seek"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@id/quad2Seek"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:paddingTop="15dp"-->
-                    <!--android:progressDrawable="@drawable/preview_seekbar_progress3"-->
-                    <!--android:thumb="@drawable/preview_seekbar_thumb3" />-->
-
                 <SeekBar
                     android:id="@+id/quadAllSeek"
                     android:layout_width="match_parent"

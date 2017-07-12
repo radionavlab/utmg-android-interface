@@ -478,7 +478,7 @@ public class MainActivity extends AppCompatRosActivity {
                 @Override
                 public void run() {
                     // quad 1
-                    if (pref.getBoolean("quad1", false)) {
+                    if (pref.getBoolean("quad1", true)) {
                         quad1.setVisibility(View.VISIBLE);
                         quad1Switch.setEnabled(true);
                         quad1.setX(objectXToPixel("quad1") - quad1.getWidth()/2);
@@ -493,7 +493,7 @@ public class MainActivity extends AppCompatRosActivity {
                     }
 
                     // quad 2
-                    if (pref.getBoolean("quad2", false)) {
+                    if (pref.getBoolean("quad2", true)) {
                         quad2.setVisibility(View.VISIBLE);
                         quad2Switch.setEnabled(true);
                         quad2.setX(objectXToPixel("quad2") - quad2.getWidth()/2);
@@ -505,7 +505,7 @@ public class MainActivity extends AppCompatRosActivity {
                     }
 
                     // quad 3
-                    if (pref.getBoolean("quad3", false)) {
+                    if (pref.getBoolean("quad3", true)) {
                         quad3.setVisibility(View.VISIBLE);
                         quad3Switch.setEnabled(true);
                         quad3.setX(objectXToPixel("quad3") - quad3.getWidth()/2);
