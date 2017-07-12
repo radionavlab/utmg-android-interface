@@ -39,12 +39,23 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
     private ArrayList<Float> xes1;
     private ArrayList<Float> yes1;
     private ArrayList<Float> zes1;
-
     private ArrayList<Time> tes1;
-
+    private int seq1 = 0;
     private boolean serviceToggle1 = false;
 
-    private int seq1 = 0;
+    private ArrayList<Float> xes2;
+    private ArrayList<Float> yes2;
+    private ArrayList<Float> zes2;
+    private ArrayList<Time> tes2;
+    private int seq2 = 0;
+    private boolean serviceToggle2 = false;
+
+    private ArrayList<Float> xes3;
+    private ArrayList<Float> yes3;
+    private ArrayList<Float> zes3;
+    private ArrayList<Time> tes3;
+    private int seq3 = 0;
+    private boolean serviceToggle3 = false;
 
     private static final String TAG = ROSNodeService.class.getSimpleName();
 
@@ -161,6 +172,188 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
                 }
                 serviceToggle1 = false;
+
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                if(serviceToggle2 && pref.getBoolean("serviceToggle",false)) {
+
+                    // trajectory publisher
+                    PoseArray mPoseArray2 = connectedNode.getTopicMessageFactory().newFromType(PoseArray._TYPE);
+                    Path mPath2 = connectedNode.getTopicMessageFactory().newFromType(Path._TYPE);
+
+                    // configure for trajectory or waypoint mode
+                    if (pref.getInt("mode", 0) == 0) {
+                        mPoseArray2.getHeader().setFrameId("world");
+                        mPoseArray2.getHeader().setSeq(seq2);
+                        mPoseArray2.getHeader().setStamp(new Time());
+
+                        mPath2.getHeader().setFrameId("world");
+                        mPath2.getHeader().setSeq(seq2);
+                        mPath2.getHeader().setStamp(new Time());
+
+                    } else if (pref.getInt("mode", 0) == 1) {
+
+                    }
+
+                    ArrayList<Pose> poses2 = new ArrayList<>();
+                    ArrayList<PoseStamped> poseStamped2 = new ArrayList<>();
+
+                    // package each trajectory/waypoint into ROS message and send for quad1 ////////
+                    if (xes2 == null || yes2 == null || zes2 == null || tes2 == null) {
+                    } else {
+                        for (int i = 0; i < xes2.size(); i++) {
+                            Pose mPose = connectedNode.getTopicMessageFactory().newFromType(Pose._TYPE);
+                            geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+                            mPoint.setX(xes2.get(i));
+                            mPoint.setY(yes2.get(i));
+                            mPoint.setZ(zes2.get(i));
+                            mPose.setPosition(mPoint);
+                            Quaternion quat = connectedNode.getTopicMessageFactory().newFromType(Quaternion._TYPE);
+                            quat.setW(tes2.get(i).toSeconds());
+                            //Log.i("Times", "" + tes1.get(i).toSeconds());
+                            mPose.setOrientation(quat);
+                            poses2.add(mPose);
+
+//                            if (pref.getInt("mode", 0) == 0) {
+//                                PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+//                                mPoseStamped.getHeader().setStamp(tes1.get(i));
+//                                mPoseStamped.setPose(mPose);
+//                                poseStamped1.add(mPoseStamped);
+//                            }
+                        }
+
+                        if (pref.getInt("mode", 0) == 0) {
+                            mPoseArray2.setPoses(poses2);
+                            //mPath1.setPoses(poseStamped1);
+
+                            // service client definition
+                            final ServiceClient<PathPlannerRequest, PathPlannerResponse> serviceClient;
+                            try {
+                                serviceClient = connectedNode.newServiceClient("app_pathplanner", PathPlanner._TYPE);
+                            } catch (ServiceNotFoundException e) {
+                                throw new RosRuntimeException(e);
+                            }
+
+                            final PathPlannerRequest request = serviceClient.newMessage();
+                            request.setInput(mPoseArray2);
+                            serviceClient.call(request, new ServiceResponseListener<PathPlannerResponse>() {
+                                @Override
+                                public void onSuccess(PathPlannerResponse response) {
+                                    Log.i("ROSNodeService", "Received serviced Path. Size: " + Double.toString(response.getOutput().getPoses().size()));
+                                    DataShare.setServicedPath(2, response.getOutput());
+                                    //connectedNode.getLog().info(
+                                    //        String.format("%d + %d = %d", request.getA(), request.getB(), response.getSum()));
+                                }
+
+                                @Override
+                                public void onFailure(RemoteException e) {
+                                    throw new RosRuntimeException(e);
+                                }
+                            });
+
+
+                        } else if (pref.getInt("mode", 0) == 1) {
+
+                        }
+                    }
+                    // go to sleep for one second TODO for live mode reduce this time!
+                    Thread.sleep(10);
+
+                }
+                serviceToggle2 = false;
+
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                if(serviceToggle3 && pref.getBoolean("serviceToggle",false)) {
+
+                    // trajectory publisher
+                    PoseArray mPoseArray3 = connectedNode.getTopicMessageFactory().newFromType(PoseArray._TYPE);
+                    Path mPath3 = connectedNode.getTopicMessageFactory().newFromType(Path._TYPE);
+
+                    // configure for trajectory or waypoint mode
+                    if (pref.getInt("mode", 0) == 0) {
+                        mPoseArray3.getHeader().setFrameId("world");
+                        mPoseArray3.getHeader().setSeq(seq3);
+                        mPoseArray3.getHeader().setStamp(new Time());
+
+                        mPath3.getHeader().setFrameId("world");
+                        mPath3.getHeader().setSeq(seq3);
+                        mPath3.getHeader().setStamp(new Time());
+
+                    } else if (pref.getInt("mode", 0) == 1) {
+
+                    }
+
+                    ArrayList<Pose> poses3 = new ArrayList<>();
+                    ArrayList<PoseStamped> poseStamped3 = new ArrayList<>();
+
+                    // package each trajectory/waypoint into ROS message and send for quad1 ////////
+                    if (xes3 == null || yes3 == null || zes3 == null || tes3 == null) {
+                    } else {
+                        for (int i = 0; i < xes3.size(); i++) {
+                            Pose mPose = connectedNode.getTopicMessageFactory().newFromType(Pose._TYPE);
+                            geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+                            mPoint.setX(xes3.get(i));
+                            mPoint.setY(yes3.get(i));
+                            mPoint.setZ(zes3.get(i));
+                            mPose.setPosition(mPoint);
+                            Quaternion quat = connectedNode.getTopicMessageFactory().newFromType(Quaternion._TYPE);
+                            quat.setW(tes3.get(i).toSeconds());
+                            //Log.i("Times", "" + tes1.get(i).toSeconds());
+                            mPose.setOrientation(quat);
+                            poses3.add(mPose);
+
+//                            if (pref.getInt("mode", 0) == 0) {
+//                                PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+//                                mPoseStamped.getHeader().setStamp(tes1.get(i));
+//                                mPoseStamped.setPose(mPose);
+//                                poseStamped1.add(mPoseStamped);
+//                            }
+                        }
+
+                        if (pref.getInt("mode", 0) == 0) {
+                            mPoseArray3.setPoses(poses3);
+                            //mPath1.setPoses(poseStamped1);
+
+                            // service client definition
+                            final ServiceClient<PathPlannerRequest, PathPlannerResponse> serviceClient;
+                            try {
+                                serviceClient = connectedNode.newServiceClient("app_pathplanner", PathPlanner._TYPE);
+                            } catch (ServiceNotFoundException e) {
+                                throw new RosRuntimeException(e);
+                            }
+
+                            final PathPlannerRequest request = serviceClient.newMessage();
+                            request.setInput(mPoseArray3);
+                            serviceClient.call(request, new ServiceResponseListener<PathPlannerResponse>() {
+                                @Override
+                                public void onSuccess(PathPlannerResponse response) {
+                                    Log.i("ROSNodeService", "Received serviced Path. Size: " + Double.toString(response.getOutput().getPoses().size()));
+                                    DataShare.setServicedPath(3, response.getOutput());
+                                    //connectedNode.getLog().info(
+                                    //        String.format("%d + %d = %d", request.getA(), request.getB(), response.getSum()));
+                                }
+
+                                @Override
+                                public void onFailure(RemoteException e) {
+                                    throw new RosRuntimeException(e);
+                                }
+                            });
+
+
+                        } else if (pref.getInt("mode", 0) == 1) {
+
+                        }
+                    }
+
+                    // go to sleep for one second TODO for live mode reduce this time!
+                    Thread.sleep(10);
+
+                }
+                serviceToggle3 = false;
+
+
+
             }
         };
         connectedNode.executeCancellableLoop(loop);
@@ -178,6 +371,36 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
        //     Log.i("Times in array", ""+tes1.get(i));
      //       i++;
      //   }
+        serviceToggle1 = true;
+        Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
+    }
+
+    // MainActivity Preview sends vector of coordinates to here
+    void setTraj2(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
+        xes1 = x;
+        yes1 = y;
+        zes1 = z;
+        tes1 = t;
+        int i = 0;
+        // while(i < tes1.size()){
+        //     Log.i("Times in array", ""+tes1.get(i));
+        //       i++;
+        //   }
+        serviceToggle1 = true;
+        Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
+    }
+
+    // MainActivity Preview sends vector of coordinates to here
+    void setTraj3(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
+        xes1 = x;
+        yes1 = y;
+        zes1 = z;
+        tes1 = t;
+        int i = 0;
+        // while(i < tes1.size()){
+        //     Log.i("Times in array", ""+tes1.get(i));
+        //       i++;
+        //   }
         serviceToggle1 = true;
         Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
     }

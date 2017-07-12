@@ -537,10 +537,10 @@ public class PreviewActivity extends AppCompatActivity {
                                     if (toggle.isChecked() == false) {
                                         if (xPixelVec1 != null) {
 
-                                            if (index == DataShare.getCurrentTime(1).size()) {
+                                            if (index == xPixelVec1.size()) {
                                                 // This will handle the error come back to this
 
-                                            } else if (index > DataShare.getCurrentTime(1).size()) {
+                                            } else if (index > xPixelVec1.size()) {
                                                 quad1.setX(xPixelVec1.size() - quad1.getWidth() / 2+ canvasSize.getLeft());
                                                 quad1.setY(yPixelVec1.size() - quad1.getHeight() / 2);
 
@@ -556,10 +556,10 @@ public class PreviewActivity extends AppCompatActivity {
                                         }
                                         if (xPixelVec2 != null) {
 
-                                            if (index == DataShare.getCurrentTime(2).size()) {
+                                            if (index == xPixelVec2.size()) {
                                                 // This will handle the error
 
-                                            } else if (index > DataShare.getCurrentTime(2).size()) {
+                                            } else if (index > xPixelVec2.size()) {
                                                 quad2.setX(xPixelVec2.size() - quad2.getWidth() / 2 + canvasSize.getLeft());
                                                 quad2.setY(yPixelVec2.size() - quad2.getHeight() / 2);
 
@@ -570,10 +570,10 @@ public class PreviewActivity extends AppCompatActivity {
                                         }
                                         if (xPixelVec3 != null) {
 
-                                            if (index == DataShare.getCurrentTime(3).size()) {
+                                            if (index == xPixelVec3.size()) {
                                                 // This will handle the error
 
-                                            } else if (index > DataShare.getCurrentTime(3).size()) {
+                                            } else if (index > xPixelVec3.size()) {
                                                 quad3.setX(xPixelVec3.size() - quad3.getWidth() / 2 + canvasSize.getLeft());
                                                 quad3.setY(yPixelVec3.size() - quad3.getHeight() / 2);
 
@@ -743,7 +743,7 @@ public class PreviewActivity extends AppCompatActivity {
                                 if (value != 0) {
                                     quadAllSeek.setProgress(value);
                                 }
-                                if (value == quadAllSeek.getMax()) {
+                                if (value == quadAllSeek.getMax() - 1) {
                                     quadAllSeek.setProgress(quadAllSeek.getMax());
                                     toggle.setChecked(false);
                                 }
@@ -765,7 +765,7 @@ public class PreviewActivity extends AppCompatActivity {
                                 if (value != 0) {
                                     quadAllSeek.setProgress(value);
                                 }
-                                if (value == quadAllSeek.getMax()) {
+                                if (value == quadAllSeek.getMax() - 1) {
                                     quadAllSeek.setProgress(quadAllSeek.getMax());
                                     toggle.setChecked(false);
                                 }
@@ -787,7 +787,7 @@ public class PreviewActivity extends AppCompatActivity {
                                 if (value != 0) {
                                     quadAllSeek.setProgress(value);
                                 }
-                                if (value == quadAllSeek.getMax()) {
+                                if (value == quadAllSeek.getMax() - 1) {
                                     quadAllSeek.setProgress(quadAllSeek.getMax());
                                     toggle.setChecked(false);
                                 }
@@ -812,7 +812,6 @@ public class PreviewActivity extends AppCompatActivity {
                     android.graphics.Path mPath1 = new android.graphics.Path();
 
                     for (int i = 0; i < p.getPoses().size(); i++) {
-                        // TODO convert meters to pixels
 
                         double xMeter = p.getPoses().get(i).getPose().getPosition().getX();
                         double yMeter = p.getPoses().get(i).getPose().getPosition().getY();
@@ -839,9 +838,67 @@ public class PreviewActivity extends AppCompatActivity {
 
                     DataShare.setPath(1, mPath1);
                     break;
+
                 case 2:
+                    android.graphics.Path mPath2 = new android.graphics.Path();
+
+                    for (int i = 0; i < p.getPoses().size(); i++) {
+
+                        double xMeter = p.getPoses().get(i).getPose().getPosition().getX();
+                        double yMeter = p.getPoses().get(i).getPose().getPosition().getY();
+
+                        xMeterVec2.add(xMeter);
+                        yMeterVec2.add(yMeter);
+
+                        //Log.i("PreviewActivity","xMeter: " + Double.toString(xMeter) + "\t yMeter: " + Double.toString(yMeter) + " # " + Integer.toString(i + 1));
+
+                        float xPixel = (float) xMeterToPixel(xMeter, yMeter);
+                        float yPixel = (float) yMeterToPixel(xMeter, yMeter);
+
+                        xPixelVec2.add(xPixel);
+                        yPixelVec2.add(yPixel);
+
+                        if (i == 0) {
+                            mPath2.moveTo(xPixel, yPixel);
+                        } else {
+                            //mPath1.quadTo((xPixelVec1.get(i) + xPixelVec1.get(i - 1)) / 2, (yPixelVec1.get(i) + yPixelVec1.get(i - 1)) / 2, xPixelVec1.get(i), yPixelVec1.get(i));
+                            //mPath1.quadTo(xPixelVec1.get(i - 1), yPixelVec1.get(i - 1), (xPixelVec1.get(i) + xPixelVec1.get(i - 1)) / 2, (yPixelVec1.get(i) + yPixelVec1.get(i - 1)) / 2);
+                            mPath2.lineTo(xPixel, yPixel);
+                        }
+                    }
+
+                    DataShare.setPath(2, mPath2);
                     break;
+
                 case 3:
+                    android.graphics.Path mPath3 = new android.graphics.Path();
+
+                    for (int i = 0; i < p.getPoses().size(); i++) {
+
+                        double xMeter = p.getPoses().get(i).getPose().getPosition().getX();
+                        double yMeter = p.getPoses().get(i).getPose().getPosition().getY();
+
+                        xMeterVec3.add(xMeter);
+                        yMeterVec3.add(yMeter);
+
+                        //Log.i("PreviewActivity","xMeter: " + Double.toString(xMeter) + "\t yMeter: " + Double.toString(yMeter) + " # " + Integer.toString(i + 1));
+
+                        float xPixel = (float) xMeterToPixel(xMeter, yMeter);
+                        float yPixel = (float) yMeterToPixel(xMeter, yMeter);
+
+                        xPixelVec3.add(xPixel);
+                        yPixelVec3.add(yPixel);
+
+                        if (i == 0) {
+                            mPath3.moveTo(xPixel, yPixel);
+                        } else {
+                            //mPath1.quadTo((xPixelVec1.get(i) + xPixelVec1.get(i - 1)) / 2, (yPixelVec1.get(i) + yPixelVec1.get(i - 1)) / 2, xPixelVec1.get(i), yPixelVec1.get(i));
+                            //mPath1.quadTo(xPixelVec1.get(i - 1), yPixelVec1.get(i - 1), (xPixelVec1.get(i) + xPixelVec1.get(i - 1)) / 2, (yPixelVec1.get(i) + yPixelVec1.get(i - 1)) / 2);
+                            mPath3.lineTo(xPixel, yPixel);
+                        }
+                    }
+
+                    DataShare.setPath(3, mPath3);
                     break;
             }
         }

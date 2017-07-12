@@ -33,26 +33,36 @@ public class MainActivity extends AppCompatRosActivity {
     ROSNodeMain nodeMain;
     ROSNodeService nodeService;
     private CanvasView customCanvas;
+
     private ArrayList<Float> xCoordVec1;
     private ArrayList<Float> yCoordVec1;
     private ArrayList<Float> zCoordVec1;
+    private ArrayList<Float> xCompressed1;
+    private ArrayList<Float> yCompressed1;
+    private ArrayList<Float> zCompressed1;
+    private ArrayList<Time> timeCompressed1;
 
     private ArrayList<Float> xCoordVec2;
     private ArrayList<Float> yCoordVec2;
     private ArrayList<Float> zCoordVec2;
+    private ArrayList<Float> xCompressed2;
+    private ArrayList<Float> yCompressed2;
+    private ArrayList<Float> zCompressed2;
+    private ArrayList<Time> timeCompressed2;
 
     private ArrayList<Float> xCoordVec3;
     private ArrayList<Float> yCoordVec3;
     private ArrayList<Float> zCoordVec3;
+    private ArrayList<Float> xCompressed3;
+    private ArrayList<Float> yCompressed3;
+    private ArrayList<Float> zCompressed3;
+    private ArrayList<Time> timeCompressed3;
 
     private ArrayList<Time> timesVec1;
     private ArrayList<Time> timesVec2;
     private ArrayList<Time> timesVec3;
 
-    private ArrayList<Float> xCompressed1;
-    private ArrayList<Float> yCompressed1;
-    private ArrayList<Float> zCompressed1;
-    private ArrayList<Time> timeCompressed1;
+
 
     private Switch quad1Switch;
     private Switch quad2Switch;
@@ -123,6 +133,16 @@ public class MainActivity extends AppCompatRosActivity {
         zCompressed1 = new ArrayList<>();
         timeCompressed1 = new ArrayList<>();
 
+        xCompressed2 = new ArrayList<>();
+        yCompressed2 = new ArrayList<>();
+        zCompressed2 = new ArrayList<>();
+        timeCompressed2 = new ArrayList<>();
+
+        xCompressed3 = new ArrayList<>();
+        yCompressed3 = new ArrayList<>();
+        zCompressed3 = new ArrayList<>();
+        timeCompressed3 = new ArrayList<>();
+
         // instantiating toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -167,34 +187,28 @@ public class MainActivity extends AppCompatRosActivity {
                 zCoordVec1 = customCanvas.getzCoordVec1();
                 timesVec1 = customCanvas.getTimesVec1();
 
-                Log.i(" SSSSSSSSSSSSSSS ", "" + xCoordVec1.size());
-                for(int i = 0; i < xCoordVec1.size() - 1; i++) {
-                    Log.i("X", "" + xCoordVec1.get(i));
-                    //Log.i("YYYYYYYYYYYYYYYY", "" + yCoordVec1.get(i));
-                    //Log.i("ZZZZZZZZZZZZZZZZ", "" + zCoordVec1.get(i));
-                    //Log.i("TTTTTTTTTTTTTTTT", "" + timesVec1.get(i));
+                xCoordVec2 = customCanvas.getxCoordVec2();
+                yCoordVec2 = customCanvas.getyCoordVec2();
+                zCoordVec2 = customCanvas.getzCoordVec2();
+                timesVec2 = customCanvas.getTimesVec2();
+
+                xCoordVec3 = customCanvas.getxCoordVec3();
+                yCoordVec3 = customCanvas.getyCoordVec3();
+                zCoordVec3 = customCanvas.getzCoordVec3();
+                timesVec3 = customCanvas.getTimesVec3();
+
+                if(xCoordVec1.size() != 0) {
+                    compressArrays(1);
+                    nodeService.setTraj1(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
                 }
-                for(int i = 0; i < xCoordVec1.size() - 1; i++) {
-                    //Log.i("XXXXXXXXXXXXXXXX", "" + xCoordVec1.get(i));
-                    Log.i("Y", "" + yCoordVec1.get(i));
-                    //Log.i("ZZZZZZZZZZZZZZZZ", "" + zCoordVec1.get(i));
-                    //Log.i("TTTTTTTTTTTTTTTT", "" + timesVec1.get(i));
+                if(xCoordVec2.size() != 0) {
+                    compressArrays(2);
+                    nodeService.setTraj2(xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
                 }
-                compressArrays(1);
-                Log.i(" CCCCCCCCCCCCCCC ", "" + xCompressed1.size());
-                for(int i = 0; i < xCompressed1.size() - 1; i++) {
-                    Log.i("XC", "" + xCompressed1.get(i));
-                    //Log.i("YCYCYCYCYCYCYCYC", "" + yCompressed1.get(i));
-                    //Log.i("ZCZCZCZCZCZCZCZC", "" + zCompressed1.get(i));
-                    //Log.i("TCTCTCTCTCTCTCTC", "" + timeCompressed1.get(i));
+                if(xCoordVec3.size() != 0) {
+                    compressArrays(3);
+                    nodeService.setTraj3(xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
                 }
-                for(int i = 0; i < xCompressed1.size() - 1; i++) {
-                    //Log.i("XCXCXCXCXCXCXCXC", "" + xCompressed1.get(i));
-                    Log.i("YC", "" + yCompressed1.get(i));
-                    //Log.i("ZCZCZCZCZCZCZCZC", "" + zCompressed1.get(i));
-                    //Log.i("TCTCTCTCTCTCTCTC", "" + timeCompressed1.get(i));
-                }
-                nodeService.setTraj1(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
 
                 while (DataShare.getServicedPath(1) == null) { } // TODO fix the sync check
 
@@ -578,7 +592,7 @@ public class MainActivity extends AppCompatRosActivity {
 
     public void compressArrays(int quad) {
         int i = 0;
-        float siddarth = 2/3;
+        float siddarth = 1;
         float x1, x2 = 0;
         float y1, y2 = 0;
         float slope1 = 0;
@@ -595,7 +609,8 @@ public class MainActivity extends AppCompatRosActivity {
                     y1 = yCoordVec1.get(i);
                     y2 = yCoordVec1.get(i + 1);
                     slope1 = (y2 - y1)/(x2 - x1);
-                    if(Math.abs(slope1 - slope2) > siddarth) {
+                    Log.i(" SLOPESLOPESLOPE ", "" + Math.abs(slope1 - slope2));
+                    if(Math.abs(slope1 - slope2) < siddarth) {
                         Log.i(" IFIFIFIFIFIF ", "");
                         xCompressed1.add(x2);
                         yCompressed1.add(y2);
@@ -606,11 +621,56 @@ public class MainActivity extends AppCompatRosActivity {
                     i++;
                 }
                 break;
-            case 2:
 
+            case 2:
+                Log.i(" 22222222222 ", "" + xCoordVec2.size());
+                xCompressed2.add(xCoordVec2.get(0));
+                yCompressed2.add(yCoordVec2.get(0));
+                zCompressed2.add(zCoordVec2.get(0));
+                timeCompressed2.add(timesVec2.get(0));
+                while (i + 1 < xCoordVec2.size() - 1) {
+                    x1 = xCoordVec2.get(i);
+                    x2 = xCoordVec2.get(i + 1);
+                    y1 = yCoordVec2.get(i);
+                    y2 = yCoordVec2.get(i + 1);
+                    slope1 = (y2 - y1) / (x2 - x1);
+                    Log.i(" SLOPESLOPESLOPE ", "" + Math.abs(slope1 - slope2));
+                    if (Math.abs(slope1 - slope2) < siddarth) {
+                        Log.i(" IFIFIFIFIFIF ", "");
+                        xCompressed2.add(x2);
+                        yCompressed2.add(y2);
+                        timeCompressed2.add(timesVec2.get(i + 1));
+                        zCompressed2.add(zCoordVec2.get(i + 1));
+                    }
+                    slope2 = slope1;
+                    i++;
+                }
                 break;
+
             case 3:
-                break;
+                xCompressed3.add(xCoordVec3.get(0));
+                yCompressed3.add(yCoordVec3.get(0));
+                zCompressed3.add(zCoordVec3.get(0));
+                timeCompressed3.add(timesVec3.get(0));
+                while (i + 1 < xCoordVec3.size() - 1) {
+                    x1 = xCoordVec3.get(i);
+                    x2 = xCoordVec3.get(i + 1);
+                    y1 = yCoordVec3.get(i);
+                    y2 = yCoordVec3.get(i + 1);
+                    slope1 = (y2 - y1) / (x2 - x1);
+                    Log.i(" SLOPESLOPESLOPE ", "" + Math.abs(slope1 - slope2));
+                    if (Math.abs(slope1 - slope2) < siddarth) {
+                        Log.i(" IFIFIFIFIFIF ", "");
+                        xCompressed3.add(x2);
+                        yCompressed3.add(y2);
+                        timeCompressed3.add(timesVec3.get(i + 1));
+                        zCompressed3.add(zCoordVec3.get(i + 1));
+                    }
+                    slope2 = slope1;
+                    i++;
+                }
+                    break;
+
         }
     }
 
