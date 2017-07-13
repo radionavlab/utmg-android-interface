@@ -155,6 +155,17 @@ public class MainActivity extends AppCompatRosActivity {
         yCoordVec2 = DataShare.getYPixelVec(2);
         yCoordVec3 = DataShare.getYPixelVec(3);
 
+        // Button to terminate app so it doesn't have to be done manually
+        Button terminate = (Button)this.findViewById(R.id.kill_button);
+        terminate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                System.exit(0);
+            }
+        });
+
+
         // PreviewActivity Button
         final Button preview = (Button) findViewById(R.id.previewButton);
         preview.setOnClickListener(new View.OnClickListener()
@@ -599,6 +610,7 @@ public class MainActivity extends AppCompatRosActivity {
         float slope2 = 0;
         switch (quad) {
             case 1:
+                Log.i(" 1111111111 ", "" + xCoordVec1.size());
                 xCompressed1.add(xCoordVec1.get(0));
                 yCompressed1.add(yCoordVec1.get(0));
                 zCompressed1.add(zCoordVec1.get(0));
@@ -609,9 +621,7 @@ public class MainActivity extends AppCompatRosActivity {
                     y1 = yCoordVec1.get(i);
                     y2 = yCoordVec1.get(i + 1);
                     slope1 = (y2 - y1)/(x2 - x1);
-                    Log.i(" SLOPESLOPESLOPE ", "" + Math.abs(slope1 - slope2));
                     if(Math.abs(slope1 - slope2) < siddarth) {
-                        Log.i(" IFIFIFIFIFIF ", "");
                         xCompressed1.add(x2);
                         yCompressed1.add(y2);
                         timeCompressed1.add(timesVec1.get(i+1));
@@ -620,6 +630,7 @@ public class MainActivity extends AppCompatRosActivity {
                     slope2 = slope1;
                     i++;
                 }
+                Log.i(" 1C1C1C1C1C1 ", "" + xCompressed1.size());
                 break;
 
             case 2:
@@ -634,9 +645,7 @@ public class MainActivity extends AppCompatRosActivity {
                     y1 = yCoordVec2.get(i);
                     y2 = yCoordVec2.get(i + 1);
                     slope1 = (y2 - y1) / (x2 - x1);
-                    Log.i(" SLOPESLOPESLOPE ", "" + Math.abs(slope1 - slope2));
                     if (Math.abs(slope1 - slope2) < siddarth) {
-                        Log.i(" IFIFIFIFIFIF ", "");
                         xCompressed2.add(x2);
                         yCompressed2.add(y2);
                         timeCompressed2.add(timesVec2.get(i + 1));
@@ -645,9 +654,11 @@ public class MainActivity extends AppCompatRosActivity {
                     slope2 = slope1;
                     i++;
                 }
+                Log.i(" 2C2C2C2C2C2 ", "" + xCompressed2.size());
                 break;
 
             case 3:
+                Log.i(" 33333333333 ", "" + xCoordVec3.size());
                 xCompressed3.add(xCoordVec3.get(0));
                 yCompressed3.add(yCoordVec3.get(0));
                 zCompressed3.add(zCoordVec3.get(0));
@@ -658,9 +669,7 @@ public class MainActivity extends AppCompatRosActivity {
                     y1 = yCoordVec3.get(i);
                     y2 = yCoordVec3.get(i + 1);
                     slope1 = (y2 - y1) / (x2 - x1);
-                    Log.i(" SLOPESLOPESLOPE ", "" + Math.abs(slope1 - slope2));
                     if (Math.abs(slope1 - slope2) < siddarth) {
-                        Log.i(" IFIFIFIFIFIF ", "");
                         xCompressed3.add(x2);
                         yCompressed3.add(y2);
                         timeCompressed3.add(timesVec3.get(i + 1));
@@ -669,7 +678,8 @@ public class MainActivity extends AppCompatRosActivity {
                     slope2 = slope1;
                     i++;
                 }
-                    break;
+                Log.i(" 3C3C3C3C3C3 ", "" + xCompressed3.size());
+                break;
 
         }
     }

@@ -367,41 +367,41 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
         zes1 = z;
         tes1 = t;
         int i = 0;
-       // while(i < tes1.size()){
-       //     Log.i("Times in array", ""+tes1.get(i));
-     //       i++;
-     //   }
+        // while(i < tes1.size()){
+        //     Log.i("Times in array", ""+tes1.get(i));
+        //       i++;
+        //   }
         serviceToggle1 = true;
         Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
     }
 
     // MainActivity Preview sends vector of coordinates to here
     void setTraj2(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
-        xes1 = x;
-        yes1 = y;
-        zes1 = z;
-        tes1 = t;
+        xes2 = x;
+        yes2 = y;
+        zes2 = z;
+        tes2 = t;
         int i = 0;
         // while(i < tes1.size()){
         //     Log.i("Times in array", ""+tes1.get(i));
         //       i++;
         //   }
-        serviceToggle1 = true;
+        serviceToggle2 = true;
         Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
     }
 
     // MainActivity Preview sends vector of coordinates to here
     void setTraj3(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
-        xes1 = x;
-        yes1 = y;
-        zes1 = z;
-        tes1 = t;
+        xes3 = x;
+        yes3 = y;
+        zes3 = z;
+        tes3 = t;
         int i = 0;
         // while(i < tes1.size()){
         //     Log.i("Times in array", ""+tes1.get(i));
         //       i++;
         //   }
-        serviceToggle1 = true;
+        serviceToggle3 = true;
         Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
     }
 }

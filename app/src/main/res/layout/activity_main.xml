@@ -36,6 +36,16 @@
             android:layout_height="40dp"
             android:weightSum="1">
 
+            <Button
+                android:id="@+id/kill_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginLeft="5dp"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:textColor="@android:color/white"
+                android:text="TERMINATE!" />
+
             <TextView
                 android:id="@+id/inMeters"
                 android:layout_width="wrap_content"
@@ -58,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_weight="0.2">
+                android:layout_weight="0.1">
 
                 <Switch
                     android:id="@+id/quad1Switch"
@@ -84,9 +94,10 @@
                     android:layout_gravity="bottom|right"
                     android:layout_marginLeft="50dp"
                     android:text="Quad3"
-                    android:textColor="@android:color/holo_blue_dark"/>
+                    android:textColor="@android:color/holo_blue_dark" />
 
             </LinearLayout>
+
         </LinearLayout>
 
     </RelativeLayout>
@@ -193,6 +204,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="35dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white"
         android:text="PREVIEW"/>
 
     <LinearLayout

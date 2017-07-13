@@ -243,9 +243,19 @@ public class PreviewActivity extends AppCompatActivity {
             yMeterVec3 = new ArrayList<>();
 
             // calls convertROSPathToPixel - self explanatory
-            convertROSPathToPixelVec(1, DataShare.getServicedPath(1));
-            convertROSPathToPixelVec(2, DataShare.getServicedPath(2));
-            convertROSPathToPixelVec(3, DataShare.getServicedPath(3));
+            if(xPixelVec1.size() != 0) {
+                convertROSPathToPixelVec(1, DataShare.getServicedPath(1));
+            }
+            if(xPixelVec2.size() != 0) {
+                convertROSPathToPixelVec(2, DataShare.getServicedPath(2));
+            }
+            if(xPixelVec3.size() != 0) {
+                convertROSPathToPixelVec(3, DataShare.getServicedPath(3));
+            }
+
+            Log.i(" ppp111ppp111 ", "" + xPixelVec1.size());
+            Log.i(" ppp222ppp222 ", "" + xPixelVec2.size());
+            Log.i(" ppp333ppp333 ", "" + xPixelVec3.size());
         }
 
         // initializing imageviews
@@ -269,6 +279,7 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 1
                 if (pref.getBoolean("quad1", false)) {
+//                    Log.i(" ppp111ppp111 ", "" + xPixelVec1.size());
                     if (xPixelVec1.size() == 0 || yPixelVec1.size() == 0) {
                         quad1.setVisibility(View.INVISIBLE);
                     } else {
@@ -283,25 +294,31 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 2
                 if (pref.getBoolean("quad2", false)) {
+//                    Log.i(" ppp222ppp222 ", "" + xPixelVec2.size());
                     if (xPixelVec2.size() == 0 || yPixelVec2.size() == 0) {
                         quad2.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on beginning of PreviewActivity
-                        quad2.setX(xPixelVec2.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                        quad2.setY(yPixelVec2.get(0) - quad1.getHeight() / 2);
-                        quad2.setVisibility(View.VISIBLE);
+                        if (togglei == 0) {
+                            quad2.setX(xPixelVec2.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                            quad2.setY(yPixelVec2.get(0) - quad1.getHeight() / 2);
+                            quad2.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
 
                 // quad 3
                 if (pref.getBoolean("quad3", false)) {
+//                    Log.i(" ppp333ppp333 ", "" + xPixelVec3.size());
                     if (xPixelVec3.size() == 0 || yPixelVec3.size() == 0) {
                         quad3.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on beginning of PreviewActivity
-                        quad3.setX(xPixelVec3.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                        quad3.setY(yPixelVec3.get(0) - quad1.getHeight() / 2);
-                        quad3.setVisibility(View.VISIBLE);
+                        if (togglei == 0) {
+                            quad3.setX(xPixelVec3.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                            quad3.setY(yPixelVec3.get(0) - quad1.getHeight() / 2);
+                            quad3.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
                 handlerQuad.postDelayed(this, 10);
@@ -548,11 +565,6 @@ public class PreviewActivity extends AppCompatActivity {
                                                 quad1.setX(xPixelVec1.get(index) - quad1.getWidth() / 2 + canvasSize.getLeft());
                                                 quad1.setY(yPixelVec1.get(index) - quad1.getHeight() / 2);
                                             }
-//
-//                                            while (index < DataShare.getCurrentTime(1).size() - 1) {
-//                                                quad1.setX(xPixelVec1.get(index) - quad1.getWidth() / 2 + canvasSize.getLeft());
-//                                                quad1.setY(yPixelVec1.get(index) - quad1.getHeight() / 2);
-                                            //}
                                         }
                                         if (xPixelVec2 != null) {
 
