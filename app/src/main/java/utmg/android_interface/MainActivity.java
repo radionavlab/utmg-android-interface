@@ -208,20 +208,22 @@ public class MainActivity extends AppCompatRosActivity {
                 zCoordVec3 = customCanvas.getzCoordVec3();
                 timesVec3 = customCanvas.getTimesVec3();
 
+                // compress arrays, send to path planner, wait to launch PreviewActivity until service finishes
                 if(xCoordVec1.size() != 0) {
                     compressArrays(1);
-                    nodeService.setTraj1(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
+                    nodeService.setTraj(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
+                    while (DataShare.getServicedPath(1) == null) { }
                 }
                 if(xCoordVec2.size() != 0) {
                     compressArrays(2);
-                    nodeService.setTraj2(xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
+                    nodeService.setTraj(xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
+                    while (DataShare.getServicedPath(2) == null) { }
                 }
                 if(xCoordVec3.size() != 0) {
                     compressArrays(3);
-                    nodeService.setTraj3(xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
+                    nodeService.setTraj(xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
+                    while (DataShare.getServicedPath(3) == null) { }
                 }
-
-                while (DataShare.getServicedPath(1) == null) { } // TODO fix the sync check
 
                 Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
                 startActivity(intent);

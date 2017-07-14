@@ -107,7 +107,7 @@ public class PreviewActivity extends AppCompatActivity {
         seekbarRelative = (RelativeLayout) findViewById(R.id.seekbar_relative);
         quadAllSeek = (SeekBar) findViewById(R.id.quadAllSeek);
 
-        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what is this?
+        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what is this listener?
         seekbarRelative.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
 
@@ -258,7 +258,7 @@ public class PreviewActivity extends AppCompatActivity {
             Log.i(" ppp333ppp333 ", "" + xPixelVec3.size());
         }
 
-        // initializing imageviews
+        // initializing imageViews
         quad1 = (ImageView) findViewById(R.id.demo_quad1);
         quad2 = (ImageView) findViewById(R.id.demo_quad2);
         quad3 = (ImageView) findViewById(R.id.demo_quad3);
@@ -283,7 +283,7 @@ public class PreviewActivity extends AppCompatActivity {
                     if (xPixelVec1.size() == 0 || yPixelVec1.size() == 0) {
                         quad1.setVisibility(View.INVISIBLE);
                     } else {
-                        // place imageView at start of path on beginning of PreviewActivity
+                        // place imageView at start of path on launch of PreviewActivity
                         if (togglei == 0) {
                             quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
                             quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
@@ -298,7 +298,7 @@ public class PreviewActivity extends AppCompatActivity {
                     if (xPixelVec2.size() == 0 || yPixelVec2.size() == 0) {
                         quad2.setVisibility(View.INVISIBLE);
                     } else {
-                        // place imageView at start of path on beginning of PreviewActivity
+                        // place imageView at start of path on launch of PreviewActivity
                         if (togglei == 0) {
                             quad2.setX(xPixelVec2.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
                             quad2.setY(yPixelVec2.get(0) - quad1.getHeight() / 2);
@@ -313,7 +313,7 @@ public class PreviewActivity extends AppCompatActivity {
                     if (xPixelVec3.size() == 0 || yPixelVec3.size() == 0) {
                         quad3.setVisibility(View.INVISIBLE);
                     } else {
-                        // place imageView at start of path on beginning of PreviewActivity
+                        // place imageView at start of path on launch of PreviewActivity
                         if (togglei == 0) {
                             quad3.setX(xPixelVec3.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
                             quad3.setY(yPixelVec3.get(0) - quad1.getHeight() / 2);
@@ -327,7 +327,6 @@ public class PreviewActivity extends AppCompatActivity {
         runnableQuad.run();
 
 
-        // TODO touch listeners only work for single paths, FIX THIS!
         // ONLY WORKS AFTER RUNNING THROUGH ONCE
         // Touch listener for quad1 - for dragging quad along path
         quad1.setOnTouchListener(new View.OnTouchListener() {
@@ -358,8 +357,8 @@ public class PreviewActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         int t = 0;
                         double distance = 0;
-                        double leastdistance = 100000000;// needs to be large in order for distance to enter into the loop
-                        int leastdistancei = 0;
+                        double leastDistance = 100000000;// needs to be large in order for distance to enter into the loop
+                        int leastDistanceIndex = 0;
                         double d = 0.0;
                         float x1 = quad1.getX() - quad1.getWidth() / 2 - canvasSize.getLeft();
                         float x2 = x1;
@@ -374,14 +373,14 @@ public class PreviewActivity extends AppCompatActivity {
                             d = Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0);// part 1 of the distance formula (x2 - x1)^2 + (y2 - y1)^2
                             distance = Math.sqrt((float) d);// converts from double to float then does the square root of it
 
-                            if (distance < leastdistance) {// if the distance found is smaller than the greatest
-                                leastdistance = distance;// then it becomes the leastdistance
-                                leastdistancei = t;
+                            if (distance < leastDistance) {// if the distance found is smaller than the greatest
+                                leastDistance = distance;// then it becomes the leastDistance
+                                leastDistanceIndex = t;
                             }
                             t++;
                         }
-                        quad1.setX(xPixelVec1.get(leastdistancei) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                        quad1.setY(yPixelVec1.get(leastdistancei) - quad1.getHeight() / 2);
+                        quad1.setX(xPixelVec1.get(leastDistanceIndex) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                        quad1.setY(yPixelVec1.get(leastDistanceIndex) - quad1.getHeight() / 2);
                         break;
                     default:
                         break;
@@ -419,8 +418,8 @@ public class PreviewActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         int t = 0;
                         double distance = 0;
-                        double leastdistance = 100000000;// needs to be large in order for distance to enter into the loop
-                        int leastdistancei = 0;
+                        double leastDistance = 100000000;// needs to be large in order for distance to enter into the loop
+                        int leastDistanceIndex = 0;
                         double d = 0.0;
                         float x1 = quad2.getX() - quad2.getWidth() / 2 - canvasSize.getLeft();
                         float x2 = x1;
@@ -435,14 +434,14 @@ public class PreviewActivity extends AppCompatActivity {
                             d = Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0);// part 1 of the distance formula (x2 - x1)^2 + (y2 - y1)^2
                             distance = Math.sqrt((float) d);// converts from double to float then does the square root of it
 
-                            if (distance < leastdistance) {// if the distance found is smaller than the greatest
-                                leastdistance = distance;// then it becomes the leastdistance
-                                leastdistancei = t;
+                            if (distance < leastDistance) {// if the distance found is smaller than the greatest
+                                leastDistance = distance;// then it becomes the leastDistance
+                                leastDistanceIndex = t;
                             }
                             t++;
                         }
-                        quad2.setX(xPixelVec2.get(leastdistancei) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                        quad2.setY(yPixelVec2.get(leastdistancei) - quad2.getHeight() / 2);
+                        quad2.setX(xPixelVec2.get(leastDistanceIndex) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                        quad2.setY(yPixelVec2.get(leastDistanceIndex) - quad2.getHeight() / 2);
                         break;
                     default:
                         break;
@@ -480,8 +479,8 @@ public class PreviewActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         int t = 0;
                         double distance = 0;
-                        double leastdistance = 100000000;// needs to be large in order for distance to enter into the loop
-                        int leastdistancei = 0;
+                        double leastDistance = 100000000;// needs to be large in order for distance to enter into the loop
+                        int leastDistanceIndex = 0;
                         double d = 0.0;
                         float x1 = quad3.getX() - quad3.getWidth() / 2 - canvasSize.getLeft();
                         float x2 = x1;
@@ -493,17 +492,17 @@ public class PreviewActivity extends AppCompatActivity {
                             x2 = xPixelVec3.get(t);
                             y2 = yPixelVec3.get(t);
 
-                            d = Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0);// part 1 of the distance formula (x2 - x1)^2 + (y2 - y1)^2
-                            distance = Math.sqrt((float) d);// converts from double to float then does the square root of it
+                            d = Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0); // part 1 of the distance formula (x2 - x1)^2 + (y2 - y1)^2
+                            distance = Math.sqrt((float) d); // converts from double to float then does the square root of it
 
-                            if (distance < leastdistance) {// if the distance found is smaller than the greatest
-                                leastdistance = distance;// then it becomes the leastdistance
-                                leastdistancei = t;
+                            if (distance < leastDistance) { // if the distance found is smaller than the greatest
+                                leastDistance = distance; // then it becomes the leastDistance
+                                leastDistanceIndex = t;
                             }
                             t++;
                         }
-                        quad3.setX(xPixelVec3.get(leastdistancei) - quad3.getWidth() / 2 + canvasSize.getLeft());
-                        quad3.setY(yPixelVec3.get(leastdistancei) - quad3.getHeight() / 2);
+                        quad3.setX(xPixelVec3.get(leastDistanceIndex) - quad3.getWidth() / 2 + canvasSize.getLeft());
+                        quad3.setY(yPixelVec3.get(leastDistanceIndex) - quad3.getHeight() / 2);
                         break;
                     default:
                         break;
@@ -535,13 +534,12 @@ public class PreviewActivity extends AppCompatActivity {
                                 runQuad3();
                                 seekAll();
                             }
+                            
                         } else if (!isChecked && DataShare.getPlayBackState()) {
-
                             // SIDDHARTH HELP! - does this listener need to be inside the toggle listener?
                             quadAllSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                                 @Override
                                 public void onStopTrackingTouch(SeekBar seekBar) {
-
                                 }
 
                                 @Override
@@ -566,8 +564,8 @@ public class PreviewActivity extends AppCompatActivity {
                                                 quad1.setY(yPixelVec1.get(index) - quad1.getHeight() / 2);
                                             }
                                         }
+                                        
                                         if (xPixelVec2 != null) {
-
                                             if (index == xPixelVec2.size()) {
                                                 // This will handle the error
 
@@ -580,8 +578,8 @@ public class PreviewActivity extends AppCompatActivity {
                                                 quad2.setY(yPixelVec2.get(index) - quad2.getHeight() / 2);
                                             }
                                         }
+                                        
                                         if (xPixelVec3 != null) {
-
                                             if (index == xPixelVec3.size()) {
                                                 // This will handle the error
 
@@ -916,7 +914,7 @@ public class PreviewActivity extends AppCompatActivity {
         }
     }
 
-    // transform specified object's y position to pixels
+    // transform specified object's x position to pixels
     public double xMeterToPixel(double x, double y) {
 
         double normX = y / -pref.getFloat("newWidth", 5);
