@@ -101,6 +101,10 @@ public class PreviewActivity extends AppCompatActivity {
         yPixelVec3 = DataShare.getYPixelVec(3);
 
         // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what does this do?
+        // SIDDARTH'S COMMENTS
+        // boolean playBackState keeps track whether or not PreviewActivity is ready to start
+        // playback. It prevents the play/pause button from replaying from the beginning
+        // concurrently if the user only paused the playback.
         DataShare.setPlayBackState(true);
 
         // initializing quadAllSeek
@@ -108,6 +112,11 @@ public class PreviewActivity extends AppCompatActivity {
         quadAllSeek = (SeekBar) findViewById(R.id.quadAllSeek);
 
         // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what is this listener?
+        // SIDDARTH'S COMMENTS
+        // seekbarRelative is the container view for the bottom seekbar for playback.
+        // The listener is implemented such that PreviewActivity first waits for the seekbarRelative
+        // to render first, then adjust the size of the canvas to fit the screen properly.
+        // The listener is then attempted to be removed, as it is not needed anymore.
         seekbarRelative.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
 
@@ -118,6 +127,11 @@ public class PreviewActivity extends AppCompatActivity {
                 canvasSize.setLayoutParams(params);
 
                 // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - does this need to be inside this listener?
+                // SIDDARTH'S COMMENTS
+                // This is definitely NOT the place for the transformations... Why are they here?
+                // This listener is only to adjust view sizes to fit the screen; nothing else should
+                // be here.
+
                 // defining variables for transformation matrix
                 Matrix transform = new Matrix();
                 float mainWidth = canvasSize.getWidth();
@@ -221,6 +235,11 @@ public class PreviewActivity extends AppCompatActivity {
         });
 
         // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what does this mean?
+        // SIDDARTH'S COMMENTS
+        // The "serviceToggle" from the preferences stores whether or not the app should attempt to
+        // interface with the service.
+        // true -> contact service; false -> don't contact service
+        // convertROSPathToPixelVec is only called if "serviceToggle" is true
         // TODO if path planner servicing is enabled, redo the path
         if (pref.getBoolean("serviceToggle", false)) {
 
@@ -728,6 +747,8 @@ public class PreviewActivity extends AppCompatActivity {
     }
 
     // SIDDARTH HELP! - seekbar is not moving on play
+    // SIDDARTH'S COMMENTS
+    // TODO; will look into it.
     private void seekAll() {
 
         // set seekbar max equal to the longest quad length - should equal longest time
