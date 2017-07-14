@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatRosActivity {
     private ArrayList<Time> timesVec2;
     private ArrayList<Time> timesVec3;
 
-
-
     private Switch quad1Switch;
     private Switch quad2Switch;
     private Switch quad3Switch;
