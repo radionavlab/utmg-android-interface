@@ -38,7 +38,6 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
     private ArrayList<Float> xes;
     private ArrayList<Float> yes;
     private ArrayList<Float> zes;
-
     private ArrayList<Time> tes;
 
     private boolean serviceToggle = false;

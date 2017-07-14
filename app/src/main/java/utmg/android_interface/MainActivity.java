@@ -577,15 +577,16 @@ public class MainActivity extends AppCompatRosActivity {
                     } else {
                         sword.setVisibility((View.INVISIBLE));
                     }
+
                     if (pref.getBoolean("obstacle1", false)) {
                         Log.d("MA Obst1", "x: " + Float.toString(obstacle1.getX()) + "\ty:" + Float.toString(obstacle1.getY()));
                         obstacle1.setVisibility(View.VISIBLE);
                         obstacle1.setX(objectXToPixel("obstacle1") - obstacle1.getWidth()/2);
                         obstacle1.setY(objectYToPixel("obstacle1") - obstacle1.getHeight()/2);
-
                     } else {
                         obstacle1.setVisibility((View.INVISIBLE));
                     }
+
                     if (pref.getBoolean("obstacle2", false)) {
                         obstacle2.setVisibility(View.VISIBLE);
                         obstacle2.setX(objectXToPixel("obstacle2") - obstacle2.getWidth()/2);

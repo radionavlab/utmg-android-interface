@@ -367,6 +367,7 @@ public class PreviewActivity extends AppCompatActivity {
                         int p = 0;
 
                         while (t < xPixelVec1.size() - 1) {
+                            
                             x2 = xPixelVec1.get(t);
                             y2 = yPixelVec1.get(t);
 
