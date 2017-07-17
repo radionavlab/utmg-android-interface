@@ -315,21 +315,21 @@ public class PreviewActivity extends AppCompatActivity {
         xPixelVec3 = DataShare.getXPixelVec(3);
         yPixelVec3 = DataShare.getYPixelVec(3);
 
-        Log.i(" ppp111ppp111 ", "" + DataShare.getXPixelVec(1).size());
-
         // QUAD RUNNABLE: sets visibility of quad and places it at first point
+
         final Handler handlerQuad = new Handler();
         Runnable runnableQuad = new Runnable() {
             @Override
             public void run() {
 
                 // quad 1
-                if (pref.getBoolean("quad1", false)) {
-//                    Log.i(" ppp111ppp111 ", "" + DataShare.getXPixelVec(1).size());
-                    if (DataShare.getXPixelVec(1).size() == 0) {
+                if (pref.getBoolean("quad1", true)) {
+
+                    if (xPixelVec1.size() == 0) {
                         quad1.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on launch of PreviewActivity
+
                         if (togglei == 0) {
                             quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
                             quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
@@ -339,7 +339,7 @@ public class PreviewActivity extends AppCompatActivity {
                 }
 
                 // quad 2
-                if (pref.getBoolean("quad2", false)) {
+                if (pref.getBoolean("quad2", true)) {
                     Log.i(" ppp222ppp222 ", "" + DataShare.getXPixelVec(2).size());
                     if (DataShare.getXPixelVec(2).size() == 0) {
                         quad2.setVisibility(View.INVISIBLE);
@@ -354,7 +354,7 @@ public class PreviewActivity extends AppCompatActivity {
                 }
 
                 // quad 3
-                if (pref.getBoolean("quad3", false)) {
+                if (pref.getBoolean("quad3", true)) {
                     Log.i(" ppp333ppp333 ", "" + DataShare.getXPixelVec(3).size());
                     if (DataShare.getXPixelVec(3).size() == 0) {
                         quad3.setVisibility(View.INVISIBLE);
@@ -603,8 +603,8 @@ public class PreviewActivity extends AppCompatActivity {
                                                 // This will handle the error come back to this
 
                                             } else if (index > xPixelVec1.size()) {
-                                                quad1.setX(xPixelVec1.size() - quad1.getWidth() / 2+ canvasSize.getLeft());
-                                                quad1.setY(yPixelVec1.size() - quad1.getHeight() / 2);
+                                                quad1.setX(xPixelVec1.get(xPixelVec1.size()-1) - quad1.getWidth() / 2+ canvasSize.getLeft());
+                                                quad1.setY(yPixelVec1.get(yPixelVec1.size()-1) - quad1.getHeight() / 2);
 
                                             } else {
                                                 quad1.setX(xPixelVec1.get(index) - quad1.getWidth() / 2 + canvasSize.getLeft());
@@ -617,8 +617,8 @@ public class PreviewActivity extends AppCompatActivity {
                                                 // This will handle the error
 
                                             } else if (index > xPixelVec2.size()) {
-                                                quad2.setX(xPixelVec2.size() - quad2.getWidth() / 2 + canvasSize.getLeft());
-                                                quad2.setY(yPixelVec2.size() - quad2.getHeight() / 2);
+                                                quad2.setX(xPixelVec2.get(xPixelVec2.size()-1) - quad2.getWidth() / 2+ canvasSize.getLeft());
+                                                quad2.setY(yPixelVec2.get(yPixelVec2.size()-1) - quad2.getHeight() / 2);
 
                                             } else {
                                                 quad2.setX(xPixelVec2.get(index) - quad2.getWidth() / 2 + canvasSize.getLeft());
@@ -631,8 +631,8 @@ public class PreviewActivity extends AppCompatActivity {
                                                 // This will handle the error
 
                                             } else if (index > xPixelVec3.size()) {
-                                                quad3.setX(xPixelVec3.size() - quad3.getWidth() / 2 + canvasSize.getLeft());
-                                                quad3.setY(yPixelVec3.size() - quad3.getHeight() / 2);
+                                                quad3.setX(xPixelVec3.get(xPixelVec3.size()-1) - quad3.getWidth() / 2+ canvasSize.getLeft());
+                                                quad3.setY(yPixelVec3.get(yPixelVec3.size()-1) - quad3.getHeight() / 2);
 
                                             } else {
                                                 quad3.setX(xPixelVec3.get(index) - quad3.getWidth() / 2 + canvasSize.getLeft());

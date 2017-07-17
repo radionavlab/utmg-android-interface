@@ -187,9 +187,9 @@ public class MainActivity extends AppCompatRosActivity {
                 DataShare.setXPixelVec(2, customCanvas.xPixelVec2);
                 DataShare.setXPixelVec(3, customCanvas.xPixelVec3);
 
-                Log.i("xPixelVec1", "" + DataShare.getXPixelVec(1).size());
-                Log.i("xPixelVec2", "" + DataShare.getXPixelVec(2).size());
-                Log.i("xPixelVec3", "" + DataShare.getXPixelVec(3).size());
+//                Log.i("xPixelVec1", "" + DataShare.getXPixelVec(1).size());
+//                Log.i("xPixelVec2", "" + DataShare.getXPixelVec(2).size());
+//                Log.i("xPixelVec3", "" + DataShare.getXPixelVec(3).size());
 
                 DataShare.setYPixelVec(1, customCanvas.yPixelVec1);
                 DataShare.setYPixelVec(2, customCanvas.yPixelVec2);
