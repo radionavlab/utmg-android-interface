@@ -55,6 +55,8 @@ public class DataShare extends Application {
 
     private static boolean playBackState;
 
+    private static boolean serviceState;
+
     public DataShare() {
 
         quad1.setQuadColour(Color.RED);
@@ -288,6 +290,15 @@ public class DataShare extends Application {
 
     public static boolean getPlayBackState() {
         return playBackState;
+    }
+
+    public static boolean getServiceState() {
+        return serviceState;
+    }
+
+    public static boolean setServiceState(boolean d) {
+        serviceState = d;
+        return serviceState;
     }
 
 }

@@ -2,6 +2,7 @@ package utmg.android_interface;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -78,6 +79,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         final ToggleButton obstaclePublishToggle = (ToggleButton) findViewById(R.id.obstacle_publish_toggle);
         final ToggleButton debugModeToggle = (ToggleButton) findViewById(R.id.debug_mode_toggle);
 
+        DataShare.setServiceState(false);
 
         isQuad1Checked.setChecked(pref.getBoolean("quad1", true));
         isQuad2Checked.setChecked(pref.getBoolean("quad2", true));
@@ -144,6 +146,11 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("serviceToggle", serviceToggle.isChecked());
+                if(isChecked == true){
+                    DataShare.setServiceState(true);
+                }else{
+                    DataShare.setServiceState(false);
+                }
                 prefEditor.commit();
             }
         });

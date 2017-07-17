@@ -63,6 +63,8 @@ public class PreviewActivity extends AppCompatActivity {
     private ToggleButton toggle;
     private int togglei = 0;
     private int quadMax = 0;
+    private int layoutHeight = 0;
+    private int layoutWidth = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +113,9 @@ public class PreviewActivity extends AppCompatActivity {
         seekbarRelative = (RelativeLayout) findViewById(R.id.seekbar_relative);
         quadAllSeek = (SeekBar) findViewById(R.id.quadAllSeek);
 
+        float mainWidth = canvasSize.getWidth();
+        float mainHeight = canvasSize.getHeight();
+
         // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what is this listener?
         // SIDDARTH'S COMMENTS
         // seekbarRelative is the container view for the bottom seekbar for playback.
@@ -123,108 +128,10 @@ public class PreviewActivity extends AppCompatActivity {
                 // read height with myLinearLayout.getHeight() etc.
                 CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) canvasSize.getLayoutParams();
                 params.height = (int) (screenHeight - seekbarRelative.getHeight() - (getSupportActionBar().getHeight() * 1.5));
+                layoutHeight = params.height;
                 params.width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5) / pref.getFloat("newHeight", 3)));
+                layoutWidth = params.width;
                 canvasSize.setLayoutParams(params);
-
-                // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - does this need to be inside this listener?
-                // SIDDARTH'S COMMENTS
-                // This is definitely NOT the place for the transformations... Why are they here?
-                // This listener is only to adjust view sizes to fit the screen; nothing else should
-                // be here.
-
-                // defining variables for transformation matrix
-                Matrix transform = new Matrix();
-                float mainWidth = canvasSize.getWidth();
-                float mainHeight = canvasSize.getHeight();
-                float previewHeight = params.height;
-                float previewWidth = params.width;
-                float scaledWidth = previewWidth / mainWidth;
-                float scaledHeight = previewHeight / mainHeight;
-
-                // initializing paths
-                Path path1 = DataShare.getPath(1);
-                Path path2 = DataShare.getPath(2);
-                Path path3 = DataShare.getPath(3);
-
-                // setting the matrix
-                transform.postScale(scaledWidth, scaledHeight);
-
-                // transforming paths
-                path1.transform(transform);
-                path2.transform(transform);
-                path3.transform(transform);
-
-                // transforming arrays for quad1
-                if (xPixelVec1 != null) {
-
-                    // transforming x's
-                    float tempx1 = 0;
-                    for (int i = 0; i < xPixelVec1.size() - 1; i++) {
-                        tempx1 = xPixelVec1.get(i);
-                        tempx1 = tempx1 * scaledWidth;
-                        xPixelVec1Scaled.add(i, tempx1);
-                    }
-                    xPixelVec1 = xPixelVec1Scaled;
-                    xPixelVec1Scaled = null;
-
-                    // transforming y's
-                    float tempy1 = 0;
-                    for (int i = 0; i < yPixelVec1.size() - 1; i++) {
-                        tempy1 = yPixelVec1.get(i);
-                        tempy1 = tempy1 * scaledWidth;
-                        yPixelVec1Scaled.add(i, tempy1);
-                    }
-                    yPixelVec1 = yPixelVec1Scaled;
-                    yPixelVec1Scaled = null;
-                }
-
-                // transforming arrays for quad2
-                if (xPixelVec2 != null) {
-
-                    // transforming x's
-                    float tempx2 = 0;
-                    for (int i = 0; i < xPixelVec2.size() - 1; i++) {
-                        tempx2 = xPixelVec2.get(i);
-                        tempx2 = tempx2 * scaledWidth;
-                        xPixelVec2Scaled.add(i, tempx2);
-                    }
-                    xPixelVec2 = xPixelVec2Scaled;
-                    xPixelVec2Scaled = null;
-
-                    // transforming y's
-                    float tempy2 = 0;
-                    for (int i = 0; i < yPixelVec2.size() - 1; i++) {
-                        tempy2 = yPixelVec2.get(i);
-                        tempy2 = tempy2 * scaledWidth;
-                        yPixelVec2Scaled.add(i, tempy2);
-                    }
-                    yPixelVec2 = yPixelVec2Scaled;
-                    yPixelVec2Scaled = null;
-                }
-
-                // transforming arrays for quad3
-                if (xPixelVec3 != null) {
-
-                    // transforming x's
-                    float tempx3 = 0;
-                    for (int i = 0; i < xPixelVec3.size() - 1; i++) {
-                        tempx3 = xPixelVec3.get(i);
-                        tempx3 = tempx3 * scaledWidth;
-                        xPixelVec3Scaled.add(i, tempx3);
-                    }
-                    xPixelVec3 = xPixelVec3Scaled;
-                    xPixelVec3Scaled = null;
-
-                    // transforming y's
-                    float tempy3 = 0;
-                    for (int i = 0; i < yPixelVec3.size() - 1; i++) {
-                        tempy3 = yPixelVec3.get(i);
-                        tempy3 = tempy3 * scaledWidth;
-                        yPixelVec3Scaled.add(i, tempy3);
-                    }
-                    yPixelVec3 = yPixelVec3Scaled;
-                    yPixelVec3Scaled = null;
-                }
 
                 // remember to remove the listener if possible
                 ViewTreeObserver viewTreeObserver = seekbarRelative.getViewTreeObserver();
@@ -233,6 +140,113 @@ public class PreviewActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - does this need to be inside this listener?
+        // SIDDARTH'S COMMENTS
+        // This is definitely NOT the place for the transformations... Why are they here?
+        // This listener is only to adjust view sizes to fit the screen; nothing else should
+        // be here.
+
+        // defining variables for transformation matrix
+        Matrix transform = new Matrix();
+
+        float previewHeight = layoutHeight;
+        float previewWidth = layoutWidth;
+        float scaledWidth = previewWidth / mainWidth;
+        float scaledHeight = previewHeight / mainHeight;
+        Log.i("mainWidth", Float.toString(mainWidth));
+        Log.i("mainHeight", Float.toString(mainHeight));
+        Log.i("previewWidth", Float.toString(previewWidth));
+        Log.i("previewHeight", Float.toString(previewHeight));
+        Log.i("scaledWidth", Float.toString(scaledWidth));
+        Log.i("scaledHeight", Float.toString(scaledHeight));
+
+        // initializing paths
+        Path path1 = DataShare.getPath(1);
+        Path path2 = DataShare.getPath(2);
+        Path path3 = DataShare.getPath(3);
+
+        // setting the matrix
+        transform.postScale(scaledWidth, scaledHeight);
+        Log.i("Matrix", transform.toString());
+
+        // transforming paths
+        path1.transform(transform);
+        path2.transform(transform);
+        path3.transform(transform);
+
+        // transforming arrays for quad1
+        if (xPixelVec1 != null) {
+
+            // transforming x's
+            float tempx1 = 0;
+            for (int i = 0; i < xPixelVec1.size() - 1; i++) {
+                tempx1 = xPixelVec1.get(i);
+                tempx1 = tempx1 * scaledWidth;
+                xPixelVec1Scaled.add(i, tempx1);
+            }
+            xPixelVec1 = xPixelVec1Scaled;
+            xPixelVec1Scaled = null;
+
+            // transforming y's
+            float tempy1 = 0;
+            for (int i = 0; i < yPixelVec1.size() - 1; i++) {
+                tempy1 = yPixelVec1.get(i);
+                tempy1 = tempy1 * scaledWidth;
+                yPixelVec1Scaled.add(i, tempy1);
+            }
+            yPixelVec1 = yPixelVec1Scaled;
+            yPixelVec1Scaled = null;
+        }
+
+        // transforming arrays for quad2
+        if (xPixelVec2 != null) {
+
+            // transforming x's
+            float tempx2 = 0;
+            for (int i = 0; i < xPixelVec2.size() - 1; i++) {
+                tempx2 = xPixelVec2.get(i);
+                tempx2 = tempx2 * scaledWidth;
+                xPixelVec2Scaled.add(i, tempx2);
+            }
+            xPixelVec2 = xPixelVec2Scaled;
+            xPixelVec2Scaled = null;
+
+            // transforming y's
+            float tempy2 = 0;
+            for (int i = 0; i < yPixelVec2.size() - 1; i++) {
+                tempy2 = yPixelVec2.get(i);
+                tempy2 = tempy2 * scaledWidth;
+                yPixelVec2Scaled.add(i, tempy2);
+            }
+            yPixelVec2 = yPixelVec2Scaled;
+            yPixelVec2Scaled = null;
+        }
+
+        // transforming arrays for quad3
+        if (xPixelVec3 != null) {
+
+            // transforming x's
+            float tempx3 = 0;
+            for (int i = 0; i < xPixelVec3.size() - 1; i++) {
+                tempx3 = xPixelVec3.get(i);
+                tempx3 = tempx3 * scaledWidth;
+                xPixelVec3Scaled.add(i, tempx3);
+            }
+            xPixelVec3 = xPixelVec3Scaled;
+            xPixelVec3Scaled = null;
+
+            // transforming y's
+            float tempy3 = 0;
+            for (int i = 0; i < yPixelVec3.size() - 1; i++) {
+                tempy3 = yPixelVec3.get(i);
+                tempy3 = tempy3 * scaledWidth;
+                yPixelVec3Scaled.add(i, tempy3);
+            }
+            yPixelVec3 = yPixelVec3Scaled;
+            yPixelVec3Scaled = null;
+        }
+
 
         // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what does this mean?
         // SIDDARTH'S COMMENTS
@@ -290,6 +304,13 @@ public class PreviewActivity extends AppCompatActivity {
         quad3.getLayoutParams().height = (int) (screenHeight * 0.02);
         quad3.getLayoutParams().width = (int) (screenWidth * 0.02);
 
+        xPixelVec1 = DataShare.getXPixelVec(1);
+        yPixelVec1 = DataShare.getYPixelVec(1);
+        xPixelVec2 = DataShare.getXPixelVec(2);
+        yPixelVec2 = DataShare.getYPixelVec(2);
+        xPixelVec3 = DataShare.getXPixelVec(3);
+        yPixelVec3 = DataShare.getYPixelVec(3);
+
         // QUAD RUNNABLE: sets visibility of quad and places it at first point
         final Handler handlerQuad = new Handler();
         Runnable runnableQuad = new Runnable() {
@@ -298,7 +319,7 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 1
                 if (pref.getBoolean("quad1", false)) {
-//                    Log.i(" ppp111ppp111 ", "" + xPixelVec1.size());
+                    //Log.i(" ppp111ppp111 ", "" + xPixelVec1.size());
                     if (xPixelVec1.size() == 0 || yPixelVec1.size() == 0) {
                         quad1.setVisibility(View.INVISIBLE);
                     } else {

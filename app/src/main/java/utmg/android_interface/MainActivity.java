@@ -207,20 +207,25 @@ public class MainActivity extends AppCompatRosActivity {
                 timesVec3 = customCanvas.getTimesVec3();
 
                 // compress arrays, send to path planner, wait to launch PreviewActivity until service finishes
-                if(xCoordVec1.size() != 0) {
-                    compressArrays(1);
-                    nodeService.setTraj(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
-                    while (DataShare.getServicedPath(1) == null) { }
-                }
-                if(xCoordVec2.size() != 0) {
-                    compressArrays(2);
-                    nodeService.setTraj(xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
-                    while (DataShare.getServicedPath(2) == null) { }
-                }
-                if(xCoordVec3.size() != 0) {
-                    compressArrays(3);
-                    nodeService.setTraj(xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
-                    while (DataShare.getServicedPath(3) == null) { }
+                if(DataShare.getServiceState() == true) {
+                    if (xCoordVec1.size() != 0) {
+                        compressArrays(1);
+                        nodeService.setTraj(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
+                        while (DataShare.getServicedPath(1) == null) {
+                        }
+                    }
+                    if (xCoordVec2.size() != 0) {
+                        compressArrays(2);
+                        nodeService.setTraj(xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
+                        while (DataShare.getServicedPath(2) == null) {
+                        }
+                    }
+                    if (xCoordVec3.size() != 0) {
+                        compressArrays(3);
+                        nodeService.setTraj(xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
+                        while (DataShare.getServicedPath(3) == null) {
+                        }
+                    }
                 }
 
                 Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
