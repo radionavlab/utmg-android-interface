@@ -6,6 +6,7 @@ import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
@@ -113,9 +114,6 @@ public class PreviewActivity extends AppCompatActivity {
         seekbarRelative = (RelativeLayout) findViewById(R.id.seekbar_relative);
         quadAllSeek = (SeekBar) findViewById(R.id.quadAllSeek);
 
-        float mainWidth = canvasSize.getWidth();
-        float mainHeight = canvasSize.getHeight();
-
         // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what is this listener?
         // SIDDARTH'S COMMENTS
         // seekbarRelative is the container view for the bottom seekbar for playback.
@@ -141,19 +139,21 @@ public class PreviewActivity extends AppCompatActivity {
             }
         });
 
-        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - does this need to be inside this listener?
-        // SIDDARTH'S COMMENTS
-        // This is definitely NOT the place for the transformations... Why are they here?
-        // This listener is only to adjust view sizes to fit the screen; nothing else should
-        // be here.
-
-        // defining variables for transformation matrix
-        Matrix transform = new Matrix();
-
-        float previewHeight = layoutHeight;
-        float previewWidth = layoutWidth;
-        float scaledWidth = previewWidth / mainWidth;
-        float scaledHeight = previewHeight / mainHeight;
+//        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - does this need to be inside this listener?
+//        // SIDDARTH'S COMMENTS
+//        // This is definitely NOT the place for the transformations... Why are they here?
+//        // This listener is only to adjust view sizes to fit the screen; nothing else should
+//        // be here.
+//
+//        // defining variables for transformation matrix
+//        Matrix transform = new Matrix();
+//
+        float mainWidth = DataShare.getMainCanvasWidth();
+        float mainHeight = DataShare.getMainCanvasHeight();
+        float previewHeight = canvasSize.getLayoutParams().height;
+        float previewWidth = canvasSize.getLayoutParams().width;
+        float scaledWidth = mainWidth / previewWidth -.147482f;
+        float scaledHeight = mainHeight / previewHeight - .147482f;
         Log.i("mainWidth", Float.toString(mainWidth));
         Log.i("mainHeight", Float.toString(mainHeight));
         Log.i("previewWidth", Float.toString(previewWidth));
@@ -161,19 +161,18 @@ public class PreviewActivity extends AppCompatActivity {
         Log.i("scaledWidth", Float.toString(scaledWidth));
         Log.i("scaledHeight", Float.toString(scaledHeight));
 
-        // initializing paths
+//        // initializing paths
         Path path1 = DataShare.getPath(1);
         Path path2 = DataShare.getPath(2);
         Path path3 = DataShare.getPath(3);
 
-        // setting the matrix
-        transform.postScale(scaledWidth, scaledHeight);
-        Log.i("Matrix", transform.toString());
+        Matrix scaleMatrix = new Matrix();
+        //scaleMatrix.setScale(1.175f, 1.175f);
+        scaleMatrix.setScale(scaledWidth,scaledHeight);
+        path1.transform(scaleMatrix);
+        path2.transform(scaleMatrix);
+        path3.transform(scaleMatrix);
 
-        // transforming paths
-        path1.transform(transform);
-        path2.transform(transform);
-        path3.transform(transform);
 
         // transforming arrays for quad1
         if (xPixelVec1 != null) {
@@ -186,16 +185,18 @@ public class PreviewActivity extends AppCompatActivity {
                 xPixelVec1Scaled.add(i, tempx1);
             }
             xPixelVec1 = xPixelVec1Scaled;
+            DataShare.setXPixelVec(1, xPixelVec1Scaled);
             xPixelVec1Scaled = null;
 
             // transforming y's
             float tempy1 = 0;
             for (int i = 0; i < yPixelVec1.size() - 1; i++) {
                 tempy1 = yPixelVec1.get(i);
-                tempy1 = tempy1 * scaledWidth;
+                tempy1 = tempy1 * scaledHeight;
                 yPixelVec1Scaled.add(i, tempy1);
             }
             yPixelVec1 = yPixelVec1Scaled;
+            DataShare.setYPixelVec(1, yPixelVec1Scaled);
             yPixelVec1Scaled = null;
         }
 
@@ -210,16 +211,18 @@ public class PreviewActivity extends AppCompatActivity {
                 xPixelVec2Scaled.add(i, tempx2);
             }
             xPixelVec2 = xPixelVec2Scaled;
+            DataShare.setXPixelVec(2, xPixelVec2Scaled);
             xPixelVec2Scaled = null;
 
             // transforming y's
             float tempy2 = 0;
             for (int i = 0; i < yPixelVec2.size() - 1; i++) {
                 tempy2 = yPixelVec2.get(i);
-                tempy2 = tempy2 * scaledWidth;
+                tempy2 = tempy2 * scaledHeight;
                 yPixelVec2Scaled.add(i, tempy2);
             }
             yPixelVec2 = yPixelVec2Scaled;
+            DataShare.setYPixelVec(2, yPixelVec2Scaled);
             yPixelVec2Scaled = null;
         }
 
@@ -234,19 +237,20 @@ public class PreviewActivity extends AppCompatActivity {
                 xPixelVec3Scaled.add(i, tempx3);
             }
             xPixelVec3 = xPixelVec3Scaled;
+            DataShare.setXPixelVec(3, xPixelVec3Scaled);
             xPixelVec3Scaled = null;
 
             // transforming y's
             float tempy3 = 0;
             for (int i = 0; i < yPixelVec3.size() - 1; i++) {
                 tempy3 = yPixelVec3.get(i);
-                tempy3 = tempy3 * scaledWidth;
+                tempy3 = tempy3 * scaledHeight;
                 yPixelVec3Scaled.add(i, tempy3);
             }
             yPixelVec3 = yPixelVec3Scaled;
+            DataShare.setYPixelVec(3, yPixelVec3Scaled);
             yPixelVec3Scaled = null;
         }
-
 
         // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what does this mean?
         // SIDDARTH'S COMMENTS
@@ -311,6 +315,8 @@ public class PreviewActivity extends AppCompatActivity {
         xPixelVec3 = DataShare.getXPixelVec(3);
         yPixelVec3 = DataShare.getYPixelVec(3);
 
+        Log.i(" ppp111ppp111 ", "" + DataShare.getXPixelVec(1).size());
+
         // QUAD RUNNABLE: sets visibility of quad and places it at first point
         final Handler handlerQuad = new Handler();
         Runnable runnableQuad = new Runnable() {
@@ -319,8 +325,8 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 1
                 if (pref.getBoolean("quad1", false)) {
-                    //Log.i(" ppp111ppp111 ", "" + xPixelVec1.size());
-                    if (xPixelVec1.size() == 0 || yPixelVec1.size() == 0) {
+//                    Log.i(" ppp111ppp111 ", "" + DataShare.getXPixelVec(1).size());
+                    if (DataShare.getXPixelVec(1).size() == 0) {
                         quad1.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on launch of PreviewActivity
@@ -334,8 +340,8 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 2
                 if (pref.getBoolean("quad2", false)) {
-//                    Log.i(" ppp222ppp222 ", "" + xPixelVec2.size());
-                    if (xPixelVec2.size() == 0 || yPixelVec2.size() == 0) {
+                    Log.i(" ppp222ppp222 ", "" + DataShare.getXPixelVec(2).size());
+                    if (DataShare.getXPixelVec(2).size() == 0) {
                         quad2.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on launch of PreviewActivity
@@ -349,8 +355,8 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 3
                 if (pref.getBoolean("quad3", false)) {
-//                    Log.i(" ppp333ppp333 ", "" + xPixelVec3.size());
-                    if (xPixelVec3.size() == 0 || yPixelVec3.size() == 0) {
+                    Log.i(" ppp333ppp333 ", "" + DataShare.getXPixelVec(3).size());
+                    if (DataShare.getXPixelVec(3).size() == 0) {
                         quad3.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on launch of PreviewActivity

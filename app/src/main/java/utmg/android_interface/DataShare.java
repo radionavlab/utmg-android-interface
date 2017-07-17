@@ -54,8 +54,11 @@ public class DataShare extends Application {
     private static nav_msgs.Path servicedPath3;
 
     private static boolean playBackState;
-
     private static boolean serviceState;
+
+    private static float mainCanvasHeight;
+    private static float mainCanvasWidth;
+
 
     public DataShare() {
 
@@ -299,6 +302,22 @@ public class DataShare extends Application {
     public static boolean setServiceState(boolean d) {
         serviceState = d;
         return serviceState;
+    }
+
+    public static void setMainCanvasHeight(float h) {
+        mainCanvasHeight = h;
+    }
+
+    public static float getMainCanvasHeight () {
+        return mainCanvasHeight;
+    }
+
+    public static void setMainCanvasWidth(float w) {
+        mainCanvasWidth = w;
+    }
+
+    public static float getMainCanvasWidth () {
+        return mainCanvasWidth;
     }
 
 }

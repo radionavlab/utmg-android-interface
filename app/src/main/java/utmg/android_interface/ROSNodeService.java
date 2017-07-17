@@ -115,9 +115,10 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 //                            }
                         }
 
+
                         if (pref.getInt("mode", 0) == 0) {
-                            mPoseArray1.setPoses(poses1);
-                            //mPath1.setPoses(poseStamped1);
+//                            mPoseArray1.setPoses(poses1);
+                            mPath1.setPoses(poseStamped1);
 
                             // service client definition
                             final ServiceClient<PathPlannerRequest, PathPlannerResponse> serviceClient;

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -102,6 +103,9 @@ public class MainActivity extends AppCompatRosActivity {
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
 
+        DataShare.setMainCanvasHeight(canvasSize.getLayoutParams().height);
+        DataShare.setMainCanvasWidth(canvasSize.getLayoutParams().width);
+
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
 
         Log.i("canvasSize", canvasSize.getLayoutParams().width + "\t" + canvasSize.getLayoutParams().height);
@@ -182,6 +186,10 @@ public class MainActivity extends AppCompatRosActivity {
                 DataShare.setXPixelVec(1, customCanvas.xPixelVec1);
                 DataShare.setXPixelVec(2, customCanvas.xPixelVec2);
                 DataShare.setXPixelVec(3, customCanvas.xPixelVec3);
+
+                Log.i("xPixelVec1", "" + DataShare.getXPixelVec(1).size());
+                Log.i("xPixelVec2", "" + DataShare.getXPixelVec(2).size());
+                Log.i("xPixelVec3", "" + DataShare.getXPixelVec(3).size());
 
                 DataShare.setYPixelVec(1, customCanvas.yPixelVec1);
                 DataShare.setYPixelVec(2, customCanvas.yPixelVec2);
