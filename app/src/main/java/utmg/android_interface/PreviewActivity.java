@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -67,6 +69,16 @@ public class PreviewActivity extends AppCompatActivity {
     private int layoutHeight = 0;
     private int layoutWidth = 0;
 
+    private float scaledx1;
+    private float scaledy1;
+    private float scaledx2;
+    private float scaledy2;
+    private float scaledx3;
+    private float scaledy3;
+
+    private ArrayList<Float> timesVec1;
+    private ArrayList<Float> timesVec2;
+    private ArrayList<Float> timesVec3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -74,6 +86,39 @@ public class PreviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preview);
         setupActionBar();
 
+        timesVec1 = new ArrayList<Float>();
+        timesVec2 = new ArrayList<Float>();
+        timesVec3 = new ArrayList<Float>();
+
+        // Button to terminate app so it doesn't have to be done manually
+        com.getbase.floatingactionbutton.FloatingActionButton terminate_preview = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.terminate_preview);
+        com.getbase.floatingactionbutton.FloatingActionButton sendAirSim = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendToAirSim);
+        com.getbase.floatingactionbutton.FloatingActionButton scalePath = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.scalePath);
+        terminate_preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                System.exit(0);
+                finish();
+            }
+        });
+
+        sendAirSim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO in order to get a simulation in AirSim we need to send the x,y,z and time arrays of the quad to AirSim
+                // right now only one quad works in AirSim
+            }
+        });
+
+        scalePath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scaling(1);
+                //scaling(2);
+                //scaling(3);
+            }
+        });
         //Log.i("PreviewActivity", "PreviewActivity started.");
 
         pref = getSharedPreferences("Pref", 0);
@@ -154,12 +199,12 @@ public class PreviewActivity extends AppCompatActivity {
         float previewWidth = canvasSize.getLayoutParams().width;
         float scaledWidth = mainWidth / previewWidth -.147482f;
         float scaledHeight = mainHeight / previewHeight - .147482f;
-        Log.i("mainWidth", Float.toString(mainWidth));
-        Log.i("mainHeight", Float.toString(mainHeight));
-        Log.i("previewWidth", Float.toString(previewWidth));
-        Log.i("previewHeight", Float.toString(previewHeight));
-        Log.i("scaledWidth", Float.toString(scaledWidth));
-        Log.i("scaledHeight", Float.toString(scaledHeight));
+//        Log.i("mainWidth", Float.toString(mainWidth));
+//        Log.i("mainHeight", Float.toString(mainHeight));
+//        Log.i("previewWidth", Float.toString(previewWidth));
+//        Log.i("previewHeight", Float.toString(previewHeight));
+//        Log.i("scaledWidth", Float.toString(scaledWidth));
+//        Log.i("scaledHeight", Float.toString(scaledHeight));
 
 //        // initializing paths
         Path path1 = DataShare.getPath(1);
@@ -290,9 +335,6 @@ public class PreviewActivity extends AppCompatActivity {
                 convertROSPathToPixelVec(3, DataShare.getServicedPath(3));
             }
 
-            Log.i(" ppp111ppp111 ", "" + xPixelVec1.size());
-            Log.i(" ppp222ppp222 ", "" + xPixelVec2.size());
-            Log.i(" ppp333ppp333 ", "" + xPixelVec3.size());
         }
 
         // initializing imageViews
@@ -325,7 +367,7 @@ public class PreviewActivity extends AppCompatActivity {
                 // quad 1
                 if (pref.getBoolean("quad1", true)) {
 
-                    if (xPixelVec1.size() == 0) {
+                    if (DataShare.getXPixelVec(1) == null) {
                         quad1.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on launch of PreviewActivity
@@ -340,8 +382,7 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 2
                 if (pref.getBoolean("quad2", true)) {
-                    Log.i(" ppp222ppp222 ", "" + DataShare.getXPixelVec(2).size());
-                    if (DataShare.getXPixelVec(2).size() == 0) {
+                    if (DataShare.getXPixelVec(2) == null) {
                         quad2.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on launch of PreviewActivity
@@ -355,8 +396,7 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 3
                 if (pref.getBoolean("quad3", true)) {
-                    Log.i(" ppp333ppp333 ", "" + DataShare.getXPixelVec(3).size());
-                    if (DataShare.getXPixelVec(3).size() == 0) {
+                    if (DataShare.getXPixelVec(3) == null) {
                         quad3.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on launch of PreviewActivity
@@ -428,6 +468,8 @@ public class PreviewActivity extends AppCompatActivity {
                         }
                         quad1.setX(xPixelVec1.get(leastDistanceIndex) - quad1.getWidth() / 2 + canvasSize.getLeft());
                         quad1.setY(yPixelVec1.get(leastDistanceIndex) - quad1.getHeight() / 2);
+                        scaledx1 = xPixelVec1.get(leastDistanceIndex) - quad1.getWidth() / 2 + canvasSize.getLeft();
+                        scaledy1 = yPixelVec1.get(leastDistanceIndex) - quad1.getHeight() / 2;
                         break;
                     default:
                         break;
@@ -456,8 +498,8 @@ public class PreviewActivity extends AppCompatActivity {
                     // when you move dot
                     case MotionEvent.ACTION_MOVE:
                         PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
-                        quad2.setX((int) (StartPT.x + mv.x));
-                        quad2.setY((int) (StartPT.y + mv.y));
+                            quad2.setX((int) (StartPT.x + mv.x));
+                            quad2.setY((int) (StartPT.y + mv.y));
                         StartPT = new Point((int) quad2.getX(), (int) quad2.getY());
                         break;
 
@@ -988,6 +1030,202 @@ public class PreviewActivity extends AppCompatActivity {
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private void scaling(int quad){
+
+        int index = quadAllSeek.getProgress();
+        float time1 = 0;// varaible that is merely used to take the calculated time and store it into the timesVec array
+        float distance1 = 0;// total distance between start and moved dot
+        float rate1= 0;// calculated rate such that the dot arrives to new point at time
+        float distance = 0;// calculated distance from beginning of path to moved dot
+        float time = 0;// is the time of at the x,y coordinates of the moved dot
+        float distance2 = 0;// total distance between moved dot and end
+        float rate2 = 0;// calculated rate for second half
+        float time2 = 0;// is the last time
+        int i = 0;// counting varaible
+        float temp1 = 0;// stores distance for points in between all points from start to moved dot
+        float temp2 = 0;// stores distance for points in between all points from moved dot to end
+        float x0;// variable used in distance formula
+        float y0;// variable used in distance formula
+        float x1;// variable used in distance formula
+        float y1;// variable used in distance formula
+        float distance3;// calculated distance from moved dot of path to end
+        int count = 0;// counting variable
+        float temp3 = 0;
+
+        switch (quad) {
+            case 1:
+                // setting time
+                if(index >= xPixelVec1.size()){
+                    index = xPixelVec1.size()-1;
+                }else {
+                    time = (float) DataShare.getCurrentTime(1).get(index).toSeconds();
+                }
+
+
+                while(i != index-1){
+                    x0 = xPixelVec1.get(i);
+                    x1 = xPixelVec1.get(i+1);
+                    y0 = yPixelVec1.get(i);
+                    y1 = yPixelVec1.get(i +1);
+                    temp1 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
+                    distance1 = distance1 + temp1;
+                    i++;
+                }
+                i = 0;
+                rate1 = distance1/time;
+
+                while(i != index){
+                    x0 = xPixelVec1.get(i);
+                    x1 = xPixelVec1.get(i+1);
+                    y0 = yPixelVec1.get(i);
+                    y1 = yPixelVec1.get(i +1);
+                    distance = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
+                    time1 = distance/rate1;
+                    temp3 = time1 + temp3;
+                    timesVec1.add(temp3);
+                    i++;
+                }
+
+                count = index;
+                while(count <= xPixelVec1.size()-2){
+                    x0 = xPixelVec1.get(count);
+                    x1 = xPixelVec1.get(count+1);
+                    y0 = yPixelVec1.get(count);
+                    y1 = yPixelVec1.get(count +1);
+                    temp2 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
+                    distance2 = distance2 + temp2;
+                    count++;
+                }
+                count = 0;
+                time2 = timesVec1.get(timesVec1.size()-1) - time;
+                rate2 = distance2/time2;
+
+                while(count != xPixelVec1.size()-2){
+                    x0 = xPixelVec1.get(count);
+                    x1 = xPixelVec1.get(count+1);
+                    y0 = yPixelVec1.get(count);
+                    y1 = yPixelVec1.get(count +1);
+                    distance3 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
+                    time1 = distance3/rate2;
+                    temp3 = time1 + temp3;
+                    timesVec1.add(temp3);
+                    count++;
+                }
+                Log.i("PreviewTimesVec1", "" + timesVec1);
+                break;
+            case 2:
+                if(index >= xPixelVec2.size()){
+                    index = xPixelVec2.size()-1;
+                }else {
+                    time = (float) DataShare.getCurrentTime(2).get(index).toSeconds();
+                }
+                while(i != index-1){
+                    x0 = xPixelVec2.get(i);
+                    x1 = xPixelVec2.get(i+1);
+                    y0 = yPixelVec2.get(i);
+                    y1 = yPixelVec2.get(i +1);
+                    temp1 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
+                    distance1 = distance1 + temp1;
+                    i++;
+                }
+                i = 0;
+                rate1 = distance1/time;
+
+                while(i != index){
+                    x0 = xPixelVec2.get(i);
+                    x1 = xPixelVec2.get(i+1);
+                    y0 = yPixelVec2.get(i);
+                    y1 = yPixelVec2.get(i +1);
+                    distance = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
+                    time1 = distance/rate1;
+                    timesVec2.add(time1);
+                    i++;
+                }
+
+                count = index;
+                while(count <= xPixelVec2.size()-2){
+                    x0 = xPixelVec2.get(count);
+                    x1 = xPixelVec2.get(count+1);
+                    y0 = yPixelVec2.get(count);
+                    y1 = yPixelVec2.get(count +1);
+                    temp2 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
+                    distance2 = distance2 + temp2;
+                    count++;
+                }
+                count = 0;
+                time2 = timesVec2.get(timesVec2.size()-1) - time;
+                rate2 = distance2/time2;
+
+                while(count != xPixelVec2.size()-2){
+                    x0 = xPixelVec2.get(count);
+                    x1 = xPixelVec2.get(count+1);
+                    y0 = yPixelVec2.get(count);
+                    y1 = yPixelVec2.get(count +1);
+                    distance3 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
+                    time1 = distance3/rate2;
+                    timesVec2.add(time1);
+                    count++;
+                }
+                break;
+            case 3:
+                if(index >= xPixelVec3.size()){
+                    index = xPixelVec3.size()-1;
+                }else {
+                    time = (float) DataShare.getCurrentTime(3).get(index).toSeconds();
+                }
+                while(i != index-1){
+                    x0 = xPixelVec3.get(i);
+                    x1 = xPixelVec3.get(i+1);
+                    y0 = yPixelVec3.get(i);
+                    y1 = yPixelVec3.get(i +1);
+                    temp1 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
+                    distance1 = distance1 + temp1;
+                    i++;
+                }
+                i = 0;
+                rate1 = distance1/time;
+
+                while(i != index){
+                    x0 = xPixelVec3.get(i);
+                    x1 = xPixelVec3.get(i+1);
+                    y0 = yPixelVec3.get(i);
+                    y1 = yPixelVec3.get(i +1);
+                    distance = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
+                    time1 = distance/rate1;
+                    timesVec3.add(time1);
+                    i++;
+                }
+
+                count = index;
+                while(count <= xPixelVec3.size()-2){
+                    x0 = xPixelVec3.get(count);
+                    x1 = xPixelVec3.get(count+1);
+                    y0 = yPixelVec3.get(count);
+                    y1 = yPixelVec3.get(count +1);
+                    temp2 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
+                    distance2 = distance2 + temp2;
+                    count++;
+                }
+                count = 0;
+                time2 = timesVec3.get(timesVec3.size()-1) - time;
+                rate2 = distance2/time2;
+
+                while(count != xPixelVec3.size()-2){
+                    x0 = xPixelVec3.get(count);
+                    x1 = xPixelVec3.get(count+1);
+                    y0 = yPixelVec3.get(count);
+                    y1 = yPixelVec3.get(count +1);
+                    distance3 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
+                    time1 = distance3/rate2;
+                    timesVec3.add(time1);
+                    count++;
+                }
+                break;
+            default:
+                break;
         }
     }
 }

@@ -43,8 +43,8 @@
 
     <LinearLayout
         android:id="@+id/linLay"
-        android:layout_width="700dp"
-        android:layout_height="500dp"
+        android:layout_width="655dp"
+        android:layout_height="396dp"
         android:layout_gravity="center_horizontal|top"
         android:paddingTop="5dp"
         android:orientation="horizontal">
@@ -134,13 +134,6 @@
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TERMINTE!"
-        android:backgroundTint="@android:color/holo_red_dark"
-        android:textColor="@android:color/white"/>
     <!--<include layout="@layout/content_preview" />-->
 
 </android.support.design.widget.CoordinatorLayout>
