@@ -54,4 +54,5 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/app_pathplanner_interface-0.0.0.jar')
+    compile files('libs/mav_trajectory_generation_ros-0.0.0.jar')
 }

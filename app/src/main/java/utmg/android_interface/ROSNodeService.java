@@ -8,7 +8,6 @@ import org.ros.concurrent.CancellableLoop;
 import org.ros.exception.RemoteException;
 import org.ros.exception.RosRuntimeException;
 import org.ros.exception.ServiceNotFoundException;
-import org.ros.message.MessageListener;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
@@ -16,18 +15,18 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.NodeMain;
 import org.ros.node.service.ServiceClient;
 import org.ros.node.service.ServiceResponseListener;
-import org.ros.node.topic.Publisher;
-import org.ros.node.topic.Subscriber;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import app_pathplanner_interface.PathPlanner;
-import app_pathplanner_interface.PathPlannerRequest;
-import app_pathplanner_interface.PathPlannerResponse;
 import geometry_msgs.Pose;
 import geometry_msgs.PoseArray;
 import geometry_msgs.PoseStamped;
-import geometry_msgs.TransformStamped;
+import mav_trajectory_generation_ros.PVAJS;
+import mav_trajectory_generation_ros.PVAJS_array;
+import mav_trajectory_generation_ros.minSnapStamped;
+import mav_trajectory_generation_ros.minSnapStampedRequest;
+import mav_trajectory_generation_ros.minSnapStampedResponse;
 import nav_msgs.Path;
 
 public class ROSNodeService extends AbstractNodeMain implements NodeMain {
@@ -92,7 +91,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
                     }
 
-                    ArrayList<Pose> poses1 = new ArrayList<>();
+//                    ArrayList<Pose> poses1 = new ArrayList<>();
                     ArrayList<PoseStamped> poseStamped1 = new ArrayList<>();
 
                     // package each trajectory/waypoint into ROS message and send for quad1 ////////
@@ -105,13 +104,13 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                             mPoint.setY(yes.get(i));
                             mPoint.setZ(zes.get(i));
                             mPose.setPosition(mPoint);
-                            poses1.add(mPose);
+//                            poses1.add(mPose);
 
 //                            if (pref.getInt("mode", 0) == 0) {
-//                                PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
-//                                mPoseStamped.getHeader().setStamp(tes.get(i));
-//                                mPoseStamped.setPose(mPose);
-//                                poseStamped1.add(mPoseStamped);
+                                PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+                                mPoseStamped.getHeader().setStamp(tes.get(i));
+                                mPoseStamped.setPose(mPose);
+                                poseStamped1.add(mPoseStamped);
 //                            }
                         }
 
@@ -121,20 +120,48 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                             mPath1.setPoses(poseStamped1);
 
                             // service client definition
-                            final ServiceClient<PathPlannerRequest, PathPlannerResponse> serviceClient;
+                            final ServiceClient<minSnapStampedRequest, minSnapStampedResponse> serviceClient;
                             try {
-                                serviceClient = connectedNode.newServiceClient("app_pathplanner", PathPlanner._TYPE);
+                                // TODO might have to change the first argument to something else... not sure what
+                                serviceClient = connectedNode.newServiceClient("minSnapStamped", minSnapStamped._TYPE);
                             } catch (ServiceNotFoundException e) {
                                 throw new RosRuntimeException(e);
                             }
 
-                            final PathPlannerRequest request = serviceClient.newMessage();
-                            request.setInput(mPoseArray1);
-                            serviceClient.call(request, new ServiceResponseListener<PathPlannerResponse>() {
+                            final minSnapStampedRequest request = serviceClient.newMessage();
+                            request.setWaypoints(mPath1);
+                            serviceClient.call(request, new ServiceResponseListener<minSnapStampedResponse>() {
                                 @Override
-                                public void onSuccess(PathPlannerResponse response) {
-                                    Log.i("ROSNodeService", "Received serviced Path. Size: " + Double.toString(response.getOutput().getPoses().size()));
-                                    DataShare.setServicedPath(1, response.getOutput());
+                                public void onSuccess(minSnapStampedResponse response) {
+                                    Log.i("ROSNodeService", "Received serviced Path. Size: " + Double.toString(response.getFlatStates().getPVAJSArray().size()));
+
+                                    // TODO might be buggy!
+                                    //convert path planner format to nav_msgs/Path
+                                    List<PVAJS> tempVec = response.getFlatStates().getPVAJSArray();
+                                    ArrayList tempPath = new ArrayList();
+                                    Path tempServicedPath =  connectedNode.getTopicMessageFactory().newFromType(Path._TYPE);
+
+                                    for (int i = 0; i < tempVec.size(); i++) {
+
+                                        Pose mPose = connectedNode.getTopicMessageFactory().newFromType(Pose._TYPE);
+//                                        geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+//                                        mPoint.setX(tempVec.get(i).getPos().getX());
+//                                        mPoint.setY(tempVec.get(i).getPos().getY());
+//                                        mPoint.setZ(tempVec.get(i).getPos().getZ());
+//                                        mPose.setPosition(mPoint);
+                                        mPose.setPosition(tempVec.get(i).getPos()); // TODO if this doesn't work, uncomment above 5 lines, and comment this
+
+
+                                        PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+                                        mPoseStamped.getHeader().setStamp(new Time()); // TODO fix time stamps
+                                        mPoseStamped.setPose(mPose);
+                                        tempPath.add(mPoseStamped);
+
+                                    }
+
+                                    tempServicedPath.setPoses(tempPath);
+
+                                    DataShare.setServicedPath(1, tempServicedPath); // TODO change first argument for whichever serviced path requested
                                     //connectedNode.getLog().info(
                                     //        String.format("%d + %d = %d", request.getA(), request.getB(), response.getSum()));
                                 }
