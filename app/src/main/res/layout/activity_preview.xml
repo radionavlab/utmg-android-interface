@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/preview_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,8 +43,8 @@
 
     <LinearLayout
         android:id="@+id/linLay"
-        android:layout_width="655dp"
-        android:layout_height="396dp"
+        android:layout_width="700dp"
+        android:layout_height="500dp"
         android:layout_gravity="center_horizontal|top"
         android:paddingTop="5dp"
         android:orientation="horizontal">
@@ -82,7 +84,7 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingBottom="7.5dp"
                 android:paddingTop="7.5dp"
@@ -101,6 +103,44 @@
         </TableRow>
 
     </TableLayout>
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        app:fab_expandDirection="down">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/terminate_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/holo_red_dark"
+            fab:fab_icon="@android:drawable/ic_menu_close_clear_cancel" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sendToAirSim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/darker_gray"
+            fab:fab_icon="@android:drawable/ic_menu_send" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/scalePath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/holo_orange_light"
+            fab:fab_icon="@android:drawable/ic_menu_crop" />
+
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TERMINTE!"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:textColor="@android:color/white"/>
     <!--<include layout="@layout/content_preview" />-->
 
 </android.support.design.widget.CoordinatorLayout>
