@@ -126,10 +126,6 @@ public class PreviewActivity extends AppCompatActivity {
 
         // intializing canvas
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
-        previewCanvas = (PreviewCanvas) findViewById(R.id.preview_canvas);
-
-        // CALLING ONDRAW
-        previewCanvas.callOnDraw();
 
         // getting screen size
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -214,9 +210,11 @@ public class PreviewActivity extends AppCompatActivity {
         Matrix scaleMatrix = new Matrix();
         //scaleMatrix.setScale(1.175f, 1.175f);
         scaleMatrix.setScale(scaledWidth,scaledHeight);
-        path1.transform(scaleMatrix);
-        path2.transform(scaleMatrix);
-        path3.transform(scaleMatrix);
+
+        // TODO enable scaling once conflict of Paths is figured out
+        //path1.transform(scaleMatrix);
+        //path2.transform(scaleMatrix);
+        //path3.transform(scaleMatrix);
 
 
         // transforming arrays for quad1
@@ -324,18 +322,31 @@ public class PreviewActivity extends AppCompatActivity {
             xMeterVec3 = new ArrayList<>();
             yMeterVec3 = new ArrayList<>();
 
+            // TODO
+            // the checks are incorrect; they prevent convertROSPathToPixelVec from being called
+            // reenable checks once they are correctly figured out
+
             // calls convertROSPathToPixel - self explanatory
-            if(xPixelVec1.size() != 0) {
+//            if(xPixelVec1.size() != 0) {
+                Log.i("PreviewActivity", "Calling convertROSPathToPixelVec for quad 1");
                 convertROSPathToPixelVec(1, DataShare.getServicedPath(1));
-            }
-            if(xPixelVec2.size() != 0) {
-                convertROSPathToPixelVec(2, DataShare.getServicedPath(2));
-            }
-            if(xPixelVec3.size() != 0) {
-                convertROSPathToPixelVec(3, DataShare.getServicedPath(3));
-            }
+//            }
+//            if(xPixelVec2.size() != 0) {
+//                convertROSPathToPixelVec(2, DataShare.getServicedPath(2));
+//            }
+//            if(xPixelVec3.size() != 0) {
+//                convertROSPathToPixelVec(3, DataShare.getServicedPath(3));
+//            }
 
         }
+
+        // TODO
+        // SIDDARTH'S COMMENTS
+        // PreviewCanvas should be initialised only AFTER convertROSPathToPixelVec is called
+        // because the Android graphics path objects are generated in there! Otherwise, it will only
+        // render the original paths.
+        previewCanvas = (PreviewCanvas) findViewById(R.id.preview_canvas);
+        previewCanvas.callOnDraw();
 
         // initializing imageViews
         quad1 = (ImageView) findViewById(R.id.demo_quad1);

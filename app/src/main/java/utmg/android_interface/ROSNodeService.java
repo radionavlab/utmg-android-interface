@@ -123,7 +123,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                             final ServiceClient<minSnapStampedRequest, minSnapStampedResponse> serviceClient;
                             try {
                                 // TODO might have to change the first argument to something else... not sure what
-                                serviceClient = connectedNode.newServiceClient("minSnapStamped", minSnapStamped._TYPE);
+                                serviceClient = connectedNode.newServiceClient("minSnap", minSnapStamped._TYPE);
                             } catch (ServiceNotFoundException e) {
                                 throw new RosRuntimeException(e);
                             }
@@ -144,12 +144,13 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                                     for (int i = 0; i < tempVec.size(); i++) {
 
                                         Pose mPose = connectedNode.getTopicMessageFactory().newFromType(Pose._TYPE);
-//                                        geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
-//                                        mPoint.setX(tempVec.get(i).getPos().getX());
-//                                        mPoint.setY(tempVec.get(i).getPos().getY());
-//                                        mPoint.setZ(tempVec.get(i).getPos().getZ());
-//                                        mPose.setPosition(mPoint);
-                                        mPose.setPosition(tempVec.get(i).getPos()); // TODO if this doesn't work, uncomment above 5 lines, and comment this
+                                        geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
+                                        mPoint.setX(tempVec.get(i).getPos().getX());
+                                        //Log.i("ROSNodeService",Double.toString(response.getFlatStates().getPVAJSArray().get(i).getPos().getX()));
+                                        mPoint.setY(tempVec.get(i).getPos().getY());
+                                        mPoint.setZ(tempVec.get(i).getPos().getZ());
+                                        mPose.setPosition(mPoint);
+                                        //mPose.setPosition(tempVec.get(i).getPos()); // TODO if this doesn't work, uncomment above 5 lines, and comment this
 
 
                                         PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));

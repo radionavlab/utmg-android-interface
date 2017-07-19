@@ -54,7 +54,7 @@ public class DataShare extends Application {
     private static nav_msgs.Path servicedPath3;
 
     private static boolean playBackState;
-    private static boolean serviceState;
+    private static boolean serviceState; // TODO get rid of this junk
 
     private static float mainCanvasHeight;
     private static float mainCanvasWidth;
@@ -261,7 +261,7 @@ public class DataShare extends Application {
         switch (i) {
             case 1:
                 servicedPath1 = p;
-                //Log.i("DataShare1", Double.toString(servicedPath1.getPoses().size())); //get(0).getPose().getPosition().getX()));
+                Log.i("DataShare1", Double.toString(servicedPath1.getPoses().get(0).getPose().getPosition().getX()));
                 break;
             case 2:
                 servicedPath2 = p;
