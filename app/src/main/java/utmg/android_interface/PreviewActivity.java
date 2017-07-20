@@ -363,7 +363,6 @@ public class PreviewActivity extends AppCompatActivity {
         xPixelVec3 = DataShare.getXPixelVec(3);
         yPixelVec3 = DataShare.getYPixelVec(3);
 
-
         // QUAD RUNNABLE: sets visibility of quad and places it at first point
         // TODO fix logic
         final Handler handlerQuad = new Handler();

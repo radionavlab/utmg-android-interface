@@ -644,7 +644,8 @@ public class MainActivity extends AppCompatRosActivity {
                     x2 = xCoordVec1.get(i + 1);
                     y1 = yCoordVec1.get(i);
                     y2 = yCoordVec1.get(i + 1);
-                    slope1 = (y2 - y1)/(x2 - x1);
+//                    slope1 = (y2 - y1)/(x2 - x1);
+                    slope1 = (float)Math.atan2((y2 - y1),(x2 - x1));
                     if(Math.abs(slope1 - slope2) > siddarth) {
                         xCompressed1.add(x2);
                         yCompressed1.add(y2);
