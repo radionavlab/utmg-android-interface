@@ -91,6 +91,8 @@ public class PreviewActivity extends AppCompatActivity {
         timesVec3 = new ArrayList<Float>();
 
         // Button to terminate app so it doesn't have to be done manually
+        com.getbase.floatingactionbutton.FloatingActionButton compressed_points = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.compressed_points);
+        com.getbase.floatingactionbutton.FloatingActionButton original_points = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.orignal_points);
         com.getbase.floatingactionbutton.FloatingActionButton terminate_preview = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.terminate_preview);
         com.getbase.floatingactionbutton.FloatingActionButton sendAirSim = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendToAirSim);
         com.getbase.floatingactionbutton.FloatingActionButton scalePath = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.scalePath);
@@ -112,6 +114,20 @@ public class PreviewActivity extends AppCompatActivity {
         });
 
         scalePath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scaling(1);
+                //scaling(2);
+                //scaling(3);
+            }
+        });
+        compressed_points.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        original_points.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 scaling(1);
