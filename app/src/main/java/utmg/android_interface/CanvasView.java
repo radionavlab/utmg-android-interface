@@ -86,6 +86,7 @@ public class CanvasView extends View {
         mode = pref.getInt("mode", 0);
 
         // we set a new Path
+
         mPath1 = new Path();
         mPath2 = new Path();
         mPath3 = new Path();

@@ -60,6 +60,7 @@ public class DataShare extends Application {
     private static float mainCanvasWidth;
 
 
+
     public DataShare() {
 
         quad1.setQuadColour(Color.RED);

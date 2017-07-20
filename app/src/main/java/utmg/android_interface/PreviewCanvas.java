@@ -152,6 +152,7 @@ public class PreviewCanvas extends View {
                 canvas.drawPath(DataShare.getPath(3), DataShare.getPaint(3));
                 Log.i("PreviewCanvas", "Graphics Path 3 drawn.");
             }
+
         }
 //        else if (mode == 1) {
 //

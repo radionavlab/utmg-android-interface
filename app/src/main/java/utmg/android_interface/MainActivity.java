@@ -510,7 +510,7 @@ public class MainActivity extends AppCompatRosActivity {
                 }
             });
 
-            // show real-time location of the quads
+            // show real-time  location of the quads
             final Handler handlerQuad = new Handler();
             Runnable runnableQuad = new Runnable() {
                 @Override
