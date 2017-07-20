@@ -189,6 +189,52 @@ public class PreviewActivity extends AppCompatActivity {
 //        // defining variables for transformation matrix
 //        Matrix transform = new Matrix();
 //
+        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what does this mean?
+        // SIDDARTH'S COMMENTS
+        // The "serviceToggle" from the preferences stores whether or not the app should attempt to
+        // interface with the service.
+        // true -> contact service; false -> don't contact service
+        // convertROSPathToPixelVec is only called if "serviceToggle" is true
+        // TODO if path planner servicing is enabled, redo the path
+        if (pref.getBoolean("serviceToggle", false)) {
+
+            // initializing arrays for quad1
+            xPixelVec1 = new ArrayList<>();
+            yPixelVec1 = new ArrayList<>();
+            xMeterVec1 = new ArrayList<>();
+            yMeterVec1 = new ArrayList<>();
+
+            // initializing arrays for quad2
+            xPixelVec2 = new ArrayList<>();
+            yPixelVec2 = new ArrayList<>();
+            xMeterVec2 = new ArrayList<>();
+            yMeterVec2 = new ArrayList<>();
+
+            // initializing arrays for quad3
+            xPixelVec3 = new ArrayList<>();
+            yPixelVec3 = new ArrayList<>();
+            xMeterVec3 = new ArrayList<>();
+            yMeterVec3 = new ArrayList<>();
+
+            // TODO
+            // the checks are incorrect; they prevent convertROSPathToPixelVec from being called
+            // reenable checks once they are correctly figured out
+
+            // calls convertROSPathToPixel - self explanatory
+//            if(xPixelVec1.size() != 0) {
+            Log.i("PreviewActivity", "Calling convertROSPathToPixelVec for quad 1");
+            convertROSPathToPixelVec(1, DataShare.getServicedPath(1));
+//            }
+//            if(xPixelVec2.size() != 0) {
+//                convertROSPathToPixelVec(2, DataShare.getServicedPath(2));
+//            }
+//            if(xPixelVec3.size() != 0) {
+//                convertROSPathToPixelVec(3, DataShare.getServicedPath(3));
+//            }
+
+        }
+
+
         float mainWidth = DataShare.getMainCanvasWidth();
         float mainHeight = DataShare.getMainCanvasHeight();
         float previewHeight = canvasSize.getLayoutParams().height;
@@ -212,7 +258,7 @@ public class PreviewActivity extends AppCompatActivity {
         scaleMatrix.setScale(scaledWidth,scaledHeight);
 
         // TODO enable scaling once conflict of Paths is figured out
-        //path1.transform(scaleMatrix);
+        path1.transform(scaleMatrix);
         //path2.transform(scaleMatrix);
         //path3.transform(scaleMatrix);
 
@@ -295,50 +341,7 @@ public class PreviewActivity extends AppCompatActivity {
             yPixelVec3Scaled = null;
         }
 
-        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what does this mean?
-        // SIDDARTH'S COMMENTS
-        // The "serviceToggle" from the preferences stores whether or not the app should attempt to
-        // interface with the service.
-        // true -> contact service; false -> don't contact service
-        // convertROSPathToPixelVec is only called if "serviceToggle" is true
-        // TODO if path planner servicing is enabled, redo the path
-        if (pref.getBoolean("serviceToggle", false)) {
 
-            // initializing arrays for quad1
-            xPixelVec1 = new ArrayList<>();
-            yPixelVec1 = new ArrayList<>();
-            xMeterVec1 = new ArrayList<>();
-            yMeterVec1 = new ArrayList<>();
-
-            // initializing arrays for quad2
-            xPixelVec2 = new ArrayList<>();
-            yPixelVec2 = new ArrayList<>();
-            xMeterVec2 = new ArrayList<>();
-            yMeterVec2 = new ArrayList<>();
-
-            // initializing arrays for quad3
-            xPixelVec3 = new ArrayList<>();
-            yPixelVec3 = new ArrayList<>();
-            xMeterVec3 = new ArrayList<>();
-            yMeterVec3 = new ArrayList<>();
-
-            // TODO
-            // the checks are incorrect; they prevent convertROSPathToPixelVec from being called
-            // reenable checks once they are correctly figured out
-
-            // calls convertROSPathToPixel - self explanatory
-//            if(xPixelVec1.size() != 0) {
-                Log.i("PreviewActivity", "Calling convertROSPathToPixelVec for quad 1");
-                convertROSPathToPixelVec(1, DataShare.getServicedPath(1));
-//            }
-//            if(xPixelVec2.size() != 0) {
-//                convertROSPathToPixelVec(2, DataShare.getServicedPath(2));
-//            }
-//            if(xPixelVec3.size() != 0) {
-//                convertROSPathToPixelVec(3, DataShare.getServicedPath(3));
-//            }
-
-        }
 
         // TODO
         // SIDDARTH'S COMMENTS
@@ -391,33 +394,33 @@ public class PreviewActivity extends AppCompatActivity {
                     }
                 }
 
-                // quad 2
-                if (pref.getBoolean("quad2", true)) {
-                    if (DataShare.getXPixelVec(2) == null) {
-                        quad2.setVisibility(View.INVISIBLE);
-                    } else {
-                        // place imageView at start of path on launch of PreviewActivity
-                        if (togglei == 0) {
-                            quad2.setX(xPixelVec2.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                            quad2.setY(yPixelVec2.get(0) - quad1.getHeight() / 2);
-                            quad2.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
-
-                // quad 3
-                if (pref.getBoolean("quad3", true)) {
-                    if (DataShare.getXPixelVec(3) == null) {
-                        quad3.setVisibility(View.INVISIBLE);
-                    } else {
-                        // place imageView at start of path on launch of PreviewActivity
-                        if (togglei == 0) {
-                            quad3.setX(xPixelVec3.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                            quad3.setY(yPixelVec3.get(0) - quad1.getHeight() / 2);
-                            quad3.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
+//                // quad 2
+//                if (pref.getBoolean("quad2", true)) {
+//                    if (DataShare.getXPixelVec(2) == null) {
+//                        quad2.setVisibility(View.INVISIBLE);
+//                    } else {
+//                        // place imageView at start of path on launch of PreviewActivity
+//                        if (togglei == 0) {
+//                            quad2.setX(xPixelVec2.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+//                            quad2.setY(yPixelVec2.get(0) - quad1.getHeight() / 2);
+//                            quad2.setVisibility(View.VISIBLE);
+//                        }
+//                    }
+//                }
+//
+//                // quad 3
+//                if (pref.getBoolean("quad3", true)) {
+//                    if (DataShare.getXPixelVec(3) == null) {
+//                        quad3.setVisibility(View.INVISIBLE);
+//                    } else {
+//                        // place imageView at start of path on launch of PreviewActivity
+//                        if (togglei == 0) {
+//                            quad3.setX(xPixelVec3.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+//                            quad3.setY(yPixelVec3.get(0) - quad1.getHeight() / 2);
+//                            quad3.setVisibility(View.VISIBLE);
+//                        }
+//                    }
+//                }
                 handlerQuad.postDelayed(this, 10);
             }
         };
@@ -832,7 +835,8 @@ public class PreviewActivity extends AppCompatActivity {
     private void seekAll() {
 
         // set seekbar max equal to the longest quad length - should equal longest time
-        quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
+        //quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
+        quadAllSeek.setMax(xPixelVec1.size());
 
         final Handler seekH = new Handler();
         Runnable seekR = new Runnable() {
