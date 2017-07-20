@@ -107,10 +107,10 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 //                            poses1.add(mPose);
 
 //                            if (pref.getInt("mode", 0) == 0) {
-                                PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
-                                mPoseStamped.getHeader().setStamp(tes.get(i));
-                                mPoseStamped.setPose(mPose);
-                                poseStamped1.add(mPoseStamped);
+                            PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
+                            mPoseStamped.getHeader().setStamp(tes.get(i));
+                            mPoseStamped.setPose(mPose);
+                            poseStamped1.add(mPoseStamped);
 //                            }
                         }
 
@@ -119,11 +119,13 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 //                            mPoseArray1.setPoses(poses1);
                             mPath1.setPoses(poseStamped1);
 
+                            String serviceName = "minSnapOptTime";
+                            Log.i("ROSNodeService", serviceName);
                             // service client definition
                             final ServiceClient<minSnapStampedRequest, minSnapStampedResponse> serviceClient;
                             try {
                                 // TODO might have to change the first argument to something else... not sure what
-                                serviceClient = connectedNode.newServiceClient("minSnap", minSnapStamped._TYPE);
+                                serviceClient = connectedNode.newServiceClient(serviceName, minSnapStamped._TYPE);
                             } catch (ServiceNotFoundException e) {
                                 throw new RosRuntimeException(e);
                             }

@@ -120,6 +120,7 @@ public class PreviewCanvas extends View {
         timesVec1 = new ArrayList<>();
         timesVec2 = new ArrayList<>();
         timesVec3 = new ArrayList<>();
+
     }
 
     // override onSizeChanged
@@ -343,6 +344,5 @@ public class PreviewCanvas extends View {
 
         return mTime;
     }
-
 
 }
