@@ -116,23 +116,23 @@ public class PreviewActivity extends AppCompatActivity {
         scalePath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scaling(1);
+                //scaling(1);
                 //scaling(2);
                 //scaling(3);
             }
         });
+
+        // compressed_points/original_points used to visualize/compare points between user input, compressed, and minimum snap
         compressed_points.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // plot points of compressed array on canvas
             }
         });
         original_points.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scaling(1);
-                //scaling(2);
-                //scaling(3);
+                // plot path of original user input
             }
         });
         //Log.i("PreviewActivity", "PreviewActivity started.");
@@ -160,8 +160,6 @@ public class PreviewActivity extends AppCompatActivity {
         xPixelVec3 = DataShare.getXPixelVec(3);
         yPixelVec3 = DataShare.getYPixelVec(3);
 
-        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what does this do?
-        // SIDDARTH'S COMMENTS
         // boolean playBackState keeps track whether or not PreviewActivity is ready to start
         // playback. It prevents the play/pause button from replaying from the beginning
         // concurrently if the user only paused the playback.
@@ -171,8 +169,6 @@ public class PreviewActivity extends AppCompatActivity {
         seekbarRelative = (RelativeLayout) findViewById(R.id.seekbar_relative);
         quadAllSeek = (SeekBar) findViewById(R.id.quadAllSeek);
 
-        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what is this listener?
-        // SIDDARTH'S COMMENTS
         // seekbarRelative is the container view for the bottom seekbar for playback.
         // The listener is implemented such that PreviewActivity first waits for the seekbarRelative
         // to render first, then adjust the size of the canvas to fit the screen properly.
@@ -196,17 +192,6 @@ public class PreviewActivity extends AppCompatActivity {
             }
         });
 
-//        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - does this need to be inside this listener?
-//        // SIDDARTH'S COMMENTS
-//        // This is definitely NOT the place for the transformations... Why are they here?
-//        // This listener is only to adjust view sizes to fit the screen; nothing else should
-//        // be here.
-//
-//        // defining variables for transformation matrix
-//        Matrix transform = new Matrix();
-//
-        // DON'T KNOW WHAT THIS IS! SIDDARTH HELP! - what does this mean?
-        // SIDDARTH'S COMMENTS
         // The "serviceToggle" from the preferences stores whether or not the app should attempt to
         // interface with the service.
         // true -> contact service; false -> don't contact service
@@ -257,14 +242,8 @@ public class PreviewActivity extends AppCompatActivity {
         float previewWidth = canvasSize.getLayoutParams().width;
         float scaledWidth = mainWidth / previewWidth -.147482f;
         float scaledHeight = mainHeight / previewHeight - .147482f;
-//        Log.i("mainWidth", Float.toString(mainWidth));
-//        Log.i("mainHeight", Float.toString(mainHeight));
-//        Log.i("previewWidth", Float.toString(previewWidth));
-//        Log.i("previewHeight", Float.toString(previewHeight));
-//        Log.i("scaledWidth", Float.toString(scaledWidth));
-//        Log.i("scaledHeight", Float.toString(scaledHeight));
 
-//        // initializing paths
+        // initializing paths
         Path path1 = DataShare.getPath(1);
         Path path2 = DataShare.getPath(2);
         Path path3 = DataShare.getPath(3);
@@ -357,10 +336,7 @@ public class PreviewActivity extends AppCompatActivity {
             yPixelVec3Scaled = null;
         }
 
-
-
         // TODO
-        // SIDDARTH'S COMMENTS
         // PreviewCanvas should be initialised only AFTER convertROSPathToPixelVec is called
         // because the Android graphics path objects are generated in there! Otherwise, it will only
         // render the original paths.
@@ -389,7 +365,7 @@ public class PreviewActivity extends AppCompatActivity {
 
 
         // QUAD RUNNABLE: sets visibility of quad and places it at first point
-
+        // TODO fix logic
         final Handler handlerQuad = new Handler();
         Runnable runnableQuad = new Runnable() {
             @Override
@@ -668,6 +644,7 @@ public class PreviewActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                    // TODO fix logic
                                     int index = quadAllSeek.getProgress();
                                     if (toggle.isChecked() == false) {
                                         if (xPixelVec1 != null) {
@@ -685,33 +662,33 @@ public class PreviewActivity extends AppCompatActivity {
                                             }
                                         }
                                         
-                                        if (xPixelVec2 != null) {
-                                            if (index == xPixelVec2.size()) {
-                                                // This will handle the error
-
-                                            } else if (index > xPixelVec2.size()) {
-                                                quad2.setX(xPixelVec2.get(xPixelVec2.size()-1) - quad2.getWidth() / 2+ canvasSize.getLeft());
-                                                quad2.setY(yPixelVec2.get(yPixelVec2.size()-1) - quad2.getHeight() / 2);
-
-                                            } else {
-                                                quad2.setX(xPixelVec2.get(index) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                                                quad2.setY(yPixelVec2.get(index) - quad2.getHeight() / 2);
-                                            }
-                                        }
-                                        
-                                        if (xPixelVec3 != null) {
-                                            if (index == xPixelVec3.size()) {
-                                                // This will handle the error
-
-                                            } else if (index > xPixelVec3.size()) {
-                                                quad3.setX(xPixelVec3.get(xPixelVec3.size()-1) - quad3.getWidth() / 2+ canvasSize.getLeft());
-                                                quad3.setY(yPixelVec3.get(yPixelVec3.size()-1) - quad3.getHeight() / 2);
-
-                                            } else {
-                                                quad3.setX(xPixelVec3.get(index) - quad3.getWidth() / 2 + canvasSize.getLeft());
-                                                quad3.setY(yPixelVec3.get(index) - quad3.getHeight() / 2);
-                                            }
-                                        }
+//                                        if (xPixelVec2 != null) {
+//                                            if (index == xPixelVec2.size()) {
+//                                                // This will handle the error
+//
+//                                            } else if (index > xPixelVec2.size()) {
+//                                                quad2.setX(xPixelVec2.get(xPixelVec2.size()-1) - quad2.getWidth() / 2+ canvasSize.getLeft());
+//                                                quad2.setY(yPixelVec2.get(yPixelVec2.size()-1) - quad2.getHeight() / 2);
+//
+//                                            } else {
+//                                                quad2.setX(xPixelVec2.get(index) - quad2.getWidth() / 2 + canvasSize.getLeft());
+//                                                quad2.setY(yPixelVec2.get(index) - quad2.getHeight() / 2);
+//                                            }
+//                                        }
+//
+//                                        if (xPixelVec3 != null) {
+//                                            if (index == xPixelVec3.size()) {
+//                                                // This will handle the error
+//
+//                                            } else if (index > xPixelVec3.size()) {
+//                                                quad3.setX(xPixelVec3.get(xPixelVec3.size()-1) - quad3.getWidth() / 2+ canvasSize.getLeft());
+//                                                quad3.setY(yPixelVec3.get(yPixelVec3.size()-1) - quad3.getHeight() / 2);
+//
+//                                            } else {
+//                                                quad3.setX(xPixelVec3.get(index) - quad3.getWidth() / 2 + canvasSize.getLeft());
+//                                                quad3.setY(yPixelVec3.get(index) - quad3.getHeight() / 2);
+//                                            }
+//                                        }
                                     }
                                 }
                             });
@@ -846,12 +823,10 @@ public class PreviewActivity extends AppCompatActivity {
         new Thread(updateR3).start();
     }
 
-    // SIDDARTH HELP! - seekbar is not moving on play
-    // SIDDARTH'S COMMENTS
-    // TODO; will look into it.
-    private void seekAll() {
 
+    private void seekAll() {
         // set seekbar max equal to the longest quad length - should equal longest time
+        // TODO undo when working with all 3 quads
         //quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
         quadAllSeek.setMax(xPixelVec1.size());
 
