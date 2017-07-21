@@ -6,7 +6,7 @@
     android:id="@+id/preview_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="utmg.android_interface.PreviewActivity">
+    tools:context="utmg.android_interface.Activities.PreviewActivity">
 
     <ImageView
         android:id="@+id/demo_quad1"
@@ -49,7 +49,7 @@
         android:paddingTop="5dp"
         android:orientation="horizontal">
 
-        <utmg.android_interface.PreviewCanvas
+        <utmg.android_interface.Activities.PreviewCanvas
             android:id="@+id/preview_canvas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

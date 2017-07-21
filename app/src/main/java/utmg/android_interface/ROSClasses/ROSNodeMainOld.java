@@ -1,4 +1,4 @@
-package utmg.android_interface;
+package utmg.android_interface.ROSClasses;
 
 import android.content.SharedPreferences;
 import android.content.Context;
@@ -19,8 +19,10 @@ import geometry_msgs.PoseArray;
 import geometry_msgs.PoseStamped;
 import geometry_msgs.TransformStamped;
 import nav_msgs.Path;
+import utmg.android_interface.Activities.MainActivity;
+import utmg.android_interface.DataShare;
 
-public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
+public class ROSNodeMainOld extends AbstractNodeMain implements NodeMain {
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;

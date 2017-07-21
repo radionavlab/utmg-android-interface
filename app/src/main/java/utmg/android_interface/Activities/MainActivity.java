@@ -1,4 +1,4 @@
-package utmg.android_interface;
+package utmg.android_interface.Activities;
 
 import android.content.Intent;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,6 +27,11 @@ import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import utmg.android_interface.DataShare;
+import utmg.android_interface.R;
+import utmg.android_interface.ROSClasses.ROSNodeMain;
+import utmg.android_interface.ROSClasses.ROSNodeService;
 
 public class MainActivity extends AppCompatRosActivity {
 

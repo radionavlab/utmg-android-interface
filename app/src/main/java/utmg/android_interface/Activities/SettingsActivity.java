@@ -1,4 +1,4 @@
-package utmg.android_interface;
+package utmg.android_interface.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +15,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.ToggleButton;
+
+import utmg.android_interface.DataShare;
+import utmg.android_interface.R;
 
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 

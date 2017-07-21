@@ -17,14 +17,6 @@ public class DataShare extends Application {
     // so purty
     // it does stuff to things
 
-    private static Thing quad1 = new Thing();
-    private static Thing quad2 = new Thing();
-    private static Thing quad3 = new Thing();
-
-    private static Thing sword = new Thing();
-    private static Thing obstacle1 = new Thing();
-    private static Thing obstacle2 = new Thing();
-
     private static android.graphics.Path mPath1;
     private static android.graphics.Path mPath2;
     private static android.graphics.Path mPath3;

@@ -1,4 +1,4 @@
-package utmg.android_interface;
+package utmg.android_interface.ROSClasses;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,11 +23,12 @@ import geometry_msgs.Pose;
 import geometry_msgs.PoseArray;
 import geometry_msgs.PoseStamped;
 import mav_trajectory_generation_ros.PVAJS;
-import mav_trajectory_generation_ros.PVAJS_array;
 import mav_trajectory_generation_ros.minSnapStamped;
 import mav_trajectory_generation_ros.minSnapStampedRequest;
 import mav_trajectory_generation_ros.minSnapStampedResponse;
 import nav_msgs.Path;
+import utmg.android_interface.DataShare;
+import utmg.android_interface.Activities.MainActivity;
 
 public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
@@ -96,6 +97,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
                     // package each trajectory/waypoint into ROS message and send for quad1 ////////
                     if (xes == null || yes == null || zes == null || tes == null) {
+                        Log.e("ROS Packaging failure","Could not package due to null value");
                     } else {
                         for (int i = 0; i < xes.size(); i++) {
                             Pose mPose = connectedNode.getTopicMessageFactory().newFromType(Pose._TYPE);

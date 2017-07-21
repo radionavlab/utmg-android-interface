@@ -1,4 +1,4 @@
-package utmg.android_interface;
+package utmg.android_interface.Activities;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,6 +18,8 @@ import java.util.Date;
 import android.content.SharedPreferences;
 
 import org.ros.message.Time;
+
+import utmg.android_interface.DataShare;
 
 
 public class PreviewCanvas extends View {
