@@ -37,7 +37,7 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
     private String teamName;
 
     private static final String TAG = ROSNodeMain.class.getSimpleName();
-    
+
     //all should be set here
     public ROSNodeMain(String teamName,ArrayList<Quad> quads,ArrayList<Obstacle> obstacles, Sword sword){
         super();
@@ -70,6 +70,7 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
         final Publisher<nav_msgs.Path> publisherPath = connectedNode.newPublisher(GraphName.of("PosControl/Path/Quad1"), Path._TYPE);
 
         // listeners ///////////////////////////////////////////////////////////////////
+        //TODO: Ensure these don't force quit if ROS is disconnected. If they do, can we determine that they've stopped working and reconnect them?
         Subscriber<TransformStamped> subscriberSword = connectedNode.newSubscriber("vicon/sword/sword", geometry_msgs.TransformStamped._TYPE);
         subscriberSword.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
             @Override
@@ -181,7 +182,7 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
                             posesStamped.add(poseStamped);
                         }
                     }
-
+                    //actually publish the trajectory
                     if (pref.getInt("mode", 0) == 0) {//TODO: I don't quite understand what's going on here with the modes
                         poseArray.setPoses(poses);
                         path.setPoses(posesStamped);
@@ -200,7 +201,7 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
             if (pref.getBoolean("obstaclePublish", false)) {
                 geometry_msgs.PoseArray poseArrayObstacles = publisherObstacles.newMessage();
                 poseArrayObstacles.getHeader().setFrameId("world");
-                poseArrayObstacles.getHeader().setSeq(obstacles.get(0).getSeq());
+                poseArrayObstacles.getHeader().setSeq(obstacles.get(0).getSeq());//TODO: Can obstacles be deleted? If so, this is bad. If not, who cares.
                 obstacles.get(0).incSeq();
                 poseArrayObstacles.getHeader().setStamp(new Time());
                 ArrayList<Pose> posesObstacles = new ArrayList<>();
