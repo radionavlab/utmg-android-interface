@@ -18,34 +18,33 @@ import geometry_msgs.Pose;
 import geometry_msgs.PoseArray;
 import geometry_msgs.PoseStamped;
 import geometry_msgs.TransformStamped;
+import geometry_msgs.Vector3;
 import nav_msgs.Path;
 import std_msgs.Header;
-import utmg.android_interface.DataShare;
 import utmg.android_interface.Activities.MainActivity;
 import utmg.android_interface.QuadUtils.Obstacle;
 import utmg.android_interface.QuadUtils.Point3;
 import utmg.android_interface.QuadUtils.Quad;
+import utmg.android_interface.QuadUtils.Sword;
 
 public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
 
     SharedPreferences pref;
-    SharedPreferences.Editor prefEditor;
 
     private ArrayList<Quad> quads;
     private ArrayList<Obstacle> obstacles;
+    private Sword sword;
     private String teamName;
 
     private static final String TAG = ROSNodeMain.class.getSimpleName();
-
-
-    public ROSNodeMain(String teamName){
+    
+    //all should be set here
+    public ROSNodeMain(String teamName,ArrayList<Quad> quads,ArrayList<Obstacle> obstacles, Sword sword){
         super();
-        quads=new ArrayList<>();
-        obstacles=new ArrayList<>();
-    }
-    public ROSNodeMain(String teamName,ArrayList<Quad> quads,ArrayList<Obstacle> obstacles){
+        this.teamName=teamName;
         this.quads=quads;
         this.obstacles=obstacles;
+        this.sword=sword;
     }
 
 
@@ -60,7 +59,6 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
         Context appCon = MainActivity.getContextOfApplication();
 
         pref = appCon.getSharedPreferences("Pref", 0);
-        prefEditor = pref.edit();
 
         // publisher definitions
         final Publisher<geometry_msgs.PoseArray> publisherTrajectory = connectedNode.newPublisher(GraphName.of("PosControl/Trajectory/Quad1"), PoseArray._TYPE);
@@ -71,6 +69,40 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
 
         final Publisher<nav_msgs.Path> publisherPath = connectedNode.newPublisher(GraphName.of("PosControl/Path/Quad1"), Path._TYPE);
 
+        // listeners ///////////////////////////////////////////////////////////////////
+        Subscriber<TransformStamped> subscriberSword = connectedNode.newSubscriber("vicon/sword/sword", geometry_msgs.TransformStamped._TYPE);
+        subscriberSword.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+            @Override
+            public void onNewMessage(geometry_msgs.TransformStamped message) {
+                Vector3 v = message.getTransform().getTranslation();
+                sword.setLocation((float)v.getX(),(float)v.getY(),(float)v.getZ());
+            }
+        });
+
+        for(final Obstacle obs: obstacles) {
+            Subscriber<TransformStamped> subscriberObstacle = connectedNode.newSubscriber("vicon/Obstacles/"+obs.getName(), geometry_msgs.TransformStamped._TYPE);
+            subscriberObstacle.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                @Override
+                public void onNewMessage(geometry_msgs.TransformStamped message) {
+                    Vector3 v = message.getTransform().getTranslation();
+                    obs.setLocation((float)v.getX(),(float)v.getY(),(float)v.getZ());
+                }
+            });
+
+        }
+        //update the quad
+        for(final Quad q: quads){
+            Subscriber<TransformStamped> subscriberQuad1 = connectedNode.newSubscriber("vicon/"+teamName+"/"+q.getName(), geometry_msgs.TransformStamped._TYPE);
+            subscriberQuad1.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
+                @Override
+                public void onNewMessage(geometry_msgs.TransformStamped message) {
+                    Vector3 v = message.getTransform().getTranslation();
+                    q.setLocation((float)v.getX(),(float)v.getY(),(float)v.getZ());
+                }
+            });
+        }
+
+        //define the loop for sending updates to roscore
         final CancellableLoop loop = new CancellableLoop() {
             @Override
             protected void loop() throws InterruptedException {
@@ -83,8 +115,9 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
                 //std_msgs.String str = publisher.newMessage();
                 //str.setData("The current time is: " + time);
                 //publisher.publish(str);
-
-            for (Quad q : quads) {//TODO: What happens if I add or edit a quad while this is looping?
+            //loop over quads
+            for (final Quad q : quads) {//TODO: What happens if I add or edit a quad while this is looping?
+                //if a quad is ready for its trajectory to be published
                 if (q.getPublish()) {
                     // trajectory publisher
                     final geometry_msgs.PoseArray poseArray = publisherTrajectory.newMessage();
@@ -162,86 +195,39 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
                     q.incSeq();
                     q.setPublish(false);
                 }
-                //update the quad
-                Subscriber<TransformStamped> subscriberQuad1 = connectedNode.newSubscriber("vicon/"+teamName+"/"+q.getName(), geometry_msgs.TransformStamped._TYPE);
-                subscriberQuad1.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
-                    @Override
-                    public void onNewMessage(geometry_msgs.TransformStamped message) {
-                        quad1.setX(message.getTransform().getTranslation().getX());
-                        quad1.setY(message.getTransform().getTranslation().getY());
-                        quad1.setZ(message.getTransform().getTranslation().getZ());
-
-                    }
-                });
             }
-
+            //republish the obstacles because Marcelino said so
             if (pref.getBoolean("obstaclePublish", false)) {
-                geometry_msgs.PoseArray mPoseArrayObstacles = publisherObstacles.newMessage();
-                mPoseArrayObstacles.getHeader().setFrameId("world");
-                mPoseArrayObstacles.getHeader().setSeq(seq1);
-                mPoseArrayObstacles.getHeader().setStamp(new Time());
+                geometry_msgs.PoseArray poseArrayObstacles = publisherObstacles.newMessage();
+                poseArrayObstacles.getHeader().setFrameId("world");
+                poseArrayObstacles.getHeader().setSeq(obstacles.get(0).getSeq());
+                obstacles.get(0).incSeq();
+                poseArrayObstacles.getHeader().setStamp(new Time());
                 ArrayList<Pose> posesObstacles = new ArrayList<>();
 
                 geometry_msgs.Pose mPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
                 geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
-                mPoint.setX(sword.getX());
-                mPoint.setY(sword.getY());
-                mPoint.setZ(sword.getZ());
+                mPoint.setX(sword.getLocation().getX());
+                mPoint.setY(sword.getLocation().getY());
+                mPoint.setZ(sword.getLocation().getZ());
                 mPose.setPosition(mPoint);
                 posesObstacles.add(mPose);
                 // obstacle 1
                 for(Obstacle obs: obstacles) {
                     geometry_msgs.Pose obsPose = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Pose._TYPE);
                     geometry_msgs.Point mPoint1 = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
-                    mPoint1.setX(obstacle1.getX());
-                    mPoint1.setY(obstacle1.getY());
-                    mPoint1.setZ(obstacle1.getZ());
-                    mPose1.setPosition(mPoint1);
-                    posesObstacles.add(mPose1);
+                    Point3 point=obs.getLocation();
+                    mPoint1.setX(point.getX());
+                    mPoint1.setY(point.getY());
+                    mPoint1.setZ(point.getZ());
+                    obsPose.setPosition(mPoint1);
+                    posesObstacles.add(obsPose);
                 }
                 // add and publish
-                mPoseArrayObstacles.setPoses(posesObstacles);
-                publisherObstacles1.publish(mPoseArrayObstacles);
+                poseArrayObstacles.setPoses(posesObstacles);
+                publisherObstacles.publish(poseArrayObstacles);
             }
-            ////////////////////////////////////////////////////////////////////////////////
 
-
-            // listeners ///////////////////////////////////////////////////////////////////
-
-
-
-            Subscriber<TransformStamped> subscriberSword = connectedNode.newSubscriber("vicon/sword/sword", geometry_msgs.TransformStamped._TYPE);
-            subscriberSword.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
-                @Override
-                public void onNewMessage(geometry_msgs.TransformStamped message) {
-                    sword.setX(message.getTransform().getTranslation().getX());
-                    sword.setY(message.getTransform().getTranslation().getY());
-                    sword.setZ(message.getTransform().getTranslation().getZ());
-                }
-            });
-
-
-            Subscriber<TransformStamped> subscriberObstacle1 = connectedNode.newSubscriber("vicon/Obstacle1/Obstacle1", geometry_msgs.TransformStamped._TYPE);
-            subscriberObstacle1.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
-                @Override
-                public void onNewMessage(geometry_msgs.TransformStamped message) {
-                    obstacle1.setX(message.getTransform().getTranslation().getX());
-                    obstacle1.setY(message.getTransform().getTranslation().getY());
-                    obstacle1.setZ(message.getTransform().getTranslation().getZ());
-                }
-            });
-
-
-            Subscriber<TransformStamped> subscriberObstacle2 = connectedNode.newSubscriber("vicon/Obstacle2/Obstacle2", geometry_msgs.TransformStamped._TYPE);
-            subscriberObstacle2.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
-                @Override
-                public void onNewMessage(geometry_msgs.TransformStamped message) {
-                    obstacle2.setX(message.getTransform().getTranslation().getX());
-                    obstacle2.setY(message.getTransform().getTranslation().getY());
-                    obstacle2.setZ(message.getTransform().getTranslation().getZ());
-                }
-            });
-            ////////////////////////////////////////////////////////////////////////////////
 
             // go to sleep for one second TODO for live mode reduce this time! lol
             Thread.sleep(1000);
@@ -250,31 +236,19 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
     }
 
     // MainActivity FAB sends vector of coordinates to here
-    void sendQuad(String name) {
+    public void sendQuad(String name) {
         for(Quad q: quads){
             if(q.getName().equals(name)){
                 q.setPublish(true);
-                Log.i("Trajectory","Quad "+q.name+" set to publish");
+                Log.i("Trajectory","Quad "+q.getName()+" set to publish");
             }
         }
-
+    }
+    public void sendAll(){
+        for(Quad q: quads){
+            q.setPublish(true);
+            Log.i("Trajectory","Quad "+q.getName()+" set to publish");
+        }
     }
 
-    void setTraj2(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
-        xes2 = x;
-        yes2 = y;
-        zes2 = z;
-        tes2 = t;
-        publishToggle2 = true;
-        Log.i("Traj2","Arrays transferred to nodeMain");
-    }
-
-    void setTraj3(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
-        xes3 = x;
-        yes3 = y;
-        zes3 = z;
-        tes3 = t;
-        publishToggle3 = true;
-        Log.i("Traj3","Arrays transferred to nodeMain");
-    }
 }

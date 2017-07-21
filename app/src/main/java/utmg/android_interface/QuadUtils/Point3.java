@@ -28,6 +28,11 @@ public class Point3 {
     public void setX(float x){this.x=x;}
     public void setY(float y){this.y=y;}
     public void setZ(float z){this.z=z;}
+    public void setPoint(float x, float y, float z){
+        this.x=x;
+        this.y=y;
+        this.z=z;
+    }
     public void offset(float dx, float dy, float dz){
         x+=dx;
         y+=dy;

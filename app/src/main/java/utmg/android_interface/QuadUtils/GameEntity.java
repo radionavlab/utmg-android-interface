@@ -26,6 +26,9 @@ public class GameEntity {
     public void setLocation(Point3 newLoc){
         location=newLoc;
     }
+    public void setLocation(float x, float y, float z){
+        location.setPoint(x,y,z);
+    }
     public void setPublish(boolean publish){
         this.publish=publish;
     }
@@ -39,5 +42,8 @@ public class GameEntity {
     public String getName(){return name;}
     public int getSeq(){
         return seq;
+    }
+    public Point3 getLocation(){
+        return location;
     }
 }
