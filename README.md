@@ -42,6 +42,11 @@ UT Machine Games Controller for quadcopter trajectory input by user.
     If using `vicon`/`vicon_odom`:
     * In a new terminal, run: `roslaunch vicon vicon.launch`
     * In a new terminal, run: `roslaunch vicon_odom vicon_android_app.launch`
+
+** Optional Path Planning Service **
+    If using 'Mav Trajectory Generation'
+    * In a new terminal, run: 'rosrun mav_trajectory_generation_ros minSnap_Node'
+
 3. Start app on tablet
     * Enter `http://192.168.1.XX:11311` into app's prompt for main computer's network address
     
