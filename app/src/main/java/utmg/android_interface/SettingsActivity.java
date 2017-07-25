@@ -171,6 +171,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             }
         });
 
+        // TODO setup the spinner for the service type
 
         // mode spinner
         Spinner spinner = (Spinner) findViewById(R.id.mode_spinner);

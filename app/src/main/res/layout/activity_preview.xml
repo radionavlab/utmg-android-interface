@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             fab:fab_size="mini"
             fab:fab_colorNormal="@android:color/white"
-            fab:fab_icon="@android:drawable/ic_input_add" />
+            fab:fab_icon="@drawable/path" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/compressed_points"
@@ -132,7 +132,7 @@
             android:layout_height="wrap_content"
             fab:fab_size="mini"
             fab:fab_colorNormal="@android:color/white"
-            fab:fab_icon="@android:drawable/ic_input_get" />
+            fab:fab_icon="@drawable/compression" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/sendToAirSim"

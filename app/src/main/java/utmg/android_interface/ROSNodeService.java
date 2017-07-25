@@ -119,7 +119,9 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 //                            mPoseArray1.setPoses(poses1);
                             mPath1.setPoses(poseStamped1);
 
-                            String serviceName = "minSnapOptTime";
+                            String minSnapOptTime = "minSnapOptTime";
+                            String minSnap = "minSnap";
+                            String serviceName = minSnapOptTime;//TODO
                             Log.i("ROSNodeService", serviceName);
                             // service client definition
                             final ServiceClient<minSnapStampedRequest, minSnapStampedResponse> serviceClient;
@@ -170,8 +172,8 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                                 }
 
                                 @Override
-                                public void onFailure(RemoteException e) {
-                                    throw new RosRuntimeException(e);
+                                public void onFailure(RemoteException e) {// SIDDARTH what does this mean
+                                    throw new RosRuntimeException(e);// where the error for multiple quads is being thrown
                                 }
                             });
 
