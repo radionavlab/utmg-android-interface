@@ -244,7 +244,6 @@ public class PreviewActivity extends AppCompatActivity {
 //            if(xPixelVec3.size() != 0) {
 //                convertROSPathToPixelVec(3, DataShare.getServicedPath(3));
 //            }
-
         }
 
         float mainWidth = DataShare.getMainCanvasWidth();
