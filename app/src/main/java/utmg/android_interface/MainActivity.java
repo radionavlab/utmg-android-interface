@@ -175,9 +175,11 @@ public class MainActivity extends AppCompatRosActivity {
             @Override
             public void onClick(View view) {
                 // TODO enable paths again for no servicing
-                //DataShare.setPath(1, customCanvas.getmPath1());
-                //DataShare.setPath(2, customCanvas.getmPath2());
-                //DataShare.setPath(3, customCanvas.getmPath3());
+                if(!pref.getBoolean("serviceToggle", false)) {
+                    DataShare.setPath(1, customCanvas.getmPath1());
+                    DataShare.setPath(2, customCanvas.getmPath2());
+                    DataShare.setPath(3, customCanvas.getmPath3());
+                }
 
                 DataShare.setPaint(1, customCanvas.getmPaint1());
                 DataShare.setPaint(2, customCanvas.getmPaint2());

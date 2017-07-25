@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.ToggleButton;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class PreviewActivity extends AppCompatActivity {
@@ -79,6 +80,11 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<Float> timesVec1;
     private ArrayList<Float> timesVec2;
     private ArrayList<Float> timesVec3;
+
+    Path path1 = new Path();
+    Path path2 = new Path();
+    Path path3 = new Path();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -192,6 +198,11 @@ public class PreviewActivity extends AppCompatActivity {
             }
         });
 
+        // initializing paths
+        path1 = DataShare.getPath(1);
+        path2 = DataShare.getPath(2);
+        path3 = DataShare.getPath(3);
+
         // The "serviceToggle" from the preferences stores whether or not the app should attempt to
         // interface with the service.
         // true -> contact service; false -> don't contact service
@@ -225,6 +236,7 @@ public class PreviewActivity extends AppCompatActivity {
 //            if(xPixelVec1.size() != 0) {
             Log.i("PreviewActivity", "Calling convertROSPathToPixelVec for quad 1");
             convertROSPathToPixelVec(1, DataShare.getServicedPath(1));
+            path1 = DataShare.getPath(1);
 //            }
 //            if(xPixelVec2.size() != 0) {
 //                convertROSPathToPixelVec(2, DataShare.getServicedPath(2));
@@ -235,21 +247,14 @@ public class PreviewActivity extends AppCompatActivity {
 
         }
 
-
         float mainWidth = DataShare.getMainCanvasWidth();
         float mainHeight = DataShare.getMainCanvasHeight();
         float previewHeight = canvasSize.getLayoutParams().height;
         float previewWidth = canvasSize.getLayoutParams().width;
-        float scaledWidth = mainWidth / previewWidth -.147482f;
+        float scaledWidth = mainWidth / previewWidth - .147482f;
         float scaledHeight = mainHeight / previewHeight - .147482f;
 
-        // initializing paths
-        Path path1 = DataShare.getPath(1);
-        Path path2 = DataShare.getPath(2);
-        Path path3 = DataShare.getPath(3);
-
         Matrix scaleMatrix = new Matrix();
-        //scaleMatrix.setScale(1.175f, 1.175f);
         scaleMatrix.setScale(scaledWidth,scaledHeight);
 
         // TODO enable scaling once conflict of Paths is figured out
@@ -257,7 +262,8 @@ public class PreviewActivity extends AppCompatActivity {
         //path2.transform(scaleMatrix);
         //path3.transform(scaleMatrix);
 
-
+        xPixelVec1Scaled = new ArrayList<Float>();
+        yPixelVec1Scaled = new ArrayList<Float>();
         // transforming arrays for quad1
         if (xPixelVec1 != null) {
 
@@ -270,7 +276,6 @@ public class PreviewActivity extends AppCompatActivity {
             }
             xPixelVec1 = xPixelVec1Scaled;
             DataShare.setXPixelVec(1, xPixelVec1Scaled);
-            xPixelVec1Scaled = null;
 
             // transforming y's
             float tempy1 = 0;
@@ -281,7 +286,6 @@ public class PreviewActivity extends AppCompatActivity {
             }
             yPixelVec1 = yPixelVec1Scaled;
             DataShare.setYPixelVec(1, yPixelVec1Scaled);
-            yPixelVec1Scaled = null;
         }
 
         // transforming arrays for quad2
@@ -459,7 +463,7 @@ public class PreviewActivity extends AppCompatActivity {
                         int p = 0;
 
                         while (t < xPixelVec1.size() - 1) {
-                            
+
                             x2 = xPixelVec1.get(t);
                             y2 = yPixelVec1.get(t);
 
@@ -504,8 +508,8 @@ public class PreviewActivity extends AppCompatActivity {
                     // when you move dot
                     case MotionEvent.ACTION_MOVE:
                         PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
-                            quad2.setX((int) (StartPT.x + mv.x));
-                            quad2.setY((int) (StartPT.y + mv.y));
+                        quad2.setX((int) (StartPT.x + mv.x));
+                        quad2.setY((int) (StartPT.y + mv.y));
                         StartPT = new Point((int) quad2.getX(), (int) quad2.getY());
                         break;
 
@@ -629,7 +633,7 @@ public class PreviewActivity extends AppCompatActivity {
                                 runQuad3();
                                 seekAll();
                             }
-                            
+
                         } else if (!isChecked && DataShare.getPlayBackState()) {
                             // SIDDHARTH HELP! - does this listener need to be inside the toggle listener?
                             quadAllSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -660,7 +664,7 @@ public class PreviewActivity extends AppCompatActivity {
                                                 quad1.setY(yPixelVec1.get(index) - quad1.getHeight() / 2);
                                             }
                                         }
-                                        
+
 //                                        if (xPixelVec2 != null) {
 //                                            if (index == xPixelVec2.size()) {
 //                                                // This will handle the error
@@ -944,6 +948,8 @@ public class PreviewActivity extends AppCompatActivity {
                     }
 
                     DataShare.setPath(1, mPath1);
+                    scalePath(mPath1);
+                    scaleDot();
                     break;
 
                 case 2:
@@ -1010,6 +1016,60 @@ public class PreviewActivity extends AppCompatActivity {
             }
         }
     }
+
+    public void scalePath (Path p) {
+
+        float mainWidth = DataShare.getMainCanvasWidth();
+        float mainHeight = DataShare.getMainCanvasHeight();
+        float previewHeight = canvasSize.getLayoutParams().height;
+        float previewWidth = canvasSize.getLayoutParams().width;
+        float scaledWidth = mainWidth / previewWidth;
+        float scaledHeight = mainHeight / previewHeight;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(scaledWidth,scaledHeight);
+
+        // TODO enable scaling once conflict of Paths is figured out
+        p.transform(scaleMatrix);
+    }
+
+    public void scaleDot () {
+        float mainWidth = DataShare.getMainCanvasWidth();
+        float mainHeight = DataShare.getMainCanvasHeight();
+        float previewHeight = canvasSize.getLayoutParams().height;
+        float previewWidth = canvasSize.getLayoutParams().width;
+        float scaledWidth = mainWidth / previewWidth;
+        float scaledHeight = mainHeight / previewHeight;
+
+        // transforming arrays for quad1
+        if (xPixelVec1 != null) {
+
+            // transforming x's
+            float tempx1 = 0;
+            for (int i = 0; i < xPixelVec1.size() - 1; i++) {
+                tempx1 = xPixelVec1.get(i);
+                tempx1 = tempx1 * scaledWidth;
+                xPixelVec1Scaled.add(i, tempx1);
+            }
+            xPixelVec1 = xPixelVec1Scaled;
+            DataShare.setXPixelVec(1, xPixelVec1Scaled);
+            xPixelVec1Scaled = null;
+
+            // transforming y's
+            float tempy1 = 0;
+            for (int i = 0; i < yPixelVec1.size() - 1; i++) {
+                tempy1 = yPixelVec1.get(i);
+                tempy1 = tempy1 * scaledHeight;
+                yPixelVec1Scaled.add(i, tempy1);
+            }
+            yPixelVec1 = yPixelVec1Scaled;
+            DataShare.setYPixelVec(1, yPixelVec1Scaled);
+            yPixelVec1Scaled = null;
+        }
+
+    }
+    
+    
 
     // transform specified object's x position to pixels
     public double xMeterToPixel(double x, double y) {
