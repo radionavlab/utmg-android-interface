@@ -85,7 +85,7 @@
     <string name="title_activity_canvas_size">CanvasSizeActivity</string>
     <string name="title_activity_checkbox">CheckboxActivity</string>
     <string name="title_activity_objects">Settings</string>
-
+    <string name="string_splash_text_view">Connecting&#8230;</string>
 
     <string-array name="modes_array">
         <item>Trajectory</item>

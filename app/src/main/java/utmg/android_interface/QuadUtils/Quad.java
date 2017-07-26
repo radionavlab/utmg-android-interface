@@ -1,5 +1,7 @@
 package utmg.android_interface.QuadUtils;
 
+import android.graphics.Color;
+
 import java.util.ArrayList;
 
 /**
@@ -9,30 +11,39 @@ import java.util.ArrayList;
 public class Quad extends GameEntity{
 
     Trajectory trajectory;
+    int color;
 
     @Deprecated
-    public Quad(String name, Trajectory trajectory){
+    public Quad(String name, Trajectory trajectory, int color){
         super(name);
         this.trajectory=trajectory;
+        this.color=color;
     }
     @Deprecated
-    public Quad(String name, ArrayList<Point3> points){
+    public Quad(String name, ArrayList<Point3> points, int color){
         super(name);
         trajectory=new Trajectory(points);
+        this.color=color;
     }
-    public Quad(String name){
+    public Quad(String name, int color){
         super(name);
         trajectory = new Trajectory();
+        this.color=color;
     }
 
-
-
+    public void clearTrajectory(){
+        trajectory.clear();
+    }
+    public void setColor(int c){
+        color=c;
+    }
     public void addPoint(Point3 point){
         trajectory.addPoint(point);
     }
     public int getCount(){
         return trajectory.getCount();
     }
+    public int getColor(){ return color;}
 
     public Trajectory getTrajectory(){
         return trajectory;

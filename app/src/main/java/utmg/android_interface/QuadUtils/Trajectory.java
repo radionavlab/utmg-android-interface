@@ -26,4 +26,7 @@ public class Trajectory {
     public int getCount(){
         return points.size();
     }
+    public void clear(){
+        points=new ArrayList<>();
+    }
 }

@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import android.util.Log;
 import org.ros.concurrent.CancellableLoop;
+import org.ros.master.client.SystemState;
 import org.ros.message.MessageListener;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
@@ -22,6 +23,7 @@ import geometry_msgs.Vector3;
 import nav_msgs.Path;
 import std_msgs.Header;
 import utmg.android_interface.Activities.MainActivity;
+import utmg.android_interface.DataShare;
 import utmg.android_interface.QuadUtils.Obstacle;
 import utmg.android_interface.QuadUtils.Point3;
 import utmg.android_interface.QuadUtils.Quad;
@@ -39,12 +41,12 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
     private static final String TAG = ROSNodeMain.class.getSimpleName();
 
     //all should be set here
-    public ROSNodeMain(String teamName,ArrayList<Quad> quads,ArrayList<Obstacle> obstacles, Sword sword){
+    public ROSNodeMain(){
         super();
-        this.teamName=teamName;
-        this.quads=quads;
-        this.obstacles=obstacles;
-        this.sword=sword;
+        teamName=(String) DataShare.retrieve("teamName");
+        quads=(ArrayList<Quad>) DataShare.retrieve("quads");
+        obstacles=(ArrayList<Obstacle>) DataShare.retrieve("obstacles");
+        sword=(Sword) DataShare.retrieve("sword");
     }
 
 
@@ -55,7 +57,6 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
 
     @Override
     public void onStart(final ConnectedNode connectedNode) {
-
         Context appCon = MainActivity.getContextOfApplication();
 
         pref = appCon.getSharedPreferences("Pref", 0);
@@ -242,6 +243,7 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
             if(q.getName().equals(name)){
                 q.setPublish(true);
                 Log.i("Trajectory","Quad "+q.getName()+" set to publish");
+                break;
             }
         }
     }
