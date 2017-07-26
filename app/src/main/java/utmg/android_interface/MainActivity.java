@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatRosActivity {
 //                Log.i("xPixelVec3", "" + DataShare.getXPixelVec(3).size());
 
                 DataShare.setYPixelVec(1, customCanvas.yPixelVec1);
-                DataShare.setYPixelVec(2, customCanvas.yPixelVec2);
+                 DataShare.setYPixelVec(2, customCanvas.yPixelVec2);
                 DataShare.setYPixelVec(3, customCanvas.yPixelVec3);
 
                 DataShare.setCurrentTime(1, customCanvas.getTimesVec1());
@@ -221,19 +221,29 @@ public class MainActivity extends AppCompatRosActivity {
                     Log.i("MainActivity", "Service Toggle enabled. Will attempt to contact service.");
                     if (xCoordVec1.size() != 0) {
                         compressArrays(1);
-                        nodeService.setTraj(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
-                        while (DataShare.getServicedPath(1) == null) { }
+                        DataShare.setXCompressedVec(1, xCompressed1);
+                        DataShare.setYCompressedVec(1, yCompressed1);
+                        nodeService.setTraj(1, xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
+                        while (DataShare.getServicedPath(1) == null) {
+                            //Log.i("Quad111 Waiting ", " yessss ");
+                        }
                     }
                     if (xCoordVec2.size() != 0) {
-                        //compressArrays(2);
-                        nodeService.setTraj(xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
+                        compressArrays(2);
+                        DataShare.setXCompressedVec(2, xCompressed2);
+                        DataShare.setYCompressedVec(2, yCompressed2);
+                        nodeService.setTraj(2 ,xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
                         while (DataShare.getServicedPath(2) == null) {
+                            //Log.i("Quad222 Waiting ", " yessss ");
                         }
                     }
                     if (xCoordVec3.size() != 0) {
-                       // compressArrays(3);
-                        nodeService.setTraj(xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
+                        compressArrays(3);
+                        DataShare.setXCompressedVec(3, xCompressed3);
+                        DataShare.setYCompressedVec(3, yCompressed3);
+                        nodeService.setTraj(3 ,xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
                         while (DataShare.getServicedPath(3) == null) {
+                            //Log.i("Quad333 Waiting ", " yessss ");
                         }
                     }
                 }
@@ -624,15 +634,20 @@ public class MainActivity extends AppCompatRosActivity {
         float y1, y2 = 0;
         float slope1 = 0;
         float slope2 = 0;
+        int q = 0;
+        int u = 0;
+        int w = 0;
+        int o = 0;
+
         switch (quad) {
             case 1:
                 Log.i(" 1111111111 ", "" + xCoordVec1.size());
-                int q = 0;
+                q = 0;
                 while ( q <= xCoordVec1.size()-1) {
                     Log.i(" 11XValues ", "" + xCoordVec1.get(q));
                     q++;
                 }
-                int u = 0;
+                u = 0;
                 while ( u <= yCoordVec1.size()-1) {
                     Log.i(" 11YValues ", "" + yCoordVec1.get(u));
                     u++;
@@ -663,12 +678,12 @@ public class MainActivity extends AppCompatRosActivity {
                 zCompressed1.add(zCoordVec1.get(zCoordVec1.size()-1));
                 timeCompressed1.add(timesVec1.get(timesVec1.size()-1));
                 Log.i(" 1C1C1C1C1C1 ", "" + xCompressed1.size());
-                int w = 0;
+                w = 0;
                 while ( w <= xCompressed1.size()-1) {
                     Log.i(" 1CXValues ", "" + xCompressed1.get(w));
                     w++;
                 }
-                int o = 0;
+                o = 0;
                 while ( o <= yCompressed1.size()-1) {
                     Log.i(" 1CYValues ", "" + yCompressed1.get(o));
                     o++;
@@ -676,16 +691,16 @@ public class MainActivity extends AppCompatRosActivity {
                 break;
 
             case 2:
-                Log.i(" 22222222222 ", "" + xCoordVec2.size());
-                int e = 0;
-                while ( e <= xCoordVec2.size()-1) {
-                    Log.i(" 22XValues ", "" + xCoordVec2.get(e));
-                    e++;
+                Log.i(" 2222222222 ", "" + xCoordVec2.size());
+                q = 0;
+                while ( q <= xCoordVec2.size()-1) {
+                    Log.i(" 22XValues ", "" + xCoordVec2.get(q));
+                    q++;
                 }
-                int p = 0;
-                while ( p <= yCoordVec2.size()-1) {
-                    Log.i(" 22YValues ", "" + yCoordVec2.get(p));
-                    p++;
+                u = 0;
+                while ( u <= yCoordVec2.size()-1) {
+                    Log.i(" 22YValues ", "" + yCoordVec2.get(u));
+                    u++;
                 }
                 xCompressed2.add(xCoordVec2.get(0));
                 yCompressed2.add(yCoordVec2.get(0));
@@ -696,40 +711,46 @@ public class MainActivity extends AppCompatRosActivity {
                     x2 = xCoordVec2.get(i + 1);
                     y1 = yCoordVec2.get(i);
                     y2 = yCoordVec2.get(i + 1);
-                    slope1 = (y2 - y1) / (x2 - x1);
-                    if (Math.abs(slope1 - slope2) > siddarth) {
+//                    slope1 = (y2 - y1)/(x2 - x1);
+                    slope1 = (float)Math.atan2((y2 - y1),(x2 - x1));
+                    if(Math.abs(slope1 - slope2) > siddarth) {
                         xCompressed2.add(x2);
                         yCompressed2.add(y2);
-                        timeCompressed2.add(timesVec2.get(i + 1));
-                        zCompressed2.add(zCoordVec2.get(i + 1));
+                        timeCompressed2.add(timesVec2.get(i+1));
+                        zCompressed2.add(zCoordVec2.get(i+1));
+                        slope2 = slope1;
                     }
-                    slope2 = slope1;
+
                     i++;
                 }
-                Log.i(" 2C2C2C2C2C2 ", "" + xCompressed2.size());
-                int r = 0;
-                while ( r <= xCompressed2.size()-1) {
-                    Log.i(" 2CXValues ", "" + xCompressed2.get(r));
-                    r++;
+                xCompressed2.add(xCoordVec2.get(xCoordVec2.size()-1));
+                yCompressed2.add(yCoordVec2.get(yCoordVec2.size()-1));
+                zCompressed2.add(zCoordVec2.get(zCoordVec2.size()-1));
+                timeCompressed2.add(timesVec2.get(timesVec2.size()-1));
+                Log.i(" 2C2C2C2C2C2C2C ", "" + xCompressed2.size());
+                w = 0;
+                while ( w <= xCompressed2.size()-1) {
+                    Log.i(" 2CXValues ", "" + xCompressed2.get(w));
+                    w++;
                 }
-                int a = 0;
-                while ( a <= yCompressed2.size()-1) {
-                    Log.i(" 2CYValues ", "" + yCompressed2.get(a));
-                    a++;
+                o = 0;
+                while ( o <= yCompressed2.size()-1) {
+                    Log.i(" 2CYValues ", "" + yCompressed2.get(o));
+                    o++;
                 }
                 break;
-
+            
             case 3:
                 Log.i(" 33333333333 ", "" + xCoordVec3.size());
-                int t = 0;
-                while ( t <= xCoordVec3.size()-1) {
-                    Log.i(" 33XValues ", "" + xCoordVec3.get(t));
-                    t++;
+                q = 0;
+                while ( q <= xCoordVec3.size()-1) {
+                    Log.i(" 33XValues ", "" + xCoordVec3.get(q));
+                    q++;
                 }
-                int s = 0;
-                while ( s <= yCoordVec3.size()-1) {
-                    Log.i(" 33YValues ", "" + yCoordVec3.get(s));
-                    s++;
+                u = 0;
+                while ( u <= yCoordVec3.size()-1) {
+                    Log.i(" 33YValues ", "" + yCoordVec3.get(u));
+                    u++;
                 }
                 xCompressed3.add(xCoordVec3.get(0));
                 yCompressed3.add(yCoordVec3.get(0));
@@ -740,26 +761,31 @@ public class MainActivity extends AppCompatRosActivity {
                     x2 = xCoordVec3.get(i + 1);
                     y1 = yCoordVec3.get(i);
                     y2 = yCoordVec3.get(i + 1);
-                    slope1 = (y2 - y1) / (x2 - x1);
-                    if (Math.abs(slope1 - slope2) > siddarth) {
+//                    slope1 = (y2 - y1)/(x2 - x1);
+                    slope1 = (float)Math.atan2((y2 - y1),(x2 - x1));
+                    if(Math.abs(slope1 - slope2) > siddarth) {
                         xCompressed3.add(x2);
                         yCompressed3.add(y2);
-                        timeCompressed3.add(timesVec3.get(i + 1));
-                        zCompressed3.add(zCoordVec3.get(i + 1));
+                        timeCompressed3.add(timesVec3.get(i+1));
+                        zCompressed3.add(zCoordVec3.get(i+1));
+                        slope2 = slope1;
                     }
-                    slope2 = slope1;
                     i++;
                 }
-                Log.i(" 3C3C3C3C3C3 ", "" + xCompressed3.size());
-                int y = 0;
-                while ( y <= xCompressed3.size()-1) {
-                    Log.i(" 3CXValues ", "" + xCompressed3.get(y));
-                    y++;
+                xCompressed3.add(xCoordVec3.get(xCoordVec3.size()-1));
+                yCompressed3.add(yCoordVec3.get(yCoordVec3.size()-1));
+                zCompressed3.add(zCoordVec3.get(zCoordVec3.size()-1));
+                timeCompressed3.add(timesVec3.get(timesVec3.size()-1));
+                Log.i(" 3C3C3C3C3C3C3C ", "" + xCompressed3.size());
+                w = 0;
+                while ( w <= xCompressed3.size()-1) {
+                    Log.i(" 3CXValues ", "" + xCompressed3.get(w));
+                    w++;
                 }
-                int d = 0;
-                while ( d <= yCompressed3.size()-1) {
-                    Log.i(" 3CYValues ", "" + yCompressed3.get(d));
-                    d++;
+                o = 0;
+                while ( o <= yCompressed3.size()-1) {
+                    Log.i(" 3CYValues ", "" + yCompressed3.get(o));
+                    o++;
                 }
                 break;
 

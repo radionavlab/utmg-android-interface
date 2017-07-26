@@ -43,6 +43,8 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
     private int seq = 0;
 
+    private int quad;
+
     private static final String TAG = ROSNodeService.class.getSimpleName();
 
     @Override
@@ -166,7 +168,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
                                     tempServicedPath.setPoses(tempPath);
 
-                                    DataShare.setServicedPath(1, tempServicedPath); // TODO change first argument for whichever serviced path requested
+                                    DataShare.setServicedPath(quad, tempServicedPath); // TODO change first argument for whichever serviced path requested
                                     //connectedNode.getLog().info(
                                     //        String.format("%d + %d = %d", request.getA(), request.getB(), response.getSum()));
                                 }
@@ -195,12 +197,13 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
     }
 
     // MainActivity Preview sends vector of coordinates to here
-    void setTraj(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
+    void setTraj(int i,ArrayList<Float> x, ArrayList<Float> y, ArrayList<Float> z, ArrayList<Time> t) {
         xes = x;
         yes = y;
         zes = z;
         tes = t;
         serviceToggle = true;
+        quad = i;
         Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
     }
 }

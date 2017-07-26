@@ -92,10 +92,9 @@ public class CanvasView extends View {
         mPath3 = new Path();
 
         // TODO change colours to holo colours
-        DataShare.getInstance("quad1").setQuadColour(Color.RED);
-        DataShare.getInstance("quad2").setQuadColour(Color.GREEN);
-        DataShare.getInstance("quad3").setQuadColour(Color.BLUE);
-
+        DataShare.getInstance("quad1").setQuadColour(Color.parseColor("#FF1900"));
+        DataShare.getInstance("quad2").setQuadColour(Color.parseColor("#009E3A"));
+        DataShare.getInstance("quad3").setQuadColour(Color.parseColor("#225CCF"));
         // Paint instantiations for trajectories ///////////////////////////////////////////////////
         mPaint1 = new Paint();
         mPaint1.setAntiAlias(true);

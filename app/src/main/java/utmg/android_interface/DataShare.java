@@ -45,6 +45,14 @@ public class DataShare extends Application {
     private static ArrayList<Float> yPixel2;
     private static ArrayList<Float> yPixel3;
 
+    private static ArrayList<Float> xCompressed1;
+    private static ArrayList<Float> xCompressed2;
+    private static ArrayList<Float> xCompressed3;
+
+    private static ArrayList<Float> yCompressed1;
+    private static ArrayList<Float> yCompressed2;
+    private static ArrayList<Float> yCompressed3;
+
     private static int seekLoc1;
     private static int seekLoc2;
     private static int seekLoc3;
@@ -63,9 +71,9 @@ public class DataShare extends Application {
 
     public DataShare() {
 
-        quad1.setQuadColour(Color.RED);
-        quad2.setQuadColour(Color.GREEN);
-        quad3.setQuadColour(Color.BLUE);
+        quad1.setQuadColour(Color.parseColor("#FF1900"));
+        quad2.setQuadColour(Color.parseColor("#009E3A"));
+        quad3.setQuadColour(Color.parseColor("#225CCF"));
 
     }
 
@@ -319,6 +327,62 @@ public class DataShare extends Application {
 
     public static float getMainCanvasWidth () {
         return mainCanvasWidth;
+    }
+
+    public static void setXCompressedVec (int i, ArrayList<Float> p) {
+        switch (i) {
+            case 1:
+                xCompressed1 = p;
+                break;
+            case 2:
+                xCompressed2 = p;
+                break;
+            case 3:
+                xCompressed3 = p;
+                break;
+            default:
+        }
+    }
+
+    public static ArrayList<Float> getXCompressedVec (int i) {
+        switch (i) {
+            case 1:
+                return xCompressed1;
+            case 2:
+                return xCompressed2;
+            case 3:
+                return xCompressed3;
+            default:
+                return null;
+        }
+    }
+
+    public static void setYCompressedVec (int i, ArrayList<Float> p) {
+        switch (i) {
+            case 1:
+                yCompressed1 = p;
+                break;
+            case 2:
+                yCompressed2 = p;
+                break;
+            case 3:
+                yCompressed3 = p;
+                break;
+            default:
+        }
+    }
+
+    public static ArrayList<Float> getYCompressedVec (int i) {
+        switch (i) {
+            case 1:
+                return yCompressed1;
+            case 2:
+                return yCompressed2;
+            case 3:
+                return yCompressed3;
+            default:
+                return null;
+        }
     }
 
 }

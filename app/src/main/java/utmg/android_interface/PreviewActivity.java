@@ -132,7 +132,8 @@ public class PreviewActivity extends AppCompatActivity {
         compressed_points.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // plot points of compressed array on canvas
+//                // plot points of compressed array on canvas
+
             }
         });
         original_points.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +143,9 @@ public class PreviewActivity extends AppCompatActivity {
             }
         });
         //Log.i("PreviewActivity", "PreviewActivity started.");
+        
 
+        
         pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
@@ -234,16 +237,21 @@ public class PreviewActivity extends AppCompatActivity {
 
             // calls convertROSPathToPixel - self explanatory
 //            if(xPixelVec1.size() != 0) {
-            Log.i("PreviewActivity", "Calling convertROSPathToPixelVec for quad 1");
+            Log.i("PreviewActivity", "Calling convertROSPathToPixelVec for quad 111");
             convertROSPathToPixelVec(1, DataShare.getServicedPath(1));
             path1 = DataShare.getPath(1);
 //            }
 //            if(xPixelVec2.size() != 0) {
-//                convertROSPathToPixelVec(2, DataShare.getServicedPath(2));
+            Log.i("PreviewActivity", "Calling convertROSPathToPixelVec for quad 222");
+            convertROSPathToPixelVec(2, DataShare.getServicedPath(2));
+            path2 = DataShare.getPath(2);
 //            }
 //            if(xPixelVec3.size() != 0) {
 //                convertROSPathToPixelVec(3, DataShare.getServicedPath(3));
 //            }
+            Log.i("PreviewActivity", "Calling convertROSPathToPixelVec for quad 333");
+            convertROSPathToPixelVec(3, DataShare.getServicedPath(3));
+            path3 = DataShare.getPath(3);
         }
 
         float mainWidth = DataShare.getMainCanvasWidth();
@@ -257,12 +265,23 @@ public class PreviewActivity extends AppCompatActivity {
         scaleMatrix.setScale(scaledWidth,scaledHeight);
 
         // TODO enable scaling once conflict of Paths is figured out
-        path1.transform(scaleMatrix);
-        //path2.transform(scaleMatrix);
-        //path3.transform(scaleMatrix);
+        if(path1 != null){
+            path1.transform(scaleMatrix);
+        }
+        if(path2 != null){
+            path2.transform(scaleMatrix);
+        }
+        if(path3 != null){
+            path3.transform(scaleMatrix);
+        }
 
         xPixelVec1Scaled = new ArrayList<Float>();
         yPixelVec1Scaled = new ArrayList<Float>();
+        xPixelVec2Scaled = new ArrayList<Float>();
+        yPixelVec2Scaled = new ArrayList<Float>();
+        xPixelVec3Scaled = new ArrayList<Float>();
+        yPixelVec3Scaled = new ArrayList<Float>();
+
         // transforming arrays for quad1
         if (xPixelVec1 != null) {
 
@@ -389,33 +408,34 @@ public class PreviewActivity extends AppCompatActivity {
                     }
                 }
 
-//                // quad 2
-//                if (pref.getBoolean("quad2", true)) {
-//                    if (DataShare.getXPixelVec(2) == null) {
-//                        quad2.setVisibility(View.INVISIBLE);
-//                    } else {
-//                        // place imageView at start of path on launch of PreviewActivity
-//                        if (togglei == 0) {
-//                            quad2.setX(xPixelVec2.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
-//                            quad2.setY(yPixelVec2.get(0) - quad1.getHeight() / 2);
-//                            quad2.setVisibility(View.VISIBLE);
-//                        }
-//                    }
-//                }
-//
-//                // quad 3
-//                if (pref.getBoolean("quad3", true)) {
-//                    if (DataShare.getXPixelVec(3) == null) {
-//                        quad3.setVisibility(View.INVISIBLE);
-//                    } else {
-//                        // place imageView at start of path on launch of PreviewActivity
-//                        if (togglei == 0) {
-//                            quad3.setX(xPixelVec3.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
-//                            quad3.setY(yPixelVec3.get(0) - quad1.getHeight() / 2);
-//                            quad3.setVisibility(View.VISIBLE);
-//                        }
-//                    }
-//                }
+                // quad 2
+                if (pref.getBoolean("quad2", true)) {
+                    if (DataShare.getXPixelVec(2) == null) {
+                        quad2.setVisibility(View.INVISIBLE);
+                    } else {
+                        // place imageView at start of path on launch of PreviewActivity
+                        if (togglei == 0) {
+                            quad2.setX(xPixelVec2.get(0) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                            quad2.setY(yPixelVec2.get(0) - quad2.getHeight() / 2);
+                            quad2.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+
+                // quad 3
+                if (pref.getBoolean("quad3", true)) {
+                    //System.out.println("DataShare.getXPixelVec3" + DataShare.getXPixelVec(3));
+                    if (DataShare.getXPixelVec(3) == null) {
+                        quad3.setVisibility(View.INVISIBLE);
+                    } else {
+                        // place imageView at start of path on launch of PreviewActivity
+                        if (togglei == 0) {
+                            quad3.setX(xPixelVec3.get(0) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                            quad3.setY(yPixelVec3.get(0) - quad2.getHeight() / 2);
+                            quad3.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
                 handlerQuad.postDelayed(this, 10);
             }
         };
@@ -664,33 +684,33 @@ public class PreviewActivity extends AppCompatActivity {
                                             }
                                         }
 
-//                                        if (xPixelVec2 != null) {
-//                                            if (index == xPixelVec2.size()) {
-//                                                // This will handle the error
-//
-//                                            } else if (index > xPixelVec2.size()) {
-//                                                quad2.setX(xPixelVec2.get(xPixelVec2.size()-1) - quad2.getWidth() / 2+ canvasSize.getLeft());
-//                                                quad2.setY(yPixelVec2.get(yPixelVec2.size()-1) - quad2.getHeight() / 2);
-//
-//                                            } else {
-//                                                quad2.setX(xPixelVec2.get(index) - quad2.getWidth() / 2 + canvasSize.getLeft());
-//                                                quad2.setY(yPixelVec2.get(index) - quad2.getHeight() / 2);
-//                                            }
-//                                        }
-//
-//                                        if (xPixelVec3 != null) {
-//                                            if (index == xPixelVec3.size()) {
-//                                                // This will handle the error
-//
-//                                            } else if (index > xPixelVec3.size()) {
-//                                                quad3.setX(xPixelVec3.get(xPixelVec3.size()-1) - quad3.getWidth() / 2+ canvasSize.getLeft());
-//                                                quad3.setY(yPixelVec3.get(yPixelVec3.size()-1) - quad3.getHeight() / 2);
-//
-//                                            } else {
-//                                                quad3.setX(xPixelVec3.get(index) - quad3.getWidth() / 2 + canvasSize.getLeft());
-//                                                quad3.setY(yPixelVec3.get(index) - quad3.getHeight() / 2);
-//                                            }
-//                                        }
+                                        if (xPixelVec2 != null) {
+                                            if (index == xPixelVec2.size()) {
+                                                // This will handle the error
+
+                                            } else if (index > xPixelVec2.size()) {
+                                                quad2.setX(xPixelVec2.get(xPixelVec2.size()-1) - quad2.getWidth() / 2+ canvasSize.getLeft());
+                                                quad2.setY(yPixelVec2.get(yPixelVec2.size()-1) - quad2.getHeight() / 2);
+
+                                            } else {
+                                                quad2.setX(xPixelVec2.get(index) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                                                quad2.setY(yPixelVec2.get(index) - quad2.getHeight() / 2);
+                                            }
+                                        }
+
+                                        if (xPixelVec3 != null) {
+                                            if (index == xPixelVec3.size()) {
+                                                // This will handle the error
+
+                                            } else if (index > xPixelVec3.size()) {
+                                                quad3.setX(xPixelVec3.get(xPixelVec3.size()-1) - quad3.getWidth() / 2+ canvasSize.getLeft());
+                                                quad3.setY(yPixelVec3.get(yPixelVec3.size()-1) - quad3.getHeight() / 2);
+
+                                            } else {
+                                                quad3.setX(xPixelVec3.get(index) - quad3.getWidth() / 2 + canvasSize.getLeft());
+                                                quad3.setY(yPixelVec3.get(index) - quad3.getHeight() / 2);
+                                            }
+                                        }
                                     }
                                 }
                             });
@@ -828,9 +848,8 @@ public class PreviewActivity extends AppCompatActivity {
 
     private void seekAll() {
         // set seekbar max equal to the longest quad length - should equal longest time
-        // TODO undo when working with all 3 quads
-        //quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
-        quadAllSeek.setMax(xPixelVec1.size());
+        quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
+        //quadAllSeek.setMax(xPixelVec1.size());
 
         final Handler seekH = new Handler();
         Runnable seekR = new Runnable() {
@@ -948,7 +967,7 @@ public class PreviewActivity extends AppCompatActivity {
 
                     DataShare.setPath(1, mPath1);
                     scalePath(mPath1);
-                    scaleDot();
+                    scaleDot1();
                     break;
 
                 case 2:
@@ -980,6 +999,8 @@ public class PreviewActivity extends AppCompatActivity {
                     }
 
                     DataShare.setPath(2, mPath2);
+                    scalePath(mPath2);
+                    scaleDot2();
                     break;
 
                 case 3:
@@ -1011,6 +1032,8 @@ public class PreviewActivity extends AppCompatActivity {
                     }
 
                     DataShare.setPath(3, mPath3);
+                    scalePath(mPath3);
+                    scaleDot3();
                     break;
             }
         }
@@ -1032,7 +1055,7 @@ public class PreviewActivity extends AppCompatActivity {
         p.transform(scaleMatrix);
     }
 
-    public void scaleDot () {
+    public void scaleDot1 () {
         float mainWidth = DataShare.getMainCanvasWidth();
         float mainHeight = DataShare.getMainCanvasHeight();
         float previewHeight = canvasSize.getLayoutParams().height;
@@ -1067,8 +1090,81 @@ public class PreviewActivity extends AppCompatActivity {
         }
 
     }
-    
-    
+
+    public void scaleDot2 () {
+        float mainWidth = DataShare.getMainCanvasWidth();
+        float mainHeight = DataShare.getMainCanvasHeight();
+        float previewHeight = canvasSize.getLayoutParams().height;
+        float previewWidth = canvasSize.getLayoutParams().width;
+        float scaledWidth = mainWidth / previewWidth;
+        float scaledHeight = mainHeight / previewHeight;
+
+        // transforming arrays for quad2
+        if (xPixelVec2 != null) {
+
+            // transforming x's
+            float tempx2 = 0;
+            for (int i = 0; i < xPixelVec2.size() - 1; i++) {
+                tempx2 = xPixelVec2.get(i);
+                tempx2 = tempx2 * scaledWidth;
+                xPixelVec2Scaled.add(i, tempx2);
+            }
+            xPixelVec2 = xPixelVec2Scaled;
+            DataShare.setXPixelVec(2, xPixelVec2Scaled);
+            xPixelVec2Scaled = null;
+
+            // transforming y's
+            float tempy2 = 0;
+            for (int i = 0; i < yPixelVec2.size() - 1; i++) {
+                tempy2 = yPixelVec2.get(i);
+                tempy2 = tempy2 * scaledHeight;
+                yPixelVec2Scaled.add(i, tempy2);
+            }
+            yPixelVec2 = yPixelVec2Scaled;
+            DataShare.setYPixelVec(2, yPixelVec2Scaled);
+            yPixelVec2Scaled = null;
+        }
+
+    }
+
+    public void scaleDot3 () {
+        float mainWidth = DataShare.getMainCanvasWidth();
+        float mainHeight = DataShare.getMainCanvasHeight();
+        float previewHeight = canvasSize.getLayoutParams().height;
+        float previewWidth = canvasSize.getLayoutParams().width;
+        float scaledWidth = mainWidth / previewWidth;
+        float scaledHeight = mainHeight / previewHeight;
+
+        // transforming arrays for quad3
+        if (xPixelVec3 != null) {
+
+            // transforming x's
+            float tempx3 = 0;
+            for (int i = 0; i < xPixelVec3.size() - 1; i++) {
+                tempx3 = xPixelVec3.get(i);
+                tempx3 = tempx3 * scaledWidth;
+                xPixelVec3Scaled.add(i, tempx3);
+            }
+            xPixelVec3 = xPixelVec3Scaled;
+            DataShare.setXPixelVec(3, xPixelVec3Scaled);
+            xPixelVec3Scaled = null;
+
+            // transforming y's
+            float tempy3 = 0;
+            for (int i = 0; i < yPixelVec3.size() - 1; i++) {
+                tempy3 = yPixelVec3.get(i);
+                tempy3 = tempy3 * scaledHeight;
+                yPixelVec3Scaled.add(i, tempy3);
+            }
+            yPixelVec3 = yPixelVec3Scaled;
+            DataShare.setYPixelVec(3, yPixelVec3Scaled);
+            yPixelVec3Scaled = null;
+        }
+
+    }
+
+
+
 
     // transform specified object's x position to pixels
     public double xMeterToPixel(double x, double y) {
