@@ -395,7 +395,7 @@ public class PreviewActivity extends AppCompatActivity {
                 // quad 1
                 if (pref.getBoolean("quad1", true)) {
 
-                    if (DataShare.getXPixelVec(1) == null) {
+                    if (DataShare.getXPixelVec(1).isEmpty() == true) {
                         quad1.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on launch of PreviewActivity
@@ -410,7 +410,7 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 2
                 if (pref.getBoolean("quad2", true)) {
-                    if (DataShare.getXPixelVec(2) == null) {
+                    if (DataShare.getXPixelVec(2).isEmpty() == true) {
                         quad2.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on launch of PreviewActivity
@@ -425,7 +425,7 @@ public class PreviewActivity extends AppCompatActivity {
                 // quad 3
                 if (pref.getBoolean("quad3", true)) {
                     //System.out.println("DataShare.getXPixelVec3" + DataShare.getXPixelVec(3));
-                    if (DataShare.getXPixelVec(3) == null) {
+                    if (DataShare.getXPixelVec(3).isEmpty() == true) {
                         quad3.setVisibility(View.INVISIBLE);
                     } else {
                         // place imageView at start of path on launch of PreviewActivity
