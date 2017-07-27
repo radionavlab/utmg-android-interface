@@ -107,16 +107,6 @@ public class MainActivity extends AppCompatRosActivity {
         DataShare.setMainCanvasWidth(canvasSize.getLayoutParams().width);
 
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
-
-        Log.i("Main Activity", "                         " );
-        Log.i("Main Activity", "                         " );
-        Log.i("Main Activity", "                         " );
-        Log.i("Main Activity", "                         " );
-        Log.i("Main Activity", "                         " );
-        Log.i("Main Activity", "                         " );
-        Log.i("Main Activity", "                         " );
-        Log.i("Main Activity", "                         " );
-        Log.i("Main Activity", "                         " );
         
         Log.i("canvasSize", canvasSize.getLayoutParams().width + "\t" + canvasSize.getLayoutParams().height);
 
@@ -204,7 +194,7 @@ public class MainActivity extends AppCompatRosActivity {
 //                Log.i("xPixelVec3", "" + DataShare.getXPixelVec(3).size());
 
                 DataShare.setYPixelVec(1, customCanvas.yPixelVec1);
-                 DataShare.setYPixelVec(2, customCanvas.yPixelVec2);
+                DataShare.setYPixelVec(2, customCanvas.yPixelVec2);
                 DataShare.setYPixelVec(3, customCanvas.yPixelVec3);
 
                 DataShare.setCurrentTime(1, customCanvas.getTimesVec1());
@@ -314,6 +304,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec1 = customCanvas.getxCoordVec1();
                 yCoordVec1 = customCanvas.getyCoordVec1();
                 zCoordVec1 = customCanvas.getzCoordVec1();
+                timesVec1 = customCanvas.getTimesVec1();
                 nodeMain.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
             }
         });
@@ -327,6 +318,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec2 = customCanvas.getxCoordVec2();
                 yCoordVec2 = customCanvas.getyCoordVec2();
                 zCoordVec2 = customCanvas.getzCoordVec2();
+                timesVec2 = customCanvas.getTimesVec2();
                 nodeMain.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
             }
         });
@@ -340,6 +332,7 @@ public class MainActivity extends AppCompatRosActivity {
                 xCoordVec3 = customCanvas.getxCoordVec3();
                 yCoordVec3 = customCanvas.getyCoordVec3();
                 zCoordVec3 = customCanvas.getzCoordVec3();
+                timesVec3 = customCanvas.getTimesVec3();
                 nodeMain.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
             }
         });
