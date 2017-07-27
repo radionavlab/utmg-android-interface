@@ -34,7 +34,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import utmg.android_interface.DataShare;
+import utmg.android_interface.DefaultCallback;
+import utmg.android_interface.QuadUtils.Point3;
 import utmg.android_interface.QuadUtils.Quad;
+import utmg.android_interface.QuadUtils.Trajectory;
 import utmg.android_interface.R;
 import utmg.android_interface.ROSClasses.ROSNodeMain;
 import utmg.android_interface.ROSClasses.ROSNodeService;
@@ -118,29 +121,12 @@ public class MainActivity extends AppCompatRosActivity {
             @Override
             public void onClick(View view) {
             // compress arrays, send to path planner, wait to launch PreviewActivity until service finishes
-            if(pref.getBoolean("serviceToggle",false)) {
-                if (xCoordVec1.size() != 0) {
-                    compressArrays(1);
-                    nodeService.setTrajectory(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
-                    while (DataShare.getServicedPath(1) == null) {//todo this is kinda wrong
+            nodeService.getOptimizedTrajectories(new TrajectoryCallback(quads.size()){
+                    public void onFinishedAll(boolean success){//once all quads have finished, this should be called. Who knows if it will work
+                        Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
+                        startActivity(intent);
                     }
-                }
-                if (xCoordVec2.size() != 0) {
-                    compressArrays(2);
-                    nodeService.setTrajectory(xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
-                    while (DataShare.getServicedPath(2) == null) {
-                    }
-                }
-                if (xCoordVec3.size() != 0) {
-                    compressArrays(3);
-                    nodeService.setTrajectory(xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
-                    while (DataShare.getServicedPath(3) == null) {
-                    }
-                }
-            }
-
-            Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
-            startActivity(intent);
+                });
             }
         });
 
@@ -187,10 +173,7 @@ public class MainActivity extends AppCompatRosActivity {
         fabClear.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View view)
-            {
-
-
+            public void onClick(View view) {
             }
         });
 
@@ -352,19 +335,16 @@ public class MainActivity extends AppCompatRosActivity {
         }
     }
 
-    public void compressArrays(int quad) {
+    public void compressArrays(Quad quad) {
+        Trajectory old = quad.getTrajectory();
         int i = 0;
         float siddarth = 1;
         float x1, x2 = 0;
         float y1, y2 = 0;
         float slope1 = 0;
         float slope2 = 0;
-
-        Log.i(" 1111111111 ", "" + xCoordVec1.size());
-        xCompressed1.add(xCoordVec1.get(0));
-        yCompressed1.add(yCoordVec1.get(0));
-        zCompressed1.add(zCoordVec1.get(0));
-        timeCompressed1.add(timesVec1.get(0));
+        Trajectory compressed=new Trajectory();
+        compressed.addPoint(old.getPoints().get(0));
         while (i + 1 < xCoordVec1.size() - 1) {
             x1 = xCoordVec1.get(i);
             x2 = xCoordVec1.get(i + 1);
@@ -548,6 +528,21 @@ public class MainActivity extends AppCompatRosActivity {
 
             customCanvas.clearQuad(((FloatingActionButton)v).getTitle());
         }
+    }
+    abstract class TrajectoryCallback extends DefaultCallback{
+        int total,count;
+        public TrajectoryCallback(int total){
+            this.total=total;
+        }
+        @Override
+        public void onFinished(boolean success){
+            count++;
+            if(total==count){
+                onFinishedAll(success);
+            }
+        }
+        public void onFinishedAll(boolean success){}
+
     }
 
 }
