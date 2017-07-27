@@ -394,6 +394,9 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 1
                 if (pref.getBoolean("quad1", true)) {
+                if(DataShare.getXPixelVec(1) == null){
+                    quad1.setVisibility(View.INVISIBLE);
+                }else {
 
                     if (DataShare.getXPixelVec(1).isEmpty() == true) {
                         quad1.setVisibility(View.INVISIBLE);
@@ -407,17 +410,22 @@ public class PreviewActivity extends AppCompatActivity {
                         }
                     }
                 }
+                }
 
                 // quad 2
                 if (pref.getBoolean("quad2", true)) {
-                    if (DataShare.getXPixelVec(2).isEmpty() == true) {
+                    if(DataShare.getXPixelVec(2) == null){
                         quad2.setVisibility(View.INVISIBLE);
-                    } else {
-                        // place imageView at start of path on launch of PreviewActivity
-                        if (togglei == 0) {
-                            quad2.setX(xPixelVec2.get(0) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                            quad2.setY(yPixelVec2.get(0) - quad2.getHeight() / 2);
-                            quad2.setVisibility(View.VISIBLE);
+                    }else {
+                        if (DataShare.getXPixelVec(2).isEmpty() == true) {// error is being thrown here NullPointer because cannot determine if it is empty if it is null
+                            quad2.setVisibility(View.INVISIBLE);
+                        } else {
+                            // place imageView at start of path on launch of PreviewActivity
+                            if (togglei == 0) {
+                                quad2.setX(xPixelVec2.get(0) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                                quad2.setY(yPixelVec2.get(0) - quad2.getHeight() / 2);
+                                quad2.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 }
@@ -425,14 +433,18 @@ public class PreviewActivity extends AppCompatActivity {
                 // quad 3
                 if (pref.getBoolean("quad3", true)) {
                     //System.out.println("DataShare.getXPixelVec3" + DataShare.getXPixelVec(3));
-                    if (DataShare.getXPixelVec(3).isEmpty() == true) {
+                    if (DataShare.getXPixelVec(3) == null) {
                         quad3.setVisibility(View.INVISIBLE);
                     } else {
-                        // place imageView at start of path on launch of PreviewActivity
-                        if (togglei == 0) {
-                            quad3.setX(xPixelVec3.get(0) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                            quad3.setY(yPixelVec3.get(0) - quad2.getHeight() / 2);
-                            quad3.setVisibility(View.VISIBLE);
+                        if (DataShare.getXPixelVec(3).isEmpty() == true) {
+                            quad3.setVisibility(View.INVISIBLE);
+                        } else {
+                            // place imageView at start of path on launch of PreviewActivity
+                            if (togglei == 0) {
+                                quad3.setX(xPixelVec3.get(0) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                                quad3.setY(yPixelVec3.get(0) - quad2.getHeight() / 2);
+                                quad3.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 }
