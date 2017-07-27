@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -25,19 +24,15 @@ import android.widget.TextView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import org.ros.android.AppCompatRosActivity;
-import org.ros.master.client.MasterStateClient;
-import org.ros.message.Time;
-import org.ros.node.Node;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import utmg.android_interface.Canvases.DrawingCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.DefaultCallback;
-import utmg.android_interface.QuadUtils.Point3;
 import utmg.android_interface.QuadUtils.Quad;
-import utmg.android_interface.QuadUtils.Trajectory;
 import utmg.android_interface.R;
 import utmg.android_interface.ROSClasses.ROSNodeMain;
 import utmg.android_interface.ROSClasses.ROSNodeService;
@@ -46,7 +41,7 @@ public class MainActivity extends AppCompatRosActivity {
 
     ROSNodeMain nodeMain;
     ROSNodeService nodeService;
-    private CanvasView customCanvas;
+    private DrawingCanvas customCanvas;
 
     private Switch quad1Switch;
     private Switch quad2Switch;
@@ -90,7 +85,7 @@ public class MainActivity extends AppCompatRosActivity {
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
 
-        customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
+        customCanvas = (DrawingCanvas) findViewById(R.id.signature_canvas);
         DataShare.save("canvasView",customCanvas);
 
         Log.i("canvasSize", canvasSize.getLayoutParams().width + "\t" + canvasSize.getLayoutParams().height);
@@ -345,79 +340,6 @@ public class MainActivity extends AppCompatRosActivity {
         canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * scale);
     }
-
-    // transform specified object's x position to pixels
-    // TODO redo to match new design architecture
-    public float objectXToPixel(String item) {
-
-        float normX = 0;
-
-        if (item.equals("quad1")) {
-            normX = (float) DataShare.getInstance("quad1").getY() / -pref.getFloat("newWidth",5);
-        }
-        else if (item.equals("quad2")) {
-            Thing quad2 = DataShare.getInstance("quad2");
-            normX = (float) quad2.getY() / -pref.getFloat("newWidth",5);
-        }
-        else if (item.equals("quad3")) {
-            Thing quad3 = DataShare.getInstance("quad3");
-            normX = (float) quad3.getY() / -pref.getFloat("newWidth",5);
-        }
-        else if (item.equals("sword")) {
-            Thing sword = DataShare.getInstance("sword");
-            normX = (float) sword.getY() / -pref.getFloat("newWidth",5);
-        }
-        else if (item.equals("obstacle1")) {
-            Thing obstacle1 = DataShare.getInstance("obstacle1");
-            normX = (float) obstacle1.getY() / -pref.getFloat("newWidth",5);
-        }
-        else if (item.equals("obstacle2")) {
-            Thing obstacle2 = DataShare.getInstance("obstacle2");
-            normX = (float) obstacle2.getY() / -pref.getFloat("newWidth",5);
-        }
-
-        float transX = normX * canvasSize.getWidth();
-        float xCoord = canvasSize.getX() + canvasSize.getWidth()/2 + transX;
-
-        return xCoord;
-    }
-
-    // transform specified object's y position to pixels
-    public float objectYToPixel(String item) {
-
-        float normY = 0;
-
-        if (item.equals("quad1")) {
-            Thing quad1 = DataShare.getInstance("quad1");
-            normY = (float) quad1.getX() / pref.getFloat("newHeight",3);
-        }
-        else if (item.equals("quad2")) {
-            Thing quad2 = DataShare.getInstance("quad2");
-            normY = (float) quad2.getX() / pref.getFloat("newHeight",3);
-        }
-        else if (item.equals("quad3")) {
-            Thing quad3 = DataShare.getInstance("quad3");
-            normY = (float) quad3.getX() / pref.getFloat("newHeight",3);
-        }
-        else if (item.equals("sword")) {
-            Thing sword = DataShare.getInstance("sword");
-            normY = (float) sword.getX() / pref.getFloat("newHeight",3);
-        }
-        else if (item.equals("obstacle1")) {
-            Thing obstacle1 = DataShare.getInstance("obstacle1");
-            normY = (float) obstacle1.getX() / pref.getFloat("newHeight",3);
-        }
-        else if (item.equals("obstacle2")) {
-            Thing obstacle2 = DataShare.getInstance("obstacle2");
-            normY = (float) obstacle2.getX() / pref.getFloat("newHeight",3);
-        }
-
-        float transY = normY * canvasSize.getHeight();
-        float yCoord = canvasSize.getY() + canvasSize.getHeight()/2 - transY;
-
-        return yCoord;
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)

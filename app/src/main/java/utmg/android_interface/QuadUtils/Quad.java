@@ -44,8 +44,8 @@ public class Quad extends GameEntity{
     public void addPoint(Point3 point){
         trajectory.addPoint(point);
     }
-    public int getCount(){
-        return trajectory.getCount();
+    public int size(){
+        return trajectory.size();
     }
     public int getColor(){ return color;}
     public Trajectory getOptimizedTrajectory(){return optimizedTrajectory;}

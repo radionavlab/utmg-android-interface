@@ -8,8 +8,6 @@ import org.ros.concurrent.CancellableLoop;
 import org.ros.exception.RemoteException;
 import org.ros.exception.RosRuntimeException;
 import org.ros.exception.ServiceNotFoundException;
-import org.ros.internal.message.Message;
-import org.ros.internal.message.field.MessageFieldType;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
@@ -30,7 +28,7 @@ import mav_trajectory_generation_ros.minSnapStamped;
 import mav_trajectory_generation_ros.minSnapStampedRequest;
 import mav_trajectory_generation_ros.minSnapStampedResponse;
 import nav_msgs.Path;
-import utmg.android_interface.Activities.CanvasView;
+import utmg.android_interface.Canvases.DrawingCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.Activities.MainActivity;
 import utmg.android_interface.DefaultCallback;
@@ -73,7 +71,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
             protected void loop() throws InterruptedException {
             // package each trajectory/waypoint into ROS message and send for quad1 ////////
             if (preview){
-                CanvasView canvasView = (CanvasView)DataShare.retrieve("quads");
+                DrawingCanvas canvasView = (DrawingCanvas)DataShare.retrieve("quads");
                 ArrayList<Quad> quads = (ArrayList<Quad>)DataShare.retrieve("quads");
                 for(Quad q: quads) {
                     if(q.getTrajectory().size()==0){//no points drawn for specific quad

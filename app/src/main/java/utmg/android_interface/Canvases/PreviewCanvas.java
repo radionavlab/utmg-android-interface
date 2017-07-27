@@ -1,4 +1,4 @@
-package utmg.android_interface.Activities;
+package utmg.android_interface.Canvases;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,13 +20,12 @@ import android.content.SharedPreferences;
 import org.ros.message.Time;
 
 import utmg.android_interface.DataShare;
+import utmg.android_interface.QuadUtils.Quad;
 
 
-public class PreviewCanvas extends View {
+public class PreviewCanvas extends CanvasView {
 
-    private Bitmap mBitmap;
-    private Canvas mCanvas;
-    Context context;
+
 
 //    private Path mPath1;
 //    private Path mPath2;
@@ -35,55 +34,11 @@ public class PreviewCanvas extends View {
 //    private Paint mPaint1;
 //    private Paint mPaint2;
 //    private Paint mPaint3;
-//
-//    private Paint mPaintWP1;
-//    private Paint mPaintWP2;
-//    private Paint mPaintWP3;
-
-    private float mX, mY;
     private static final float TOLERANCE = 5;
 
-    // ArrayList of meters
-    ArrayList<Float> xCoordVec1;
-    ArrayList<Float> yCoordVec1;
-    ArrayList<Float> zCoordVec1;
-    ArrayList<Float> xWaypoint1;
-    ArrayList<Float> yWaypoint1;
 
-    ArrayList<Float> xCoordVec2;
-    ArrayList<Float> yCoordVec2;
-    ArrayList<Float> zCoordVec2;
-    ArrayList<Float> xWaypoint2;
-    ArrayList<Float> yWaypoint2;
-
-    ArrayList<Float> xCoordVec3;
-    ArrayList<Float> yCoordVec3;
-    ArrayList<Float> zCoordVec3;
-    ArrayList<Float> xWaypoint3;
-    ArrayList<Float> yWaypoint3;
-
-    ArrayList<Float> xPixelVec1;
-    ArrayList<Float> yPixelVec1;
-    ArrayList<Float> zPixelVec1;
-
-    ArrayList<Float> xPixelVec2;
-    ArrayList<Float> yPixelVec2;
-    ArrayList<Float> zPixelVec2;
-
-    ArrayList<Float> xPixelVec3;
-    ArrayList<Float> yPixelVec3;
-    ArrayList<Float> zPixelVec3;
-
-    ArrayList<Time> timesVec1;
-    ArrayList<Time> timesVec2;
-    ArrayList<Time> timesVec3;
-
-    private long mRef1;
-    private long mRef2;
-    private long mRef3;
 
     SharedPreferences pref;
-    SharedPreferences.Editor prefEditor;
     int mode;
 
 
@@ -94,45 +49,13 @@ public class PreviewCanvas extends View {
         pref = c.getSharedPreferences("Pref", 0);
         mode = pref.getInt("mode", 0);
 
-        // TODO change colours to holo colours
-        DataShare.getInstance("quad1").setQuadColour(Color.RED);
-        DataShare.getInstance("quad2").setQuadColour(Color.GREEN);
-        DataShare.getInstance("quad3").setQuadColour(Color.BLUE);
-
         // instantiate x, y arrays
-        xCoordVec1 = new ArrayList<>();
-        yCoordVec1 = new ArrayList<>();
-        zCoordVec1 = new ArrayList<>();
-        xWaypoint1 = new ArrayList<>();
-        yWaypoint1 = new ArrayList<>();
 
-        xCoordVec2 = new ArrayList<>();
-        yCoordVec2 = new ArrayList<>();
-        zCoordVec2 = new ArrayList<>();
-        xWaypoint2 = new ArrayList<>();
-        yWaypoint2 = new ArrayList<>();
-
-        xCoordVec3 = new ArrayList<>();
-        yCoordVec3 = new ArrayList<>();
-        zCoordVec3 = new ArrayList<>();
-        xWaypoint3 = new ArrayList<>();
-        yWaypoint3 = new ArrayList<>();
-
-        // instantiate time arrays
-        timesVec1 = new ArrayList<>();
-        timesVec2 = new ArrayList<>();
-        timesVec3 = new ArrayList<>();
+        // TODO: 7/27/2017 Convert optimized arrays to pixels, then create paths out of them
     }
 
     // override onSizeChanged
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
 
-        // your Canvas will draw onto the defined Bitmap
-        mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mBitmap);
-    }
 
 
     // override onDraw
@@ -165,7 +88,7 @@ public class PreviewCanvas extends View {
     }
 
     public void callOnDraw() {
-        super.onDraw(mCanvas);
+        super.draw(mCanvas);
     }
 
     // when ACTION_DOWN start touch according to the x,y values
@@ -286,65 +209,9 @@ public class PreviewCanvas extends View {
     public ArrayList<Time> getTimesVec2() { return timesVec2; }
     public ArrayList<Time> getTimesVec3() { return timesVec3; }
 
-    // center x coordinate of bitmap
-    public int getCenterX() {
-        if(mBitmap != null) {
-            return mBitmap.getWidth() / 2;
-        }
-        return 0;
-    }
 
-    // center y coordinate of bitmap
-    public int getCenterY() {
-        if (mBitmap != null) {
-            return mBitmap.getHeight() / 2;
-        }
-        return 0;
-    }
 
-    // transform, normalize and scale x to meters
-    public float xMeters() {
-        float transX = -(mX - getCenterX());
-        if(mBitmap != null) {
-            float normX = transX/mBitmap.getWidth();
-            return normX * 5;
-        }
-        return 0;
 
-    }
-
-    // transform, normalize and scale y to meters
-    public float yMeters() {
-        // transY = -mY + getCenterY
-        float transY = -(mY - getCenterY());
-        if(mBitmap != null) {
-            float normY = transY/mBitmap.getHeight();
-            return normY * 3;
-        }
-        return 0;
-
-    }
-
-    Time getCurrentTime() {
-        long msecs = System.currentTimeMillis();
-        switch (pref.getInt("quadControl", 1)) {
-            case 1:
-                msecs = msecs - mRef1;
-                break;
-            case 2:
-                msecs = msecs - mRef2;
-                break;
-            case 3:
-                msecs = msecs - mRef3;
-                break;
-        }
-
-        Time mTime = new Time();
-        mTime.secs = (int) (msecs / 1000);
-        mTime.nsecs = (int)((msecs % 1000) * 1000000);
-
-        return mTime;
-    }
 
 
 }

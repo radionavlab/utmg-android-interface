@@ -24,6 +24,7 @@ import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
+import utmg.android_interface.Canvases.PreviewCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.R;
 
