@@ -681,7 +681,7 @@ public class PreviewActivity extends AppCompatActivity {
                                     // TODO fix logic
                                     int index = quadAllSeek.getProgress();
                                     if (toggle.isChecked() == false) {
-                                        if (xPixelVec1 != null) {
+                                        if (xPixelVec1.isEmpty() == false) {
 
                                             if (index == xPixelVec1.size()) {
                                                 // This will handle the error come back to this
@@ -696,7 +696,7 @@ public class PreviewActivity extends AppCompatActivity {
                                             }
                                         }
 
-                                        if (xPixelVec2 != null) {
+                                        if (xPixelVec2.isEmpty() == false) {
                                             if (index == xPixelVec2.size()) {
                                                 // This will handle the error
 
@@ -710,7 +710,7 @@ public class PreviewActivity extends AppCompatActivity {
                                             }
                                         }
 
-                                        if (xPixelVec3 != null) {
+                                        if (xPixelVec3.isEmpty() == false) {
                                             if (index == xPixelVec3.size()) {
                                                 // This will handle the error
 

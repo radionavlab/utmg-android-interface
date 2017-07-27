@@ -108,6 +108,16 @@ public class MainActivity extends AppCompatRosActivity {
 
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
 
+        Log.i("Main Activity", "                         " );
+        Log.i("Main Activity", "                         " );
+        Log.i("Main Activity", "                         " );
+        Log.i("Main Activity", "                         " );
+        Log.i("Main Activity", "                         " );
+        Log.i("Main Activity", "                         " );
+        Log.i("Main Activity", "                         " );
+        Log.i("Main Activity", "                         " );
+        Log.i("Main Activity", "                         " );
+        
         Log.i("canvasSize", canvasSize.getLayoutParams().width + "\t" + canvasSize.getLayoutParams().height);
 
         // instantiating z control slider
@@ -217,6 +227,7 @@ public class MainActivity extends AppCompatRosActivity {
                 timesVec3 = customCanvas.getTimesVec3();
 
                 // compress arrays, send to path planner, wait to launch PreviewActivity until service finishes
+                //if(pref.getBoolean("serviceToggle",false) && CONNECTED TO ROS) {
                 if(pref.getBoolean("serviceToggle",false)) {
                     Log.i("MainActivity", "Service Toggle enabled. Will attempt to contact service.");
                     if (xCoordVec1.size() != 0) {
