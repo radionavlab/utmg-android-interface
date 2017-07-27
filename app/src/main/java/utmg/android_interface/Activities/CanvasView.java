@@ -17,6 +17,7 @@ import utmg.android_interface.QuadUtils.Obstacle;
 import utmg.android_interface.QuadUtils.Point3;
 import utmg.android_interface.QuadUtils.Quad;
 import utmg.android_interface.QuadUtils.Sword;
+import utmg.android_interface.QuadUtils.Trajectory;
 
 public class CanvasView extends View {//// TODO: 7/25/2017 add multiquad, add obstacles 
 
@@ -35,7 +36,7 @@ public class CanvasView extends View {//// TODO: 7/25/2017 add multiquad, add ob
 
     private static final float TOLERANCE = 5;
 
-    ArrayList<Point3> waypoints, coordVec, pixelVec;
+    ArrayList<Point3> waypoints, pixelVec;
     
     private long mRef1;
 
@@ -52,7 +53,6 @@ public class CanvasView extends View {//// TODO: 7/25/2017 add multiquad, add ob
         // Instantiate variables
         path=new Path();
         waypoints=new ArrayList<>();
-        coordVec=new ArrayList<>();
         pixelVec=new ArrayList<>();
 
         // TODO change colours to holo colours
@@ -117,7 +117,6 @@ public class CanvasView extends View {//// TODO: 7/25/2017 add multiquad, add ob
 
             //TODO: check which quad is the active one and edit that
             path.reset();
-            coordVec.clear();
             waypoints.clear();
             pixelVec.clear();
             mRef1 = System.currentTimeMillis();
@@ -126,7 +125,6 @@ public class CanvasView extends View {//// TODO: 7/25/2017 add multiquad, add ob
 
         if (mode == 1) {
             waypoints.add(new Point3(x,y,0));
-            coordVec.add(new Point3(getYMeters(y),getXMeters(x),0));
         }
         super.draw(mCanvas);
     }
@@ -141,7 +139,6 @@ public class CanvasView extends View {//// TODO: 7/25/2017 add multiquad, add ob
             if (dx >= TOLERANCE || dy >= TOLERANCE) {
                 
                 path.quadTo(x0, y0, (x1 + x0) / 2, (y1 + y0) / 2);
-                coordVec.add(new Point3(getYMeters(y1),getXMeters(x1),0));
                 pixelVec.add(new Point3(x1,y1,0,getCurrentTime()));
                 //Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
             }
@@ -152,8 +149,7 @@ public class CanvasView extends View {//// TODO: 7/25/2017 add multiquad, add ob
     private void upTouch() { //mPath1.lineTo(mX, mY);
     }
 
-    public void clearCanvas() {//// TODO: 7/25/2017 should clear individual quads too, perhaps 
-        coordVec.clear();
+    public void clearCanvas() {//// TODO: 7/25/2017 should clear individual quads too, perhaps
         pixelVec.clear();
         waypoints.clear();
 
@@ -224,6 +220,13 @@ public class CanvasView extends View {//// TODO: 7/25/2017 add multiquad, add ob
         }
         return 0;
 
+    }
+    public Trajectory getMeters(Trajectory old){
+        Trajectory inMeters=new Trajectory();
+        for(Point3 p: old.getPoints()){
+            inMeters.addPoint(new Point3(getXMeters(p.getX()),getYMeters(p.getY()),p.getZ(),p.getTime()));
+        }
+        return inMeters;
     }
 
     Time getCurrentTime() {

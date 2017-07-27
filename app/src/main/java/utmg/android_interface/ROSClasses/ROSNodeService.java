@@ -30,6 +30,7 @@ import mav_trajectory_generation_ros.minSnapStamped;
 import mav_trajectory_generation_ros.minSnapStampedRequest;
 import mav_trajectory_generation_ros.minSnapStampedResponse;
 import nav_msgs.Path;
+import utmg.android_interface.Activities.CanvasView;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.Activities.MainActivity;
 import utmg.android_interface.DefaultCallback;
@@ -72,9 +73,10 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
             protected void loop() throws InterruptedException {
             // package each trajectory/waypoint into ROS message and send for quad1 ////////
             if (preview){
+                CanvasView canvasView = (CanvasView)DataShare.retrieve("quads");
                 ArrayList<Quad> quads = (ArrayList<Quad>)DataShare.retrieve("quads");
                 for(Quad q: quads) {
-                    if(q.getTrajectory().getCount()==0){//no points drawn for specific quad
+                    if(q.getTrajectory().size()==0){//no points drawn for specific quad
                         callback.onFinished(false);
                         continue;
                     }
@@ -98,7 +100,8 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
                     //Add points from trajectory to array of stamped poses
                     ArrayList<PoseStamped> poseStampedArray = new ArrayList<>();
-                    for (Point3 p: q.getTrajectory().getPoints()) {
+                    Trajectory toSend = canvasView.getMeters(compressArrays(q.getTrajectory()));
+                    for (Point3 p: toSend.getPoints()) {
                         Pose pose = connectedNode.getTopicMessageFactory().newFromType(Pose._TYPE);
                         geometry_msgs.Point point = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
                         point.setX(p.getX());
@@ -145,6 +148,32 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
     public void getOptimizedTrajectories(DefaultCallback dc) {
         callback=dc;
         preview=true;
+    }
+
+    public Trajectory compressArrays(Trajectory old) {
+        float siddarth = 1;
+        float x1, x2 = 0;
+        float y1, y2 = 0;
+        float slope1 = 0;
+        float slope2 = 0;
+        Trajectory compressed=new Trajectory();
+        compressed.addPoint(old.getPoints().get(0));
+        for(int i=1;i<old.size()-1;i++) {
+
+            x1 = old.getPoints().get(i).getX();
+            x2 = old.getPoints().get(i+1).getX();
+            y1 = old.getPoints().get(i).getY();
+            y2 = old.getPoints().get(i+1).getY();
+//                    slope1 = (y2 - y1)/(x2 - x1);
+            slope1 = (float)Math.atan2((y2 - y1),(x2 - x1));
+            if(Math.abs(slope1 - slope2) > siddarth) {
+                compressed.addPoint(new Point3(x1,y1,old.getPoints().get(i).getZ(),old.getPoints().get(i).getTime()));
+                slope2 = slope1;
+            }
+            i++;
+        }
+        compressed.addPoint(old.getPoints().get(old.size()-1));
+        return compressed;
     }
     class QuadServiceResponseListener<MessageType> implements ServiceResponseListener<minSnapStampedResponse>{
         String name;

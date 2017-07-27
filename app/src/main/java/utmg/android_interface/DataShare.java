@@ -16,12 +16,16 @@ import java.util.Map;
 import geometry_msgs.PoseArray;
 
 public class DataShare {
-    /*
+    /*  Dictionary of held items to date
+        Format:
+        <String identifier> instanceof <class>
+
         quads instanceof ArrayList<Quad>
         obstacles instanceof ArrayList<Obstacle>
         sword instanceof Sword
         teamName instanceof String
         masterUri instanceof java.net.URI
+        canvasView instanceof CanvasView
      */
 
 

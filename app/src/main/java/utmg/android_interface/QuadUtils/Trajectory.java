@@ -23,7 +23,7 @@ public class Trajectory {
     public void addPoint(Point3 point){
         points.add(point);
     }
-    public int getCount(){
+    public int size(){
         return points.size();
     }
     public void clear(){

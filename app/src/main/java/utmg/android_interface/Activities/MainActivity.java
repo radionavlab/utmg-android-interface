@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatRosActivity {
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
 
         customCanvas = (CanvasView) findViewById(R.id.signature_canvas);
+        DataShare.save("canvasView",customCanvas);
 
         Log.i("canvasSize", canvasSize.getLayoutParams().width + "\t" + canvasSize.getLayoutParams().height);
 
@@ -335,35 +336,7 @@ public class MainActivity extends AppCompatRosActivity {
         }
     }
 
-    public void compressArrays(Quad quad) {
-        Trajectory old = quad.getTrajectory();
-        int i = 0;
-        float siddarth = 1;
-        float x1, x2 = 0;
-        float y1, y2 = 0;
-        float slope1 = 0;
-        float slope2 = 0;
-        Trajectory compressed=new Trajectory();
-        compressed.addPoint(old.getPoints().get(0));
-        while (i + 1 < xCoordVec1.size() - 1) {
-            x1 = xCoordVec1.get(i);
-            x2 = xCoordVec1.get(i + 1);
-            y1 = yCoordVec1.get(i);
-            y2 = yCoordVec1.get(i + 1);
-            slope1 = (y2 - y1)/(x2 - x1);
-            if(Math.abs(slope1 - slope2) < siddarth) {
-                xCompressed1.add(x2);
-                yCompressed1.add(y2);
-                timeCompressed1.add(timesVec1.get(i+1));
-                zCompressed1.add(zCoordVec1.get(i+1));
-            }
-            slope2 = slope1;
-            i++;
-        }
-        Log.i(" 1C1C1C1C1C1 ", "" + xCompressed1.size());
 
-
-    }
 
     // rescaling canvas proportions to (somewhat) fit screen depending on screen orientation
     // TODO
