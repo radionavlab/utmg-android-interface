@@ -286,6 +286,7 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
 
                             if (publishToggle3) {
                                 publisherTrajectory3.publish(mPoseArray3);
+                                publisherPath3.publish(mPath3);
 
                                 seq3 = seq3 + 1;
                             }
