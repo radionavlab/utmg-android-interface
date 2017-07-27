@@ -135,9 +135,7 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
             }
         }
     }
-    public void update(){
-        this.draw(mCanvas);
-    }
+
 
 
 }
