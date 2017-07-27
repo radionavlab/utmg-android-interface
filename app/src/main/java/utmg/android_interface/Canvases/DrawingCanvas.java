@@ -3,20 +3,15 @@ package utmg.android_interface.Canvases;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import java.util.ArrayList;
-import android.content.SharedPreferences;
-import org.ros.message.Time;
 
 import utmg.android_interface.DataShare;
 import utmg.android_interface.QuadUtils.Obstacle;
 import utmg.android_interface.QuadUtils.Point3;
 import utmg.android_interface.QuadUtils.Quad;
 import utmg.android_interface.QuadUtils.Sword;
-import utmg.android_interface.QuadUtils.Trajectory;
 
 public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiquad, add obstacles
 
@@ -106,16 +101,7 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
     void upTouch() {
     }
 
-    public void clearCanvas() {
-        for(int i =0;i<quads.size();i++){
-            quads.get(i).clearTrajectory();
-            paths.get(i).reset();
-        }
-        invalidate();
-    }
-    public void clearQuad(String name){//// TODO: 7/25/2017 implement this 
-        
-    }
+
 
     //override the onTouchEvent
     @Override

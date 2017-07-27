@@ -83,6 +83,16 @@ public class CanvasView extends View {
             // TODO: 7/25/2017 draw quad here
         }
     }
+    public void clearCanvas() {
+        for(int i =0;i<quads.size();i++){
+            quads.get(i).clearTrajectory();
+            paths.get(i).reset();
+        }
+        invalidate();
+    }
+    public void clearQuad(String name){//// TODO: 7/25/2017 implement this
+
+    }
     // center x coordinate of bitmap
     public int getCenterX() {
         if(mBitmap != null) {
