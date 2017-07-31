@@ -865,31 +865,41 @@ public class PreviewActivity extends AppCompatActivity {
     private void seekAll() {
         // set seekbar max equal to the longest quad length - should equal longest time
         if(xPixelVec1 != null && xPixelVec2 != null && xPixelVec3 != null){
+            System.out.println("ALL THREE QUADS");
             quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
         }else if(xPixelVec1 == null){
             if(xPixelVec2 == null){
+                System.out.println("QUAD 3");
                 quadAllSeek.setMax(xPixelVec3.size());
             }else if (xPixelVec3 == null){
+                System.out.println("QUAD 2");
                 quadAllSeek.setMax(xPixelVec2.size());
             }else {
+                System.out.println("QUADS 3 & 2");
                 quadAllSeek.setMax(Math.max(xPixelVec3.size(), xPixelVec2.size()));
             }
         }
         else if(xPixelVec2 == null){
             if(xPixelVec1 == null){
+                System.out.println("QUAD 3");
                 quadAllSeek.setMax(xPixelVec3.size());
             }else if (xPixelVec3 == null){
+                System.out.println("QUAD 1");
                 quadAllSeek.setMax(xPixelVec1.size());
             }else {
+                System.out.println("QUADS 1 & 3");
                 quadAllSeek.setMax(Math.max(xPixelVec3.size(), xPixelVec1.size()));
             }
         }
         else if(xPixelVec3 == null){
             if(xPixelVec2 == null){
+                System.out.println("QUAD 1");
                 quadAllSeek.setMax(xPixelVec1.size());
             }else if (xPixelVec1 == null){
+                System.out.println("QUAD 2");
                 quadAllSeek.setMax(xPixelVec2.size());
             }else {
+                System.out.println("QUADS 1 & 2");
                 quadAllSeek.setMax(Math.max(xPixelVec1.size(), xPixelVec2.size()));
             }
         }
@@ -902,6 +912,7 @@ public class PreviewActivity extends AppCompatActivity {
             public void run() {
 
                 // get longest quad and store it into quadMax
+                if(xPixelVec1 != null){
                 if (xPixelVec1.size() == quadAllSeek.getMax()) {
                     quadMax = 1;
                     while (quadMax < quadAllSeek.getMax()) {
@@ -924,27 +935,31 @@ public class PreviewActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } else if (xPixelVec2.size() == quadAllSeek.getMax()) {
-                    quadMax = 2;
-                    while (quadMax < quadAllSeek.getMax()) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        seekH.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                int value = DataShare.getSeekLoc(quadMax);
-                                if (value != 0) {
-                                    quadAllSeek.setProgress(value);
-                                }
-                                if (value == quadAllSeek.getMax() - 1) {
-                                    quadAllSeek.setProgress(quadAllSeek.getMax());
-                                    toggle.setChecked(false);
-                                }
+                }
+                } else
+                if(xPixelVec2 != null){
+                    if (xPixelVec2.size() == quadAllSeek.getMax()) {
+                        quadMax = 2;
+                        while (quadMax < quadAllSeek.getMax()) {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                        });
+                            seekH.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    int value = DataShare.getSeekLoc(quadMax);
+                                    if (value != 0) {
+                                        quadAllSeek.setProgress(value);
+                                    }
+                                    if (value == quadAllSeek.getMax() - 1) {
+                                        quadAllSeek.setProgress(quadAllSeek.getMax());
+                                        toggle.setChecked(false);
+                                    }
+                                }
+                            });
+                        }
                     }
                 } else {
                     quadMax = 3;
@@ -1096,7 +1111,6 @@ public class PreviewActivity extends AppCompatActivity {
         Matrix scaleMatrix = new Matrix();
         scaleMatrix.setScale(scaledWidth,scaledHeight);
 
-        // TODO enable scaling once conflict of Paths is figured out
         p.transform(scaleMatrix);
     }
 
