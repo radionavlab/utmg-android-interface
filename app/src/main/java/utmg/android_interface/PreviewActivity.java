@@ -865,7 +865,7 @@ public class PreviewActivity extends AppCompatActivity {
     private void seekAll() {
         // set seekbar max equal to the longest quad length - should equal longest time
         if(xPixelVec1 != null && xPixelVec2 != null && xPixelVec3 != null){
-            System.out.println("ALL THREE QUADS");
+            System.out.println("ALL THREE QUADS " + quadAllSeek.getMax());
             quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
         }else if(xPixelVec1 == null){
             if(xPixelVec2 == null){
@@ -910,10 +910,10 @@ public class PreviewActivity extends AppCompatActivity {
         Runnable seekR = new Runnable() {
             @Override
             public void run() {
-
+                System.out.println("xPixelVec1");
                 // get longest quad and store it into quadMax
-                if(xPixelVec1 != null){
                 if (xPixelVec1.size() == quadAllSeek.getMax()) {
+                    System.out.println("xPixelVec1");
                     quadMax = 1;
                     while (quadMax < quadAllSeek.getMax()) {
                         try {
@@ -926,6 +926,7 @@ public class PreviewActivity extends AppCompatActivity {
                             public void run() {
                                 int value = DataShare.getSeekLoc(quadMax);
                                 if (value != 0) {
+                                    System.out.println("Settings Progress Bar to 1  " + value);
                                     quadAllSeek.setProgress(value);
                                 }
                                 if (value == quadAllSeek.getMax() - 1) {
@@ -935,10 +936,11 @@ public class PreviewActivity extends AppCompatActivity {
                             }
                         });
                     }
-                }
+
                 } else
-                if(xPixelVec2 != null){
+                    System.out.println("xPixelVec2");
                     if (xPixelVec2.size() == quadAllSeek.getMax()) {
+                        System.out.println("xPixelVec2");
                         quadMax = 2;
                         while (quadMax < quadAllSeek.getMax()) {
                             try {
@@ -951,6 +953,7 @@ public class PreviewActivity extends AppCompatActivity {
                                 public void run() {
                                     int value = DataShare.getSeekLoc(quadMax);
                                     if (value != 0) {
+                                        System.out.println("Settings Progress Bar to 2  " + value);
                                         quadAllSeek.setProgress(value);
                                     }
                                     if (value == quadAllSeek.getMax() - 1) {
@@ -960,9 +963,10 @@ public class PreviewActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                    }
                 } else {
+                    System.out.println("xPixelVec3");
                     quadMax = 3;
+                    System.out.println("xPixelVec3");
                     while (quadMax < quadAllSeek.getMax()) {
                         try {
                             Thread.sleep(100);
@@ -974,6 +978,7 @@ public class PreviewActivity extends AppCompatActivity {
                             public void run() {
                                 int value = DataShare.getSeekLoc(quadMax);
                                 if (value != 0) {
+                                    System.out.println("Settings Progress Bar to 3  " + value);
                                     quadAllSeek.setProgress(value);
                                 }
                                 if (value == quadAllSeek.getMax() - 1) {
