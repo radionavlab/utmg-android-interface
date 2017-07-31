@@ -868,31 +868,59 @@ public class PreviewActivity extends AppCompatActivity {
         // set seekbar max equal to the longest quad length - should equal longest time
         if(xPixelVec1 != null && xPixelVec2 != null && xPixelVec3 != null){
             quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
+            if(xPixelVec3.size() == quadAllSeek.getMax()){
+                quadMax = 3;
+            }else if(xPixelVec2.size() == quadAllSeek.getMax()){
+                quadMax = 2;
+            }else{
+                quadMax = 1;
+            }
         }else if(xPixelVec1 == null){
             if(xPixelVec2 == null){
                 quadAllSeek.setMax(xPixelVec3.size());
+                quadMax = 3;
             }else if (xPixelVec3 == null){
                 quadAllSeek.setMax(xPixelVec2.size());
+                quadMax = 2;
             }else {
                 quadAllSeek.setMax(Math.max(xPixelVec3.size(), xPixelVec2.size()));
+                if(xPixelVec3.size() == quadAllSeek.getMax()){
+                    quadMax = 3;
+                }else{
+                    quadMax = 2;
+                }
             }
         }
         else if(xPixelVec2 == null){
             if(xPixelVec1 == null){
                 quadAllSeek.setMax(xPixelVec3.size());
+                quadMax = 3;
             }else if (xPixelVec3 == null){
                 quadAllSeek.setMax(xPixelVec1.size());
+                quadMax = 1;
             }else {
                 quadAllSeek.setMax(Math.max(xPixelVec3.size(), xPixelVec1.size()));
+                if(xPixelVec3.size() == quadAllSeek.getMax()){
+                    quadMax = 3;
+                }else{
+                    quadMax = 1;
+                }
             }
         }
         else if(xPixelVec3 == null){
             if(xPixelVec2 == null){
                 quadAllSeek.setMax(xPixelVec1.size());
+                quadMax = 1;
             }else if (xPixelVec1 == null){
                 quadAllSeek.setMax(xPixelVec2.size());
+                quadMax = 2;
             }else {
                 quadAllSeek.setMax(Math.max(xPixelVec1.size(), xPixelVec2.size()));
+                if(xPixelVec1.size() == quadAllSeek.getMax()){
+                    quadMax = 1;
+                }else{
+                    quadMax = 2;
+                }
             }
         }
 
@@ -902,9 +930,8 @@ public class PreviewActivity extends AppCompatActivity {
         Runnable seekR = new Runnable() {
             @Override
             public void run() {
-                // get longest quad and store it into quadMax
-                if (xPixelVec1.size() == quadAllSeek.getMax()) {
-                    quadMax = 1;
+                switch (quadMax){
+                    case 1:
                     while (quadMax < quadAllSeek.getMax()) {
                         try {
                             Thread.sleep(100);
@@ -925,10 +952,8 @@ public class PreviewActivity extends AppCompatActivity {
                             }
                         });
                     }
-
-                } else
-                    if (xPixelVec2.size() == quadAllSeek.getMax()) {
-                        quadMax = 2;
+                        break;
+                    case 2:
                         while (quadMax < quadAllSeek.getMax()) {
                             try {
                                 Thread.sleep(100);
@@ -949,9 +974,10 @@ public class PreviewActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                } else {
-                    quadMax = 3;
-                    while (quadMax < quadAllSeek.getMax()) {
+
+                        break;
+                    case 3:
+                        while (quadMax < quadAllSeek.getMax()) {
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
@@ -971,6 +997,7 @@ public class PreviewActivity extends AppCompatActivity {
                             }
                         });
                     }
+                        break;
                 }
             }
         };
