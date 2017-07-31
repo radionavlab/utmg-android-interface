@@ -98,7 +98,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
                     //Add points from trajectory to array of stamped poses
                     ArrayList<PoseStamped> poseStampedArray = new ArrayList<>();
-                    Trajectory toSend = canvasView.getMeters(compressArrays(q.getTrajectory()));
+                    Trajectory toSend = compressArrays(q.getTrajectory());
                     for (Point3 p: toSend.getPoints()) {
                         Pose pose = connectedNode.getTopicMessageFactory().newFromType(Pose._TYPE);
                         geometry_msgs.Point point = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);

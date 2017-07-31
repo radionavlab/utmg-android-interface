@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import utmg.android_interface.Canvases.DrawingCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.DefaultCallback;
-import utmg.android_interface.PreviewActivity;
 import utmg.android_interface.QuadUtils.Quad;
 import utmg.android_interface.R;
 import utmg.android_interface.ROSClasses.ROSNodeMain;

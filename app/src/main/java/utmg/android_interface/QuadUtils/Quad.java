@@ -13,14 +13,12 @@ public class Quad extends GameEntity{
     Trajectory trajectory,optimizedTrajectory;
     int color;
 
-    @Deprecated
     public Quad(String name, Trajectory trajectory, int color){
         super(name);
         this.trajectory=trajectory;
         optimizedTrajectory=new Trajectory();
         this.color=color;
     }
-    @Deprecated
     public Quad(String name, ArrayList<Point3> points, int color){
         super(name);
         trajectory=new Trajectory(points);
@@ -57,6 +55,7 @@ public class Quad extends GameEntity{
     public boolean equals(Object other){
         return other instanceof Quad && name.equals(((Quad)other).getName());
     }
+
 
 
 }

@@ -30,6 +30,7 @@ public class CanvasView extends View {
     ArrayList<Quad> quads;
     Paint paint;
 
+
     ArrayList<Path> paths;
     int mode;
     long tRef;
@@ -38,7 +39,7 @@ public class CanvasView extends View {
         context = c;
         pref = c.getSharedPreferences("Pref", 0);
         mode = pref.getInt("mode", 0);
-
+        paths=new ArrayList<>();
         // Paint initialization for trajectories ///////////////////////////////////////////////////
         paint = new Paint();
         if(mode==0) {
@@ -110,7 +111,7 @@ public class CanvasView extends View {
     }
 
     // transform, normalize and scale x to meters
-    public float getXMeters(float x) {
+    public float toMetersX(float x) {// TODO: 7/31/2017 Test these methods for accuracy 
         float transX = -(x - getCenterX());
         if(mBitmap != null) {
             float normX = transX/mBitmap.getWidth();
@@ -121,7 +122,7 @@ public class CanvasView extends View {
     }
 
     // transform, normalize and scale y to meters
-    public float getYMeters(float y) {
+    public float toMetersY(float y) {
         // transY = -mY + getCenterY
         float transY = -(y - getCenterY());
         if(mBitmap != null) {
@@ -131,12 +132,41 @@ public class CanvasView extends View {
         return 0;
 
     }
-    public Trajectory getMeters(Trajectory old){
+    public Point3 toMeters(Point3 p){
+        return new Point3(toMetersX(p.getX()),toMetersY(p.getY()),p.getZ(),p.getTime());
+    }
+    public Trajectory toMeters(Trajectory old){
         Trajectory inMeters=new Trajectory();
         for(Point3 p: old.getPoints()){
-            inMeters.addPoint(new Point3(getXMeters(p.getX()),getYMeters(p.getY()),p.getZ(),p.getTime()));
+            inMeters.addPoint(new Point3(toMetersX(p.getX()),toMetersY(p.getY()),p.getZ(),p.getTime()));
         }
         return inMeters;
+    }
+
+    public float toPixelsX(float x) {// TODO: 7/31/2017 Test these methods for accuracy 
+
+        double normX = x / -pref.getFloat("newWidth", 5);
+        double transX = normX * getLayoutParams().width;
+        return (float)(getX() + getLayoutParams().width / 2 + transX);
+    }
+
+    // transform specified object's y position to pixels
+    public float toPixelsY(float y) {
+
+        double normY = y / pref.getFloat("newHeight", 3);
+        double transY = normY * getLayoutParams().height;
+        return (float)(getY() + getLayoutParams().height / 2 - transY);
+    }
+    //convert from meters to pixels, hopefully
+    public Point3 toPixels(Point3 p){
+        return new Point3(toPixelsX(p.getX()),toPixelsY(p.getY()),p.getZ(),p.getTime());
+    }
+    public Trajectory toPixels(Trajectory old){
+        Trajectory inPixels = new Trajectory();
+        for(Point3 p: old.getPoints()){
+            inPixels.addPoint(new Point3(toPixelsX(p.getX()),toPixelsY(p.getY()),p.getZ(),p.getTime()));
+        }
+        return inPixels;
     }
 
     Time getCurrentTime() {

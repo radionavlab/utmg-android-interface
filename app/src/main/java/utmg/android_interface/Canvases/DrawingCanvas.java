@@ -33,7 +33,7 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
 
 
 
-        paths=new ArrayList<>();
+
         
         //get variables from memory
         quads=(ArrayList<Quad>)DataShare.retrieve("quads");
@@ -90,7 +90,7 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
             float delta=p.distanceTo(last);
             if (delta >= TOLERANCE) {
                 paths.get(qIndex).quadTo(last.getX(), last.getY(), (x1 + last.getX()) / 2, (y1 + last.getY()) / 2);
-                quads.get(qIndex).addPoint(p);
+                quads.get(qIndex).addPoint(toMeters(p));
                 //Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
             }
         }
