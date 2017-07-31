@@ -681,46 +681,50 @@ public class PreviewActivity extends AppCompatActivity {
                                     // TODO fix logic
                                     int index = quadAllSeek.getProgress();
                                     if (toggle.isChecked() == false) {
-                                        if (xPixelVec1.isEmpty() == false) {
+                                        if(xPixelVec1 != null) {
+                                            if (xPixelVec1.isEmpty() == false) {
 
-                                            if (index == xPixelVec1.size()) {
-                                                // This will handle the error come back to this
+                                                if (index == xPixelVec1.size()) {
+                                                    // This will handle the error come back to this
 
-                                            } else if (index > xPixelVec1.size()) {
-                                                quad1.setX(xPixelVec1.get(xPixelVec1.size()-1) - quad1.getWidth() / 2+ canvasSize.getLeft());
-                                                quad1.setY(yPixelVec1.get(yPixelVec1.size()-1) - quad1.getHeight() / 2);
+                                                } else if (index > xPixelVec1.size()) {
+                                                    quad1.setX(xPixelVec1.get(xPixelVec1.size() - 1) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                                                    quad1.setY(yPixelVec1.get(yPixelVec1.size() - 1) - quad1.getHeight() / 2);
 
-                                            } else {
-                                                quad1.setX(xPixelVec1.get(index) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                                                quad1.setY(yPixelVec1.get(index) - quad1.getHeight() / 2);
+                                                } else {
+                                                    quad1.setX(xPixelVec1.get(index) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                                                    quad1.setY(yPixelVec1.get(index) - quad1.getHeight() / 2);
+                                                }
                                             }
                                         }
+                                        if(xPixelVec2 != null) {
+                                            if (xPixelVec2.isEmpty() == false) {
+                                                if (index == xPixelVec2.size()) {
+                                                    // This will handle the error
 
-                                        if (xPixelVec2.isEmpty() == false) {
-                                            if (index == xPixelVec2.size()) {
-                                                // This will handle the error
+                                                } else if (index > xPixelVec2.size()) {
+                                                    quad2.setX(xPixelVec2.get(xPixelVec2.size() - 1) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                                                    quad2.setY(yPixelVec2.get(yPixelVec2.size() - 1) - quad2.getHeight() / 2);
 
-                                            } else if (index > xPixelVec2.size()) {
-                                                quad2.setX(xPixelVec2.get(xPixelVec2.size()-1) - quad2.getWidth() / 2+ canvasSize.getLeft());
-                                                quad2.setY(yPixelVec2.get(yPixelVec2.size()-1) - quad2.getHeight() / 2);
-
-                                            } else {
-                                                quad2.setX(xPixelVec2.get(index) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                                                quad2.setY(yPixelVec2.get(index) - quad2.getHeight() / 2);
+                                                } else {
+                                                    quad2.setX(xPixelVec2.get(index) - quad2.getWidth() / 2 + canvasSize.getLeft());
+                                                    quad2.setY(yPixelVec2.get(index) - quad2.getHeight() / 2);
+                                                }
                                             }
                                         }
+                                        if(xPixelVec3 != null) {
+                                            if (xPixelVec3.isEmpty() == false) {
+                                                if (index == xPixelVec3.size()) {
+                                                    // This will handle the error
 
-                                        if (xPixelVec3.isEmpty() == false) {
-                                            if (index == xPixelVec3.size()) {
-                                                // This will handle the error
+                                                } else if (index > xPixelVec3.size()) {
+                                                    quad3.setX(xPixelVec3.get(xPixelVec3.size() - 1) - quad3.getWidth() / 2 + canvasSize.getLeft());
+                                                    quad3.setY(yPixelVec3.get(yPixelVec3.size() - 1) - quad3.getHeight() / 2);
 
-                                            } else if (index > xPixelVec3.size()) {
-                                                quad3.setX(xPixelVec3.get(xPixelVec3.size()-1) - quad3.getWidth() / 2+ canvasSize.getLeft());
-                                                quad3.setY(yPixelVec3.get(yPixelVec3.size()-1) - quad3.getHeight() / 2);
-
-                                            } else {
-                                                quad3.setX(xPixelVec3.get(index) - quad3.getWidth() / 2 + canvasSize.getLeft());
-                                                quad3.setY(yPixelVec3.get(index) - quad3.getHeight() / 2);
+                                                } else {
+                                                    quad3.setX(xPixelVec3.get(index) - quad3.getWidth() / 2 + canvasSize.getLeft());
+                                                    quad3.setY(yPixelVec3.get(index) - quad3.getHeight() / 2);
+                                                }
                                             }
                                         }
                                     }
@@ -860,7 +864,36 @@ public class PreviewActivity extends AppCompatActivity {
 
     private void seekAll() {
         // set seekbar max equal to the longest quad length - should equal longest time
-        quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
+        if(xPixelVec1 != null && xPixelVec2 != null && xPixelVec3 != null){
+            quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
+        }else if(xPixelVec1 == null){
+            if(xPixelVec2 == null){
+                quadAllSeek.setMax(xPixelVec3.size());
+            }else if (xPixelVec3 == null){
+                quadAllSeek.setMax(xPixelVec2.size());
+            }else {
+                quadAllSeek.setMax(Math.max(xPixelVec3.size(), xPixelVec2.size()));
+            }
+        }
+        else if(xPixelVec2 == null){
+            if(xPixelVec1 == null){
+                quadAllSeek.setMax(xPixelVec3.size());
+            }else if (xPixelVec3 == null){
+                quadAllSeek.setMax(xPixelVec1.size());
+            }else {
+                quadAllSeek.setMax(Math.max(xPixelVec3.size(), xPixelVec1.size()));
+            }
+        }
+        else if(xPixelVec3 == null){
+            if(xPixelVec2 == null){
+                quadAllSeek.setMax(xPixelVec1.size());
+            }else if (xPixelVec1 == null){
+                quadAllSeek.setMax(xPixelVec2.size());
+            }else {
+                quadAllSeek.setMax(Math.max(xPixelVec1.size(), xPixelVec2.size()));
+            }
+        }
+
         //quadAllSeek.setMax(xPixelVec1.size());
 
         final Handler seekH = new Handler();
