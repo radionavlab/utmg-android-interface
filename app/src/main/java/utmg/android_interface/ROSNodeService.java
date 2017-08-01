@@ -206,4 +206,5 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
         quad = i;
         Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
     }
+
 }

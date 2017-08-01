@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatRosActivity {
     ROSNodeService nodeService;
     private CanvasView customCanvas;
 
+    // declaring all quad1 arrays
+    private ArrayList<Time> timesVec1;
     private ArrayList<Float> xCoordVec1;
     private ArrayList<Float> yCoordVec1;
     private ArrayList<Float> zCoordVec1;
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatRosActivity {
     private ArrayList<Float> zCompressed1;
     private ArrayList<Time> timeCompressed1;
 
+    // declaring of all quad2 arrays
+    private ArrayList<Time> timesVec2;
     private ArrayList<Float> xCoordVec2;
     private ArrayList<Float> yCoordVec2;
     private ArrayList<Float> zCoordVec2;
@@ -51,6 +55,8 @@ public class MainActivity extends AppCompatRosActivity {
     private ArrayList<Float> zCompressed2;
     private ArrayList<Time> timeCompressed2;
 
+    // declaring of all quad3 arrays
+    private ArrayList<Time> timesVec3;
     private ArrayList<Float> xCoordVec3;
     private ArrayList<Float> yCoordVec3;
     private ArrayList<Float> zCoordVec3;
@@ -59,20 +65,18 @@ public class MainActivity extends AppCompatRosActivity {
     private ArrayList<Float> zCompressed3;
     private ArrayList<Time> timeCompressed3;
 
-    private ArrayList<Time> timesVec1;
-    private ArrayList<Time> timesVec2;
-    private ArrayList<Time> timesVec3;
-
+    // declaring quad switches
     private Switch quad1Switch;
     private Switch quad2Switch;
     private Switch quad3Switch;
 
-    private float mX;
-    private float mY;
+    private float mX; // x meters of canvas
+    private float mY; // y meters of canvas
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
 
+    // canvas dimensions instantiation
     private LinearLayout canvasSize;
     private int screenHeight;
     private int screenWidth;
@@ -150,11 +154,12 @@ public class MainActivity extends AppCompatRosActivity {
         setSupportActionBar(toolbar);
 
         xCoordVec1 = DataShare.getXPixelVec(1);
-        xCoordVec2 = DataShare.getXPixelVec(2);
-        xCoordVec3 = DataShare.getXPixelVec(3);
-
         yCoordVec1 = DataShare.getYPixelVec(1);
+
+        xCoordVec2 = DataShare.getXPixelVec(2);
         yCoordVec2 = DataShare.getYPixelVec(2);
+
+        xCoordVec3 = DataShare.getXPixelVec(3);
         yCoordVec3 = DataShare.getYPixelVec(3);
 
         // Button to terminate app so it doesn't have to be done manually
@@ -167,31 +172,29 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
-
-        // PreviewActivity Button
+        // Button to launch PreviewActivity
         final Button preview = (Button) findViewById(R.id.previewButton);
         preview.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view) {
-                // TODO enable paths again for no servicing
+
+                // if not using service, get Paths from canvas
                 if(!pref.getBoolean("serviceToggle", false)) {
                     DataShare.setPath(1, customCanvas.getmPath1());
                     DataShare.setPath(2, customCanvas.getmPath2());
                     DataShare.setPath(3, customCanvas.getmPath3());
                 }
 
+                // set Paint
                 DataShare.setPaint(1, customCanvas.getmPaint1());
                 DataShare.setPaint(2, customCanvas.getmPaint2());
                 DataShare.setPaint(3, customCanvas.getmPaint3());
 
+                // set x, y, time pixel vectors in DataShare from CanvasView
                 DataShare.setXPixelVec(1, customCanvas.xPixelVec1);
                 DataShare.setXPixelVec(2, customCanvas.xPixelVec2);
                 DataShare.setXPixelVec(3, customCanvas.xPixelVec3);
-
-//                Log.i("xPixelVec1", "" + DataShare.getXPixelVec(1).size());
-//                Log.i("xPixelVec2", "" + DataShare.getXPixelVec(2).size());
-//                Log.i("xPixelVec3", "" + DataShare.getXPixelVec(3).size());
 
                 DataShare.setYPixelVec(1, customCanvas.yPixelVec1);
                 DataShare.setYPixelVec(2, customCanvas.yPixelVec2);
@@ -201,6 +204,11 @@ public class MainActivity extends AppCompatRosActivity {
                 DataShare.setCurrentTime(2, customCanvas.getTimesVec2());
                 DataShare.setCurrentTime(3, customCanvas.getTimesVec3());
 
+//                Log.i("xPixelVec1.size", "" + DataShare.getXPixelVec(1).size());
+//                Log.i("xPixelVec2.size", "" + DataShare.getXPixelVec(2).size());
+//                Log.i("xPixelVec3.size", "" + DataShare.getXPixelVec(3).size());
+
+                // instantiate coordinate/time vectors
                 xCoordVec1 = customCanvas.getxCoordVec1();
                 yCoordVec1 = customCanvas.getyCoordVec1();
                 zCoordVec1 = customCanvas.getzCoordVec1();
@@ -216,8 +224,8 @@ public class MainActivity extends AppCompatRosActivity {
                 zCoordVec3 = customCanvas.getzCoordVec3();
                 timesVec3 = customCanvas.getTimesVec3();
 
-                // compress arrays, send to path planner, wait to launch PreviewActivity until service finishes
-                //if(pref.getBoolean("serviceToggle",false) && CONNECTED TO ROS) {
+                // compress arrays, send to path planner, wait to launch PreviewActivity until each service finishes
+                // TODO if(pref.getBoolean("serviceToggle",false) && CONNECTED TO ROS)
                 if(pref.getBoolean("serviceToggle",false)) {
                     Log.i("MainActivity", "Service Toggle enabled. Will attempt to contact service.");
                     if (xCoordVec1.size() != 0) {
@@ -269,6 +277,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
+        // send all quad vectors
         sendAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -295,6 +304,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
+        // send only quad1 vectors
         sendQuad1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -309,6 +319,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
+        // send only quad2 vectors
         sendQuad2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -323,6 +334,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
+        // send only quad3 vectors
         sendQuad3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -354,6 +366,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
+        // clear all quads from canvas
         clearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -363,6 +376,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
+        // clear only quad1
         clearQuad1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -372,6 +386,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
+        // clear only quad2
         clearQuad2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -381,6 +396,7 @@ public class MainActivity extends AppCompatRosActivity {
             }
         });
 
+        // clear only quad3
         clearQuad3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -394,11 +410,13 @@ public class MainActivity extends AppCompatRosActivity {
         final TextView seekbarValue = (TextView) findViewById(R.id.seekbar_value);
         final SeekBar slider = (SeekBar) findViewById(R.id.slider);
         slider.getLayoutParams().width = sbLayout.getLayoutParams().height;
-//        slider.getLayoutParams().width = (int)(screenHeight * 0.65);
+        // slider.getLayoutParams().width = (int)(screenHeight * 0.65);
         final Handler seekbarH = new Handler();
         Runnable seekbarR = new Runnable() {
             @Override
             public void run() {
+
+                // set slider max to user input of altitude
                 int max = (int) pref.getFloat("newAltitude", 2);
                 slider.setMax(max * 100);
                 slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -418,7 +436,7 @@ public class MainActivity extends AppCompatRosActivity {
         };
         seekbarR.run();
 
-        // Get new dimensions from CanvasSizeActivity
+        // Get new dimensions from SettingsActivity
         final TextView newDimensionText = (TextView) findViewById(R.id.new_dimensions);
         final Handler canvasH = new Handler();
         Runnable canvasR = new Runnable() {
@@ -466,7 +484,6 @@ public class MainActivity extends AppCompatRosActivity {
 
         // quad display config
         {
-
             // set quad size
             final ImageView quad1 = (ImageView) findViewById(R.id.quad1);
             final ImageView quad2 = (ImageView) findViewById(R.id.quad2);
@@ -526,7 +543,7 @@ public class MainActivity extends AppCompatRosActivity {
                 }
             });
 
-            // show real-time  location of the quads
+            // show real-time location of the quads in Vicon
             final Handler handlerQuad = new Handler();
             Runnable runnableQuad = new Runnable() {
                 @Override
@@ -537,10 +554,7 @@ public class MainActivity extends AppCompatRosActivity {
                         quad1Switch.setEnabled(true);
                         quad1.setX(objectXToPixel("quad1") - quad1.getWidth()/2);
                         quad1.setY(objectYToPixel("quad1") - quad1.getHeight()/2);
-
-                        //Log.d("MA Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
-
-                        //quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
+                        quad1.setImageAlpha( (int)(((DataShare.getInstance("quad1").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0));
                     } else {
                         quad1.setVisibility((View.INVISIBLE));
                         quad1Switch.setEnabled(false);
@@ -552,7 +566,7 @@ public class MainActivity extends AppCompatRosActivity {
                         quad2Switch.setEnabled(true);
                         quad2.setX(objectXToPixel("quad2") - quad2.getWidth()/2);
                         quad2.setY(objectYToPixel("quad2") - quad2.getHeight()/2);
-                        quad2.setImageAlpha( (int)(((DataShare.getInstance("quad2").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
+                        quad2.setImageAlpha( (int)(((DataShare.getInstance("quad2").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0));
                     } else {
                         quad2.setVisibility((View.INVISIBLE));
                         quad2Switch.setEnabled(false);
@@ -564,7 +578,7 @@ public class MainActivity extends AppCompatRosActivity {
                         quad3Switch.setEnabled(true);
                         quad3.setX(objectXToPixel("quad3") - quad3.getWidth()/2);
                         quad3.setY(objectYToPixel("quad3") - quad3.getHeight()/2);
-                        quad3.setImageAlpha( (int)(((DataShare.getInstance("quad3").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0) );
+                        quad3.setImageAlpha( (int)(((DataShare.getInstance("quad3").getZ()/pref.getFloat("newAltitude",2))*0.75+0.25)*255.0));
                     } else {
                         quad3.setVisibility((View.INVISIBLE));
                         quad3Switch.setEnabled(false);
@@ -638,24 +652,11 @@ public class MainActivity extends AppCompatRosActivity {
         float y1, y2 = 0;
         float slope1 = 0;
         float slope2 = 0;
-        int q = 0;
-        int u = 0;
-        int w = 0;
-        int o = 0;
 
         switch (quad) {
+
+            // compress quad1 vectors
             case 1:
-                Log.i(" 1111111111 ", "" + xCoordVec1.size());
-                q = 0;
-                while ( q <= xCoordVec1.size()-1) {
-                    Log.i(" 11XValues ", "" + xCoordVec1.get(q));
-                    q++;
-                }
-                u = 0;
-                while ( u <= yCoordVec1.size()-1) {
-                    Log.i(" 11YValues ", "" + yCoordVec1.get(u));
-                    u++;
-                }
                 xCompressed1.add(xCoordVec1.get(0));
                 yCompressed1.add(yCoordVec1.get(0));
                 zCompressed1.add(zCoordVec1.get(0));
@@ -681,31 +682,66 @@ public class MainActivity extends AppCompatRosActivity {
                 yCompressed1.add(yCoordVec1.get(yCoordVec1.size()-1));
                 zCompressed1.add(zCoordVec1.get(zCoordVec1.size()-1));
                 timeCompressed1.add(timesVec1.get(timesVec1.size()-1));
-                Log.i(" 1C1C1C1C1C1 ", "" + xCompressed1.size());
-                w = 0;
-                while ( w <= xCompressed1.size()-1) {
-                    Log.i(" 1CXValues ", "" + xCompressed1.get(w));
-                    w++;
+
+                ArrayList<Float> tempX = new ArrayList<Float>();
+                ArrayList<Float> tempY = new ArrayList<Float>();
+                ArrayList<Float> tempZ = new ArrayList<Float>();
+                ArrayList<org.ros.message.Time> tempT = new ArrayList<org.ros.message.Time>();
+
+                // code that adds a point in between the compressed points that were selected
+                for(int g = 0; g < xCompressed1.size() - 1; g++){
+                    int one = xCoordVec1.indexOf(xCompressed1.get(g));
+                    int two = xCoordVec1.indexOf(xCompressed1.get(g+1));
+                    float three = (two - one)/2 + one;
+                    int index;
+                    Log.i("Modulus" , "      " + three%1);
+                    if(three % 1 == 0.5) {
+                        index = (int)(three +0.5f);
+                        Log.i("Index " , "      " + index);
+                        tempX.add(xCoordVec1.get(index));
+                        tempY.add(yCoordVec1.get(index));
+                        tempZ.add(zCoordVec1.get(index));
+                        tempT.add(timesVec1.get(index));
+                        index = (int)(three - 0.5f);
+                        Log.i("Index " , "      " + index);
+                        tempX.add(xCoordVec1.get(index));
+                        tempY.add(yCoordVec1.get(index));
+                        tempZ.add(zCoordVec1.get(index));
+                        tempT.add(timesVec1.get(index));
+
+                    }else{
+                        index = (int)three;
+                        Log.i("Index " , "      " + index);
+                        tempX.add(xCoordVec1.get(index));
+                        tempY.add(yCoordVec1.get(index));
+                        tempZ.add(zCoordVec1.get(index));
+                        tempT.add(timesVec1.get(index));
+                    }
                 }
-                o = 0;
-                while ( o <= yCompressed1.size()-1) {
-                    Log.i(" 1CYValues ", "" + yCompressed1.get(o));
-                    o++;
+                ArrayList<Float> tempX2 = new ArrayList<Float>();
+                ArrayList<Float> tempY2 = new ArrayList<Float>();
+                ArrayList<Float> tempZ2 = new ArrayList<Float>();
+                ArrayList<org.ros.message.Time> tempT2 = new ArrayList<org.ros.message.Time>();
+
+                for(int j = 0; j < xCompressed1.size()-1; j++){
+                    tempX2.add(xCompressed1.get(j));
+                    tempX2.add(tempX.get(j));
+                    tempY2.add(yCompressed1.get(j));
+                    tempY2.add(tempY.get(j));
+                    tempZ2.add(zCompressed1.get(j));
+                    tempZ2.add(tempZ.get(j));
+                    tempT2.add(timesVec1.get(j));
+                    tempT2.add(tempT.get(j));
                 }
+                Log.i(" TEMP2 ", "" + tempX2.size());
+                xCompressed1 = tempX2;
+                yCompressed1 = tempY2;
+                zCompressed1 = tempZ2;
+                timesVec1 = tempT2;
                 break;
 
+            // compress quad2 vectors
             case 2:
-                Log.i(" 2222222222 ", "" + xCoordVec2.size());
-                q = 0;
-                while ( q <= xCoordVec2.size()-1) {
-                    Log.i(" 22XValues ", "" + xCoordVec2.get(q));
-                    q++;
-                }
-                u = 0;
-                while ( u <= yCoordVec2.size()-1) {
-                    Log.i(" 22YValues ", "" + yCoordVec2.get(u));
-                    u++;
-                }
                 xCompressed2.add(xCoordVec2.get(0));
                 yCompressed2.add(yCoordVec2.get(0));
                 zCompressed2.add(zCoordVec2.get(0));
@@ -731,31 +767,10 @@ public class MainActivity extends AppCompatRosActivity {
                 yCompressed2.add(yCoordVec2.get(yCoordVec2.size()-1));
                 zCompressed2.add(zCoordVec2.get(zCoordVec2.size()-1));
                 timeCompressed2.add(timesVec2.get(timesVec2.size()-1));
-                Log.i(" 2C2C2C2C2C2C2C ", "" + xCompressed2.size());
-                w = 0;
-                while ( w <= xCompressed2.size()-1) {
-                    Log.i(" 2CXValues ", "" + xCompressed2.get(w));
-                    w++;
-                }
-                o = 0;
-                while ( o <= yCompressed2.size()-1) {
-                    Log.i(" 2CYValues ", "" + yCompressed2.get(o));
-                    o++;
-                }
                 break;
-            
+
+            // compress quad3 vectors
             case 3:
-                Log.i(" 33333333333 ", "" + xCoordVec3.size());
-                q = 0;
-                while ( q <= xCoordVec3.size()-1) {
-                    Log.i(" 33XValues ", "" + xCoordVec3.get(q));
-                    q++;
-                }
-                u = 0;
-                while ( u <= yCoordVec3.size()-1) {
-                    Log.i(" 33YValues ", "" + yCoordVec3.get(u));
-                    u++;
-                }
                 xCompressed3.add(xCoordVec3.get(0));
                 yCompressed3.add(yCoordVec3.get(0));
                 zCompressed3.add(zCoordVec3.get(0));
@@ -780,17 +795,6 @@ public class MainActivity extends AppCompatRosActivity {
                 yCompressed3.add(yCoordVec3.get(yCoordVec3.size()-1));
                 zCompressed3.add(zCoordVec3.get(zCoordVec3.size()-1));
                 timeCompressed3.add(timesVec3.get(timesVec3.size()-1));
-                Log.i(" 3C3C3C3C3C3C3C ", "" + xCompressed3.size());
-                w = 0;
-                while ( w <= xCompressed3.size()-1) {
-                    Log.i(" 3CXValues ", "" + xCompressed3.get(w));
-                    w++;
-                }
-                o = 0;
-                while ( o <= yCompressed3.size()-1) {
-                    Log.i(" 3CYValues ", "" + yCompressed3.get(o));
-                    o++;
-                }
                 break;
 
         }

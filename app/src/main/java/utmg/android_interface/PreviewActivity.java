@@ -40,6 +40,7 @@ public class PreviewActivity extends AppCompatActivity {
     private int screenWidth;
 
     private ImageView quad1;
+    private ArrayList<Float> timesVec1;
     private ArrayList<Float> xPixelVec1;
     private ArrayList<Float> yPixelVec1;
     private ArrayList<Double> xMeterVec1;
@@ -48,6 +49,7 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<Float> yPixelVec1Scaled = new ArrayList<>();
 
     private ImageView quad2;
+    private ArrayList<Float> timesVec2;
     private ArrayList<Float> xPixelVec2;
     private ArrayList<Float> yPixelVec2;
     private ArrayList<Double> xMeterVec2;
@@ -56,6 +58,7 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<Float> yPixelVec2Scaled = new ArrayList<>();
 
     private ImageView quad3;
+    private ArrayList<Float> timesVec3;
     private ArrayList<Float> xPixelVec3;
     private ArrayList<Float> yPixelVec3;
     private ArrayList<Double> xMeterVec3;
@@ -77,10 +80,6 @@ public class PreviewActivity extends AppCompatActivity {
     private float scaledx3;
     private float scaledy3;
 
-    private ArrayList<Float> timesVec1;
-    private ArrayList<Float> timesVec2;
-    private ArrayList<Float> timesVec3;
-
     Path path1 = new Path();
     Path path2 = new Path();
     Path path3 = new Path();
@@ -92,6 +91,7 @@ public class PreviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preview);
         setupActionBar();
 
+        // intantiate times vectors
         timesVec1 = new ArrayList<Float>();
         timesVec2 = new ArrayList<Float>();
         timesVec3 = new ArrayList<Float>();
@@ -115,7 +115,6 @@ public class PreviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO in order to get a simulation in AirSim we need to send the x,y,z and time arrays of the quad to AirSim
-                // right now only one quad works in AirSim
             }
         });
 
@@ -130,24 +129,22 @@ public class PreviewActivity extends AppCompatActivity {
             }
         });
 
+        // NOTE: may not need the following two listeners
+        // can do this in RViz
         compressed_points.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO visualize the compressed points with our algorithm
-
-
+                // display compressed points to visualize which points are
+                // chosen in compression algorithm
             }
         });
         original_points.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Plotting Original Points
+                // display orignial path for comparison with optimized path
             }
         });
-        //Log.i("PreviewActivity", "PreviewActivity started.");
-        
 
-        
         pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
@@ -208,11 +205,6 @@ public class PreviewActivity extends AppCompatActivity {
         path2 = DataShare.getPath(2);
         path3 = DataShare.getPath(3);
 
-        // The "serviceToggle" from the preferences stores whether or not the app should attempt to
-        // interface with the service.
-        // true -> contact service; false -> don't contact service
-        // convertROSPathToPixelVec is only called if "serviceToggle" is true
-        // TODO if path planner servicing is enabled, redo the path
         if (pref.getBoolean("serviceToggle", false)) {
 
             // initializing arrays for quad1
@@ -233,11 +225,8 @@ public class PreviewActivity extends AppCompatActivity {
             xMeterVec3 = new ArrayList<>();
             yMeterVec3 = new ArrayList<>();
 
-            // TODO
-            // the checks are incorrect; they prevent convertROSPathToPixelVec from being called
-            // reenable checks once they are correctly figured out
-
             // calls convertROSPathToPixel - self explanatory
+            // TODO enable checks after they are correctly figured out
 //            if(xPixelVec1.size() != 0) {
             Log.i("PreviewActivity", "Calling convertROSPathToPixelVec for quad 111");
             convertROSPathToPixelVec(1, DataShare.getServicedPath(1));
@@ -266,7 +255,6 @@ public class PreviewActivity extends AppCompatActivity {
         Matrix scaleMatrix = new Matrix();
         scaleMatrix.setScale(scaledWidth,scaledHeight);
 
-        // TODO enable scaling once conflict of Paths is figured out
         if(path1 != null){
             path1.transform(scaleMatrix);
         }
@@ -360,10 +348,6 @@ public class PreviewActivity extends AppCompatActivity {
             yPixelVec3Scaled = null;
         }
 
-        // TODO
-        // PreviewCanvas should be initialised only AFTER convertROSPathToPixelVec is called
-        // because the Android graphics path objects are generated in there! Otherwise, it will only
-        // render the original paths.
         previewCanvas = (PreviewCanvas) findViewById(R.id.preview_canvas);
         previewCanvas.callOnDraw();
 
@@ -396,22 +380,20 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 1
                 if (pref.getBoolean("quad1", true)) {
-                if(DataShare.getXPixelVec(1) == null){
-                    quad1.setVisibility(View.INVISIBLE);
-                }else {
-
-                    if (DataShare.getXPixelVec(1).isEmpty() == true) {
-                        quad1.setVisibility(View.INVISIBLE);
-                    } else {
-                        // place imageView at start of path on launch of PreviewActivity
-
-                        if (togglei == 0) {
-                            quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                            quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
-                            quad1.setVisibility(View.VISIBLE);
+                    if(DataShare.getXPixelVec(1) == null){
+                      quad1.setVisibility(View.INVISIBLE);
+                  }else {
+                      if (DataShare.getXPixelVec(1).isEmpty() == true) {
+                          quad1.setVisibility(View.INVISIBLE);
+                      } else {
+                            // place imageView at start of path on launch of PreviewActivity
+                            if (togglei == 0) {
+                                quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
+                                quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
+                                quad1.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
-                }
                 }
 
                 // quad 2
@@ -419,7 +401,7 @@ public class PreviewActivity extends AppCompatActivity {
                     if(DataShare.getXPixelVec(2) == null){
                         quad2.setVisibility(View.INVISIBLE);
                     }else {
-                        if (DataShare.getXPixelVec(2).isEmpty() == true) {// error is being thrown here NullPointer because cannot determine if it is empty if it is null
+                        if (DataShare.getXPixelVec(2).isEmpty() == true) { // error is being thrown here NullPointer because cannot determine if it is empty if it is null
                             quad2.setVisibility(View.INVISIBLE);
                         } else {
                             // place imageView at start of path on launch of PreviewActivity
@@ -434,7 +416,6 @@ public class PreviewActivity extends AppCompatActivity {
 
                 // quad 3
                 if (pref.getBoolean("quad3", true)) {
-                    //System.out.println("DataShare.getXPixelVec3" + DataShare.getXPixelVec(3));
                     if (DataShare.getXPixelVec(3) == null) {
                         quad3.setVisibility(View.INVISIBLE);
                     } else {
@@ -455,8 +436,7 @@ public class PreviewActivity extends AppCompatActivity {
         };
         runnableQuad.run();
 
-
-        // ONLY WORKS AFTER RUNNING THROUGH ONCE
+        // ONLY WORKS AFTER PLAYING THROUGH ONCE
         // Touch listener for quad1 - for dragging quad along path
         quad1.setOnTouchListener(new View.OnTouchListener() {
             Point DownPT = new Point(); // Record mouse position when pressed down
@@ -521,6 +501,7 @@ public class PreviewActivity extends AppCompatActivity {
             }
         });
 
+        // ONLY WORKS AFTER PLAYING THROUGH ONCE
         // Touch listener for quad2 - for dragging quad along path
         quad2.setOnTouchListener(new View.OnTouchListener() {
             Point DownPT = new Point(); // Record mouse position when pressed down
@@ -582,6 +563,7 @@ public class PreviewActivity extends AppCompatActivity {
             }
         });
 
+        // ONLY WORKS AFTER PLAYING THROUGH ONCE
         // Touch listener for quad3 - for dragging quad along path
         quad3.setOnTouchListener(new View.OnTouchListener() {
             Point DownPT = new Point(); // Record mouse position when pressed down
@@ -680,7 +662,6 @@ public class PreviewActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                    // TODO fix logic
                                     int index = quadAllSeek.getProgress();
                                     if (toggle.isChecked() == false) {
                                         if(xPixelVec1 != null) {
@@ -863,8 +844,10 @@ public class PreviewActivity extends AppCompatActivity {
         new Thread(updateR3).start();
     }
 
-
+    // coordinate seekbar with quads
     private void seekAll() {
+
+        // TODO has to be a better way to do this
         // set seekbar max equal to the longest quad length - should equal longest time
         if(xPixelVec1 != null && xPixelVec2 != null && xPixelVec3 != null){
             quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
@@ -924,8 +907,6 @@ public class PreviewActivity extends AppCompatActivity {
             }
         }
 
-        //quadAllSeek.setMax(xPixelVec1.size());
-
         final Handler seekH = new Handler();
         Runnable seekR = new Runnable() {
             @Override
@@ -951,8 +932,8 @@ public class PreviewActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                    }
-                        break;
+                    } break;
+
                     case 2:
                         while (quadMax < quadAllSeek.getMax()) {
                             try {
@@ -973,9 +954,8 @@ public class PreviewActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                        }
+                        } break;
 
-                        break;
                     case 3:
                         while (quadMax < quadAllSeek.getMax()) {
                         try {
@@ -996,8 +976,7 @@ public class PreviewActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                    }
-                        break;
+                    } break;
                 }
             }
         };
@@ -1020,11 +999,13 @@ public class PreviewActivity extends AppCompatActivity {
                         double xMeter = p.getPoses().get(i).getPose().getPosition().getX();
                         double yMeter = p.getPoses().get(i).getPose().getPosition().getY();
 
+                        // convert path to meters
                         xMeterVec1.add(xMeter);
                         yMeterVec1.add(yMeter);
 
                         //Log.i("PreviewActivity","xMeter: " + Double.toString(xMeter) + "\t yMeter: " + Double.toString(yMeter) + " # " + Integer.toString(i + 1));
 
+                        // convert path to pixels
                         float xPixel = (float) xMeterToPixel(xMeter, yMeter);
                         float yPixel = (float) yMeterToPixel(xMeter, yMeter);
 
@@ -1053,6 +1034,7 @@ public class PreviewActivity extends AppCompatActivity {
                         double xMeter = p.getPoses().get(i).getPose().getPosition().getX();
                         double yMeter = p.getPoses().get(i).getPose().getPosition().getY();
 
+                        // convert path to meters
                         xMeterVec2.add(xMeter);
                         yMeterVec2.add(yMeter);
 
@@ -1061,6 +1043,7 @@ public class PreviewActivity extends AppCompatActivity {
                         float xPixel = (float) xMeterToPixel(xMeter, yMeter);
                         float yPixel = (float) yMeterToPixel(xMeter, yMeter);
 
+                        // convert path to pixels
                         xPixelVec2.add(xPixel);
                         yPixelVec2.add(yPixel);
 
@@ -1086,6 +1069,7 @@ public class PreviewActivity extends AppCompatActivity {
                         double xMeter = p.getPoses().get(i).getPose().getPosition().getX();
                         double yMeter = p.getPoses().get(i).getPose().getPosition().getY();
 
+                        // convert path to meters
                         xMeterVec3.add(xMeter);
                         yMeterVec3.add(yMeter);
 
@@ -1094,6 +1078,7 @@ public class PreviewActivity extends AppCompatActivity {
                         float xPixel = (float) xMeterToPixel(xMeter, yMeter);
                         float yPixel = (float) yMeterToPixel(xMeter, yMeter);
 
+                        // convert path to pixels
                         xPixelVec3.add(xPixel);
                         yPixelVec3.add(yPixel);
 
@@ -1237,9 +1222,6 @@ public class PreviewActivity extends AppCompatActivity {
 
     }
 
-
-
-
     // transform specified object's x position to pixels
     public double xMeterToPixel(double x, double y) {
 
@@ -1268,6 +1250,7 @@ public class PreviewActivity extends AppCompatActivity {
         }
     }
 
+    // Dr. Humphrey's scaling for paths - not sure if it works properly
     private void scaling(int quad){
 
         int index = quadAllSeek.getProgress();

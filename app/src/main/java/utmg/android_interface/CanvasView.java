@@ -53,6 +53,7 @@ public class CanvasView extends View {
     ArrayList<Float> xWaypoint3;
     ArrayList<Float> yWaypoint3;
 
+    // ArrayList of pixels
     ArrayList<Float> xPixelVec1;
     ArrayList<Float> yPixelVec1;
     ArrayList<Float> zPixelVec1;
@@ -77,7 +78,6 @@ public class CanvasView extends View {
     SharedPreferences.Editor prefEditor;
     int mode;
 
-
     public CanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
         context = c;
@@ -85,17 +85,16 @@ public class CanvasView extends View {
         pref = c.getSharedPreferences("Pref", 0);
         mode = pref.getInt("mode", 0);
 
-        // we set a new Path
-
+        // instantiate paths
         mPath1 = new Path();
         mPath2 = new Path();
         mPath3 = new Path();
 
-        // TODO change colours to holo colours
         DataShare.getInstance("quad1").setQuadColour(Color.parseColor("#FF1900"));
         DataShare.getInstance("quad2").setQuadColour(Color.parseColor("#009E3A"));
         DataShare.getInstance("quad3").setQuadColour(Color.parseColor("#225CCF"));
-        // Paint instantiations for trajectories ///////////////////////////////////////////////////
+
+        // Paint instantiations for trajectories
         mPaint1 = new Paint();
         mPaint1.setAntiAlias(true);
         mPaint1.setColor(DataShare.getInstance("quad1").getQuadColour());
@@ -116,9 +115,8 @@ public class CanvasView extends View {
         mPaint3.setStyle(Paint.Style.STROKE);
         mPaint3.setStrokeJoin(Paint.Join.ROUND);
         mPaint3.setStrokeWidth(4f);
-        ////////////////////////////////////////////////////////////////////////////////////////////
 
-        // Paint instantiations for waypoints //////////////////////////////////////////////////////
+        // Paint instantiations for waypoints
         mPaintWP1 = new Paint();
         mPaintWP1.setAntiAlias(true);
         mPaintWP1.setStyle(Paint.Style.STROKE);
@@ -142,30 +140,27 @@ public class CanvasView extends View {
         mPaintWP3.setStyle(Paint.Style.FILL);
         mPaintWP3.setColor(DataShare.getInstance("quad3").getQuadColour());
         mPaintWP3.setTextSize(25);
-        ////////////////////////////////////////////////////////////////////////////////////////////
 
-        // instantiate x, y arrays
+        // instantiate arrays
         xCoordVec1 = new ArrayList<>();
         yCoordVec1 = new ArrayList<>();
         zCoordVec1 = new ArrayList<>();
         xWaypoint1 = new ArrayList<>();
         yWaypoint1 = new ArrayList<>();
+        timesVec1 = new ArrayList<>();
 
         xCoordVec2 = new ArrayList<>();
         yCoordVec2 = new ArrayList<>();
         zCoordVec2 = new ArrayList<>();
         xWaypoint2 = new ArrayList<>();
         yWaypoint2 = new ArrayList<>();
+        timesVec2 = new ArrayList<>();
 
         xCoordVec3 = new ArrayList<>();
         yCoordVec3 = new ArrayList<>();
         zCoordVec3 = new ArrayList<>();
         xWaypoint3 = new ArrayList<>();
         yWaypoint3 = new ArrayList<>();
-
-        // instantiate time arrays
-        timesVec1 = new ArrayList<>();
-        timesVec2 = new ArrayList<>();
         timesVec3 = new ArrayList<>();
     }
 
@@ -558,6 +553,4 @@ public class CanvasView extends View {
     Paint getmPaint3() {
         return mPaint3;
     }
-
-
 }

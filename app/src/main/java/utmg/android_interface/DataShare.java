@@ -12,10 +12,8 @@ import java.util.ArrayList;
 
 import geometry_msgs.PoseArray;
 
+// sharing data between multiple classes
 public class DataShare extends Application {
-
-    // so purty
-    // it does stuff to things
 
     private static Thing quad1 = new Thing();
     private static Thing quad2 = new Thing();
@@ -66,8 +64,6 @@ public class DataShare extends Application {
 
     private static float mainCanvasHeight;
     private static float mainCanvasWidth;
-
-
 
     public DataShare() {
 
@@ -270,7 +266,6 @@ public class DataShare extends Application {
         switch (i) {
             case 1:
                 servicedPath1 = p;
-                Log.i("DataShare1", Double.toString(servicedPath1.getPoses().get(0).getPose().getPosition().getX()));
                 break;
             case 2:
                 servicedPath2 = p;
@@ -285,7 +280,6 @@ public class DataShare extends Application {
     public static nav_msgs.Path getServicedPath(int i) {
         switch (i) {
             case 1:
-                //Log.i("DataShare2", Double.toString(servicedPath1.getPoses().size())); //get(0).getPose().getPosition().getX()));
                 return servicedPath1;
             case 2:
                 return servicedPath2;
@@ -304,12 +298,12 @@ public class DataShare extends Application {
         return playBackState;
     }
 
-    public static boolean getServiceState() {
+    public static boolean setServiceState(boolean d) {
+        serviceState = d;
         return serviceState;
     }
 
-    public static boolean setServiceState(boolean d) {
-        serviceState = d;
+    public static boolean getServiceState() {
         return serviceState;
     }
 
