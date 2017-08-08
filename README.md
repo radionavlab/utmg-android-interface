@@ -2,10 +2,6 @@
 
 UT Machine Games Controller for quadcopter trajectory input by user.
 
-## Authors
-* Nidhi Rathod
-* Siddarth Kaki
-
 ## Dependencies
 * VICON package
 
@@ -14,6 +10,10 @@ UT Machine Games Controller for quadcopter trajectory input by user.
   
   OR:
   * SUPPORT TO BE IMPLEMENTED - `vicon`/`vicon_odom` ROS packages adapted from KumarRobotics: https://github.com/radionavlab/vicon
+  
+* Path Planning Service
+
+    * `mav_trajectory_generation` ROS package adapted from ETH Zurich: https://github.com/marcelinomalmeidan/mav_trajectory_generation
 
 ## Setup
 
@@ -43,13 +43,10 @@ UT Machine Games Controller for quadcopter trajectory input by user.
     * In a new terminal, run: `roslaunch vicon vicon.launch`
     * In a new terminal, run: `roslaunch vicon_odom vicon_android_app.launch`
 
-** Optional Path Planning Service **
+3. If using Path Planning service
+    * In a new terminal, run: `rosrun mav_trajectory_generation_ros minSnap_Node`
 
-    If using 'Mav Trajectory Generation'
-
-    * In a new terminal, run: 'rosrun mav_trajectory_generation_ros minSnap_Node'
-
-3. Start app on tablet
+4. Start app on tablet
     * Enter `http://192.168.1.XX:11311` into app's prompt for main computer's network address
     
 #### Icon Credit
