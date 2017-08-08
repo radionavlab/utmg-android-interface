@@ -26,10 +26,17 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.ToggleButton;
 
+import org.ros.android.AppCompatRosActivity;
+import org.ros.node.NodeConfiguration;
+import org.ros.node.NodeMainExecutor;
+
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class PreviewActivity extends AppCompatActivity {
+public class PreviewActivity extends AppCompatRosActivity {
+
+    ROSNodePublish nodePublish;
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
@@ -91,7 +98,7 @@ public class PreviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preview);
         setupActionBar();
 
-        // intantiate times vectors
+        // instantiate times vectors
         timesVec1 = new ArrayList<Float>();
         timesVec2 = new ArrayList<Float>();
         timesVec3 = new ArrayList<Float>();
@@ -115,6 +122,17 @@ public class PreviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO in order to get a simulation in AirSim we need to send the x,y,z and time arrays of the quad to AirSim
+                Log.i("PreviewActivity", "Sent path 1 to ROSNodePublish");
+
+                if (DataShare.getServicedPath(1) != null) {
+                    nodePublish.setPath1(DataShare.getServicedPath(1));
+                }
+
+                // TODO REMOVE THIS SUPER HACKY ROUTING; UI error prevents me from drawing for quad 1
+                if (DataShare.getServicedPath(3) != null) {
+                    nodePublish.setPath1(DataShare.getServicedPath(3));
+                }
+
             }
         });
 
@@ -1250,7 +1268,7 @@ public class PreviewActivity extends AppCompatActivity {
         }
     }
 
-    // Dr. Humphrey's scaling for paths - not sure if it works properly
+    // Dr. Humphreys' scaling for paths - not sure if it works properly
     private void scaling(int quad){
 
         int index = quadAllSeek.getProgress();
@@ -1445,4 +1463,30 @@ public class PreviewActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    @Override
+    protected void init(NodeMainExecutor nodeMainExecutor) {
+//        rosTextView.setText("test");
+//        rosTextView.setTopicName("testtopic");
+//        rosTextView.setMessageType("std_msgs/String");
+
+        nodePublish = new ROSNodePublish();
+
+        try {
+            java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
+            java.net.InetAddress local_network_address = socket.getLocalAddress();
+            socket.close();
+            NodeConfiguration nodeConfiguration =
+                    NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
+
+            //nodeConfiguration.setNodeName()
+
+            nodeMainExecutor.execute(nodePublish, nodeConfiguration);
+        } catch (IOException e) {
+            // Socket problem
+            Log.e("PreviewActivity", "socket error trying to get networking information from the master uri");
+        }
+
+    }
+
 }

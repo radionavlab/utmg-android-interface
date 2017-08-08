@@ -23,7 +23,6 @@ import geometry_msgs.Pose;
 import geometry_msgs.PoseArray;
 import geometry_msgs.PoseStamped;
 import mav_trajectory_generation_ros.PVAJS;
-import mav_trajectory_generation_ros.PVAJS_array;
 import mav_trajectory_generation_ros.minSnapStamped;
 import mav_trajectory_generation_ros.minSnapStampedRequest;
 import mav_trajectory_generation_ros.minSnapStampedResponse;
@@ -43,7 +42,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
     private int seq = 0;
 
-    private int quad;
+    private int quadNumber;
 
     private static final String TAG = ROSNodeService.class.getSimpleName();
 
@@ -168,7 +167,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
                                     tempServicedPath.setPoses(tempPath);
 
-                                    DataShare.setServicedPath(quad, tempServicedPath); // TODO change first argument for whichever serviced path requested
+                                    DataShare.setServicedPath(quadNumber, tempServicedPath); // TODO change first argument for whichever serviced path requested
                                     //connectedNode.getLog().info(
                                     //        String.format("%d + %d = %d", request.getA(), request.getB(), response.getSum()));
                                 }
@@ -203,7 +202,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
         zes = z;
         tes = t;
         serviceToggle = true;
-        quad = i;
+        quadNumber = i;
         Log.i("ROSNodeService","Arrays transferred from MainActivity to nodeService.");
     }
 

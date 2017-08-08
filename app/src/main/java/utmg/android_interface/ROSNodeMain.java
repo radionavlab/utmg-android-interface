@@ -292,6 +292,7 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
                             }
 
                             publishToggle3 = false;
+
                         } else if (pref.getInt("mode", 0) == 1) {
                             mWaypointArray3.setPoses(poses3);
 

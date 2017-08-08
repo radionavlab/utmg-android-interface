@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import geometry_msgs.PoseArray;
 
-// sharing data between multiple classes
+// sharing data among multiple classes
 public class DataShare extends Application {
 
     private static Thing quad1 = new Thing();
