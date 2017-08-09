@@ -51,6 +51,14 @@ public class DataShare extends Application {
     private static ArrayList<Float> yCompressed2;
     private static ArrayList<Float> yCompressed3;
 
+    private static ArrayList<Float> zCompressed1;
+    private static ArrayList<Float> zCompressed2;
+    private static ArrayList<Float> zCompressed3;
+
+    private static ArrayList<org.ros.message.Time> timeCompressed1;
+    private static ArrayList<org.ros.message.Time> timeCompressed2;
+    private static ArrayList<org.ros.message.Time> timeCompressed3;
+
     private static int seekLoc1;
     private static int seekLoc2;
     private static int seekLoc3;
@@ -379,4 +387,59 @@ public class DataShare extends Application {
         }
     }
 
+    public static void setZCompressedVec (int i, ArrayList<Float> p) {
+        switch (i) {
+            case 1:
+                zCompressed1 = p;
+                break;
+            case 2:
+                zCompressed2 = p;
+                break;
+            case 3:
+                zCompressed3 = p;
+                break;
+            default:
+        }
+    }
+
+    public static ArrayList<Float> getZCompressedVec (int i) {
+        switch (i) {
+            case 1:
+                return zCompressed1;
+            case 2:
+                return zCompressed2;
+            case 3:
+                return zCompressed3;
+            default:
+                return null;
+        }
+    }
+
+    public static void setTimeCompressedVec (int i, ArrayList<org.ros.message.Time> p) {
+        switch (i) {
+            case 1:
+                timeCompressed1 = p;
+                break;
+            case 2:
+                timeCompressed2 = p;
+                break;
+            case 3:
+                timeCompressed3 = p;
+                break;
+            default:
+        }
+    }
+
+    public static ArrayList<org.ros.message.Time> getTimeCompressedVec (int i) {
+        switch (i) {
+            case 1:
+                return timeCompressed1;
+            case 2:
+                return timeCompressed2;
+            case 3:
+                return timeCompressed3;
+            default:
+                return null;
+        }
+    }
 }

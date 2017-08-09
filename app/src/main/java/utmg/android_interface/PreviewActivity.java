@@ -38,6 +38,8 @@ public class PreviewActivity extends AppCompatRosActivity {
 
     ROSNodePublish nodePublish;
 
+    //ROSNodeMain nodeMain = new ROSNodeMain();
+
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
     private PreviewCanvas previewCanvas;
@@ -104,69 +106,41 @@ public class PreviewActivity extends AppCompatRosActivity {
         timesVec3 = new ArrayList<Float>();
 
         // Button to terminate app so it doesn't have to be done manually
-        com.getbase.floatingactionbutton.FloatingActionButton compressed_points = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.compressed_points);
-        com.getbase.floatingactionbutton.FloatingActionButton original_points = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.orignal_points);
+        com.getbase.floatingactionbutton.FloatingActionButton sendAirSim = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.send_to_airSim);
         com.getbase.floatingactionbutton.FloatingActionButton terminate_preview = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.terminate_preview);
-        com.getbase.floatingactionbutton.FloatingActionButton sendAirSim = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendToAirSim);
-        com.getbase.floatingactionbutton.FloatingActionButton scalePath = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.scalePath);
         terminate_preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 System.exit(0);
                 finish();
             }
         });
 
+        // Button to send path to AirSim and RViz
         sendAirSim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO in order to get a simulation in AirSim we need to send the x,y,z and time arrays of the quad to AirSim
                 Log.i("PreviewActivity", "Sent path 1 to ROSNodePublish");
 
+                // Work with quad1 for now
                 if (DataShare.getServicedPath(1) != null) {
                     nodePublish.setPath1(DataShare.getServicedPath(1));
                 }
 
-                // TODO REMOVE THIS SUPER HACKY ROUTING; UI error prevents me from drawing for quad 1
-                if (DataShare.getServicedPath(3) != null) {
-                    nodePublish.setPath1(DataShare.getServicedPath(3));
+                if (DataShare.getServicedPath(2) != null) {
+                    nodePublish.setPath2(DataShare.getServicedPath(2));
                 }
 
-            }
-        });
-
-        scalePath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO work on scaling paths
-                // Scaling method may work, we have no way to test this because when we run through the paths in the preview screen we use size not time
-                //scaling(1);
-                //scaling(2);
-                //scaling(3);
-            }
-        });
-
-        // NOTE: may not need the following two listeners
-        // can do this in RViz
-        compressed_points.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // display compressed points to visualize which points are
-                // chosen in compression algorithm
-            }
-        });
-        original_points.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // display orignial path for comparison with optimized path
+                if (DataShare.getServicedPath(3) != null) {
+                    nodePublish.setPath3(DataShare.getServicedPath(3));
+                }
             }
         });
 
         pref = getSharedPreferences("Pref", 0);
         prefEditor = pref.edit();
 
-        // intializing canvas
+        // initializing canvas
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
 
         // getting screen size
@@ -491,7 +465,6 @@ public class PreviewActivity extends AppCompatRosActivity {
                         float x2 = x1;
                         float y2 = 0;
                         float y1 = quad1.getY() - quad1.getHeight() / 2;
-                        int p = 0;
 
                         while (t < xPixelVec1.size() - 1) {
 
@@ -556,7 +529,6 @@ public class PreviewActivity extends AppCompatRosActivity {
                         float x2 = x1;
                         float y2 = 0;
                         float y1 = quad2.getY() - quad2.getHeight() / 2;
-                        int p = 0;
 
                         while (t < xPixelVec2.size() - 1) {
                             x2 = xPixelVec2.get(t);
@@ -618,7 +590,6 @@ public class PreviewActivity extends AppCompatRosActivity {
                         float x2 = x1;
                         float y2 = 0;
                         float y1 = quad3.getY() - quad3.getHeight() / 2;
-                        int p = 0;
 
                         while (t < xPixelVec3.size() - 1) {
                             x2 = xPixelVec3.get(t);
@@ -1265,202 +1236,6 @@ public class PreviewActivity extends AppCompatRosActivity {
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    // Dr. Humphreys' scaling for paths - not sure if it works properly
-    private void scaling(int quad){
-
-        int index = quadAllSeek.getProgress();
-        float time1 = 0;// varaible that is merely used to take the calculated time and store it into the timesVec array
-        float distance1 = 0;// total distance between start and moved dot
-        float rate1= 0;// calculated rate such that the dot arrives to new point at time
-        float distance = 0;// calculated distance from beginning of path to moved dot
-        float time = 0;// is the time of at the x,y coordinates of the moved dot
-        float distance2 = 0;// total distance between moved dot and end
-        float rate2 = 0;// calculated rate for second half
-        float time2 = 0;// is the last time
-        int i = 0;// counting varaible
-        float temp1 = 0;// stores distance for points in between all points from start to moved dot
-        float temp2 = 0;// stores distance for points in between all points from moved dot to end
-        float x0;// variable used in distance formula
-        float y0;// variable used in distance formula
-        float x1;// variable used in distance formula
-        float y1;// variable used in distance formula
-        float distance3;// calculated distance from moved dot of path to end
-        int count = 0;// counting variable
-        float temp3 = 0;
-
-        switch (quad) {
-            case 1:
-                // setting time
-                if(index >= xPixelVec1.size()){
-                    index = xPixelVec1.size()-1;
-                }else {
-                    time = (float) DataShare.getCurrentTime(1).get(index).toSeconds();
-                }
-
-
-                while(i != index-1){
-                    x0 = xPixelVec1.get(i);
-                    x1 = xPixelVec1.get(i+1);
-                    y0 = yPixelVec1.get(i);
-                    y1 = yPixelVec1.get(i +1);
-                    temp1 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
-                    distance1 = distance1 + temp1;
-                    i++;
-                }
-                i = 0;
-                rate1 = distance1/time;
-
-                while(i != index){
-                    x0 = xPixelVec1.get(i);
-                    x1 = xPixelVec1.get(i+1);
-                    y0 = yPixelVec1.get(i);
-                    y1 = yPixelVec1.get(i +1);
-                    distance = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
-                    time1 = distance/rate1;
-                    temp3 = time1 + temp3;
-                    timesVec1.add(temp3);
-                    i++;
-                }
-
-                count = index;
-                while(count <= xPixelVec1.size()-2){
-                    x0 = xPixelVec1.get(count);
-                    x1 = xPixelVec1.get(count+1);
-                    y0 = yPixelVec1.get(count);
-                    y1 = yPixelVec1.get(count +1);
-                    temp2 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
-                    distance2 = distance2 + temp2;
-                    count++;
-                }
-                count = 0;
-                time2 = timesVec1.get(timesVec1.size()-1) - time;
-                rate2 = distance2/time2;
-
-                while(count != xPixelVec1.size()-2){
-                    x0 = xPixelVec1.get(count);
-                    x1 = xPixelVec1.get(count+1);
-                    y0 = yPixelVec1.get(count);
-                    y1 = yPixelVec1.get(count +1);
-                    distance3 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
-                    time1 = distance3/rate2;
-                    temp3 = time1 + temp3;
-                    timesVec1.add(temp3);
-                    count++;
-                }
-                break;
-            case 2:
-                if(index >= xPixelVec2.size()){
-                    index = xPixelVec2.size()-1;
-                }else {
-                    time = (float) DataShare.getCurrentTime(2).get(index).toSeconds();
-                }
-                while(i != index-1){
-                    x0 = xPixelVec2.get(i);
-                    x1 = xPixelVec2.get(i+1);
-                    y0 = yPixelVec2.get(i);
-                    y1 = yPixelVec2.get(i +1);
-                    temp1 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
-                    distance1 = distance1 + temp1;
-                    i++;
-                }
-                i = 0;
-                rate1 = distance1/time;
-
-                while(i != index){
-                    x0 = xPixelVec2.get(i);
-                    x1 = xPixelVec2.get(i+1);
-                    y0 = yPixelVec2.get(i);
-                    y1 = yPixelVec2.get(i +1);
-                    distance = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
-                    time1 = distance/rate1;
-                    timesVec2.add(time1);
-                    i++;
-                }
-
-                count = index;
-                while(count <= xPixelVec2.size()-2){
-                    x0 = xPixelVec2.get(count);
-                    x1 = xPixelVec2.get(count+1);
-                    y0 = yPixelVec2.get(count);
-                    y1 = yPixelVec2.get(count +1);
-                    temp2 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
-                    distance2 = distance2 + temp2;
-                    count++;
-                }
-                count = 0;
-                time2 = timesVec2.get(timesVec2.size()-1) - time;
-                rate2 = distance2/time2;
-
-                while(count != xPixelVec2.size()-2){
-                    x0 = xPixelVec2.get(count);
-                    x1 = xPixelVec2.get(count+1);
-                    y0 = yPixelVec2.get(count);
-                    y1 = yPixelVec2.get(count +1);
-                    distance3 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
-                    time1 = distance3/rate2;
-                    timesVec2.add(time1);
-                    count++;
-                }
-                break;
-            case 3:
-                if(index >= xPixelVec3.size()){
-                    index = xPixelVec3.size()-1;
-                }else {
-                    time = (float) DataShare.getCurrentTime(3).get(index).toSeconds();
-                }
-                while(i != index-1){
-                    x0 = xPixelVec3.get(i);
-                    x1 = xPixelVec3.get(i+1);
-                    y0 = yPixelVec3.get(i);
-                    y1 = yPixelVec3.get(i +1);
-                    temp1 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
-                    distance1 = distance1 + temp1;
-                    i++;
-                }
-                i = 0;
-                rate1 = distance1/time;
-
-                while(i != index){
-                    x0 = xPixelVec3.get(i);
-                    x1 = xPixelVec3.get(i+1);
-                    y0 = yPixelVec3.get(i);
-                    y1 = yPixelVec3.get(i +1);
-                    distance = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
-                    time1 = distance/rate1;
-                    timesVec3.add(time1);
-                    i++;
-                }
-
-                count = index;
-                while(count <= xPixelVec3.size()-2){
-                    x0 = xPixelVec3.get(count);
-                    x1 = xPixelVec3.get(count+1);
-                    y0 = yPixelVec3.get(count);
-                    y1 = yPixelVec3.get(count +1);
-                    temp2 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0)); // converts from double to float then does the square root of it
-                    distance2 = distance2 + temp2;
-                    count++;
-                }
-                count = 0;
-                time2 = timesVec3.get(timesVec3.size()-1) - time;
-                rate2 = distance2/time2;
-
-                while(count != xPixelVec3.size()-2){
-                    x0 = xPixelVec3.get(count);
-                    x1 = xPixelVec3.get(count+1);
-                    y0 = yPixelVec3.get(count);
-                    y1 = yPixelVec3.get(count +1);
-                    distance3 = (float) Math.sqrt(Math.pow(x1 - x0, 2.0) + Math.pow(y1 - y0, 2.0));
-                    time1 = distance3/rate2;
-                    timesVec3.add(time1);
-                    count++;
-                }
-                break;
-            default:
-                break;
         }
     }
 

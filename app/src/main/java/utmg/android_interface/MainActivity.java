@@ -232,6 +232,8 @@ public class MainActivity extends AppCompatRosActivity {
                         compressArrays(1);
                         DataShare.setXCompressedVec(1, xCompressed1);
                         DataShare.setYCompressedVec(1, yCompressed1);
+                        DataShare.setZCompressedVec(1, zCompressed1);
+                        DataShare.setTimeCompressedVec(1, timeCompressed1);
                         nodeService.setTraj(1, xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
                         while (DataShare.getServicedPath(1) == null) {
                             //Log.i("Quad111 Waiting ", " yessss ");
@@ -241,6 +243,8 @@ public class MainActivity extends AppCompatRosActivity {
                         compressArrays(2);
                         DataShare.setXCompressedVec(2, xCompressed2);
                         DataShare.setYCompressedVec(2, yCompressed2);
+                        DataShare.setZCompressedVec(2, zCompressed2);
+                        DataShare.setTimeCompressedVec(2, timeCompressed2);
                         nodeService.setTraj(2 ,xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
                         while (DataShare.getServicedPath(2) == null) {
                             //Log.i("Quad222 Waiting ", " yessss ");
@@ -250,6 +254,8 @@ public class MainActivity extends AppCompatRosActivity {
                         compressArrays(3);
                         DataShare.setXCompressedVec(3, xCompressed3);
                         DataShare.setYCompressedVec(3, yCompressed3);
+                        DataShare.setZCompressedVec(3, zCompressed3);
+                        DataShare.setTimeCompressedVec(3, timeCompressed3);
                         nodeService.setTraj(3 ,xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
                         while (DataShare.getServicedPath(3) == null) {
                             //Log.i("Quad333 Waiting ", " yessss ");
@@ -288,19 +294,26 @@ public class MainActivity extends AppCompatRosActivity {
                 yCoordVec1 = customCanvas.getyCoordVec1();
                 zCoordVec1 = customCanvas.getzCoordVec1();
                 timesVec1 = customCanvas.getTimesVec1();
-                nodeMain.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
+                //nodeMain.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
+                compressArrays(1);
+                nodeMain.setTraj1(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
 
                 xCoordVec2 = customCanvas.getxCoordVec2();
                 yCoordVec2 = customCanvas.getyCoordVec2();
                 zCoordVec2 = customCanvas.getzCoordVec2();
                 timesVec2 = customCanvas.getTimesVec2();
-                nodeMain.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
+                //nodeMain.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
+                compressArrays(2);
+                nodeMain.setTraj2(xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
 
                 xCoordVec3 = customCanvas.getxCoordVec3();
                 yCoordVec3 = customCanvas.getyCoordVec3();
                 zCoordVec3 = customCanvas.getzCoordVec3();
                 timesVec3 = customCanvas.getTimesVec3();
-                nodeMain.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
+                //nodeMain.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
+                compressArrays(3);
+                nodeMain.setTraj3(xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
+                
             }
         });
 
@@ -315,7 +328,11 @@ public class MainActivity extends AppCompatRosActivity {
                 yCoordVec1 = customCanvas.getyCoordVec1();
                 zCoordVec1 = customCanvas.getzCoordVec1();
                 timesVec1 = customCanvas.getTimesVec1();
-                nodeMain.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
+                //nodeMain.setTraj1(xCoordVec1, yCoordVec1, zCoordVec1, timesVec1);
+                
+                // display compressed points in RVIZ for visualization 
+                compressArrays(1);
+                nodeMain.setTraj1(xCompressed1, yCompressed1, zCompressed1, timeCompressed1);
             }
         });
 
@@ -330,7 +347,11 @@ public class MainActivity extends AppCompatRosActivity {
                 yCoordVec2 = customCanvas.getyCoordVec2();
                 zCoordVec2 = customCanvas.getzCoordVec2();
                 timesVec2 = customCanvas.getTimesVec2();
-                nodeMain.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
+                //nodeMain.setTraj2(xCoordVec2, yCoordVec2, zCoordVec2, timesVec2);
+
+                // display compressed points in RVIZ for visualization 
+                compressArrays(2);
+                nodeMain.setTraj2(xCompressed2, yCompressed2, zCompressed2, timeCompressed2);
             }
         });
 
@@ -345,7 +366,11 @@ public class MainActivity extends AppCompatRosActivity {
                 yCoordVec3 = customCanvas.getyCoordVec3();
                 zCoordVec3 = customCanvas.getzCoordVec3();
                 timesVec3 = customCanvas.getTimesVec3();
-                nodeMain.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
+                //nodeMain.setTraj3(xCoordVec3, yCoordVec3, zCoordVec3, timesVec3);
+
+                // display compressed points in RVIZ for visualization 
+                compressArrays(3);
+                nodeMain.setTraj3(xCompressed3, yCompressed3, zCompressed3, timeCompressed3);
             }
         });
 
@@ -432,6 +457,7 @@ public class MainActivity extends AppCompatRosActivity {
                     }
                 });
                 seekbarH.postDelayed(this, 10);
+
             }
         };
         seekbarR.run();
@@ -500,7 +526,6 @@ public class MainActivity extends AppCompatRosActivity {
             quad3.getLayoutParams().height = (int) (screenHeight * 0.05);
             quad3.getLayoutParams().width = (int) (screenWidth * 0.05);
             //quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
-
 
             // quad control toggle switches
             quad1Switch = (Switch) findViewById(R.id.quad1Switch);
@@ -683,61 +708,61 @@ public class MainActivity extends AppCompatRosActivity {
                 zCompressed1.add(zCoordVec1.get(zCoordVec1.size()-1));
                 timeCompressed1.add(timesVec1.get(timesVec1.size()-1));
 
-                ArrayList<Float> tempX = new ArrayList<Float>();
-                ArrayList<Float> tempY = new ArrayList<Float>();
-                ArrayList<Float> tempZ = new ArrayList<Float>();
-                ArrayList<org.ros.message.Time> tempT = new ArrayList<org.ros.message.Time>();
-
-                // code that adds a point in between the compressed points that were selected
-                for(int g = 0; g < xCompressed1.size() - 1; g++){
-                    int one = xCoordVec1.indexOf(xCompressed1.get(g));
-                    int two = xCoordVec1.indexOf(xCompressed1.get(g+1));
-                    float three = (two - one)/2 + one;
-                    int index;
-                    Log.i("Modulus" , "      " + three%1);
-                    if(three % 1 == 0.5) {
-                        index = (int)(three +0.5f);
-                        Log.i("Index " , "      " + index);
-                        tempX.add(xCoordVec1.get(index));
-                        tempY.add(yCoordVec1.get(index));
-                        tempZ.add(zCoordVec1.get(index));
-                        tempT.add(timesVec1.get(index));
-                        index = (int)(three - 0.5f);
-                        Log.i("Index " , "      " + index);
-                        tempX.add(xCoordVec1.get(index));
-                        tempY.add(yCoordVec1.get(index));
-                        tempZ.add(zCoordVec1.get(index));
-                        tempT.add(timesVec1.get(index));
-
-                    }else{
-                        index = (int)three;
-                        Log.i("Index " , "      " + index);
-                        tempX.add(xCoordVec1.get(index));
-                        tempY.add(yCoordVec1.get(index));
-                        tempZ.add(zCoordVec1.get(index));
-                        tempT.add(timesVec1.get(index));
-                    }
-                }
-                ArrayList<Float> tempX2 = new ArrayList<Float>();
-                ArrayList<Float> tempY2 = new ArrayList<Float>();
-                ArrayList<Float> tempZ2 = new ArrayList<Float>();
-                ArrayList<org.ros.message.Time> tempT2 = new ArrayList<org.ros.message.Time>();
-
-                for(int j = 0; j < xCompressed1.size()-1; j++){
-                    tempX2.add(xCompressed1.get(j));
-                    tempX2.add(tempX.get(j));
-                    tempY2.add(yCompressed1.get(j));
-                    tempY2.add(tempY.get(j));
-                    tempZ2.add(zCompressed1.get(j));
-                    tempZ2.add(tempZ.get(j));
-                    tempT2.add(timesVec1.get(j));
-                    tempT2.add(tempT.get(j));
-                }
-                Log.i(" TEMP2 ", "" + tempX2.size());
-                xCompressed1 = tempX2;
-                yCompressed1 = tempY2;
-                zCompressed1 = tempZ2;
-                timesVec1 = tempT2;
+//                ArrayList<Float> tempX = new ArrayList<Float>();
+//                ArrayList<Float> tempY = new ArrayList<Float>();
+//                ArrayList<Float> tempZ = new ArrayList<Float>();
+//                ArrayList<org.ros.message.Time> tempT = new ArrayList<org.ros.message.Time>();
+//
+//                // code that adds a point in between the compressed points that were selected
+//                for(int g = 0; g < xCompressed1.size()-1; g++){
+//                    int one = xCoordVec1.indexOf(xCompressed1.get(g));
+//                    int two = xCoordVec1.indexOf(xCompressed1.get(g+1));
+//                    float three = (two - one)/2 + one;
+//                    int index;
+//                    //Log.i("Modulus" , "      " + three%1);
+//                    if(three % 1 == 0.5) {
+//                        index = (int)(three +0.5f);
+//                        //Log.i("Index " , "      " + index);
+//                        tempX.add(xCoordVec1.get(index));
+//                        tempY.add(yCoordVec1.get(index));
+//                        tempZ.add(zCoordVec1.get(index));
+//                        tempT.add(timesVec1.get(index));
+//                        index = (int)(three - 0.5f);
+//                        //Log.i("Index " , "      " + index);
+//                        tempX.add(xCoordVec1.get(index));
+//                        tempY.add(yCoordVec1.get(index));
+//                        tempZ.add(zCoordVec1.get(index));
+//                        tempT.add(timesVec1.get(index));
+//
+//                    }else{
+//                        index = (int)three;
+//                        //Log.i("Index " , "      " + index);
+//                        tempX.add(xCoordVec1.get(index));
+//                        tempY.add(yCoordVec1.get(index));
+//                        tempZ.add(zCoordVec1.get(index));
+//                        tempT.add(timesVec1.get(index));
+//                    }
+//                }
+//                ArrayList<Float> tempX2 = new ArrayList<Float>();
+//                ArrayList<Float> tempY2 = new ArrayList<Float>();
+//                ArrayList<Float> tempZ2 = new ArrayList<Float>();
+//                ArrayList<org.ros.message.Time> tempT2 = new ArrayList<org.ros.message.Time>();
+//
+//                for(int j = 0; j < xCompressed1.size()-1; j++){
+//                    tempX2.add(xCompressed1.get(j));
+//                    tempX2.add(tempX.get(j));
+//                    tempY2.add(yCompressed1.get(j));
+//                    tempY2.add(tempY.get(j));
+//                    tempZ2.add(zCompressed1.get(j));
+//                    tempZ2.add(tempZ.get(j));
+//                    tempT2.add(timesVec1.get(j));
+//                    tempT2.add(tempT.get(j));
+//                }
+//                //Log.i(" TEMP2 ", "" + tempX2.size());
+//                xCompressed1 = tempX2;
+//                yCompressed1 = tempY2;
+//                zCompressed1 = tempZ2;
+//                timesVec1 = tempT2;
                 break;
 
             // compress quad2 vectors

@@ -75,16 +75,20 @@ public class ROSNodePublish extends AbstractNodeMain implements NodeMain {
                     // package each trajectory/waypoint into ROS message and send for quad2 ////////
                     if (path2 != null) {
 
-                        if (pref.getInt("mode", 0) == 0) {
+                        path2.getHeader().setFrameId("world");
+//                        path2.getHeader().setSeq(seq2);
 
-                            if (publishToggle2) {
-                                publisherPath2.publish(path2);
+//                        if (pref.getInt("mode", 0) == 0) {
 
-                                seq2 = seq2 + 1;
-                            }
-                            publishToggle2 = false;
+                        if (publishToggle2) {
+                            publisherPath2.publish(path2);
+                            Log.i("ROSNodePublish", "Published Path 2 to ROS.");
 
-                        } // else if (pref.getInt("mode", 0) == 1) { }
+                            seq2 = seq2 + 1;
+                        }
+                        publishToggle2 = false;
+
+//                        } else if (pref.getInt("mode", 0) == 2) { }
                     }
                     ////////////////////////////////////////////////////////////////////////////////
 
@@ -92,16 +96,20 @@ public class ROSNodePublish extends AbstractNodeMain implements NodeMain {
                     // package each trajectory/waypoint into ROS message and send for quad3 ////////
                     if (path3 != null) {
 
-                        if (pref.getInt("mode", 0) == 0) {
+                        path3.getHeader().setFrameId("world");
+//                        path3.getHeader().setSeq(seq3);
 
-                            if (publishToggle3) {
-                                publisherPath3.publish(path3);
+//                        if (pref.getInt("mode", 0) == 0) {
 
-                                seq3 = seq3 + 1;
-                            }
-                            publishToggle3 = false;
+                        if (publishToggle3) {
+                            publisherPath3.publish(path3);
+                            Log.i("ROSNodePublish", "Published Path 3 to ROS.");
 
-                        } // else if (pref.getInt("mode", 0) == 1) { }
+                            seq3 = seq3 + 1;
+                        }
+                        publishToggle3 = false;
+
+//                        } else if (pref.getInt("mode", 0) == 3) { }
                     }
                     ////////////////////////////////////////////////////////////////////////////////
 

@@ -119,39 +119,12 @@
             fab:fab_icon="@android:drawable/ic_menu_close_clear_cancel" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/orignal_points"
+            android:id="@+id/send_to_airSim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_size="mini"
-            fab:fab_colorNormal="@android:color/white"
-            fab:fab_icon="@drawable/path" />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/compressed_points"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_size="mini"
-            fab:fab_colorNormal="@android:color/white"
-            fab:fab_icon="@drawable/compression" />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/sendToAirSim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_size="mini"
-            fab:fab_colorNormal="@android:color/darker_gray"
-            fab:fab_icon="@android:drawable/ic_menu_send" />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/scalePath"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_size="mini"
-            fab:fab_colorNormal="@android:color/holo_orange_light"
-            fab:fab_icon="@android:drawable/ic_menu_crop" />
-
-
-
+            app:fab_icon="@drawable/icon"
+            fab:fab_colorNormal="@android:color/holo_green_light"
+            fab:fab_size="mini" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

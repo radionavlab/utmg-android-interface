@@ -452,21 +452,6 @@ public class CanvasView extends View {
     public ArrayList<Float> getyCoordVec3() { return yCoordVec3; }
     public ArrayList<Float> getzCoordVec3() { return zCoordVec3; }
 
-    // current ArrayList of pixel vectors for quad1
-    public ArrayList<Float> getxPixelVec1() { return xCoordVec1; }
-    public ArrayList<Float> getyPixelVec1() { return yCoordVec1; }
-    public ArrayList<Float> getzPixelVec1() { return zCoordVec1; }
-
-    // current ArrayList of pixel vectors for quad2
-    public ArrayList<Float> getxPixelVec2() { return xCoordVec2; }
-    public ArrayList<Float> getyPixelVec2() { return yCoordVec2; }
-    public ArrayList<Float> getzPixelVec2() { return zCoordVec2; }
-
-    // current ArrayList of pixel vectors for quad3
-    public ArrayList<Float> getxPixelVec3() { return xCoordVec3; }
-    public ArrayList<Float> getyPixelVec3() { return yCoordVec3; }
-    public ArrayList<Float> getzPixelVec3() { return zCoordVec3; }
-
     // current ArrayList of time vectors
     public ArrayList<Time> getTimesVec1() {
         return timesVec1;
