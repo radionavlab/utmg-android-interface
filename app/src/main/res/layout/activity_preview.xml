@@ -6,7 +6,7 @@
     android:id="@+id/preview_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="utmg.android_interface.PreviewActivity">
+    tools:context="utmg.android_interface.Activities.PreviewActivity">
 
     <ImageView
         android:id="@+id/demo_quad1"
@@ -49,7 +49,7 @@
         android:paddingTop="5dp"
         android:orientation="horizontal">
 
-        <utmg.android_interface.PreviewCanvas
+        <utmg.android_interface.Canvases.PreviewCanvas
             android:id="@+id/preview_canvas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,17 +114,23 @@
             android:id="@+id/terminate_preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_size="mini"
             fab:fab_colorNormal="@android:color/holo_red_dark"
             fab:fab_icon="@android:drawable/ic_menu_close_clear_cancel" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/send_to_airSim"
+            android:id="@+id/sendToAirSim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_icon="@drawable/icon"
-            fab:fab_colorNormal="@android:color/holo_green_light"
-            fab:fab_size="mini" />
+            fab:fab_colorNormal="@android:color/darker_gray"
+            fab:fab_icon="@android:drawable/ic_menu_send" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/scalePath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/holo_orange_light"
+            fab:fab_icon="@android:drawable/ic_menu_crop" />
+
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

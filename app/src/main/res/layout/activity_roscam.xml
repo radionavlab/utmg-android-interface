@@ -18,7 +18,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="utmg.android_interface.ROSCam">
+    tools:context="utmg.android_interface.ROSClasses.ROSCam">
 
     <org.ros.android.view.camera.RosCameraPreviewView
         android:id="@+id/ros_camera_preview_view"

@@ -1,4 +1,4 @@
-package utmg.android_interface;
+package utmg.android_interface.ROSClasses;
 
 import android.hardware.Camera;
 import android.os.Build;
@@ -14,6 +14,8 @@ import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 import android.util.Log;
 import java.io.IOException;
+
+import utmg.android_interface.R;
 
 public class ROSCam extends RosActivity {
 

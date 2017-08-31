@@ -5,7 +5,7 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="utmg.android_interface.MainActivity">
+    tools:context="utmg.android_interface.Activities.MainActivity">
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -215,7 +215,7 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
 
-        <utmg.android_interface.CanvasView
+        <utmg.android_interface.Canvases.DrawingCanvas
             android:id="@+id/signature_canvas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

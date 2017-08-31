@@ -1,4 +1,4 @@
-package utmg.android_interface;
+package utmg.android_interface.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +15,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.ToggleButton;
+
+import utmg.android_interface.DataShare;
+import utmg.android_interface.R;
 
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -46,9 +49,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        w.setText(Float.toString(pref.getFloat("newWidth",5)));
-        h.setText(Float.toString(pref.getFloat("newHeight",3)));
-        a.setText(Float.toString(pref.getFloat("newAltitude",2)));
+        w.setText(Float.toString(pref.getFloat("width",5)));
+        h.setText(Float.toString(pref.getFloat("height",3)));
+        a.setText(Float.toString(pref.getFloat("altitude",2)));
 
         Button done = (Button) findViewById(R.id.button);
         done.setOnClickListener(new View.OnClickListener()
@@ -59,10 +62,10 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
                 newHeight = Float.valueOf(h.getText().toString());
                 newAltitude = Float.valueOf(a.getText().toString());
 
-                prefEditor.putFloat("newWidth", newWidth);
-                prefEditor.putFloat("newHeight", newHeight);
-                prefEditor.putFloat("newAltitude", newAltitude);
-                prefEditor.commit();
+                prefEditor.putFloat("width", newWidth);
+                prefEditor.putFloat("height", newHeight);
+                prefEditor.putFloat("altitude", newAltitude);
+                prefEditor.apply();
 
                 finish();
             }
@@ -79,8 +82,6 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         final ToggleButton obstaclePublishToggle = (ToggleButton) findViewById(R.id.obstacle_publish_toggle);
         final ToggleButton debugModeToggle = (ToggleButton) findViewById(R.id.debug_mode_toggle);
 
-        DataShare.setServiceState(false);
-
         isQuad1Checked.setChecked(pref.getBoolean("quad1", true));
         isQuad2Checked.setChecked(pref.getBoolean("quad2", true));
         isQuad3Checked.setChecked(pref.getBoolean("quad3", true));
@@ -95,7 +96,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("quad1", isQuad1Checked.isChecked());
-                prefEditor.commit();
+                prefEditor.apply();
                 //Log.i("quadvis",Boolean.toString(pref.getBoolean("quad",false)));
             }
         });
@@ -104,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("quad2", isQuad2Checked.isChecked());
-                prefEditor.commit();
+                prefEditor.apply();
                 //Log.i("quadvis",Boolean.toString(pref.getBoolean("quad",false)));
             }
         });
@@ -113,7 +114,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("quad3", isQuad3Checked.isChecked());
-                prefEditor.commit();
+                prefEditor.apply();
                 //Log.i("quadvis",Boolean.toString(pref.getBoolean("quad",false)));
             }
         });
@@ -122,7 +123,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("sword", isSwordChecked.isChecked());
-                prefEditor.commit();
+                prefEditor.apply();
             }
         });
 
@@ -130,7 +131,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("obstacle1", isObstacle1Checked.isChecked());
-                prefEditor.commit();
+                prefEditor.apply();
             }
         });
 
@@ -138,7 +139,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("obstacle2", isObstacle2Checked.isChecked());
-                prefEditor.commit();
+                prefEditor.apply();
             }
         });
 
@@ -146,12 +147,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("serviceToggle", serviceToggle.isChecked());
-                if(isChecked == true){
-                    DataShare.setServiceState(true);
-                }else{
-                    DataShare.setServiceState(false);
-                }
-                prefEditor.commit();
+                prefEditor.apply();
             }
         });
 
@@ -159,7 +155,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("obstaclePublish", obstaclePublishToggle.isChecked());
-                prefEditor.commit();
+                prefEditor.apply();
             }
         });
 
@@ -167,11 +163,10 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("debugMode", debugModeToggle.isChecked());
-                prefEditor.commit();
+                prefEditor.apply();
             }
         });
 
-        // TODO setup the spinner for the service type
 
         // mode spinner
         Spinner spinner = (Spinner) findViewById(R.id.mode_spinner);
@@ -204,11 +199,11 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         if (parent.getItemAtPosition(pos).equals("Trajectory")) {
             prefEditor.putInt("mode", 0);
-            prefEditor.commit();
+            prefEditor.apply();
         }
         else if (parent.getItemAtPosition(pos).equals("Waypoint")) {
             prefEditor.putInt("mode", 1);
-            prefEditor.commit();
+            prefEditor.apply();
         }
 
     }
