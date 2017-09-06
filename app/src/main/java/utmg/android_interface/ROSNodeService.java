@@ -165,8 +165,8 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                                         Accel mAccel = connectedNode.getTopicMessageFactory().newFromType(Accel._TYPE);
 
                                         geometry_msgs.Point mPoint = connectedNode.getTopicMessageFactory().newFromType(geometry_msgs.Point._TYPE);
-                                        Vector3 mVel = connectedNode.getTopicMessageFactory().newFromType(Twist._TYPE);
-                                        Vector3 mAc = connectedNode.getTopicMessageFactory().newFromType(Accel._TYPE);
+                                        Vector3 mVel = connectedNode.getTopicMessageFactory().newFromType(Vector3._TYPE);
+                                        Vector3 mAc = connectedNode.getTopicMessageFactory().newFromType(Vector3._TYPE);
 
                                         mPoint.setX(serviceResponse.get(i).getPos().getX());
                                         mPoint.setY(serviceResponse.get(i).getPos().getY());
@@ -192,8 +192,10 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                                         //Time tempTime = connectedNode.getTopicMessageFactory().newFromType(Time._TYPE);
                                         // ASSUMING TIME COMES AS A FLOAT32 IN SECONDS
                                         Time tempTime = connectedNode.getCurrentTime();
-                                        tempTime.secs = (int) serviceResponse.get(i).getTime();
-                                        tempTime.nsecs = (int) ((serviceResponse.get(i).getTime() % 1) * Math.pow(10, 9));
+                                        //tempTime.secs = (int) (serviceResponse.get(i).getTime() % Math.pow(10, 9));
+                                        //tempTime.nsecs = (int) ((serviceResponse.get(i).getTime() % 1));
+                                        //tempTime.nsecs = (int) (tempTime.secs * Math.pow(10, 9) - serviceResponse.get(i).getTime());
+                                        tempTime.nsecs = (int) serviceResponse.get(i).getTime();
 
                                         mPVA_Stamped.getHeader().setStamp(tempTime);
                                         mPVA_Stamped.setPos(mPose);
