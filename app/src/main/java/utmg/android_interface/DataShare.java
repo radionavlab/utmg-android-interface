@@ -67,6 +67,8 @@ public class DataShare extends Application {
     private static nav_msgs.Path servicedPath2;
     private static nav_msgs.Path servicedPath3;
 
+    private static app_pathplanner_interface.PVATrajectory pva1;
+
     private static boolean playBackState;
     private static boolean serviceState; // TODO get rid of this junk
 
@@ -285,6 +287,19 @@ public class DataShare extends Application {
         }
     }
 
+    public static void setServicedPVAT(int i, app_pathplanner_interface.PVATrajectory pva) {
+        switch (i) {
+            case 1:
+                pva1 = pva;
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+        }
+    }
+
     public static nav_msgs.Path getServicedPath(int i) {
         switch (i) {
             case 1:
@@ -293,6 +308,19 @@ public class DataShare extends Application {
                 return servicedPath2;
             case 3:
                 return servicedPath3;
+            default:
+                return null;
+        }
+    }
+
+    public static app_pathplanner_interface.PVATrajectory getServicedPVAT(int i) {
+        switch (i) {
+            case 1:
+                return pva1;
+            case 2:
+                return null;
+            case 3:
+                return null;
             default:
                 return null;
         }

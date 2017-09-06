@@ -15,16 +15,14 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.NodeMain;
 import org.ros.node.service.ServiceClient;
 import org.ros.node.service.ServiceResponseListener;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import geometry_msgs.Accel;
 import geometry_msgs.Pose;
 import geometry_msgs.PoseArray;
 import geometry_msgs.PoseStamped;
-import app_pathplanner_interface.PVATrajectoryStamped;
-import app_pathplanner_interface.PVAStamped;
+import app_pathplanner_interface.PVATrajectory;
+import app_pathplanner_interface.PVA_Stamped;
 import geometry_msgs.Twist;
 import geometry_msgs.Vector3;
 import mav_trajectory_generation_ros.PVAJS;
@@ -82,7 +80,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                     // trajectory publisher
                     PoseArray mPoseArray1 = connectedNode.getTopicMessageFactory().newFromType(PoseArray._TYPE);
                     Path mPath1 = connectedNode.getTopicMessageFactory().newFromType(Path._TYPE);
-                    final PVATrajectoryStamped mPVATrajectory = connectedNode.getTopicMessageFactory().newFromType(PVATrajectoryStamped._TYPE);
+                    final PVATrajectory mPVATrajectory = connectedNode.getTopicMessageFactory().newFromType(PVATrajectory._TYPE);
 
                     // configure for trajectory or waypoint mode
                     if (pref.getInt("mode", 0) == 0) {
@@ -144,6 +142,8 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                                 throw new RosRuntimeException(e);
                             }
 
+
+                            // Receipt event ///////////////////////////////////////////////////////
                             final minSnapStampedRequest request = serviceClient.newMessage();
                             request.setWaypoints(mPath1);
                             serviceClient.call(request, new ServiceResponseListener<minSnapStampedResponse>() {
@@ -153,13 +153,13 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
                                     // TODO might be buggy!
                                     //convert path planner format to nav_msgs/Path
-                                    ArrayList<PVAStamped> listPVA = new ArrayList<PVAStamped>();
-                                    List<PVAJS> tempVec = response.getFlatStates().getPVAJSArray();
+                                    ArrayList<PVA_Stamped> listPVA = new ArrayList<>();
+                                    List<PVAJS> serviceResponse = response.getFlatStates().getPVAJSArray();
                                     ArrayList tempPath = new ArrayList();
                                     Path tempServicedPath =  connectedNode.getTopicMessageFactory().newFromType(Path._TYPE);
 
-                                    for (int i = 0; i < tempVec.size(); i++) {
-                                        PVAStamped mPVAStamped = connectedNode.getTopicMessageFactory().newFromType(PVAStamped._TYPE);
+                                    for (int i = 0; i < serviceResponse.size(); i++) {
+                                        PVA_Stamped mPVA_Stamped = connectedNode.getTopicMessageFactory().newFromType(PVA_Stamped._TYPE);
                                         Pose mPose = connectedNode.getTopicMessageFactory().newFromType(Pose._TYPE);
                                         Twist mTwist = connectedNode.getTopicMessageFactory().newFromType(Twist._TYPE);
                                         Accel mAccel = connectedNode.getTopicMessageFactory().newFromType(Accel._TYPE);
@@ -168,20 +168,20 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                                         Vector3 mVel = connectedNode.getTopicMessageFactory().newFromType(Twist._TYPE);
                                         Vector3 mAc = connectedNode.getTopicMessageFactory().newFromType(Accel._TYPE);
 
-                                        mPoint.setX(tempVec.get(i).getPos().getX());
-                                        mPoint.setY(tempVec.get(i).getPos().getY());
-                                        mPoint.setZ(tempVec.get(i).getPos().getZ());
+                                        mPoint.setX(serviceResponse.get(i).getPos().getX());
+                                        mPoint.setY(serviceResponse.get(i).getPos().getY());
+                                        mPoint.setZ(serviceResponse.get(i).getPos().getZ());
                                         mPose.setPosition(mPoint);
-                                        //mPose.setPosition(tempVec.get(i).getPos()); // TODO if this doesn't work, uncomment above 4 lines, and comment this
+                                        //mPose.setPosition(serviceResponse.get(i).getPos()); // TODO if this doesn't work, uncomment above 4 lines, and comment this
 
-                                        mVel.setX(tempVec.get(i).getVel().getX());
-                                        mVel.setY(tempVec.get(i).getVel().getY());
-                                        mVel.setZ(tempVec.get(i).getVel().getZ());
+                                        mVel.setX(serviceResponse.get(i).getVel().getX());
+                                        mVel.setY(serviceResponse.get(i).getVel().getY());
+                                        mVel.setZ(serviceResponse.get(i).getVel().getZ());
                                         mTwist.setLinear(mVel);
 
-                                        mAc.setX(tempVec.get(i).getAcc().getX());
-                                        mAc.setY(tempVec.get(i).getAcc().getY());
-                                        mAc.setZ(tempVec.get(i).getAcc().getZ());
+                                        mAc.setX(serviceResponse.get(i).getAcc().getX());
+                                        mAc.setY(serviceResponse.get(i).getAcc().getY());
+                                        mAc.setZ(serviceResponse.get(i).getAcc().getZ());
                                         mAccel.setLinear(mAc);
 
                                         PoseStamped mPoseStamped = connectedNode.getTopicMessageFactory().newFromType((PoseStamped._TYPE));
@@ -189,17 +189,25 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                                         mPoseStamped.setPose(mPose);
                                         tempPath.add(mPoseStamped);
 
-                                        mPVAStamped.setPos(mPose);
-                                        mPVAStamped.setVel(mTwist);
-                                        mPVAStamped.setAcc(mAccel);
-                                        listPVA.add(mPVAStamped);
+                                        //Time tempTime = connectedNode.getTopicMessageFactory().newFromType(Time._TYPE);
+                                        // ASSUMING TIME COMES AS A FLOAT32 IN SECONDS
+                                        Time tempTime = connectedNode.getCurrentTime();
+                                        tempTime.secs = (int) serviceResponse.get(i).getTime();
+                                        tempTime.nsecs = (int) ((serviceResponse.get(i).getTime() % 1) * Math.pow(10, 9));
+
+                                        mPVA_Stamped.getHeader().setStamp(tempTime);
+                                        mPVA_Stamped.setPos(mPose);
+                                        mPVA_Stamped.setVel(mTwist);
+                                        mPVA_Stamped.setAcc(mAccel);
+                                        listPVA.add(mPVA_Stamped);
                                     }
 
                                     tempServicedPath.setPoses(tempPath);
                                     mPVATrajectory.setPva(listPVA);
 
+                                    // TODO remove tempServicedPath argument
                                     DataShare.setServicedPath(quadNumber, tempServicedPath); // TODO change first argument for whichever serviced path requested
-
+                                    DataShare.setServicedPVAT(quadNumber, mPVATrajectory);
                                     //connectedNode.getLog().info(
                                     //        String.format("%d + %d = %d", request.getA(), request.getB(), response.getSum()));
                                 }

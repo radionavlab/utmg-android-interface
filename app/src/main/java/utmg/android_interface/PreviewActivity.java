@@ -6,19 +6,14 @@ import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,7 +26,6 @@ import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class PreviewActivity extends AppCompatRosActivity {
@@ -125,6 +119,8 @@ public class PreviewActivity extends AppCompatRosActivity {
                 // Work with quad1 for now
                 if (DataShare.getServicedPath(1) != null) {
                     nodePublish.setPath1(DataShare.getServicedPath(1));
+                    nodePublish.setPVAT1(DataShare.getServicedPVAT(1));
+
                 }
 
                 if (DataShare.getServicedPath(2) != null) {

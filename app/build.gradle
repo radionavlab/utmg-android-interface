@@ -56,4 +56,5 @@ dependencies {
     compile files('libs/app_pathplanner_interface-0.0.0.jar')
     compile files('libs/mav_trajectory_generation_ros-0.0.0.jar')
     compile files('libs/curve_compression-0.0.0.jar')
+    compile files('libs/std_msgs-Time.jar')
 }

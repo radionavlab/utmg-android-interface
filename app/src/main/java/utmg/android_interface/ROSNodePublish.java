@@ -10,6 +10,8 @@ import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
 import org.ros.node.NodeMain;
 import org.ros.node.topic.Publisher;
+
+import app_pathplanner_interface.PVATrajectory;
 import nav_msgs.Path;
 
 public class ROSNodePublish extends AbstractNodeMain implements NodeMain {
@@ -20,6 +22,8 @@ public class ROSNodePublish extends AbstractNodeMain implements NodeMain {
     private boolean publishToggle1 = false;
     private boolean publishToggle2 = false;
     private boolean publishToggle3 = false;
+
+    app_pathplanner_interface.PVATrajectory pvat1;
 
     nav_msgs.Path path1;
     nav_msgs.Path path2;
@@ -41,6 +45,8 @@ public class ROSNodePublish extends AbstractNodeMain implements NodeMain {
 
         Context appCon = MainActivity.getContextOfApplication();
 
+        final Publisher<app_pathplanner_interface.PVATrajectory> publisherPVAT1 = connectedNode.newPublisher(GraphName.of("PosControl/PVATrajectory/Quad1"), PVATrajectory._TYPE);
+
         final Publisher<nav_msgs.Path> publisherPath1 = connectedNode.newPublisher(GraphName.of("PosControl/Path/Quad1"), Path._TYPE);
         final Publisher<nav_msgs.Path> publisherPath2 = connectedNode.newPublisher(GraphName.of("PosControl/Path/Quad2"), Path._TYPE);
         final Publisher<nav_msgs.Path> publisherPath3 = connectedNode.newPublisher(GraphName.of("PosControl/Path/Quad3"), Path._TYPE);
@@ -52,15 +58,17 @@ public class ROSNodePublish extends AbstractNodeMain implements NodeMain {
                 if (publishToggle1 || publishToggle2 || publishToggle3) {
 
                     // package each trajectory/waypoint into ROS message and send for quad1 ////////
-                    if (path1 != null) {
+                    if (path1 != null && pvat1 != null) {
 
                         path1.getHeader().setFrameId("world");
+                        pvat1.getHeader().setFrameId("world");
 //                        path1.getHeader().setSeq(seq1);
 
 //                        if (pref.getInt("mode", 0) == 0) {
 
                             if (publishToggle1) {
                                 publisherPath1.publish(path1);
+                                publisherPVAT1.publish(pvat1);
                                 Log.i("ROSNodePublish", "Published Path 1 to ROS.");
 
                                 seq1 = seq1 + 1;
@@ -123,6 +131,13 @@ public class ROSNodePublish extends AbstractNodeMain implements NodeMain {
     }
 
     // MainActivity FAB sends vector of coordinates to here
+
+    void setPVAT1(PVATrajectory pva) {
+        pvat1 = pva;
+        publishToggle1 = true;
+        Log.i("ROSNodePublish","PVAT 1 transferred to NodePublish");
+    }
+
     void setPath1(nav_msgs.Path p) {
         path1 = p;
         publishToggle1 = true;
