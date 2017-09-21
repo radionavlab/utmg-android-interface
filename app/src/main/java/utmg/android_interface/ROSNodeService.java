@@ -191,11 +191,11 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 
                                         //Time tempTime = connectedNode.getTopicMessageFactory().newFromType(Time._TYPE);
                                         // ASSUMING TIME COMES AS A FLOAT32 IN SECONDS
-                                        Time tempTime = connectedNode.getCurrentTime();
-                                        //tempTime.secs = (int) (serviceResponse.get(i).getTime() % Math.pow(10, 9));
-                                        //tempTime.nsecs = (int) ((serviceResponse.get(i).getTime() % 1));
-                                        //tempTime.nsecs = (int) (tempTime.secs * Math.pow(10, 9) - serviceResponse.get(i).getTime());
-                                        tempTime.nsecs = (int) serviceResponse.get(i).getTime();
+                                        Time tempTime = new Time();
+                                        float responseTime = serviceResponse.get(i).getTime() * 3; // TODO TIME INFLATION
+                                        tempTime.secs = (int) responseTime;
+                                        tempTime.nsecs = (int) ((responseTime - tempTime.secs) * Math.pow(10,9));
+                                        Log.i("RNS", "Seconds: " + Integer.toString(tempTime.secs) + "\t" + "Nanoseconds: " + Integer.toString(tempTime.nsecs));
 
                                         mPVA_Stamped.getHeader().setStamp(tempTime);
                                         mPVA_Stamped.setPos(mPose);

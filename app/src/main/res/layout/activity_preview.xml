@@ -71,17 +71,17 @@
                 android:layout_gravity="bottom"
                 android:layout_weight="1">
 
+                <!--
                 <SeekBar
                     android:id="@+id/quadAllSeek"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
-                    android:progressDrawable="@drawable/ruler"
-                    android:thumb="@drawable/preview_seekbar_thumb4" />
+                    android:paddingTop="15dp" /> -->
             </RelativeLayout>
 
+            <!--
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                     android:background="@drawable/toggle_selector"
                     android:textOff=" "
                     android:textOn="" />
-            </LinearLayout>
+            </LinearLayout> -->
 
         </TableRow>
 
@@ -114,7 +114,6 @@
             android:id="@+id/terminate_preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_size="mini"
             fab:fab_colorNormal="@android:color/holo_red_dark"
             fab:fab_icon="@android:drawable/ic_menu_close_clear_cancel" />
 
@@ -123,8 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_icon="@drawable/icon"
-            fab:fab_colorNormal="@android:color/holo_green_light"
-            fab:fab_size="mini" />
+            fab:fab_colorNormal="@android:color/holo_green_light" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

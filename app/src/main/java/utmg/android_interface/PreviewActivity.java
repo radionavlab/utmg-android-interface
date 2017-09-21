@@ -9,6 +9,7 @@ import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TableRow;
 import android.widget.ToggleButton;
 
 import org.ros.android.AppCompatRosActivity;
@@ -31,8 +33,6 @@ import java.util.ArrayList;
 public class PreviewActivity extends AppCompatRosActivity {
 
     ROSNodePublish nodePublish;
-
-    //ROSNodeMain nodeMain = new ROSNodeMain();
 
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
@@ -69,19 +69,8 @@ public class PreviewActivity extends AppCompatRosActivity {
     private ArrayList<Float> xPixelVec3Scaled = new ArrayList<>();
     private ArrayList<Float> yPixelVec3Scaled = new ArrayList<>();
 
-    private SeekBar quadAllSeek;
-    private ToggleButton toggle;
-    private int togglei = 0;
-    private int quadMax = 0;
     private int layoutHeight = 0;
     private int layoutWidth = 0;
-
-    private float scaledx1;
-    private float scaledy1;
-    private float scaledx2;
-    private float scaledy2;
-    private float scaledx3;
-    private float scaledy3;
 
     Path path1 = new Path();
     Path path2 = new Path();
@@ -115,6 +104,8 @@ public class PreviewActivity extends AppCompatRosActivity {
             @Override
             public void onClick(View v) {
                 Log.i("PreviewActivity", "Sent path 1 to ROSNodePublish");
+                Snackbar.make(v, "Published trajectory!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
 
                 // Work with quad1 for now
                 if (DataShare.getServicedPath(1) != null) {
@@ -163,7 +154,13 @@ public class PreviewActivity extends AppCompatRosActivity {
 
         // initializing quadAllSeek
         seekbarRelative = (RelativeLayout) findViewById(R.id.seekbar_relative);
-        quadAllSeek = (SeekBar) findViewById(R.id.quadAllSeek);
+        // read height with myLinearLayout.getHeight() etc.
+        TableRow.LayoutParams params = (TableRow.LayoutParams) seekbarRelative.getLayoutParams();
+        params.height = (int) (screenHeight/10);
+        layoutHeight = params.height;
+        params.width = (int) (screenWidth);
+        layoutWidth = params.width;
+        seekbarRelative.setLayoutParams(params);
 
         // seekbarRelative is the container view for the bottom seekbar for playback.
         // The listener is implemented such that PreviewActivity first waits for the seekbarRelative
@@ -253,12 +250,12 @@ public class PreviewActivity extends AppCompatRosActivity {
             path3.transform(scaleMatrix);
         }
 
-        xPixelVec1Scaled = new ArrayList<Float>();
-        yPixelVec1Scaled = new ArrayList<Float>();
-        xPixelVec2Scaled = new ArrayList<Float>();
-        yPixelVec2Scaled = new ArrayList<Float>();
-        xPixelVec3Scaled = new ArrayList<Float>();
-        yPixelVec3Scaled = new ArrayList<Float>();
+        xPixelVec1Scaled = new ArrayList<>();
+        yPixelVec1Scaled = new ArrayList<>();
+        xPixelVec2Scaled = new ArrayList<>();
+        yPixelVec2Scaled = new ArrayList<>();
+        xPixelVec3Scaled = new ArrayList<>();
+        yPixelVec3Scaled = new ArrayList<>();
 
         // transforming arrays for quad1
         if (xPixelVec1 != null) {
@@ -359,613 +356,7 @@ public class PreviewActivity extends AppCompatRosActivity {
         xPixelVec3 = DataShare.getXPixelVec(3);
         yPixelVec3 = DataShare.getYPixelVec(3);
 
-        // QUAD RUNNABLE: sets visibility of quad and places it at first point
-        // TODO fix logic
-        final Handler handlerQuad = new Handler();
-        Runnable runnableQuad = new Runnable() {
-            @Override
-            public void run() {
 
-                // quad 1
-                if (pref.getBoolean("quad1", true)) {
-                    if(DataShare.getXPixelVec(1) == null){
-                      quad1.setVisibility(View.INVISIBLE);
-                  }else {
-                      if (DataShare.getXPixelVec(1).isEmpty() == true) {
-                          quad1.setVisibility(View.INVISIBLE);
-                      } else {
-                            // place imageView at start of path on launch of PreviewActivity
-                            if (togglei == 0) {
-                                quad1.setX(xPixelVec1.get(0) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                                quad1.setY(yPixelVec1.get(0) - quad1.getHeight() / 2);
-                                quad1.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
-                }
-
-                // quad 2
-                if (pref.getBoolean("quad2", true)) {
-                    if(DataShare.getXPixelVec(2) == null){
-                        quad2.setVisibility(View.INVISIBLE);
-                    }else {
-                        if (DataShare.getXPixelVec(2).isEmpty() == true) { // error is being thrown here NullPointer because cannot determine if it is empty if it is null
-                            quad2.setVisibility(View.INVISIBLE);
-                        } else {
-                            // place imageView at start of path on launch of PreviewActivity
-                            if (togglei == 0) {
-                                quad2.setX(xPixelVec2.get(0) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                                quad2.setY(yPixelVec2.get(0) - quad2.getHeight() / 2);
-                                quad2.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
-                }
-
-                // quad 3
-                if (pref.getBoolean("quad3", true)) {
-                    if (DataShare.getXPixelVec(3) == null) {
-                        quad3.setVisibility(View.INVISIBLE);
-                    } else {
-                        if (DataShare.getXPixelVec(3).isEmpty() == true) {
-                            quad3.setVisibility(View.INVISIBLE);
-                        } else {
-                            // place imageView at start of path on launch of PreviewActivity
-                            if (togglei == 0) {
-                                quad3.setX(xPixelVec3.get(0) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                                quad3.setY(yPixelVec3.get(0) - quad2.getHeight() / 2);
-                                quad3.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
-                }
-                handlerQuad.postDelayed(this, 10);
-            }
-        };
-        runnableQuad.run();
-
-        // ONLY WORKS AFTER PLAYING THROUGH ONCE
-        // Touch listener for quad1 - for dragging quad along path
-        quad1.setOnTouchListener(new View.OnTouchListener() {
-            Point DownPT = new Point(); // Record mouse position when pressed down
-            Point StartPT = new Point(); // Record start position of quad1
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int eid = event.getAction();
-                switch (eid) {
-
-                    // when you first press down
-                    case MotionEvent.ACTION_DOWN:
-                        DownPT.x = (int) event.getX();
-                        DownPT.y = (int) event.getY();
-                        StartPT = new Point((int) quad1.getX(), (int) quad1.getY());
-                        break;
-
-                    // when you move dot
-                    case MotionEvent.ACTION_MOVE:
-                        PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
-                        quad1.setX((int) (StartPT.x + mv.x));
-                        quad1.setY((int) (StartPT.y + mv.y));
-                        StartPT = new Point((int) quad1.getX(), (int) quad1.getY());
-                        break;
-
-                    // when you pick up pen
-                    case MotionEvent.ACTION_UP:
-                        int t = 0;
-                        double distance = 0;
-                        double leastDistance = 100000000;// needs to be large in order for distance to enter into the loop
-                        int leastDistanceIndex = 0;
-                        double d = 0.0;
-                        float x1 = quad1.getX() - quad1.getWidth() / 2 - canvasSize.getLeft();
-                        float x2 = x1;
-                        float y2 = 0;
-                        float y1 = quad1.getY() - quad1.getHeight() / 2;
-
-                        while (t < xPixelVec1.size() - 1) {
-
-                            x2 = xPixelVec1.get(t);
-                            y2 = yPixelVec1.get(t);
-
-                            d = Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0);// part 1 of the distance formula (x2 - x1)^2 + (y2 - y1)^2
-                            distance = Math.sqrt((float) d);// converts from double to float then does the square root of it
-
-                            if (distance < leastDistance) {// if the distance found is smaller than the greatest
-                                leastDistance = distance;// then it becomes the leastDistance
-                                leastDistanceIndex = t;
-                            }
-                            t++;
-                        }
-                        quad1.setX(xPixelVec1.get(leastDistanceIndex) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                        quad1.setY(yPixelVec1.get(leastDistanceIndex) - quad1.getHeight() / 2);
-                        scaledx1 = xPixelVec1.get(leastDistanceIndex) - quad1.getWidth() / 2 + canvasSize.getLeft();
-                        scaledy1 = yPixelVec1.get(leastDistanceIndex) - quad1.getHeight() / 2;
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
-
-        // ONLY WORKS AFTER PLAYING THROUGH ONCE
-        // Touch listener for quad2 - for dragging quad along path
-        quad2.setOnTouchListener(new View.OnTouchListener() {
-            Point DownPT = new Point(); // Record mouse position when pressed down
-            Point StartPT = new Point(); // Record start position of quad1
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int eid = event.getAction();
-                switch (eid) {
-
-                    // when you first press down
-                    case MotionEvent.ACTION_DOWN:
-                        DownPT.x = (int) event.getX();
-                        DownPT.y = (int) event.getY();
-                        StartPT = new Point((int) quad2.getX(), (int) quad2.getY());
-                        break;
-
-                    // when you move dot
-                    case MotionEvent.ACTION_MOVE:
-                        PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
-                        quad2.setX((int) (StartPT.x + mv.x));
-                        quad2.setY((int) (StartPT.y + mv.y));
-                        StartPT = new Point((int) quad2.getX(), (int) quad2.getY());
-                        break;
-
-                    // when you pick up pen
-                    case MotionEvent.ACTION_UP:
-                        int t = 0;
-                        double distance = 0;
-                        double leastDistance = 100000000;// needs to be large in order for distance to enter into the loop
-                        int leastDistanceIndex = 0;
-                        double d = 0.0;
-                        float x1 = quad2.getX() - quad2.getWidth() / 2 - canvasSize.getLeft();
-                        float x2 = x1;
-                        float y2 = 0;
-                        float y1 = quad2.getY() - quad2.getHeight() / 2;
-
-                        while (t < xPixelVec2.size() - 1) {
-                            x2 = xPixelVec2.get(t);
-                            y2 = yPixelVec2.get(t);
-
-                            d = Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0);// part 1 of the distance formula (x2 - x1)^2 + (y2 - y1)^2
-                            distance = Math.sqrt((float) d);// converts from double to float then does the square root of it
-
-                            if (distance < leastDistance) {// if the distance found is smaller than the greatest
-                                leastDistance = distance;// then it becomes the leastDistance
-                                leastDistanceIndex = t;
-                            }
-                            t++;
-                        }
-                        quad2.setX(xPixelVec2.get(leastDistanceIndex) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                        quad2.setY(yPixelVec2.get(leastDistanceIndex) - quad2.getHeight() / 2);
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
-
-        // ONLY WORKS AFTER PLAYING THROUGH ONCE
-        // Touch listener for quad3 - for dragging quad along path
-        quad3.setOnTouchListener(new View.OnTouchListener() {
-            Point DownPT = new Point(); // Record mouse position when pressed down
-            Point StartPT = new Point(); // Record start position of quad1
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int eid = event.getAction();
-                switch (eid) {
-
-                    // when you first press down
-                    case MotionEvent.ACTION_DOWN:
-                        DownPT.x = (int) event.getX();
-                        DownPT.y = (int) event.getY();
-                        StartPT = new Point((int) quad3.getX(), (int) quad3.getY());
-                        break;
-
-                    // when you move dot
-                    case MotionEvent.ACTION_MOVE:
-                        PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
-                        quad3.setX((int) (StartPT.x + mv.x));
-                        quad3.setY((int) (StartPT.y + mv.y));
-                        StartPT = new Point((int) quad3.getX(), (int) quad3.getY());
-                        break;
-
-                    // when you pick up pen
-                    case MotionEvent.ACTION_UP:
-                        int t = 0;
-                        double distance = 0;
-                        double leastDistance = 100000000;// needs to be large in order for distance to enter into the loop
-                        int leastDistanceIndex = 0;
-                        double d = 0.0;
-                        float x1 = quad3.getX() - quad3.getWidth() / 2 - canvasSize.getLeft();
-                        float x2 = x1;
-                        float y2 = 0;
-                        float y1 = quad3.getY() - quad3.getHeight() / 2;
-
-                        while (t < xPixelVec3.size() - 1) {
-                            x2 = xPixelVec3.get(t);
-                            y2 = yPixelVec3.get(t);
-
-                            d = Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0); // part 1 of the distance formula (x2 - x1)^2 + (y2 - y1)^2
-                            distance = Math.sqrt((float) d); // converts from double to float then does the square root of it
-
-                            if (distance < leastDistance) { // if the distance found is smaller than the greatest
-                                leastDistance = distance; // then it becomes the leastDistance
-                                leastDistanceIndex = t;
-                            }
-                            t++;
-                        }
-                        quad3.setX(xPixelVec3.get(leastDistanceIndex) - quad3.getWidth() / 2 + canvasSize.getLeft());
-                        quad3.setY(yPixelVec3.get(leastDistanceIndex) - quad3.getHeight() / 2);
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
-
-        // play/pause toggle button
-        toggle = (ToggleButton) findViewById(R.id.toggleButton);
-        Runnable quadToggle = new Runnable() {
-            @Override
-            public void run() {
-                toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked && DataShare.getPlayBackState()) {
-                            togglei = 1; // will allow it to change rather than stay at starting position
-                            if (xPixelVec1 != null) {
-                                runQuad1();
-                                seekAll();
-                            }
-
-                            if (xPixelVec2 != null) {
-                                runQuad2();
-                                seekAll();
-                            }
-
-                            if (xPixelVec3 != null) {
-                                runQuad3();
-                                seekAll();
-                            }
-
-                        } else if (!isChecked && DataShare.getPlayBackState()) {
-                            // SIDDHARTH HELP! - does this listener need to be inside the toggle listener?
-                            quadAllSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                                @Override
-                                public void onStopTrackingTouch(SeekBar seekBar) {
-                                }
-
-                                @Override
-                                public void onStartTrackingTouch(SeekBar seekBar) {
-                                }
-
-                                @Override
-                                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                    int index = quadAllSeek.getProgress();
-                                    if (toggle.isChecked() == false) {
-                                        if(xPixelVec1 != null) {
-                                            if (xPixelVec1.isEmpty() == false) {
-
-                                                if (index == xPixelVec1.size()) {
-                                                    // This will handle the error come back to this
-
-                                                } else if (index > xPixelVec1.size()) {
-                                                    quad1.setX(xPixelVec1.get(xPixelVec1.size() - 1) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                                                    quad1.setY(yPixelVec1.get(yPixelVec1.size() - 1) - quad1.getHeight() / 2);
-
-                                                } else {
-                                                    quad1.setX(xPixelVec1.get(index) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                                                    quad1.setY(yPixelVec1.get(index) - quad1.getHeight() / 2);
-                                                }
-                                            }
-                                        }
-                                        if(xPixelVec2 != null) {
-                                            if (xPixelVec2.isEmpty() == false) {
-                                                if (index == xPixelVec2.size()) {
-                                                    // This will handle the error
-
-                                                } else if (index > xPixelVec2.size()) {
-                                                    quad2.setX(xPixelVec2.get(xPixelVec2.size() - 1) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                                                    quad2.setY(yPixelVec2.get(yPixelVec2.size() - 1) - quad2.getHeight() / 2);
-
-                                                } else {
-                                                    quad2.setX(xPixelVec2.get(index) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                                                    quad2.setY(yPixelVec2.get(index) - quad2.getHeight() / 2);
-                                                }
-                                            }
-                                        }
-                                        if(xPixelVec3 != null) {
-                                            if (xPixelVec3.isEmpty() == false) {
-                                                if (index == xPixelVec3.size()) {
-                                                    // This will handle the error
-
-                                                } else if (index > xPixelVec3.size()) {
-                                                    quad3.setX(xPixelVec3.get(xPixelVec3.size() - 1) - quad3.getWidth() / 2 + canvasSize.getLeft());
-                                                    quad3.setY(yPixelVec3.get(yPixelVec3.size() - 1) - quad3.getHeight() / 2);
-
-                                                } else {
-                                                    quad3.setX(xPixelVec3.get(index) - quad3.getWidth() / 2 + canvasSize.getLeft());
-                                                    quad3.setY(yPixelVec3.get(index) - quad3.getHeight() / 2);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        };
-        quadToggle.run();
-    }
-
-    // run quad1 on play along the path
-    private void runQuad1() {
-        final Handler updateH1 = new Handler();
-        Runnable updateR1 = new Runnable() {
-            @Override
-            public void run() {
-
-                while (DataShare.getSeekLoc(1) < xPixelVec1.size() - 1) {
-                    // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    updateH1.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            int value = DataShare.getSeekLoc(1);
-
-                            quad1.setX(xPixelVec1.get(value) - quad1.getWidth() / 2 + canvasSize.getLeft());
-                            quad1.setY(yPixelVec1.get(value) - quad1.getHeight() / 2);
-
-                            if (toggle.isChecked()) {
-                                DataShare.setSeekLoc(1, value + 1);
-                            } else {
-                                DataShare.setPlayBackState(false);
-                            }
-
-                            if (value >= xPixelVec1.size() - 1) {
-                                DataShare.setSeekLoc(1, 0);
-                                DataShare.setPlayBackState(true);
-                            }
-                        }
-                    });
-                }
-            }
-        };
-        new Thread(updateR1).start();
-    }
-
-    // run quad2 on play along the path
-    private void runQuad2() {
-        final Handler updateH2 = new Handler();
-        Runnable updateR2 = new Runnable() {
-            @Override
-            public void run() {
-
-                while (DataShare.getSeekLoc(2) < xPixelVec2.size() - 1) {
-                    // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    updateH2.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            int value = DataShare.getSeekLoc(2);
-
-                            quad2.setX(xPixelVec2.get(value) - quad2.getWidth() / 2 + canvasSize.getLeft());
-                            quad2.setY(yPixelVec2.get(value) - quad2.getHeight() / 2);
-
-                            if (toggle.isChecked()) {
-                                DataShare.setSeekLoc(2, value + 1);
-                            } else {
-                                DataShare.setPlayBackState(false);
-                            }
-
-                            if (value >= xPixelVec2.size() - 1) {
-                                DataShare.setSeekLoc(2, 0);
-                                DataShare.setPlayBackState(true);
-                            }
-                        }
-                    });
-                }
-            }
-        };
-        new Thread(updateR2).start();
-    }
-
-    // run quad3 on play along the path
-    private void runQuad3() {
-        final Handler updateH3 = new Handler();
-        Runnable updateR3 = new Runnable() {
-            @Override
-            public void run() {
-
-                while (DataShare.getSeekLoc(3) < xPixelVec3.size() - 1) {
-                    // NOTE: CHANGE THIS WAIT TIME IN MS AS DESIRED BY PLAYBACK SPEED
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    updateH3.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            int value = DataShare.getSeekLoc(3);
-
-                            quad3.setX(xPixelVec3.get(value) - quad3.getWidth() / 2 + canvasSize.getLeft());
-                            quad3.setY(yPixelVec3.get(value) - quad3.getHeight() / 2);
-
-                            if (toggle.isChecked()) {
-                                DataShare.setSeekLoc(3, value + 1);
-                            } else {
-                                DataShare.setPlayBackState(false);
-                            }
-
-                            if (value >= xPixelVec3.size() - 1) {
-                                DataShare.setSeekLoc(3, 0);
-                                DataShare.setPlayBackState(true);
-                            }
-                        }
-                    });
-                }
-            }
-        };
-        new Thread(updateR3).start();
-    }
-
-    // coordinate seekbar with quads
-    private void seekAll() {
-
-        // TODO has to be a better way to do this
-        // set seekbar max equal to the longest quad length - should equal longest time
-        if(xPixelVec1 != null && xPixelVec2 != null && xPixelVec3 != null){
-            quadAllSeek.setMax(Math.max(Math.max(xPixelVec1.size(), xPixelVec2.size()), xPixelVec3.size()));
-            if(xPixelVec3.size() == quadAllSeek.getMax()){
-                quadMax = 3;
-            }else if(xPixelVec2.size() == quadAllSeek.getMax()){
-                quadMax = 2;
-            }else{
-                quadMax = 1;
-            }
-        }else if(xPixelVec1 == null){
-            if(xPixelVec2 == null){
-                quadAllSeek.setMax(xPixelVec3.size());
-                quadMax = 3;
-            }else if (xPixelVec3 == null){
-                quadAllSeek.setMax(xPixelVec2.size());
-                quadMax = 2;
-            }else {
-                quadAllSeek.setMax(Math.max(xPixelVec3.size(), xPixelVec2.size()));
-                if(xPixelVec3.size() == quadAllSeek.getMax()){
-                    quadMax = 3;
-                }else{
-                    quadMax = 2;
-                }
-            }
-        }
-        else if(xPixelVec2 == null){
-            if(xPixelVec1 == null){
-                quadAllSeek.setMax(xPixelVec3.size());
-                quadMax = 3;
-            }else if (xPixelVec3 == null){
-                quadAllSeek.setMax(xPixelVec1.size());
-                quadMax = 1;
-            }else {
-                quadAllSeek.setMax(Math.max(xPixelVec3.size(), xPixelVec1.size()));
-                if(xPixelVec3.size() == quadAllSeek.getMax()){
-                    quadMax = 3;
-                }else{
-                    quadMax = 1;
-                }
-            }
-        }
-        else if(xPixelVec3 == null){
-            if(xPixelVec2 == null){
-                quadAllSeek.setMax(xPixelVec1.size());
-                quadMax = 1;
-            }else if (xPixelVec1 == null){
-                quadAllSeek.setMax(xPixelVec2.size());
-                quadMax = 2;
-            }else {
-                quadAllSeek.setMax(Math.max(xPixelVec1.size(), xPixelVec2.size()));
-                if(xPixelVec1.size() == quadAllSeek.getMax()){
-                    quadMax = 1;
-                }else{
-                    quadMax = 2;
-                }
-            }
-        }
-
-        final Handler seekH = new Handler();
-        Runnable seekR = new Runnable() {
-            @Override
-            public void run() {
-                switch (quadMax){
-                    case 1:
-                    while (quadMax < quadAllSeek.getMax()) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        seekH.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                int value = DataShare.getSeekLoc(quadMax);
-                                if (value != 0) {
-                                    quadAllSeek.setProgress(value);
-                                }
-                                if (value == quadAllSeek.getMax() - 1) {
-                                    quadAllSeek.setProgress(quadAllSeek.getMax());
-                                    toggle.setChecked(false);
-                                }
-                            }
-                        });
-                    } break;
-
-                    case 2:
-                        while (quadMax < quadAllSeek.getMax()) {
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            seekH.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    int value = DataShare.getSeekLoc(quadMax);
-                                    if (value != 0) {
-                                        quadAllSeek.setProgress(value);
-                                    }
-                                    if (value == quadAllSeek.getMax() - 1) {
-                                        quadAllSeek.setProgress(quadAllSeek.getMax());
-                                        toggle.setChecked(false);
-                                    }
-                                }
-                            });
-                        } break;
-
-                    case 3:
-                        while (quadMax < quadAllSeek.getMax()) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        seekH.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                int value = DataShare.getSeekLoc(quadMax);
-                                if (value != 0) {
-                                    quadAllSeek.setProgress(value);
-                                }
-                                if (value == quadAllSeek.getMax() - 1) {
-                                    quadAllSeek.setProgress(quadAllSeek.getMax());
-                                    toggle.setChecked(false);
-                                }
-                            }
-                        });
-                    } break;
-                }
-            }
-        };
-        new Thread(seekR).start();
     }
 
     // convert nav_msgs/Path to ArrayList of pixels
