@@ -155,8 +155,7 @@
         android:layout_height="80dp"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:src="@drawable/obstacle"
-        android:visibility="gone"/>
+        android:src="@drawable/obstacle"/>
 
     <ImageView
         android:id="@+id/obstacle2"

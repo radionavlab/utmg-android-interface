@@ -150,23 +150,45 @@ public class PreviewActivity extends AppCompatRosActivity {
         previewCanvas = (PreviewCanvas) findViewById(R.id.preview_canvas);
         previewCanvas.callOnDraw();
 
-        // initializing imageViews
-        //quad1 = (ImageView) findViewById(R.id.demo_quad1);
-        //quad2 = (ImageView) findViewById(R.id.demo_quad2);
-        //quad3 = (ImageView) findViewById(R.id.demo_quad3);
-
-        // set size of dots in Preview Activity
-        /*
-        quad1.getLayoutParams().height = (int) (screenHeight * 0.02);
-        quad1.getLayoutParams().width = (int) (screenWidth * 0.02);
-        quad2.getLayoutParams().height = (int) (screenHeight * 0.02);
-        quad2.getLayoutParams().width = (int) (screenWidth * 0.02);
-        quad3.getLayoutParams().height = (int) (screenHeight * 0.02);
-        quad3.getLayoutParams().width = (int) (screenWidth * 0.02);
-        */
 
         xPixelVec1 = DataShare.getXPixelVec(1);
         yPixelVec1 = DataShare.getYPixelVec(1);
+
+
+        // obstacle display config TODO fix to match quad config
+        {
+            // set obstacle size
+
+            final ImageView obstacle1 = (ImageView) findViewById(R.id.obstacle1);
+            obstacle1.setMaxHeight((int) (screenHeight * 0.25));
+            obstacle1.setMaxWidth((int) (screenWidth * 0.25));
+
+            final ImageView obstacle2 = (ImageView) findViewById(R.id.obstacle2);
+            obstacle2.setMaxHeight((int) (screenHeight * 0.25));
+            obstacle2.setMaxWidth((int) (screenWidth * 0.25));
+
+            if (pref.getBoolean("obstacle1", false)) {
+                obstacle1.setVisibility(View.VISIBLE);
+
+                Thing obstacle_thing_1 = DataShare.getInstance("obstacle1"); // I hate this.
+                Thing obstacle_thing_2 = DataShare.getInstance("obstacle2");
+
+                double x = obstacle_thing_1.getX() + pref.getFloat("newHeight", 3)/2;
+                double y = obstacle_thing_1.getY() + pref.getFloat("newWidth", 5)/2;
+                Log.i("PreviewActivity","Obstacle x: " + Double.toString(x) +  "\ty: " + Double.toString(y) );
+
+                obstacle1.setX(obstacle_thing_1.getPixelX());
+                obstacle1.setY(obstacle_thing_1.getPixelY());
+
+                Log.i("PreviewActivity Obst1", "x: " + Float.toString(obstacle1.getX()) + "\ty:" + Float.toString(obstacle1.getY()));
+
+                obstacle1.setX((float) xMeterToPixel(x, y));
+                obstacle1.setY((float) yMeterToPixel(x, y));
+
+            } else {
+                obstacle1.setVisibility((View.INVISIBLE));
+            }
+        }
     }
 
     // convert nav_msgs/Path to ArrayList of pixels

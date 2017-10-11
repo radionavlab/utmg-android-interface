@@ -647,10 +647,17 @@ public class MainActivity extends AppCompatRosActivity {
                     }
 
                     if (pref.getBoolean("obstacle1", false)) {
-                        Log.d("MA Obst1", "x: " + Float.toString(obstacle1.getX()) + "\ty:" + Float.toString(obstacle1.getY()));
+                        //Log.d("MA Obst1", "x: " + Float.toString(obstacle1.getX()) + "\ty:" + Float.toString(obstacle1.getY()));
                         obstacle1.setVisibility(View.VISIBLE);
                         obstacle1.setX(objectXToPixel("obstacle1") - obstacle1.getWidth()/2);
                         obstacle1.setY(objectYToPixel("obstacle1") - obstacle1.getHeight()/2);
+
+                        Thing obstacle_thing_1 = DataShare.getInstance("obstacle1");;
+
+                        obstacle_thing_1.setPixelX((int)obstacle1.getX());
+                        obstacle_thing_1.setPixelY((int)obstacle1.getY());
+
+
                     } else {
                         obstacle1.setVisibility((View.INVISIBLE));
                     }
