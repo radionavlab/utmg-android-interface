@@ -66,11 +66,8 @@
         <activity
             android:name=".PreviewActivity"
             android:label="@string/title_activity_preview"
-            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="utmg.android_interface.MainActivity" />
         </activity>
     </application>
 
