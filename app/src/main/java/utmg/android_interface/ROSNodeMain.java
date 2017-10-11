@@ -87,10 +87,15 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
         final Thing obstacle1 = DataShare.getInstance("obstacle1");
         final Thing obstacle2 = DataShare.getInstance("obstacle2");
 
+        obstacle1.setX(2);
+        obstacle1.setY(0);
+        obstacle1.setZ(1);
+
 
         final CancellableLoop loop = new CancellableLoop() {
             @Override
             protected void loop() throws InterruptedException {
+
                 // retrieve current system time
                 //String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
 
@@ -396,9 +401,9 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
                     subscriberObstacle1.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                         @Override
                         public void onNewMessage(geometry_msgs.TransformStamped message) {
-                            obstacle1.setX(message.getTransform().getTranslation().getX());
-                            obstacle1.setY(message.getTransform().getTranslation().getY());
-                            obstacle1.setZ(message.getTransform().getTranslation().getZ());
+                            //obstacle1.setX(message.getTransform().getTranslation().getX());
+                            //obstacle1.setY(message.getTransform().getTranslation().getY());
+                            //obstacle1.setZ(message.getTransform().getTranslation().getZ());
                         }
                     });
 

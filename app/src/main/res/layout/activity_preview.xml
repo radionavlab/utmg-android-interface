@@ -45,7 +45,7 @@
         android:id="@+id/linLay"
         android:layout_width="655dp"
         android:layout_height="396dp"
-        android:layout_gravity="center_horizontal|top"
+        android:layout_gravity="center"
         android:paddingTop="5dp"
         android:orientation="horizontal">
 

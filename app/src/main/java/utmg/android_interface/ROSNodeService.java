@@ -192,7 +192,7 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
                                         //Time tempTime = connectedNode.getTopicMessageFactory().newFromType(Time._TYPE);
                                         // ASSUMING TIME COMES AS A FLOAT32 IN SECONDS
                                         Time tempTime = new Time();
-                                        float responseTime = serviceResponse.get(i).getTime() * 3; // TODO TIME INFLATION
+                                        float responseTime = (float) (serviceResponse.get(i).getTime() * 0.5); // TODO TIME INFLATION
                                         tempTime.secs = (int) responseTime;
                                         tempTime.nsecs = (int) ((responseTime - tempTime.secs) * Math.pow(10,9));
                                         Log.i("RNS", "Seconds: " + Integer.toString(tempTime.secs) + "\t" + "Nanoseconds: " + Integer.toString(tempTime.nsecs));

@@ -19,7 +19,6 @@ import android.content.SharedPreferences;
 
 import org.ros.message.Time;
 
-
 public class PreviewCanvas extends View {
 
     private Bitmap mBitmap;

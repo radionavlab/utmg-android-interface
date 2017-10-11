@@ -336,6 +336,9 @@ public class PreviewActivity extends AppCompatRosActivity {
         previewCanvas = (PreviewCanvas) findViewById(R.id.preview_canvas);
         previewCanvas.callOnDraw();
 
+        previewCanvas.getLayoutParams().height = (int) (screenHeight * 0.65);
+        previewCanvas.getLayoutParams().width = (int) (previewCanvas.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
+
         // initializing imageViews
         quad1 = (ImageView) findViewById(R.id.demo_quad1);
         quad2 = (ImageView) findViewById(R.id.demo_quad2);
@@ -398,8 +401,8 @@ public class PreviewActivity extends AppCompatRosActivity {
                     }
 
                     DataShare.setPath(1, mPath1);
-                    scalePath(mPath1);
-                    scaleDot1();
+                    //scalePath(mPath1);
+                    //scaleDot1();
                     break;
 
                 case 2:

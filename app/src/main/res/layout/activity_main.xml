@@ -181,7 +181,7 @@
         <SeekBar
             android:id="@+id/slider"
             android:layout_width="300dp"
-            android:layout_height="20dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:max="2"
             android:rotation="270"
