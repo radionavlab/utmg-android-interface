@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.icu.text.DateTimePatternGenerator;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -39,15 +40,24 @@ public class CanvasView extends View {
         context = c;
         pref = c.getSharedPreferences("Pref", 0);
         mode = pref.getInt("mode", 0);
-        paths=new ArrayList<>();
+
+        quads = (ArrayList<Quad>) DataShare.retrieve("quads");
+
+        paths = new ArrayList<>();
+
+        for (Quad qd : quads)
+        {
+            paths.add(new Path());
+        }
+
         // Paint initialization for trajectories ///////////////////////////////////////////////////
         paint = new Paint();
-        if(mode==0) {
+        if (mode == 0) {
             paint.setAntiAlias(true);
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeJoin(Paint.Join.ROUND);
             paint.setStrokeWidth(4f);
-        }else{
+        } else {
             // Paint initialization for waypoints //////////////////////////////////////////////////////
             paint.setAntiAlias(true);
             paint.setStyle(Paint.Style.STROKE);
@@ -55,8 +65,6 @@ public class CanvasView extends View {
             paint.setStyle(Paint.Style.FILL);
             paint.setTextSize(25);
         }
-
-        quads=(ArrayList<Quad>) DataShare.retrieve("quads");
     }
     // when ACTION_DOWN start touch according to the x,y values
     void startTouch(float x, float y) {
@@ -190,7 +198,7 @@ public class CanvasView extends View {
         mCanvas = new Canvas(mBitmap);
     }
     public void update(){
-        this.draw(mCanvas);
+        //this.draw(mCanvas);
     }
 
 }

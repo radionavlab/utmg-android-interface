@@ -43,10 +43,10 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
     //all should be set here
     public ROSNodeMain(){
         super();
-        teamName=(String) DataShare.retrieve("teamName");
-        quads=(ArrayList<Quad>) DataShare.retrieve("quads");
-        obstacles=(ArrayList<Obstacle>) DataShare.retrieve("obstacles");
-        sword=(Sword) DataShare.retrieve("sword");
+        teamName = (String) DataShare.retrieve("teamName");
+        quads = (ArrayList<Quad>) DataShare.retrieve("quads");
+        obstacles = (ArrayList<Obstacle>) DataShare.retrieve("obstacles");
+        //sword = (Sword) DataShare.retrieve("sword");
     }
 
 

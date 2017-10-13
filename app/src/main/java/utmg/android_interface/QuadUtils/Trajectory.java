@@ -7,15 +7,16 @@ import java.util.ArrayList;
  */
 
 public class Trajectory {
+
     ArrayList<Point3> points;
     public Trajectory(ArrayList<Point3> points){
-        this.points=points;
+        this.points = points;
     }
     public Trajectory(){
-        points=new ArrayList<>();
+        points = new ArrayList<>();
     }
     public void setPoints(ArrayList<Point3> points){
-        this.points=points;
+        this.points = points;
     }
     public ArrayList<Point3> getPoints(){
         return points;
@@ -27,6 +28,7 @@ public class Trajectory {
         return points.size();
     }
     public void clear(){
-        points=new ArrayList<>();
+        points = new ArrayList<>();
     }
+
 }

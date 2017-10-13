@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import utmg.android_interface.Canvases.DrawingCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.DefaultCallback;
+import utmg.android_interface.QuadUtils.Obstacle;
 import utmg.android_interface.QuadUtils.Quad;
 import utmg.android_interface.R;
 import utmg.android_interface.ROSClasses.ROSNodeMain;
@@ -59,13 +61,26 @@ public class MainActivity extends AppCompatRosActivity {
 
     public static Context contextOfApplication;
 
-    public MainActivity() { super("MainActivity", "MainActivity",(java.net.URI)DataShare.retrieve("masterUri")); }
+    // TODO - renable when SplashActivity works
+    //public MainActivity() { super("MainActivity", "MainActivity",(java.net.URI)DataShare.retrieve("masterUri")); }
+    public MainActivity() { super("MainActivity", "MainActivity"); }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("create");
-        setContentView(R.layout.activity_main);
+
+        DataShare.save("teamName", "RNL");
+
+        Quad quadEntity1 = new Quad("quad1", Color.RED);
+        ArrayList<Quad> quadArrayList = new ArrayList<>();
+        quadArrayList.add(quadEntity1);
+        DataShare.save("quads", quadArrayList);
+
+        Obstacle obstacleEntity1 = new Obstacle("obstacle1", Color.BLUE);
+        ArrayList<Obstacle> obstacleArrayList = new ArrayList<>();
+        obstacleArrayList.add(obstacleEntity1);
+        DataShare.save("obstacles", obstacleArrayList);
 
         contextOfApplication = getApplicationContext();
 
@@ -75,6 +90,11 @@ public class MainActivity extends AppCompatRosActivity {
         //Get stuff from DataShare
         quads=(ArrayList<Quad>)DataShare.retrieve("quads");
         qIndex=0;
+
+
+
+        setContentView(R.layout.activity_main);
+
 
         // instantiating canvas
         canvasSize = (LinearLayout) findViewById(R.id.linLay);

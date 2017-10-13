@@ -23,22 +23,17 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
     
     private long mRef1;
 
-
-
+    private Point3 last = new Point3(0, 0, 0);
 
     public DrawingCanvas(Context c, AttributeSet attrs) {
         super(c, attrs);
 
         // TODO change colours to holo colours
 
-
-
-
-        
         //get variables from memory
         quads=(ArrayList<Quad>)DataShare.retrieve("quads");
         obstacles=(ArrayList<Obstacle>)DataShare.retrieve("obstacles");
-        sword=(Sword)DataShare.retrieve("sword");
+        //sword=(Sword)DataShare.retrieve("sword");
         qIndex = 0;//// TODO: 7/25/2017 Have this be set to whatever the current spinner says
     }
 
@@ -57,7 +52,7 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
     @Override
     protected void onDraw(Canvas canvas) {// TODO: 7/27/2017 Set this up so that it doesn't redraw everything each time.
         super.onDraw(canvas);
-        for(Obstacle obs: obstacles){
+        for(Obstacle obs: obstacles) {
             // TODO: 7/25/2017 draw obstacles here
         }
         // TODO: 7/25/2017 draw sword here
@@ -78,6 +73,9 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
         if (mode == 1) {
             //waypoints.add(new Point3(x,y,0));
         }
+
+        last.setPoint(x, y, 0);
+
         super.draw(mCanvas);
     }
 
@@ -85,12 +83,18 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
     @Override
     void moveTouch(float x1, float y1) {
         if (mode == 0) {
-            Point3 p = new Point3(x1,y1,0,getCurrentTime());
-            Point3 last = quads.get(qIndex).getTrajectory().getPoints().get(quads.get(qIndex).size()-1);
-            float delta=p.distanceTo(last);
+            Point3 p = new Point3(x1, y1, 0, getCurrentTime());
+
+            //int lastIndex = quads.get(qIndex).size() - 1;
+            //if (lastIndex < 0) { lastIndex = 0; }
+            //Point3 last = quads.get(qIndex).getTrajectory().getPoints().get(lastIndex);
+
+            float delta = p.distanceTo(last);
             if (delta >= TOLERANCE) {
                 paths.get(qIndex).quadTo(last.getX(), last.getY(), (x1 + last.getX()) / 2, (y1 + last.getY()) / 2);
                 quads.get(qIndex).addPoint(toMeters(p));
+
+                last.setPoint(x1, y1, 0);
                 //Log.i("canvasView_touch_input", Float.toString(xMeters()) + "\t" + Float.toString(yMeters()));
             }
         }
