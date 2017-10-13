@@ -71,10 +71,10 @@ public class ROSNodeService extends AbstractNodeMain implements NodeMain {
             protected void loop() throws InterruptedException {
             // package each trajectory/waypoint into ROS message and send for quad1 ////////
             if (preview){
-                DrawingCanvas canvasView = (DrawingCanvas)DataShare.retrieve("quads");
+                DrawingCanvas canvasView = (DrawingCanvas)DataShare.retrieve("canvasView");
                 ArrayList<Quad> quads = (ArrayList<Quad>)DataShare.retrieve("quads");
                 for(Quad q: quads) {
-                    if(q.getTrajectory().size()==0){//no points drawn for specific quad
+                    if(q.getTrajectory().size()==0) {//no points drawn for specific quad
                         callback.onFinished(false);
                         continue;
                     }

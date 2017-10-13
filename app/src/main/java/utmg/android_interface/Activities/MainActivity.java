@@ -73,9 +73,12 @@ public class MainActivity extends AppCompatRosActivity {
         DataShare.save("teamName", "RNL");
 
         Quad quadEntity1 = new Quad("quad1", Color.RED);
+        Quad quadEntity2 = new Quad("quad2", Color.BLUE);
         ArrayList<Quad> quadArrayList = new ArrayList<>();
         quadArrayList.add(quadEntity1);
+        quadArrayList.add(quadEntity2);
         DataShare.save("quads", quadArrayList);
+
 
         Obstacle obstacleEntity1 = new Obstacle("obstacle1", Color.BLUE);
         ArrayList<Obstacle> obstacleArrayList = new ArrayList<>();
@@ -91,10 +94,7 @@ public class MainActivity extends AppCompatRosActivity {
         quads=(ArrayList<Quad>)DataShare.retrieve("quads");
         qIndex=0;
 
-
-
         setContentView(R.layout.activity_main);
-
 
         // instantiating canvas
         canvasSize = (LinearLayout) findViewById(R.id.linLay);
@@ -418,10 +418,10 @@ public class MainActivity extends AppCompatRosActivity {
         }
 
     }
-    public void setQuad(String name){
-        for(int i=0;i<quads.size();i++){
-            if(quads.get(i).getName().equals(name)){
-                qIndex=i;
+    public void setQuad(String name) {
+        for(int i = 0; i < quads.size(); i++) {
+            if(quads.get(i).getName().equals(name)) {
+                qIndex = i;
                 break;
             }
         }
