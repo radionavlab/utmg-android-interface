@@ -624,13 +624,16 @@ public class MainActivity extends AppCompatRosActivity {
             sword.setMaxHeight((int) (screenHeight * 0.5));
             sword.setMaxWidth((int) (screenWidth * 0.5));
 
+            float heightScale = DataShare.getMainCanvasHeight() / pref.getFloat("newHeight",3); // pixels/meter
+            float widthScale = DataShare.getMainCanvasWidth() / pref.getFloat("newWidth",5); // pixels/meter
+
             final ImageView obstacle1 = (ImageView) findViewById(R.id.obstacle1);
-            obstacle1.setMaxHeight((int) (screenHeight * 0.25));
-            obstacle1.setMaxWidth((int) (screenWidth * 0.25));
+            obstacle1.setMaxHeight((int) (heightScale*1.5));
+            obstacle1.setMaxWidth((int) (widthScale*1.5));
 
             final ImageView obstacle2 = (ImageView) findViewById(R.id.obstacle2);
-            obstacle2.setMaxHeight((int) (screenHeight * 0.25));
-            obstacle2.setMaxWidth((int) (screenWidth * 0.25));
+            obstacle2.setMaxHeight((int) (heightScale*0.2));
+            obstacle2.setMaxWidth((int) (widthScale*0.2));
 
             // show location of the obstacle
             final Handler handlerObstacles = new Handler();
@@ -657,7 +660,6 @@ public class MainActivity extends AppCompatRosActivity {
                         obstacle_thing_1.setPixelX((int)obstacle1.getX());
                         obstacle_thing_1.setPixelY((int)obstacle1.getY());
 
-
                     } else {
                         obstacle1.setVisibility((View.INVISIBLE));
                     }
@@ -666,6 +668,12 @@ public class MainActivity extends AppCompatRosActivity {
                         obstacle2.setVisibility(View.VISIBLE);
                         obstacle2.setX(objectXToPixel("obstacle2") - obstacle2.getWidth()/2);
                         obstacle2.setY(objectYToPixel("obstacle2") - obstacle2.getHeight()/2);
+
+                        Thing obstacle_thing_2 = DataShare.getInstance("obstacle2");;
+
+                        obstacle_thing_2.setPixelX((int)obstacle2.getX());
+                        obstacle_thing_2.setPixelY((int)obstacle2.getY());
+
                     } else {
                         obstacle2.setVisibility((View.INVISIBLE));
                     }

@@ -144,7 +144,7 @@
     <ImageView
         android:id="@+id/obstacle1"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        android:layout_height="512dp"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
         android:src="@drawable/obstacle"
@@ -153,10 +153,10 @@
     <ImageView
         android:id="@+id/obstacle2"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        android:layout_height="512dp"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:src="@drawable/obstacle"
+        android:src="@drawable/target"
         android:visibility="gone"/>
 
 

@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TableRow;
 import android.widget.ToggleButton;
 
@@ -155,30 +156,73 @@ public class PreviewActivity extends AppCompatRosActivity {
         yPixelVec1 = DataShare.getYPixelVec(1);
 
 
+        // quad display config
+        {
+            // set quad size
+            final ImageView quad1 = (ImageView) findViewById(R.id.quad1);
+
+            quad1.getLayoutParams().height = (int) (screenHeight * 0.05);
+            quad1.getLayoutParams().width = (int) (screenWidth * 0.05);
+
+            // show real-time location of the quads with GPS
+            final Handler handlerQuad = new Handler();
+            Runnable runnableQuad = new Runnable() {
+                @Override
+                public void run() {
+                    // quad 1
+                    if (pref.getBoolean("quad1", true)) {
+                        quad1.setVisibility(View.VISIBLE);
+                        Thing quad_thing_1 = DataShare.getInstance("quad1"); // I hate this.
+
+                        double x = quad_thing_1.getX();// + pref.getFloat("newHeight", 3)/2;
+                        double y = quad_thing_1.getY();// + pref.getFloat("newWidth", 5)/2;
+                        //Log.i("PreviewActivity","Quad 1: " + Double.toString(x) +  "\ty: " + Double.toString(y) );
+
+                        //quad1.setX(quad_thing_1.getPixelX());
+                        //quad1.setY(quad_thing_1.getPixelY());
+
+                        //Log.i("PreviewActivity Quad1", "x: " + Float.toString(quad1.getX()) + "\ty:" + Float.toString(quad1.getY()));
+
+                        quad1.setX((float) xMeterToPixel(x, y) - quad1.getWidth()/2);
+                        quad1.setY((float) yMeterToPixel(x, y) - quad1.getHeight()/2);
+                    } else {
+                        quad1.setVisibility((View.INVISIBLE));
+                    }
+
+                    handlerQuad.postDelayed(this, 10);
+                }
+            };
+            runnableQuad.run();
+
+        }
+
+
         // obstacle display config TODO fix to match quad config
         {
             // set obstacle size
 
+            float heightScale = DataShare.getMainCanvasHeight() / pref.getFloat("newHeight",3); // pixels/meter
+            float widthScale = DataShare.getMainCanvasWidth() / pref.getFloat("newWidth",5); // pixels/meter
+
             final ImageView obstacle1 = (ImageView) findViewById(R.id.obstacle1);
-            obstacle1.setMaxHeight((int) (screenHeight * 0.25));
-            obstacle1.setMaxWidth((int) (screenWidth * 0.25));
+            obstacle1.setMaxHeight((int) (heightScale*1.5));
+            obstacle1.setMaxWidth((int) (widthScale*1.5));
 
             final ImageView obstacle2 = (ImageView) findViewById(R.id.obstacle2);
-            obstacle2.setMaxHeight((int) (screenHeight * 0.25));
-            obstacle2.setMaxWidth((int) (screenWidth * 0.25));
+            obstacle2.setMaxHeight((int) (heightScale*0.2));
+            obstacle2.setMaxWidth((int) (widthScale*0.2));
 
             if (pref.getBoolean("obstacle1", false)) {
                 obstacle1.setVisibility(View.VISIBLE);
 
                 Thing obstacle_thing_1 = DataShare.getInstance("obstacle1"); // I hate this.
-                Thing obstacle_thing_2 = DataShare.getInstance("obstacle2");
 
                 double x = obstacle_thing_1.getX() + pref.getFloat("newHeight", 3)/2;
                 double y = obstacle_thing_1.getY() + pref.getFloat("newWidth", 5)/2;
                 Log.i("PreviewActivity","Obstacle x: " + Double.toString(x) +  "\ty: " + Double.toString(y) );
 
-                obstacle1.setX(obstacle_thing_1.getPixelX());
-                obstacle1.setY(obstacle_thing_1.getPixelY());
+                //obstacle1.setX(obstacle_thing_1.getPixelX());
+                //obstacle1.setY(obstacle_thing_1.getPixelY());
 
                 Log.i("PreviewActivity Obst1", "x: " + Float.toString(obstacle1.getX()) + "\ty:" + Float.toString(obstacle1.getY()));
 
@@ -188,6 +232,29 @@ public class PreviewActivity extends AppCompatRosActivity {
             } else {
                 obstacle1.setVisibility((View.INVISIBLE));
             }
+
+
+            if (pref.getBoolean("obstacle2", false)) {
+                obstacle2.setVisibility(View.VISIBLE);
+
+                Thing obstacle_thing_2 = DataShare.getInstance("obstacle2");
+
+                double x = obstacle_thing_2.getX() + pref.getFloat("newHeight", 3)/2;
+                double y = obstacle_thing_2.getY() + pref.getFloat("newWidth", 5)/2;
+                Log.i("PreviewActivity","Balloon x: " + Double.toString(x) +  "\ty: " + Double.toString(y) );
+
+                //obstacle2.setX(obstacle_thing_2.getPixelX());
+                //obstacle2.setY(obstacle_thing_2.getPixelY());
+
+                Log.i("PreviewActivity Obst2", "x: " + Float.toString(obstacle2.getX()) + "\ty:" + Float.toString(obstacle2.getY()));
+
+                obstacle2.setX((float) xMeterToPixel(x, y));
+                obstacle2.setY((float) yMeterToPixel(x, y));
+
+            } else {
+                obstacle2.setVisibility((View.INVISIBLE));
+            }
+
         }
     }
 

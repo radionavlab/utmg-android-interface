@@ -14,6 +14,7 @@ import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 import java.util.ArrayList;
 
+import nav_msgs.Odometry;
 import geometry_msgs.Pose;
 import geometry_msgs.PoseArray;
 import geometry_msgs.PoseStamped;
@@ -91,9 +92,13 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
 
         // Obstable location hardcode
 
-        obstacle1.setX(2);
+        obstacle1.setX(1.5);
         obstacle1.setY(0);
         obstacle1.setZ(1);
+
+        obstacle2.setX(3.25);
+        obstacle2.setY(0);
+        obstacle2.setZ(1);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -103,7 +108,6 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
 
                 // retrieve current system time
                 //String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
-
                 //Log.i(TAG, "publishing the current time: " + time);
 
                 // create and publish a simple string message
@@ -111,7 +115,9 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
                 //str.setData("The current time is: " + time);
                 //publisher.publish(str);
 
-                if (publishToggle1 || publishToggle2 || publishToggle3) {
+                //if (publishToggle1 || publishToggle2 || publishToggle3) {
+                {
+                    //Log.i(TAG, "publishing the current time: BLECH");
 
                     // trajectory publisher
                     geometry_msgs.PoseArray mPoseArray1 = publisherTrajectory1.newMessage();
@@ -357,16 +363,22 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
 
 
                     // listeners ///////////////////////////////////////////////////////////////////
-                    Subscriber<TransformStamped> subscriberQuad1 = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
-                    subscriberQuad1.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
-                        @Override
-                        public void onNewMessage(geometry_msgs.TransformStamped message) {
-                            quad1.setX(message.getTransform().getTranslation().getX());
-                            quad1.setY(message.getTransform().getTranslation().getY());
-                            quad1.setZ(message.getTransform().getTranslation().getZ());
+                    //Subscriber<TransformStamped> subscriberQuad1 = connectedNode.newSubscriber("vicon/Dragonfly/Dragonfly", geometry_msgs.TransformStamped._TYPE);
 
+                    Log.i("ROSNodeMain","TEST");
+                    Subscriber<nav_msgs.Odometry> subscriberQuad1 = connectedNode.newSubscriber("/Valkyrie/local_odom", nav_msgs.Odometry._TYPE);
+                    subscriberQuad1.addMessageListener(new MessageListener<nav_msgs.Odometry>() {
+                        @Override
+                        public void onNewMessage(nav_msgs.Odometry message) {
+                            quad1.setX(message.getPose().getPose().getPosition().getX());
+                            quad1.setY(message.getPose().getPose().getPosition().getY());
+                            quad1.setZ(message.getPose().getPose().getPosition().getZ());
+
+                            Log.i("ROSNodeMain","x: " + Double.toString(quad1.getX()) + " y: " + Double.toString(quad1.getY()) );
                         }
                     });
+
+                    /*
 
                     Subscriber<TransformStamped> subscriberQuad2 = connectedNode.newSubscriber("vicon/crazyflie1/crazyflie1", geometry_msgs.TransformStamped._TYPE);
                     subscriberQuad2.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
@@ -417,11 +429,12 @@ public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
                     subscriberObstacle2.addMessageListener(new MessageListener<geometry_msgs.TransformStamped>() {
                         @Override
                         public void onNewMessage(geometry_msgs.TransformStamped message) {
-                            obstacle2.setX(message.getTransform().getTranslation().getX());
-                            obstacle2.setY(message.getTransform().getTranslation().getY());
-                            obstacle2.setZ(message.getTransform().getTranslation().getZ());
+                            //obstacle2.setX(message.getTransform().getTranslation().getX());
+                            //obstacle2.setY(message.getTransform().getTranslation().getY());
+                            //obstacle2.setZ(message.getTransform().getTranslation().getZ());
                         }
                     });
+                    */
                     ////////////////////////////////////////////////////////////////////////////////
 
                     // go to sleep for one second TODO for live mode reduce this time!
