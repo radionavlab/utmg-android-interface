@@ -12,7 +12,7 @@ import org.ros.message.Time;
 public class Point3 {
 
     /* Coordinate in 3-space */
-    public final float x,y,z;
+    public final float x, y, z;
 
     /* Time of creation */
     public final Time t;
@@ -61,8 +61,7 @@ public class Point3 {
     public Point3 offset(
             final float dx,
             final float dy,
-            final float dz,
-            final float dt) {
+            final float dz) {
 
         return new Point3(
                 this.x + dx,
