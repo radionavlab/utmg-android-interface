@@ -52,6 +52,14 @@ public class Point3 {
     }
 
     /**
+     * Creates new point at the origin with the current time.
+     * @return A new point at the origin with the current time.
+     */
+    public static Point3 origin() {
+        return new Point3(0, 0, 0);
+    }
+
+    /**
      * Constructs and returns a point that is offset from the current point spacially but at the same moment in time.
      * @param dx
      * @param dy
