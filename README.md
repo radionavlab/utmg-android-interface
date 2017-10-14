@@ -1,6 +1,6 @@
 # utmg-android-interface
 
-UT Machine Games Controller for quadcopter trajectory input by user.
+UT Machine Games Controller for quadcopter trajectory input by user. This branch is for the app rearchitecture.
 
 ## Dependencies
 * VICON package
