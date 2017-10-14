@@ -1,14 +1,12 @@
 package utmg.android_interface.QuadUtils;
 
-import android.graphics.Color;
-
 import java.util.ArrayList;
 
 /**
  * Created by jtb20 on 7/20/2017.
  */
 
-public class Quad extends GameEntity {
+public class Quad extends AbstractEntity {
 
     Trajectory trajectory, optimizedTrajectory;
     int color;

@@ -4,7 +4,7 @@ package utmg.android_interface.QuadUtils;
  * Created by jtb20 on 7/20/2017.
  */
 
-public class Sword extends GameEntity{
+public class Sword extends AbstractEntity {
     public Sword(String name){
         super(name);
     }
