@@ -1,30 +1,23 @@
-package utmg.android_interface.Activities;
+package utmg.android_interface.activity;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Matrix;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.ToggleButton;
-import java.util.ArrayList;
+
 import utmg.android_interface.R;
 
 
-import utmg.android_interface.Canvases.PreviewCanvas;
+import utmg.android_interface.canvas.PreviewCanvas;
 
 public class PreviewActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package utmg.android_interface.ROSClasses;
+package utmg.android_interface.ROS;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,9 +28,9 @@ import mav_trajectory_generation_ros.minSnapStamped;
 import mav_trajectory_generation_ros.minSnapStampedRequest;
 import mav_trajectory_generation_ros.minSnapStampedResponse;
 import nav_msgs.Path;
-import utmg.android_interface.Canvases.DrawingCanvas;
+import utmg.android_interface.canvas.DrawingCanvas;
 import utmg.android_interface.DataShare;
-import utmg.android_interface.Activities.MainActivity;
+import utmg.android_interface.activity.MainActivity;
 import utmg.android_interface.DefaultCallback;
 import utmg.android_interface.model.util.Point3;
 import utmg.android_interface.model.util.Trajectory;

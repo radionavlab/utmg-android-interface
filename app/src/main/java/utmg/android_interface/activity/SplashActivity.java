@@ -1,4 +1,4 @@
-package utmg.android_interface.Activities;
+package utmg.android_interface.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package utmg.android_interface.ROSClasses;
+package utmg.android_interface.ROS;
 
 import android.content.SharedPreferences;
 import android.content.Context;
@@ -21,7 +21,7 @@ import geometry_msgs.TransformStamped;
 import geometry_msgs.Vector3;
 import nav_msgs.Path;
 import std_msgs.Header;
-import utmg.android_interface.Activities.MainActivity;
+import utmg.android_interface.activity.MainActivity;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.model.util.Point3;

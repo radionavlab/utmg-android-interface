@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7fa87f"
-    tools:context="utmg.android_interface.Activities.SplashActivity">
+    tools:context="utmg.android_interface.activity.SplashActivity">
 
     <ProgressBar
         android:layout_width="wrap_content"

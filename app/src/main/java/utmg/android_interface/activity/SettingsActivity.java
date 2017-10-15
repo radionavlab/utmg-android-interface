@@ -1,8 +1,7 @@
-package utmg.android_interface.Activities;
+package utmg.android_interface.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.ToggleButton;
 
-import utmg.android_interface.DataShare;
 import utmg.android_interface.R;
 
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {

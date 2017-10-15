@@ -1,4 +1,4 @@
-package utmg.android_interface.ROSClasses;
+package utmg.android_interface.ROS;
 
 import android.hardware.Camera;
 import android.os.Build;
@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
-import org.ros.address.InetAddressFactory;
+
 import org.ros.android.RosActivity;
 import org.ros.android.view.camera.RosCameraPreviewView;
 import org.ros.node.NodeConfiguration;

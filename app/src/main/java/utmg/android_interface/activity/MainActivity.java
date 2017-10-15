@@ -1,4 +1,4 @@
-package utmg.android_interface.Activities;
+package utmg.android_interface.activity;
 
 import android.content.Intent;
 import android.content.Context;
@@ -30,13 +30,13 @@ import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import utmg.android_interface.Canvases.DrawingCanvas;
+import utmg.android_interface.canvas.DrawingCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.DefaultCallback;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.R;
-import utmg.android_interface.ROSClasses.ROSNodeMain;
-import utmg.android_interface.ROSClasses.ROSNodeService;
+import utmg.android_interface.ROS.ROSNodeMain;
+import utmg.android_interface.ROS.ROSNodeService;
 
 public class MainActivity extends AppCompatRosActivity {
 

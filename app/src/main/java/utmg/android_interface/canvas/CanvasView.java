@@ -1,4 +1,4 @@
-package utmg.android_interface.Canvases;
+package utmg.android_interface.canvas;
 
 import android.content.Context;
 import android.content.SharedPreferences;
