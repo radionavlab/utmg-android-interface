@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import android.util.Log;
 import org.ros.concurrent.CancellableLoop;
-import org.ros.master.client.SystemState;
 import org.ros.message.MessageListener;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
@@ -25,8 +24,7 @@ import std_msgs.Header;
 import utmg.android_interface.Activities.MainActivity;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.QuadUtils.Obstacle;
-import utmg.android_interface.QuadUtils.Point3;
-import utmg.android_interface.QuadUtils.Quad;
+import utmg.android_interface.model.Point3;
 import utmg.android_interface.QuadUtils.Sword;
 
 public class ROSNodeMain extends AbstractNodeMain implements NodeMain {

@@ -1,27 +1,18 @@
 package utmg.android_interface.Canvases;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
+
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.content.SharedPreferences;
 
 import org.ros.message.Time;
 
-import utmg.android_interface.DataShare;
-import utmg.android_interface.QuadUtils.Point3;
-import utmg.android_interface.QuadUtils.Quad;
+import utmg.android_interface.model.Point3;
 
 
 public class PreviewCanvas extends CanvasView {

@@ -1,5 +1,7 @@
 package utmg.android_interface.QuadUtils;
 
+import utmg.android_interface.model.AbstractEntity;
+
 /**
  * Created by jtb20 on 7/20/2017.
  */

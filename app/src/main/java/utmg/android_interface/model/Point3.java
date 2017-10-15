@@ -1,4 +1,4 @@
-package utmg.android_interface.QuadUtils;
+package utmg.android_interface.model;
 
 import org.ros.message.Time;
 

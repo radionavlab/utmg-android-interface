@@ -34,7 +34,6 @@ import utmg.android_interface.Canvases.DrawingCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.DefaultCallback;
 import utmg.android_interface.QuadUtils.Obstacle;
-import utmg.android_interface.QuadUtils.Quad;
 import utmg.android_interface.R;
 import utmg.android_interface.ROSClasses.ROSNodeMain;
 import utmg.android_interface.ROSClasses.ROSNodeService;

@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.icu.text.DateTimePatternGenerator;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -15,8 +14,7 @@ import org.ros.message.Time;
 import java.util.ArrayList;
 
 import utmg.android_interface.DataShare;
-import utmg.android_interface.QuadUtils.Point3;
-import utmg.android_interface.QuadUtils.Quad;
+import utmg.android_interface.model.Point3;
 import utmg.android_interface.QuadUtils.Trajectory;
 
 /**
