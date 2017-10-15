@@ -7,16 +7,9 @@ package utmg.android_interface.model.entity;
 import utmg.android_interface.model.util.Point3;
 
 /**
- * Abstract class that defines various object visible in the app.
- * TODO: Understand this better and document it.
+ * Abstract class that defines various object visible in the app. Each entity has a location.
  */
 public abstract class AbstractEntity {
-
-    /* TODO: What is this? */
-    protected int seq;
-
-    /* TODO: What is this? */
-    protected boolean publish;
 
     /* The location of this entity */
     protected Point3 location;
@@ -28,8 +21,6 @@ public abstract class AbstractEntity {
     public AbstractEntity(
             final Point3 initialLocation) {
         this.location = initialLocation;
-        this.seq = 0;
-        this.publish = false;
     }
 
     /**
@@ -37,13 +28,6 @@ public abstract class AbstractEntity {
      */
     public AbstractEntity() {
         this(Point3.origin());
-    }
-
-    /**
-     * Increments the seq by one
-     */
-    public void incrementSeq() {
-        this.seq++;
     }
 
     /**
@@ -69,15 +53,6 @@ public abstract class AbstractEntity {
     }
 
     /**
-     * Sets the publish variable
-     * @param publish The new value of publish
-     */
-    public void setPublish(
-            final boolean publish) {
-        this.publish = publish;
-    }
-
-    /**
      * Moves the location of the entity by some amount. Keeps the time the same.
      * @param dx Amount to move x by
      * @param dy Amount to move y by
@@ -88,22 +63,6 @@ public abstract class AbstractEntity {
             final float dy,
             final float dz) {
         this.location = location.offset(dx, dy, dz);
-    }
-
-    /**
-     * Returns the value of publish
-     * @return The value of publish
-     */
-    public boolean getPublish() {
-        return publish;
-    }
-
-    /**
-     * Returns the value of seq
-     * @return The value of seq
-     */
-    public int getSeq(){
-        return seq;
     }
 
     /**
