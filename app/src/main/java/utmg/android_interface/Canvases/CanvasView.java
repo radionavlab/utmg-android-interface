@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import utmg.android_interface.DataShare;
 import utmg.android_interface.model.Point3;
-import utmg.android_interface.QuadUtils.Trajectory;
+import utmg.android_interface.model.Trajectory;
 
 /**
  * Created by James on 7/27/2017.

@@ -1,9 +1,6 @@
 package utmg.android_interface.model;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import utmg.android_interface.QuadUtils.Trajectory;
 
 /**
  * Created by tuckerhaydon on 10/14/17.

@@ -1,9 +1,7 @@
-package utmg.android_interface.QuadUtils;
+package utmg.android_interface.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import utmg.android_interface.model.Point3;
 
 /**
  * Created by jtb20 on 7/20/2017. Modified by Tucker Haydon on 10/14/2017.

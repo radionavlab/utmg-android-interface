@@ -8,9 +8,8 @@ import android.view.MotionEvent;
 import java.util.ArrayList;
 
 import utmg.android_interface.DataShare;
-import utmg.android_interface.QuadUtils.Obstacle;
+import utmg.android_interface.model.Obstacle;
 import utmg.android_interface.model.Point3;
-import utmg.android_interface.QuadUtils.Sword;
 
 public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiquad, add obstacles
 
