@@ -3,7 +3,7 @@ package utmg.android_interface.view;
 import utmg.android_interface.model.Quad;
 
 /**
- * Created by tuckerhaydon on 10/14/17.
+ * Created by Tucker Haydon on 10/14/17.
  */
 
 public class QuadView {
@@ -17,6 +17,4 @@ public class QuadView {
         this.quad = quad;
         this.color = color;
     }
-
-
 }

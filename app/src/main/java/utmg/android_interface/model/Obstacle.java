@@ -1,11 +1,12 @@
 package utmg.android_interface.model;
 
-import utmg.android_interface.model.AbstractEntity;
-
 /**
  * Created by jtb20 on 7/20/2017. Modified by Tucker Haydon on 10/14/2017.
  */
 
+/**
+ * An obstacle naively modelled as a sphere with a constant radius.
+ */
 public class Obstacle extends AbstractEntity {
 
     /* Float representing the size of the object modelled as a sphere with radius r in meters. */
