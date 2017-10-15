@@ -1,4 +1,4 @@
-package utmg.android_interface.model;
+package utmg.android_interface.model.util;
 
 import java.util.ArrayList;
 import java.util.List;

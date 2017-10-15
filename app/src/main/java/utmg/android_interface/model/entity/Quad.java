@@ -1,6 +1,9 @@
-package utmg.android_interface.model;
+package utmg.android_interface.model.entity;
 
 import java.util.List;
+
+import utmg.android_interface.model.util.Point3;
+import utmg.android_interface.model.util.Trajectory;
 
 /**
  * Created by tuckerhaydon on 10/14/17.
@@ -75,7 +78,7 @@ public class Quad extends AbstractEntity {
      * @param point A Point3 to be appended
      */
     public void addPoint(
-            final Point3 point){
+            final Point3 point) {
         this.trajectory.addPoint(point);
     }
 

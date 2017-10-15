@@ -14,8 +14,8 @@ import org.ros.message.Time;
 import java.util.ArrayList;
 
 import utmg.android_interface.DataShare;
-import utmg.android_interface.model.Point3;
-import utmg.android_interface.model.Trajectory;
+import utmg.android_interface.model.util.Point3;
+import utmg.android_interface.model.util.Trajectory;
 
 /**
  * Created by James on 7/27/2017.

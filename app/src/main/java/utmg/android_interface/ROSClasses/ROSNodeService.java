@@ -32,8 +32,8 @@ import utmg.android_interface.Canvases.DrawingCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.Activities.MainActivity;
 import utmg.android_interface.DefaultCallback;
-import utmg.android_interface.model.Point3;
-import utmg.android_interface.model.Trajectory;
+import utmg.android_interface.model.util.Point3;
+import utmg.android_interface.model.util.Trajectory;
 
 public class ROSNodeService extends AbstractNodeMain implements NodeMain {
 

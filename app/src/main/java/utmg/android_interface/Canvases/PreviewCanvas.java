@@ -12,7 +12,7 @@ import android.content.SharedPreferences;
 
 import org.ros.message.Time;
 
-import utmg.android_interface.model.Point3;
+import utmg.android_interface.model.util.Point3;
 
 
 public class PreviewCanvas extends CanvasView {

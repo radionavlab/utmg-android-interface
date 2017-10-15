@@ -1,10 +1,10 @@
-package utmg.android_interface.model;
+package utmg.android_interface.model.entity;
 
 /**
  * Created by jtb20 on 7/20/2017. Modified by Tucker Haydon on 10/14/2017.
  */
 
-import utmg.android_interface.model.Point3;
+import utmg.android_interface.model.util.Point3;
 
 /**
  * Abstract class that defines various object visible in the app.

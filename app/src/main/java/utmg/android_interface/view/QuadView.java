@@ -1,6 +1,6 @@
 package utmg.android_interface.view;
 
-import utmg.android_interface.model.Quad;
+import utmg.android_interface.model.entity.Quad;
 
 /**
  * Created by Tucker Haydon on 10/14/17.

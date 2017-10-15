@@ -8,14 +8,13 @@ import android.view.MotionEvent;
 import java.util.ArrayList;
 
 import utmg.android_interface.DataShare;
-import utmg.android_interface.model.Obstacle;
-import utmg.android_interface.model.Point3;
+import utmg.android_interface.model.entity.Obstacle;
+import utmg.android_interface.model.util.Point3;
 
 public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiquad, add obstacles
 
     private int qIndex;
     private ArrayList<Obstacle> obstacles;
-    private Sword sword;
 
     private static final float TOLERANCE = 5;
     

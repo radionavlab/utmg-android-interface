@@ -23,9 +23,9 @@ import nav_msgs.Path;
 import std_msgs.Header;
 import utmg.android_interface.Activities.MainActivity;
 import utmg.android_interface.DataShare;
-import utmg.android_interface.model.Obstacle;
-import utmg.android_interface.model.Point3;
-import utmg.android_interface.model.Quad;
+import utmg.android_interface.model.entity.Obstacle;
+import utmg.android_interface.model.util.Point3;
+import utmg.android_interface.model.entity.Quad;
 
 public class ROSNodeMain extends AbstractNodeMain implements NodeMain {
 
