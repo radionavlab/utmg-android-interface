@@ -30,7 +30,18 @@ public class QuadView extends AbstractEntityView {
     @Override
     public void draw(
             final Canvas canvas) {
+        this.drawTrajectory(canvas);
+    }
+
+    public void drawTrajectory(
+            final Canvas canvas) {
         new TrajectoryView(quad.getTrajectory(), this.paint).draw(canvas);
+        // TODO: Draw current quad position
+    }
+
+    public void drawOptimizedTrajectory(
+            final Canvas canvas) {
+        new TrajectoryView(quad.getOptimizedTrajectory(), this.paint).draw(canvas);
         // TODO: Draw current quad position
     }
 }

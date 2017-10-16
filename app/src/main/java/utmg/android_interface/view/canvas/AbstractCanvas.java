@@ -17,7 +17,7 @@ import utmg.android_interface.model.util.Point3;
 
 public abstract class AbstractCanvas extends View {
     private Bitmap bitmap;
-    private Canvas canvas;
+    protected Canvas canvas;
     private SharedPreferences preferences;
 
     private static final int DEFAULT_WIDTH_PIXELS = 1000;
@@ -163,10 +163,11 @@ public abstract class AbstractCanvas extends View {
 
     /**
      * Determines the current ROS time from the current system time
+     * TODO: Why is thise here. Doesn't seem to belong
      *
      * @return The current ROS time
      */
-    protected final Time getCurrentTime() {
+    public final Time getCurrentTime() {
         // TODO: Where is the reference time?
         final long currentTimeMillis = System.currentTimeMillis();
 
@@ -204,7 +205,7 @@ public abstract class AbstractCanvas extends View {
      * @param canvas The canvas object to render the content to.
      */
     @Override
-    public abstract void onDraw(final Canvas canvas);
+    protected abstract void onDraw(final Canvas canvas);
 
     /**
      * Clear the canvas.

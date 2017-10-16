@@ -3,7 +3,6 @@ package utmg.android_interface.model.entity;
 /**
  * Created by jtb20 on 7/20/2017. Modified by Tucker Haydon on 10/14/2017.
  */
-
 import utmg.android_interface.model.util.Point3;
 
 /**

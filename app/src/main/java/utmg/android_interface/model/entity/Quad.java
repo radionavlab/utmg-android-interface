@@ -90,4 +90,12 @@ public class Quad extends AbstractEntity {
         return this.trajectory;
     }
 
+    /**
+     * Returns the quad's optimized trajectory
+     * @return The quad's optimized trajectory
+     */
+    public Trajectory getOptimizedTrajectory() {
+        return this.optimizedTrajectory;
+    }
+
 }

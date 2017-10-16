@@ -29,7 +29,9 @@ import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
+import utmg.android_interface.model.entity.Quad;
 import utmg.android_interface.view.canvas.DrawingCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.DefaultCallback;
@@ -53,41 +55,53 @@ public class MainActivity extends AppCompatRosActivity {
     private int screenWidth;
     private float canvasWidth;
     private float canvasHeight;
-    private ArrayList<Quad> quads;
-    private int qIndex;
+
+    private final List<Quad> quads;
+    private final List<Obstacle> obstacles;
+
 
     public static Context contextOfApplication;
 
-    // TODO - renable when SplashActivity works
-    //public MainActivity() { super("MainActivity", "MainActivity",(java.net.URI)DataShare.retrieve("masterUri")); }
-    public MainActivity() { super("MainActivity", "MainActivity"); }
+    /**
+     * Constructor.
+     */
+    public MainActivity() {
+        super("MainActivity", "MainActivity");
+
+        // Initialize quad entities
+        this.quads = new ArrayList<>();
+        this.initQuads();
+
+        // Initialize obstacle entitites
+        this.obstacles = new ArrayList<>();
+        this.initObstacles();
+
+
+    }
+
+    /**
+     * Initializes the various quad entities
+     */
+    private void initQuads() {
+        this.quads.add(new Quad("Quad 1"));
+    }
+
+    /**
+     * Initializes the various obstacle entities
+     */
+    private void initObstacles() {
+        this.obstacles.add(new Obstacle("Obstacle 1"));
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(
+            final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("create");
-
-        DataShare.save("teamName", "RNL");
-
-        Quad quadEntity1 = new Quad("quad1", Color.RED);
-        ArrayList<Quad> quadArrayList = new ArrayList<>();
-        quadArrayList.add(quadEntity1);
-        DataShare.save("quads", quadArrayList);
-
-
-        Obstacle obstacleEntity1 = new Obstacle("obstacle1", Color.BLUE);
-        ArrayList<Obstacle> obstacleArrayList = new ArrayList<>();
-        obstacleArrayList.add(obstacleEntity1);
-        DataShare.save("obstacles", obstacleArrayList);
 
         contextOfApplication = getApplicationContext();
 
         // instantiating SharedPreferences
         pref = getSharedPreferences("Pref", 0);
-
-        //Get stuff from DataShare
-        quads=(ArrayList<Quad>)DataShare.retrieve("quads");
-        qIndex=0;
 
         setContentView(R.layout.activity_main);
 
@@ -102,8 +116,6 @@ public class MainActivity extends AppCompatRosActivity {
 
         customCanvas = (DrawingCanvas) findViewById(R.id.signature_canvas);
         DataShare.save("canvasView",customCanvas);
-
-        Log.i("canvasSize", canvasSize.getLayoutParams().width + "\t" + canvasSize.getLayoutParams().height);
 
         // instantiating z control slider
         FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
@@ -146,8 +158,6 @@ public class MainActivity extends AppCompatRosActivity {
         final FloatingActionsMenu fabSent = (FloatingActionsMenu) findViewById(R.id.fab);
         final com.getbase.floatingactionbutton.FloatingActionButton sendAll = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendAll);
         final com.getbase.floatingactionbutton.FloatingActionButton sendQuad1 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendQuad1);
-        final com.getbase.floatingactionbutton.FloatingActionButton sendQuad2 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendQuad2);
-        final com.getbase.floatingactionbutton.FloatingActionButton sendQuad3 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendQuad3);
         fabSent.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -168,19 +178,13 @@ public class MainActivity extends AppCompatRosActivity {
 
         sendQuad1.setOnClickListener(new sendOnClickListener());
 
-        sendQuad2.setOnClickListener(new sendOnClickListener());
-
-        sendQuad3.setOnClickListener(new sendOnClickListener());
-
-
 
         // Clear FAB
         //// TODO: 7/25/2017 Generate these automatically too ffs
         FloatingActionsMenu fabClear = (FloatingActionsMenu) findViewById(R.id.fab_clear);
         final com.getbase.floatingactionbutton.FloatingActionButton clearAll = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.clearAll);
         final com.getbase.floatingactionbutton.FloatingActionButton clearQuad1 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.clearQuad1);
-        final com.getbase.floatingactionbutton.FloatingActionButton clearQuad2 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.clearQuad2);
-        final com.getbase.floatingactionbutton.FloatingActionButton clearQuad3 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.clearQuad3);
+
         fabClear.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -198,10 +202,6 @@ public class MainActivity extends AppCompatRosActivity {
         });
 
         clearQuad1.setOnClickListener(new clearOnClickListener());
-
-        clearQuad2.setOnClickListener(new clearOnClickListener());
-
-        clearQuad3.setOnClickListener(new clearOnClickListener());
 
         // TextView for displaying z control slider value
         final TextView seekbarValue = (TextView) findViewById(R.id.seekbar_value);
@@ -277,20 +277,10 @@ public class MainActivity extends AppCompatRosActivity {
         {
             // set quad size
             final ImageView quad1 = (ImageView) findViewById(R.id.quad1);
-            final ImageView quad2 = (ImageView) findViewById(R.id.quad2);
-            final ImageView quad3 = (ImageView) findViewById(R.id.quad3);
 
             quad1.getLayoutParams().height = (int) (screenHeight * 0.05);
             quad1.getLayoutParams().width = (int) (screenWidth * 0.05);
             //quad1.setColorFilter(DataShare.getInstance("quad1").getQuadColour());
-
-            quad2.getLayoutParams().height = (int) (screenHeight * 0.05);
-            quad2.getLayoutParams().width = (int) (screenWidth * 0.05);
-            //quad2.setColorFilter(DataShare.getInstance("quad2").getQuadColour());
-
-            quad3.getLayoutParams().height = (int) (screenHeight * 0.05);
-            quad3.getLayoutParams().width = (int) (screenWidth * 0.05);
-            //quad3.setColorFilter(DataShare.getInstance("quad3").getQuadColour());
 
 
             // quad control toggle switches
@@ -387,14 +377,7 @@ public class MainActivity extends AppCompatRosActivity {
         }
 
     }
-    public void setQuad(String name) {
-        for(int i = 0; i < quads.size(); i++) {
-            if(quads.get(i).getName().equals(name)) {
-                qIndex = i;
-                break;
-            }
-        }
-    }
+
     class sendOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
@@ -404,6 +387,7 @@ public class MainActivity extends AppCompatRosActivity {
             nodeMain.sendQuad(((FloatingActionButton)v).getTitle());
         }
     }
+
     class clearOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
@@ -413,6 +397,7 @@ public class MainActivity extends AppCompatRosActivity {
             customCanvas.clearQuad(((FloatingActionButton)v).getTitle());
         }
     }
+
     abstract class TrajectoryCallback extends DefaultCallback{
         int total,count;
         public TrajectoryCallback(int total){
