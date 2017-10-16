@@ -1,4 +1,4 @@
-package utmg.android_interface.canvas;
+package utmg.android_interface.view.canvas;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -15,7 +15,7 @@ import org.ros.message.Time;
 import utmg.android_interface.model.util.Point3;
 
 
-public class PreviewCanvas extends CanvasView {
+public class PreviewCanvas extends AbstractCanvas {
     private static final float TOLERANCE = 5;
     SharedPreferences pref;
     int mode;
@@ -65,7 +65,7 @@ public class PreviewCanvas extends CanvasView {
     }
 
     public void callOnDraw() {
-        super.draw(mCanvas);
+        super.draw(canvas);
     }
 
     //sets location of quads to a percentage of the seekbar

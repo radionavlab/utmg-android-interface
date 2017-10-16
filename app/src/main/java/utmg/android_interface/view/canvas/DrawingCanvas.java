@@ -1,17 +1,23 @@
-package utmg.android_interface.canvas;
+package utmg.android_interface.view.canvas;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
+
 import java.util.ArrayList;
 
 import utmg.android_interface.DataShare;
+import utmg.android_interface.controller.OnTouchEventDispatcher;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.model.util.Point3;
 
-public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiquad, add obstacles
+/**
+ * Unknown creator. Modified by Tucker Haydon on 10/15/2017
+ */
+
+
+public class DrawingCanvas extends AbstractCanvas {
 
     private int qIndex;
     private ArrayList<Obstacle> obstacles;
@@ -20,7 +26,7 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
     
     private long mRef1;
 
-    private Point3 last = new Point3(0, 0, 0);
+    private Point3 last = Point3.origin();
 
     public DrawingCanvas(Context c, AttributeSet attrs) {
         super(c, attrs);
@@ -32,6 +38,8 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
         obstacles=(ArrayList<Obstacle>)DataShare.retrieve("obstacles");
         //sword=(Sword)DataShare.retrieve("sword");
         qIndex = 0;//// TODO: 7/25/2017 Have this be set to whatever the current spinner says
+
+        this.setOnTouchListener(new OnTouchEventDispatcher(this));
     }
 
     // override onSizeChanged
@@ -40,8 +48,8 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
         super.onSizeChanged(w, h, oldw, oldh);
 
         // your Canvas will draw onto the defined Bitmap
-        mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mBitmap);
+        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
     }
 
 
@@ -73,7 +81,7 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
 
         last.setPoint(x, y, 0);
 
-        super.draw(mCanvas);
+        super.draw(canvas);
     }
 
     // when ACTION_MOVE move touch according to the x,y values
@@ -102,31 +110,6 @@ public class DrawingCanvas extends CanvasView {//// TODO: 7/25/2017 add multiqua
     void upTouch() {
     }
 
-
-
-    //override the onTouchEvent
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                startTouch(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                moveTouch(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-
-                //upTouch();
-                invalidate();
-                break;
-        }
-        return true;
-    }
 
     public void setQuad(String name){
         for(int i=0;i<quads.size();i++){

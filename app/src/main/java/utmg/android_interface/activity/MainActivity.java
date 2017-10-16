@@ -30,7 +30,7 @@ import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import utmg.android_interface.canvas.DrawingCanvas;
+import utmg.android_interface.view.canvas.DrawingCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.DefaultCallback;
 import utmg.android_interface.model.entity.Obstacle;
@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatRosActivity {
     private DrawingCanvas customCanvas;
 
     private Switch quad1Switch;
-    private Switch quad2Switch;
-    private Switch quad3Switch;
 
     SharedPreferences pref;
 
@@ -72,10 +70,8 @@ public class MainActivity extends AppCompatRosActivity {
         DataShare.save("teamName", "RNL");
 
         Quad quadEntity1 = new Quad("quad1", Color.RED);
-        Quad quadEntity2 = new Quad("quad2", Color.BLUE);
         ArrayList<Quad> quadArrayList = new ArrayList<>();
         quadArrayList.add(quadEntity1);
-        quadArrayList.add(quadEntity2);
         DataShare.save("quads", quadArrayList);
 
 
@@ -300,38 +296,12 @@ public class MainActivity extends AppCompatRosActivity {
             // quad control toggle switches
             //// TODO: 7/25/2017 Make a spinner
             quad1Switch = (Switch) findViewById(R.id.quad1Switch);
-            quad2Switch = (Switch) findViewById(R.id.quad2Switch);
-            quad3Switch = (Switch) findViewById(R.id.quad3Switch);
 
             quad1Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     customCanvas.setQuad(buttonView.getText().toString());
                     setQuad(buttonView.getText().toString());
-                    quad2Switch.setChecked(false);
-                    quad3Switch.setChecked(false);
-                }
-                }
-            });
-
-            quad2Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    customCanvas.setQuad(buttonView.getText().toString());
-                    setQuad(buttonView.getText().toString());
-                    quad1Switch.setChecked(false);
-                    quad3Switch.setChecked(false);
-                }
-                }
-            });
-
-            quad3Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    customCanvas.setQuad(buttonView.getText().toString());
-                    setQuad(buttonView.getText().toString());
-                    quad1Switch.setChecked(false);
-                    quad2Switch.setChecked(false);
                 }
                 }
             });

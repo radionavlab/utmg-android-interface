@@ -17,7 +17,7 @@ import android.widget.ToggleButton;
 import utmg.android_interface.R;
 
 
-import utmg.android_interface.canvas.PreviewCanvas;
+import utmg.android_interface.view.canvas.PreviewCanvas;
 
 public class PreviewActivity extends AppCompatActivity {
 

@@ -28,7 +28,7 @@ import mav_trajectory_generation_ros.minSnapStamped;
 import mav_trajectory_generation_ros.minSnapStampedRequest;
 import mav_trajectory_generation_ros.minSnapStampedResponse;
 import nav_msgs.Path;
-import utmg.android_interface.canvas.DrawingCanvas;
+import utmg.android_interface.view.canvas.DrawingCanvas;
 import utmg.android_interface.DataShare;
 import utmg.android_interface.activity.MainActivity;
 import utmg.android_interface.DefaultCallback;

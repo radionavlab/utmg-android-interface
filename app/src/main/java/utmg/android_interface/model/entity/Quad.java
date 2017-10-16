@@ -82,4 +82,12 @@ public class Quad extends AbstractEntity {
         this.trajectory.addPoint(point);
     }
 
+    /**
+     * Returns the quad's trajectory
+     * @return The quad's trajectory
+     */
+    public Trajectory getTrajectory() {
+        return this.trajectory;
+    }
+
 }

@@ -49,7 +49,7 @@
         android:paddingTop="5dp"
         android:orientation="horizontal">
 
-        <utmg.android_interface.canvas.PreviewCanvas
+        <utmg.android_interface.view.canvas.PreviewCanvas
             android:id="@+id/preview_canvas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
