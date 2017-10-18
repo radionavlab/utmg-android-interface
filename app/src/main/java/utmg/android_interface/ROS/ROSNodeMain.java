@@ -22,7 +22,6 @@ import geometry_msgs.Vector3;
 import nav_msgs.Path;
 import std_msgs.Header;
 import utmg.android_interface.activity.MainActivity;
-import utmg.android_interface.DataShare;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.model.util.Point3;
 import utmg.android_interface.model.entity.Quad;

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -14,12 +13,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -31,10 +28,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import utmg.android_interface.ROS.IROSCallback;
+import utmg.android_interface.ROS.callbacks.TrajectoryOptimizerCallback;
+import utmg.android_interface.controller.AltitudeSeekBarHandler;
 import utmg.android_interface.model.entity.Quad;
 import utmg.android_interface.view.canvas.DrawingCanvas;
-import utmg.android_interface.DataShare;
-import utmg.android_interface.DefaultCallback;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.R;
 import utmg.android_interface.ROS.ROSNodeMain;
@@ -42,11 +40,13 @@ import utmg.android_interface.ROS.ROSNodeService;
 
 public class MainActivity extends AppCompatRosActivity {
 
+
+    private static final float CANVAS_SCREEN_RATIO = 0.65f;
+    private static final float SLIDER_SCREEN_RATIO = 0.6f;
+
     ROSNodeMain nodeMain;
     ROSNodeService nodeService;
     private DrawingCanvas customCanvas;
-
-    private Switch quad1Switch;
 
     SharedPreferences pref;
 
@@ -75,8 +75,6 @@ public class MainActivity extends AppCompatRosActivity {
         // Initialize obstacle entitites
         this.obstacles = new ArrayList<>();
         this.initObstacles();
-
-
     }
 
     /**
@@ -100,9 +98,10 @@ public class MainActivity extends AppCompatRosActivity {
 
         contextOfApplication = getApplicationContext();
 
-        // instantiating SharedPreferences
+        // Get the shared preferences
         pref = getSharedPreferences("Pref", 0);
 
+        // Set the content layout
         setContentView(R.layout.activity_main);
 
         // instantiating canvas
@@ -115,41 +114,131 @@ public class MainActivity extends AppCompatRosActivity {
         canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
 
         customCanvas = (DrawingCanvas) findViewById(R.id.signature_canvas);
-        DataShare.save("canvasView",customCanvas);
-
-        // instantiating z control slider
-        FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
-        sbLayout.getLayoutParams().height = (int) (screenHeight * 0.6);
-
-        // instantiating local copy of input time history vectors
 
         // instantiating toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+    }
+
+    private void initSlider() {
+        final FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
+        final int sliderLength = (int) (screenHeight * SLIDER_SCREEN_RATIO);
+        sbLayout.getLayoutParams().height = sliderLength;
+
+        final SeekBar slider = (SeekBar) findViewById(R.id.slider);
+        slider.getLayoutParams().width = sliderLength;
+
+        int max = (int) pref.getFloat("newAltitude", 2);
+        slider.setMax(max * 100);
+
+        slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler((TextView) findViewById(R.id.seekbar_value)));
+    }
+
+    @Override
+    protected void init(
+            final NodeMainExecutor nodeMainExecutor) {
+        nodeMain = new ROSNodeMain();
+        nodeService = new ROSNodeService();
+
+        try {
+            java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
+            java.net.InetAddress local_network_address = socket.getLocalAddress();
+            socket.close();
+            NodeConfiguration nodeConfiguration =
+                    NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
+
+            nodeMainExecutor.execute(nodeMain, nodeConfiguration);
+            nodeMainExecutor.execute(nodeService, nodeConfiguration);
+        } catch (IOException e) {
+            Log.e("MainActivity", "socket error trying to get networking information from the master uri");
+        }
+
+    }
+
+    class sendOnClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Snackbar.make(v, "Sent Quad3!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
+            nodeMain.sendQuad(((FloatingActionButton)v).getTitle());
+        }
+    }
+
+    class clearOnClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(final View view) {
+            Snackbar.make(view, "Sent Quad3!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
+            customCanvas.clearQuad(((FloatingActionButton)view).getTitle());
+        }
+    }
+
+    // rescaling canvas proportions to (somewhat) fit screen depending on screen orientation
+    // TODO
+    public void newDimension(
+            final float width,
+            final float height) {
+        float aspectRatio = width/height;
+        canvasSize.getLayoutParams().height = (int) (screenHeight * CANVAS_SCREEN_RATIO);
+        canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * aspectRatio);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(
+            final Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    /**
+     * Handle action bar item clicks here. The action bar will
+     * automatically handle clicks on the Home/Up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     * @param item The MenuItem selected
+     * @return TODO What does this return?
+     */
+    @Override
+    public boolean onOptionsItemSelected(
+            final MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initButtons() {
+
         // Button to terminate app so it doesn't have to be done manually
-        Button terminate = (Button)this.findViewById(R.id.kill_button);
-        terminate.setOnClickListener(new View.OnClickListener() {
+        final Button terminateProgramButton = (Button)this.findViewById(R.id.kill_button);
+        terminateProgramButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View view) {
                 finish();
                 System.exit(0);
             }
         });
 
         // PreviewActivity Button
-        final Button preview = (Button) findViewById(R.id.previewButton);
-        preview.setOnClickListener(new View.OnClickListener()
-        {
+        final Button previewButton = (Button) findViewById(R.id.previewButton);
+        previewButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-            // compress arrays, send to path planner, wait to launch PreviewActivity until service finishes
-            nodeService.getOptimizedTrajectories(new TrajectoryCallback(quads.size()){
-                    public void onFinishedAll(boolean success){//once all quads have finished, this should be called. Who knows if it will work
-                        Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
-                        startActivity(intent);
-                    }
-                });
+            public void onClick(final View view) {
+                // compress arrays, send to path planner, wait to launch PreviewActivity until service finishes
+                nodeService.getOptimizedTrajectories(new TrajectoryOptimizerCallback(quads.size(), (Void) -> {
+                            Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
+                            MainActivity.this.startActivity(intent);
+                            return Void;
+                        })
+                );
             }
         });
 
@@ -177,8 +266,7 @@ public class MainActivity extends AppCompatRosActivity {
         });
 
         sendQuad1.setOnClickListener(new sendOnClickListener());
-
-
+        
         // Clear FAB
         //// TODO: 7/25/2017 Generate these automatically too ffs
         FloatingActionsMenu fabClear = (FloatingActionsMenu) findViewById(R.id.fab_clear);
@@ -202,34 +290,9 @@ public class MainActivity extends AppCompatRosActivity {
         });
 
         clearQuad1.setOnClickListener(new clearOnClickListener());
+    }
 
-        // TextView for displaying z control slider value
-        final TextView seekbarValue = (TextView) findViewById(R.id.seekbar_value);
-        final SeekBar slider = (SeekBar) findViewById(R.id.slider);
-        slider.getLayoutParams().width = sbLayout.getLayoutParams().height;
-//        slider.getLayoutParams().width = (int)(screenHeight * 0.65);
-        final Handler seekbarH = new Handler();
-        Runnable seekbarR = new Runnable() {
-            @Override
-            public void run() {
-                int max = (int) pref.getFloat("newAltitude", 2);
-                slider.setMax(max * 100);
-                slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) { }
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) { }
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        float value = ((float) progress / 100);
-                        seekbarValue.setText(Float.toString(value));
-                    }
-                });
-                seekbarH.postDelayed(this, 10);
-            }
-        };
-        seekbarR.run();
-
+    private void initHandlers() {
         // Get new dimensions from CanvasSizeActivity
         final TextView newDimensionText = (TextView) findViewById(R.id.new_dimensions);
         final Handler canvasH = new Handler();
@@ -251,167 +314,24 @@ public class MainActivity extends AppCompatRosActivity {
         final TextView inMeters = (TextView) findViewById(R.id.inMeters);
         final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
         final Handler handler = new Handler();
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                if (!pref.getBoolean("debugMode", false)) {
-//                    inMeters.setVisibility(View.INVISIBLE);
-//                    quad2Pixel.setVisibility(View.INVISIBLE);
-//                }
-//                else {
-//                    inMeters.setVisibility(View.VISIBLE);
-//                    quad2Pixel.setVisibility(View.VISIBLE);
-//
-//                    inMeters.setText(Float.toString(mX) + "mX   " + Float.toString(mY) + "mY    ");
-//                    quad2Pixel.setText(Float.toString(objectXToPixel("quad")) + "xdp    " + Float.toString(objectYToPixel("quad")) + "ydp");
-//
-//                    handler.postDelayed(this, 10);
-//
-//                }
-//            }
-//        };
-//        runnable.run();
 
-        // quad display config
-        {
-            // set quad size
-            final ImageView quad1 = (ImageView) findViewById(R.id.quad1);
+        // set quad size
+        final ImageView quad1 = (ImageView) findViewById(R.id.quad1);
 
-            quad1.getLayoutParams().height = (int) (screenHeight * 0.05);
-            quad1.getLayoutParams().width = (int) (screenWidth * 0.05);
-            //quad1.setColorFilter(DataShare.getInstance("quad1").getQuadColour());
+        quad1.getLayoutParams().height = (int) (screenHeight * 0.05);
+        quad1.getLayoutParams().width = (int) (screenWidth * 0.05);
 
-
-            // quad control toggle switches
-            //// TODO: 7/25/2017 Make a spinner
-            quad1Switch = (Switch) findViewById(R.id.quad1Switch);
-
-            quad1Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    customCanvas.setQuad(buttonView.getText().toString());
-                    setQuad(buttonView.getText().toString());
-                }
-                }
-            });
-
-            // show real-time location of the quads
-            final Handler handlerQuad = new Handler();
-            Runnable runnableQuad = new Runnable() {
-                @Override
-                public void run() {
-                    // quad 1
+        // show real-time location of the quads
+        final Handler handlerQuad = new Handler();
+        Runnable runnableQuad = new Runnable() {
+            @Override
+            public void run() {
+                // quad 1
                 customCanvas.update();
                 handlerQuad.postDelayed(this, 20);
-                }
-            };
-            runnableQuad.run();
-        }
-    }
-
-
-
-    // rescaling canvas proportions to (somewhat) fit screen depending on screen orientation
-    // TODO
-    public void newDimension(float w, float h) {
-        float scale = w/h;
-        canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
-        canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * scale);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_roscam) {
-//            startActivity(new Intent(MainActivity.this, ROSCam.class));
-//        }
-
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public static Context getContextOfApplication() {
-        return contextOfApplication;
-    }
-
-
-    @Override
-    protected void init(NodeMainExecutor nodeMainExecutor) {
-//        rosTextView.setText("test");
-//        rosTextView.setTopicName("testtopic");
-//        rosTextView.setMessageType("std_msgs/String");
-        System.out.println("init");
-        nodeMain = new ROSNodeMain();
-        nodeService = new ROSNodeService();
-
-        try {
-            java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
-            java.net.InetAddress local_network_address = socket.getLocalAddress();
-            socket.close();
-            NodeConfiguration nodeConfiguration =
-                    NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
-
-            //nodeConfiguration.setNodeName()
-            nodeMainExecutor.execute(nodeMain, nodeConfiguration);
-            nodeMainExecutor.execute(nodeService, nodeConfiguration);
-        } catch (IOException e) {
-            // Socket problem
-            Log.e("MainActivity", "socket error trying to get networking information from the master uri");
-        }
-
-    }
-
-    class sendOnClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Snackbar.make(v, "Sent Quad3!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-
-            nodeMain.sendQuad(((FloatingActionButton)v).getTitle());
-        }
-    }
-
-    class clearOnClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Snackbar.make(v, "Sent Quad3!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-
-            customCanvas.clearQuad(((FloatingActionButton)v).getTitle());
-        }
-    }
-
-    abstract class TrajectoryCallback extends DefaultCallback{
-        int total,count;
-        public TrajectoryCallback(int total){
-            this.total=total;
-        }
-        @Override
-        public void onFinished(boolean success){
-            count++;
-            if(total==count){
-                onFinishedAll(success);
             }
-        }
-        public void onFinishedAll(boolean success){}
+        };
+        runnableQuad.run();
 
     }
-
 }

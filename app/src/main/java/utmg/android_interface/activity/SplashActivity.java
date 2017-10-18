@@ -19,7 +19,6 @@ import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.List;
 
-import utmg.android_interface.DataShare;
 import utmg.android_interface.R;
 
 /**

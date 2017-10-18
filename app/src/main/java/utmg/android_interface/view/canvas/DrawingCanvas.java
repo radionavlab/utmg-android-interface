@@ -24,9 +24,6 @@ public class DrawingCanvas extends AbstractCanvas {
             final AttributeSet attrs,
             final View.OnTouchListener onTouchListener) {
         super(context, attrs, onTouchListener);
-
-        // quads=(ArrayList<Quad>)DataShare.retrieve("quads");
-        // obstacles=(ArrayList<Obstacle>)DataShare.retrieve("obstacles");
     }
 
     @Override

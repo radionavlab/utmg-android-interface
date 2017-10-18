@@ -41,11 +41,6 @@
             <!--    android:name="android.support.PARENT_ACTIVITY"
                 android:value="utmg.android_interface.Activities.SplashActivity" /> -->
         </activity>
-        <activity
-            android:name=".ROS.ROSCam"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/action_roscam"
-            android:screenOrientation="landscape" />
         <activity android:name="org.ros.android.MasterChooser" />
 
         <service android:name="org.ros.android.NodeMainExecutorService">
@@ -55,7 +50,6 @@
         </service>
 
         <!-- <activity -->
-        <!-- android:name=".ROSCam" -->
         <!-- android:label="@string/action_roscam" -->
         <!-- android:parentActivityName=".MainActivity"> -->
         <!-- <meta-data -->

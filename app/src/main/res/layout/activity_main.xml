@@ -113,26 +113,6 @@
         android:tint="@android:color/holo_red_dark"/>
 
     <ImageView
-        android:id="@+id/quad2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/quad"
-        android:visibility="gone"
-        android:tint="@android:color/holo_green_dark"/>
-
-    <ImageView
-        android:id="@+id/quad3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/quad"
-        android:visibility="gone"
-        android:tint="@android:color/holo_blue_dark"/>
-
-    <ImageView
         android:id="@+id/sword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -149,16 +129,6 @@
         android:layout_gravity="center"
         android:src="@drawable/obstacle"
         android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/obstacle2"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/obstacle"
-        android:visibility="gone"/>
-
 
     <TextView
         android:id="@+id/seekbar_value"
