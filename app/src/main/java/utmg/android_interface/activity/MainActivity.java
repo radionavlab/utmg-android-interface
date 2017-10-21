@@ -151,7 +151,8 @@ public class MainActivity extends AppCompatRosActivity {
         // TODO: Get these damn buttons to center!
         for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
             final RadioButton trajectorySelectButton = new RadioButton(this.getApplicationContext());
-            trajectorySelectButton.setText("Quad " + (i+1));
+            final String buttonName = "Quad " + (i+1);
+            trajectorySelectButton.setText(buttonName);
 
             // Mark the first quad/trajectory as selected
             if(i == 0) trajectorySelectButton.setChecked(true);
