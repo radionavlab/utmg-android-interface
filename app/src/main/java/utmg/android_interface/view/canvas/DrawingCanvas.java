@@ -3,13 +3,11 @@ package utmg.android_interface.view.canvas;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import utmg.android_interface.model.entity.Obstacle;
-import utmg.android_interface.model.util.Point3;
-import utmg.android_interface.view.entitiyView.QuadView;
+import utmg.android_interface.view.entitiyView.TrajectoryView;
 
 /**
  * Unknown creator. Modified by Tucker Haydon on 10/15/2017
@@ -17,20 +15,20 @@ import utmg.android_interface.view.entitiyView.QuadView;
 
 public class DrawingCanvas extends AbstractCanvas {
 
-    private List<QuadView> quadViews;
+    private List<TrajectoryView> trajectoryViews = new ArrayList<>();
 
     public DrawingCanvas(
             final Context context,
-            final AttributeSet attrs,
-            final View.OnTouchListener onTouchListener) {
-        super(context, attrs, onTouchListener);
+            final AttributeSet attrs) {
+        super(context, attrs);
     }
 
     @Override
     protected void onDraw(
             final Canvas canvas) {
-        for(QuadView quadView: quadViews) {
-            quadView.drawTrajectory(canvas);
+        super.onDraw(canvas);
+        for(TrajectoryView trajectoryView: trajectoryViews) {
+            trajectoryView.draw(canvas);
         }
     }
 
@@ -39,9 +37,9 @@ public class DrawingCanvas extends AbstractCanvas {
         // TODO: How do I clear this?
     }
 
-    public void addQuadView(
-            final QuadView quadView) {
-        this.quadViews.add(quadView);
+    public void addTrajectoryView(
+            final TrajectoryView trajectoryView) {
+        this.trajectoryViews.add(trajectoryView);
     }
 
 }

@@ -2,21 +2,9 @@ package utmg.android_interface.view.canvas;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Path;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import android.content.SharedPreferences;
-import android.view.View;
-
-import org.ros.message.Time;
-
-import utmg.android_interface.model.entity.Quad;
-import utmg.android_interface.model.util.Point3;
-import utmg.android_interface.view.entitiyView.QuadView;
 
 /**
  * Unknown author. Modified by Tucker Haydon on 10/15/2017.
@@ -24,21 +12,20 @@ import utmg.android_interface.view.entitiyView.QuadView;
 
 public class PreviewCanvas extends AbstractCanvas {
 
-    private List<QuadView> quadViews;
+//    private List<QuadView> quadViews;
 
     public PreviewCanvas(
             final Context context,
-            final AttributeSet attrs,
-            final View.OnTouchListener onTouchListener) {
-        super(context, attrs, onTouchListener);
+            final AttributeSet attrs) {
+        super(context, attrs);
     }
 
     @Override
     public void onDraw(
             final Canvas canvas) {
-        for(QuadView quadView: quadViews) {
-            quadView.drawOptimizedTrajectory(canvas);
-        }
+//        for(QuadView quadView: quadViews) {
+//            quadView.drawOptimizedTrajectory(canvas);
+//        }
     }
 
     @Override

@@ -78,24 +78,6 @@
                     android:text="Quad1"
                     android:textColor="@android:color/holo_red_dark"/>
 
-                <Switch
-                    android:id="@+id/quad2Switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|right"
-                    android:layout_marginLeft="50dp"
-                    android:text="Quad2"
-                    android:textColor="@android:color/holo_green_dark"/>
-
-                <Switch
-                    android:id="@+id/quad3Switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|right"
-                    android:layout_marginLeft="50dp"
-                    android:text="Quad3"
-                    android:textColor="@android:color/holo_blue_dark" />
-
             </LinearLayout>
 
         </LinearLayout>
@@ -161,7 +143,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/new_dimensions"
+        android:id="@+id/dimension_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
@@ -222,26 +204,6 @@
             fab:fab_size="mini"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/sendQuad2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="Send Quad2"
-            fab:fab_colorNormal="@android:color/holo_green_dark"
-            fab:fab_colorPressed="@android:color/holo_green_light"
-            fab:fab_icon="@android:drawable/ic_menu_send"
-            fab:fab_size="mini"/>
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/sendQuad3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="Send Quad3"
-            fab:fab_colorNormal="@android:color/holo_blue_dark"
-            fab:fab_colorPressed="@android:color/holo_blue_light"
-            fab:fab_icon="@android:drawable/ic_menu_send"
-            fab:fab_size="mini"/>
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/sendAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -264,46 +226,6 @@
         fab:fab_addButtonColorNormal="@android:color/holo_purple"
         fab:fab_colorPressed="@android:color/holo_orange_light"
         fab:fab_icon="@android:drawable/ic_menu_close_clear_cancel"
-        fab:fab_expandDirection="right">
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/clearQuad1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="Send Quad1"
-            fab:fab_colorNormal="@android:color/holo_red_dark"
-            fab:fab_colorPressed="@android:color/holo_red_light"
-            fab:fab_icon="@android:drawable/ic_menu_close_clear_cancel"
-            fab:fab_size="mini"/>
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/clearQuad2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="Send Quad2"
-            fab:fab_colorNormal="@android:color/holo_green_dark"
-            fab:fab_colorPressed="@android:color/holo_green_light"
-            fab:fab_icon="@android:drawable/ic_menu_close_clear_cancel"
-            fab:fab_size="mini"/>
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/clearQuad3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="Send Quad3"
-            fab:fab_colorNormal="@android:color/holo_blue_dark"
-            fab:fab_colorPressed="@android:color/holo_blue_light"
-            fab:fab_icon="@android:drawable/ic_menu_close_clear_cancel"
-            fab:fab_size="mini" />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/clearAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="Send All"
-            fab:fab_colorNormal="@android:color/black"
-            fab:fab_colorPressed="@android:color/black"
-            fab:fab_icon="@android:drawable/ic_menu_close_clear_cancel" />
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+        fab:fab_expandDirection="right" />
 
 </android.support.design.widget.CoordinatorLayout>

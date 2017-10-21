@@ -26,60 +26,64 @@ import utmg.android_interface.R;
  */
 
 public class SplashActivity extends AppCompatRosActivity {
+    @Override
+    protected void init(NodeMainExecutor nodeMainExecutor) {
 
-    ProgressBar progressBar;
-    TextView progressTextView;
-    public SplashActivity(){super("MainActivity", "MainActivity");}
-    protected void onCreate(Bundle savedInstanceState)  {
-        super.onCreate(savedInstanceState);
+    }
 
-        setContentView(R.layout.activity_splash);
-
-        progressBar = (ProgressBar) this.findViewById(R.id.splash_progress_bar);
-        progressTextView = (TextView) this.findViewById(R.id.splash_text_view);
-    }
-    public void updateUI(final int percent, final String message){
-        this.runOnUiThread(new Runnable() {
-            public void run() {
-                progressBar.setProgress(percent);
-                progressTextView.setText(message);
-            }
-        });
-    }
-    public void initCompleted() {
-        System.out.println("Thread completed");
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-        startActivity(intent);
-    }
-    public void init(NodeMainExecutor nodeMainExecutor){
-        try {
-            updateUI(25,"Connecting to Socket");
-            java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
-            java.net.InetAddress local_network_address = socket.getLocalAddress();
-            socket.close();
-            updateUI(50,"Socket Verified");
-            NodeConfiguration nodeConfiguration =
-                    NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
-
-            //x.setNodeName()
-            DefaultNode node = new DefaultNode(nodeConfiguration, null, new DefaultScheduledExecutorService());
-            node.executeCancellableLoop(new CancellableLoop() {
-                @Override
-                protected void loop() throws InterruptedException {
-                    Thread.sleep(10);
-                }
-            });
-            updateUI(75,"Reading Topics");
-            MasterStateClient msc = new MasterStateClient(node,getMasterUri());
-            SystemState ss = msc.getSystemState();
-            List<TopicType> list  = msc.getTopicTypes();
-            updateUI(100,"Topics read, starting application");
-            // TODO: 7/25/2017 Parse topic list and add everything to DataShare
-            DataShare.save("masterUri",getMasterUri());
-            initCompleted();
-        } catch (IOException e) {
-            // Socket problem
-            Log.e("MainActivity", "socket error trying to get networking information from the master uri");
-        }
-    }
+//    ProgressBar progressBar;
+//    TextView progressTextView;
+//    public SplashActivity(){super("MainActivity", "MainActivity");}
+//    protected void onCreate(Bundle savedInstanceState)  {
+//        super.onCreate(savedInstanceState);
+//
+//        setContentView(R.layout.activity_splash);
+//
+//        progressBar = (ProgressBar) this.findViewById(R.id.splash_progress_bar);
+//        progressTextView = (TextView) this.findViewById(R.id.splash_text_view);
+//    }
+//    public void updateUI(final int percent, final String message){
+//        this.runOnUiThread(new Runnable() {
+//            public void run() {
+//                progressBar.setProgress(percent);
+//                progressTextView.setText(message);
+//            }
+//        });
+//    }
+//    public void initCompleted() {
+//        System.out.println("Thread completed");
+//        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+//        startActivity(intent);
+//    }
+//    public void init(NodeMainExecutor nodeMainExecutor){
+//        try {
+//            updateUI(25,"Connecting to Socket");
+//            java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
+//            java.net.InetAddress local_network_address = socket.getLocalAddress();
+//            socket.close();
+//            updateUI(50,"Socket Verified");
+//            NodeConfiguration nodeConfiguration =
+//                    NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
+//
+//            //x.setNodeName()
+//            DefaultNode node = new DefaultNode(nodeConfiguration, null, new DefaultScheduledExecutorService());
+//            node.executeCancellableLoop(new CancellableLoop() {
+//                @Override
+//                protected void loop() throws InterruptedException {
+//                    Thread.sleep(10);
+//                }
+//            });
+//            updateUI(75,"Reading Topics");
+//            MasterStateClient msc = new MasterStateClient(node,getMasterUri());
+//            SystemState ss = msc.getSystemState();
+//            List<TopicType> list  = msc.getTopicTypes();
+//            updateUI(100,"Topics read, starting application");
+//            // TODO: 7/25/2017 Parse topic list and add everything to DataShare
+//            DataShare.save("masterUri",getMasterUri());
+//            initCompleted();
+//        } catch (IOException e) {
+//            // Socket problem
+//            Log.e("MainActivity", "socket error trying to get networking information from the master uri");
+//        }
+//    }
 }

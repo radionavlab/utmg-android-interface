@@ -7,6 +7,7 @@ import utmg.android_interface.view.canvas.AbstractCanvas;
  */
 
 public class DrawingEndTouchHandler implements IEndTouchHandler {
+
     @Override
     public void handle(
             final float x,

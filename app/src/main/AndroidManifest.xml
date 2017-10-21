@@ -21,13 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity
-            android:name=".activity.SplashActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop">
+        <!--<activity-->
+            <!--android:name=".activity.SplashActivity"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:theme="@style/AppTheme.NoActionBar"-->
+            <!--android:launchMode="singleTop">-->
 
-        </activity>
+        <!--</activity>-->
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
@@ -41,40 +41,33 @@
             <!--    android:name="android.support.PARENT_ACTIVITY"
                 android:value="utmg.android_interface.Activities.SplashActivity" /> -->
         </activity>
-        <activity android:name="org.ros.android.MasterChooser" />
+        <!--<activity android:name="org.ros.android.MasterChooser" />-->
 
-        <service android:name="org.ros.android.NodeMainExecutorService">
-            <intent-filter>
-                <action android:name="org.ros.android.NodeMainExecutorService" />
-            </intent-filter>
-        </service>
+        <!--<service android:name="org.ros.android.NodeMainExecutorService">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="org.ros.android.NodeMainExecutorService" />-->
+            <!--</intent-filter>-->
+        <!--</service>-->
 
-        <!-- <activity -->
-        <!-- android:label="@string/action_roscam" -->
-        <!-- android:parentActivityName=".MainActivity"> -->
-        <!-- <meta-data -->
-        <!-- android:name="android.support.PARENT_ACTIVITY" -->
-        <!-- android:value="utmg.android_interface.Activities.MainActivity" /> -->
-        <!-- </activity> -->
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/title_activity_objects"
-            android:parentActivityName=".activity.MainActivity"
-            android:screenOrientation="landscape"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="utmg.android_interface.activity.MainActivity" />
-        </activity>
-        <activity
-            android:name=".activity.PreviewActivity"
-            android:label="@string/title_activity_preview"
-            android:parentActivityName=".activity.MainActivity"
-            android:launchMode="singleTask">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="utmg.android_interface.activity.MainActivity" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".activity.SettingsActivity"-->
+            <!--android:label="@string/title_activity_objects"-->
+            <!--android:parentActivityName=".activity.MainActivity"-->
+            <!--android:screenOrientation="landscape"-->
+            <!--android:launchMode="singleTop">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="utmg.android_interface.activity.MainActivity" />-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".activity.PreviewActivity"-->
+            <!--android:label="@string/title_activity_preview"-->
+            <!--android:parentActivityName=".activity.MainActivity"-->
+            <!--android:launchMode="singleTask">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="utmg.android_interface.activity.MainActivity" />-->
+        <!--</activity>-->
     </application>
 
 </manifest>

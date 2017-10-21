@@ -95,7 +95,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("quad1", isQuad1Checked.isChecked());
                 prefEditor.apply();
-                //Log.i("quadvis",Boolean.toString(pref.getBoolean("quad",false)));
+                //Log.i("quadvis",Boolean.toString(sharedPreferences.getBoolean("quad",false)));
             }
         });
 
@@ -104,7 +104,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("quad2", isQuad2Checked.isChecked());
                 prefEditor.apply();
-                //Log.i("quadvis",Boolean.toString(pref.getBoolean("quad",false)));
+                //Log.i("quadvis",Boolean.toString(sharedPreferences.getBoolean("quad",false)));
             }
         });
 
@@ -113,7 +113,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 prefEditor.putBoolean("quad3", isQuad3Checked.isChecked());
                 prefEditor.apply();
-                //Log.i("quadvis",Boolean.toString(pref.getBoolean("quad",false)));
+                //Log.i("quadvis",Boolean.toString(sharedPreferences.getBoolean("quad",false)));
             }
         });
 

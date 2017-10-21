@@ -10,10 +10,10 @@ package utmg.android_interface.model.entity;
 public class Obstacle extends AbstractEntity {
 
     /* Float representing the size of the object modelled as a sphere with radius r in meters. */
-    final float radius;
+    private final float radius;
 
     /* Name of the obstacle */
-    final String name;
+    private final String name;
 
     /**
      * Constructor.

@@ -1,7 +1,7 @@
 package utmg.android_interface.controller;
 
-import utmg.android_interface.model.entity.Quad;
 import utmg.android_interface.model.util.Point3;
+import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.AbstractCanvas;
 
 /**
@@ -10,11 +10,11 @@ import utmg.android_interface.view.canvas.AbstractCanvas;
 
 public class DrawingMoveTouchHandler implements IMoveTouchHandler {
 
-    private final Quad quad;
+    private final Trajectory trajectory;
 
     public DrawingMoveTouchHandler(
-            final Quad quad) {
-        this.quad = quad;
+            final Trajectory trajectory) {
+        this.trajectory = trajectory;
     }
 
     @Override
@@ -23,11 +23,12 @@ public class DrawingMoveTouchHandler implements IMoveTouchHandler {
             final float y,
             final AbstractCanvas canvas) {
 
-        // TODO: Z should not be zero and why am I asking canvas for time?
+        // TODO: Why am I asking canvas for time?
         // Append the movement point
-        quad.addPoint(new Point3(x, y, 0, canvas.getCurrentTime()));
+        trajectory.addPoint(new Point3(x, y, trajectory.getAltitude(), canvas.getCurrentTime()));
 
         // TODO: Implement some sort of tolerance. No need to add a point for every movement.
+        // TODO: Prevent trajectory from leaving arena
 
         // Invalidate the canvas to force redraw
         canvas.invalidate();

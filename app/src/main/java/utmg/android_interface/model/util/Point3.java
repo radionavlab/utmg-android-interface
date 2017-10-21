@@ -87,4 +87,14 @@ public class Point3 {
             final Point3 other) {
         return (float) (Math.sqrt(Math.pow(other.x - this.x, 2) + Math.pow(other.y - this.y, 2) + Math.pow(other.z - this.z, 2)));
     }
+
+    @Override
+    public String toString() {
+        return "Point3{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", t=" + t +
+                '}';
+    }
 }

@@ -1,0 +1,4 @@
+numQuads                                = 3
+arenaWidthMeters                        = 5.0
+arenaLengthMeters                       = 10.0
+maxAltitude                             = 3.0

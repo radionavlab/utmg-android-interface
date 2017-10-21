@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -31,12 +32,10 @@ public abstract class AbstractCanvas extends View {
 
     public AbstractCanvas(
             final Context context,
-            final AttributeSet attrs,
-            final View.OnTouchListener onTouchListener) {
+            final AttributeSet attrs) {
         super(context, attrs);
-        this.preferences = context.getSharedPreferences("Pref", 0);
-        this.setOnTouchListener(onTouchListener);
 
+        this.preferences = context.getSharedPreferences("Pref", 0);
         this.bitmap = Bitmap.createBitmap(DEFAULT_WIDTH_PIXELS, DEFAULT_HEIGHT_PIXELS, Bitmap.Config.ARGB_8888);
         this.canvas = new Canvas(this.bitmap);
     }
@@ -205,7 +204,10 @@ public abstract class AbstractCanvas extends View {
      * @param canvas The canvas object to render the content to.
      */
     @Override
-    protected abstract void onDraw(final Canvas canvas);
+    protected void onDraw(
+            final Canvas canvas) {
+        super.onDraw(canvas);
+    }
 
     /**
      * Clear the canvas.

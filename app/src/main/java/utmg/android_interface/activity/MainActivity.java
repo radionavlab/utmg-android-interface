@@ -1,21 +1,20 @@
 package utmg.android_interface.activity;
 
 import android.content.Intent;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -27,113 +26,87 @@ import org.ros.node.NodeMainExecutor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
-import utmg.android_interface.ROS.IROSCallback;
-import utmg.android_interface.ROS.callbacks.TrajectoryOptimizerCallback;
 import utmg.android_interface.controller.AltitudeSeekBarHandler;
-import utmg.android_interface.model.entity.Quad;
+import utmg.android_interface.controller.ClearAllTrajectoriesButtonHandler;
+import utmg.android_interface.controller.ClearTrajectoryButtonHandler;
+import utmg.android_interface.controller.DrawingEndTouchHandler;
+import utmg.android_interface.controller.DrawingMoveTouchHandler;
+import utmg.android_interface.controller.DrawingStartTouchHandler;
+import utmg.android_interface.controller.OnTouchEventDispatcher;
+import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.R;
 import utmg.android_interface.ROS.ROSNodeMain;
 import utmg.android_interface.ROS.ROSNodeService;
+import utmg.android_interface.view.entitiyView.TrajectoryView;
 
 public class MainActivity extends AppCompatRosActivity {
 
+    /* Config file names */
+    private static final String CONFIG_FILE_NAME = "app_config";
 
-    private static final float CANVAS_SCREEN_RATIO = 0.65f;
+    /* Default constants */
+    private static final float MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT = 0.75f;
+    private static final float MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH = 0.75f;
+    private static final float DEFAULT_MAX_ALTITUDE_METERS = 2.0f;
+    private static final float ARENA_WIDTH_METERS_DEFAULT = 5.0f;
+    private static final float ARENA_HEIGHT_METERS_DEFAULT = 10.0f;
     private static final float SLIDER_SCREEN_RATIO = 0.6f;
 
-    ROSNodeMain nodeMain;
-    ROSNodeService nodeService;
-    private DrawingCanvas customCanvas;
+    /* ROS Nodes */
+    private ROSNodeMain nodeMain;
+    private ROSNodeService nodeService;
 
-    SharedPreferences pref;
+    /* Canvas element */
+    private DrawingCanvas canvas;
 
-    private LinearLayout canvasSize;
+    /* Model objects */
+    private final List<Trajectory> trajectories = new ArrayList<>();;
+    private final List<Obstacle> obstacles = new ArrayList<>();
+
+    /* Globals for convenience */
+    private SharedPreferences sharedPreferences;
     private int screenHeight;
     private int screenWidth;
-    private float canvasWidth;
-    private float canvasHeight;
-
-    private final List<Quad> quads;
-    private final List<Obstacle> obstacles;
-
-
-    public static Context contextOfApplication;
+    private Trajectory selectedTrajectory;
 
     /**
-     * Constructor.
+     * Constructor. Called once. Initializes model objects
      */
     public MainActivity() {
         super("MainActivity", "MainActivity");
-
-        // Initialize quad entities
-        this.quads = new ArrayList<>();
-        this.initQuads();
-
-        // Initialize obstacle entitites
-        this.obstacles = new ArrayList<>();
-        this.initObstacles();
     }
 
     /**
-     * Initializes the various quad entities
+     * On create is called every time this activity is created or restarted. Rotating the screen causes an activity restart.
+     * @param savedInstanceState Saved instance state from the last time this app was destroyed.
      */
-    private void initQuads() {
-        this.quads.add(new Quad("Quad 1"));
-    }
-
-    /**
-     * Initializes the various obstacle entities
-     */
-    private void initObstacles() {
-        this.obstacles.add(new Obstacle("Obstacle 1"));
-    }
-
     @Override
     protected void onCreate(
             final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        contextOfApplication = getApplicationContext();
+        // Set globals
+        this.screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        this.screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
-        // Get the shared preferences
-        pref = getSharedPreferences("Pref", 0);
+        // Load config values into the shared preferences
+        this.sharedPreferences = this.getPreferences(0);
+        this.loadConfigProperties();
 
         // Set the content layout
         setContentView(R.layout.activity_main);
 
-        // instantiating canvas
-        canvasSize = (LinearLayout) findViewById(R.id.linLay);
-
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-
-        canvasSize.getLayoutParams().height = (int) (screenHeight * 0.65);
-        canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * (pref.getFloat("newWidth", 5)/pref.getFloat("newHeight", 3)));
-
-        customCanvas = (DrawingCanvas) findViewById(R.id.signature_canvas);
-
-        // instantiating toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
-    }
-
-    private void initSlider() {
-        final FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
-        final int sliderLength = (int) (screenHeight * SLIDER_SCREEN_RATIO);
-        sbLayout.getLayoutParams().height = sliderLength;
-
-        final SeekBar slider = (SeekBar) findViewById(R.id.slider);
-        slider.getLayoutParams().width = sliderLength;
-
-        int max = (int) pref.getFloat("newAltitude", 2);
-        slider.setMax(max * 100);
-
-        slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler((TextView) findViewById(R.id.seekbar_value)));
+        // Initialize the various elements
+        this.initModelElements();
+        this.selectInitialTrajectory();
+        this.initCanvas();
+        this.initAltitudeSlider();
+        this.initButtons();
+        this.initTextViews();
     }
 
     @Override
@@ -154,37 +127,14 @@ public class MainActivity extends AppCompatRosActivity {
         } catch (IOException e) {
             Log.e("MainActivity", "socket error trying to get networking information from the master uri");
         }
-
     }
 
-    class sendOnClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Snackbar.make(v, "Sent Quad3!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-
-            nodeMain.sendQuad(((FloatingActionButton)v).getTitle());
-        }
-    }
-
-    class clearOnClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(final View view) {
-            Snackbar.make(view, "Sent Quad3!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-
-            customCanvas.clearQuad(((FloatingActionButton)view).getTitle());
-        }
-    }
-
-    // rescaling canvas proportions to (somewhat) fit screen depending on screen orientation
-    // TODO
-    public void newDimension(
-            final float width,
-            final float height) {
-        float aspectRatio = width/height;
-        canvasSize.getLayoutParams().height = (int) (screenHeight * CANVAS_SCREEN_RATIO);
-        canvasSize.getLayoutParams().width = (int) (canvasSize.getLayoutParams().height * aspectRatio);
+    /**
+     * TODO: What is the toolbar?
+     */
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -215,123 +165,243 @@ public class MainActivity extends AppCompatRosActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initButtons() {
-
-        // Button to terminate app so it doesn't have to be done manually
-        final Button terminateProgramButton = (Button)this.findViewById(R.id.kill_button);
-        terminateProgramButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                finish();
-                System.exit(0);
-            }
-        });
-
-        // PreviewActivity Button
+    /**
+     * Pressing this button starts the preview activity
+     */
+    private void initPreviewButton() {
         final Button previewButton = (Button) findViewById(R.id.previewButton);
         previewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 // compress arrays, send to path planner, wait to launch PreviewActivity until service finishes
-                nodeService.getOptimizedTrajectories(new TrajectoryOptimizerCallback(quads.size(), (Void) -> {
-                            Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
-                            MainActivity.this.startActivity(intent);
-                            return Void;
-                        })
-                );
+//                nodeService.getOptimizedTrajectories(new TrajectoryOptimizerCallback(quads.size(), (Void) -> {
+//                            Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
+//                            MainActivity.this.startActivity(intent);
+//                            return Void;
+//                        })
+//                );
+                Log.i("DEBUG", "Preview button pressed.");
             }
         });
-
-        // Send FAB
-        //// TODO: 7/25/2017 Dynamically generate action buttons
-        final FloatingActionsMenu fabSent = (FloatingActionsMenu) findViewById(R.id.fab);
-        final com.getbase.floatingactionbutton.FloatingActionButton sendAll = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendAll);
-        final com.getbase.floatingactionbutton.FloatingActionButton sendQuad1 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.sendQuad1);
-        fabSent.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-
-            }
-        });
-
-        sendAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "Sent All!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                nodeMain.sendAll();
-            }
-        });
-
-        sendQuad1.setOnClickListener(new sendOnClickListener());
-        
-        // Clear FAB
-        //// TODO: 7/25/2017 Generate these automatically too ffs
-        FloatingActionsMenu fabClear = (FloatingActionsMenu) findViewById(R.id.fab_clear);
-        final com.getbase.floatingactionbutton.FloatingActionButton clearAll = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.clearAll);
-        final com.getbase.floatingactionbutton.FloatingActionButton clearQuad1 = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.clearQuad1);
-
-        fabClear.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
-        clearAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customCanvas.clearCanvas();
-                Snackbar.make(v, "Cleared All!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        clearQuad1.setOnClickListener(new clearOnClickListener());
     }
 
-    private void initHandlers() {
-        // Get new dimensions from CanvasSizeActivity
-        final TextView newDimensionText = (TextView) findViewById(R.id.new_dimensions);
-        final Handler canvasH = new Handler();
-        Runnable canvasR = new Runnable() {
-            @Override
-            public void run() {
-                canvasWidth = pref.getFloat("width", 5);
-                canvasHeight = pref.getFloat("height", 3);
-                newDimensionText.setText(Float.toString(canvasWidth) + "m, " + Float.toString(canvasHeight) + "m");
+    private void initSendButtons() {
+//        // Send FAB
+//        //// TODO: 7/25/2017 Dynamically generate action buttons
+//        final FloatingActionsMenu fabSent = (FloatingActionsMenu) findViewById(R.id.fab);
+//        final FloatingActionButton sendAll = (FloatingActionButton) findViewById(R.id.sendAll);
+//        final FloatingActionButton sendQuad1 = (FloatingActionButton) findViewById(R.id.sendQuad1);
+//        fabSent.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view)
+//            {
+//
+//            }
+//        });
+//
+//        sendAll.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Snackbar.make(v, "Sent All!", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+////                nodeMain.sendAll();
+//            }
+//        });
+//
+//        sendQuad1.setOnClickListener(new sendOnClickListener());
+    }
 
-                newDimension(canvasWidth, canvasHeight);
-                canvasH.postDelayed(this, 1000);
+    /* =================================== COMPLETED FUNCTIONS =================================== */
+
+    /**
+     * Initializes the buttons to clear the trajectories. Creates one button for every trajectory and one button to clear them all.
+     */
+    private void initClearTrajectoryButtons() {
+        final FloatingActionsMenu clearTrajectoriesMenu = (FloatingActionsMenu) findViewById(R.id.fab_clear);
+
+        // Add a clear all trajectory button
+        final FloatingActionButton clearAllTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
+        clearAllTrajectoryButton.setColorNormal(Color.BLACK);
+        clearTrajectoriesMenu.addButton(clearAllTrajectoryButton);
+        clearAllTrajectoryButton.setOnClickListener(new ClearAllTrajectoriesButtonHandler(this.trajectories, this.canvas));
+
+        // Add a clear trajectory button for every quad
+        // TODO: Change the color of the buttons and add numbers to indicate the trajectory numbers
+        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+            final FloatingActionButton clearTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
+            clearTrajectoryButton.setColorNormal(Color.GRAY);
+            clearTrajectoriesMenu.addButton(clearTrajectoryButton);
+            clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.canvas, this.trajectories.get(i)));
+        }
+    }
+
+    /**
+     * Rescales the canvas size for a new aspect ratio
+     * @param aspectRatio The desired aspect ratio
+     */
+    private void setCanvasDimensions (
+            final float aspectRatio) {
+
+        // Set the canvas size
+        final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.linLay).getLayoutParams();
+
+        // Assume the new screen size
+        float canvasHeightNew = screenHeight * MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT;
+        float canvasWidthNew = canvasHeightNew * aspectRatio;
+
+        // Check to see if it fits. If too big, shrink to limiting dimensions
+        if(canvasWidthNew > screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH) {
+            canvasWidthNew = screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH;
+            canvasHeightNew = canvasLayoutParams.width / aspectRatio;
+        }
+
+        // Set the new dimensions
+        canvasLayoutParams.width = (int) canvasWidthNew;
+        canvasLayoutParams.height = (int) canvasHeightNew;
+    }
+
+    /**
+     * Initializes the various buttons on the main activity
+     */
+    private void initButtons() {
+        initTerminateButton();
+        initPreviewButton();
+        initClearTrajectoryButtons();
+        initSendButtons();
+    }
+
+    /**
+     * Button to terminate app so it doesn't have to be done manually
+     */
+    private void initTerminateButton() {
+        final Button terminateProgramButton = (Button)this.findViewById(R.id.kill_button);
+        terminateProgramButton.setOnClickListener(view -> {
+            finish();
+            System.exit(0);
+        });
+    }
+
+    /**
+     * Initialize the altitude slider.
+     */
+    private void initAltitudeSlider() {
+        final int sliderLength = (int) (screenHeight * SLIDER_SCREEN_RATIO);
+
+        final FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
+        sbLayout.getLayoutParams().height = sliderLength;
+
+        final SeekBar slider = (SeekBar) findViewById(R.id.slider);
+        slider.getLayoutParams().width = sliderLength;
+
+        final float maxAltitude = this.sharedPreferences.getFloat("maxAltitude", DEFAULT_MAX_ALTITUDE_METERS);
+        slider.setMax((int) (maxAltitude * 100) );
+
+        final TextView altitudeDisplayTextView = (TextView) findViewById(R.id.seekbar_value);
+        slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler(altitudeDisplayTextView, this.selectedTrajectory));
+    }
+
+    /**
+     * Load the app config file into the shared preferences.
+     */
+    private void loadConfigProperties() {
+
+        final Properties prop = new Properties();
+
+        try {
+            // Load the app_config file
+            prop.load(this.getApplicationContext().getAssets().open(CONFIG_FILE_NAME));
+
+            // Inject all of the values into the shared preferences
+            // TODO: Assuming all of these are floats. Not safe!
+            final SharedPreferences.Editor editor = this.sharedPreferences.edit();
+            for(String configValue: prop.stringPropertyNames()) {
+                editor.putFloat(configValue, Float.valueOf(prop.getProperty(configValue)));
             }
-        };
-        canvasR.run();
+            editor.apply();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
+    /**
+     * Initializes the model elements.
+     */
+    private void initModelElements() {
+        this.initObstacles();
+        this.initTrajectories();
+    }
 
-        // display position of quad in meters
-        final TextView inMeters = (TextView) findViewById(R.id.inMeters);
-        final TextView quad2Pixel = (TextView) findViewById(R.id.quad2pixel);
-        final Handler handler = new Handler();
+    /**
+     * Initializes the canvas. Sets the dimensions, adds the various view elements, and attaches event listeners.
+     */
+    private void initCanvas() {
+        this.canvas = (DrawingCanvas) findViewById(R.id.signature_canvas);
 
-        // set quad size
-        final ImageView quad1 = (ImageView) findViewById(R.id.quad1);
+        // Set the canvas dimensions
+        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
+        final float arenaLengthMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
+        final float arenaAspectRatio = arenaWidthMeters/arenaLengthMeters;
+        setCanvasDimensions(arenaAspectRatio);
 
-        quad1.getLayoutParams().height = (int) (screenHeight * 0.05);
-        quad1.getLayoutParams().width = (int) (screenWidth * 0.05);
+        // Create and add all the trajectory views
+        for(Trajectory trajectory: trajectories) {
+            // Create paint object
+            final Paint paint = new Paint();
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(5);
+            // TODO: Change to color for multiple quads
+            paint.setColor(Color.BLUE);
 
-        // show real-time location of the quads
-        final Handler handlerQuad = new Handler();
-        Runnable runnableQuad = new Runnable() {
-            @Override
-            public void run() {
-                // quad 1
-                customCanvas.update();
-                handlerQuad.postDelayed(this, 20);
-            }
-        };
-        runnableQuad.run();
+            // Add trajectory view
+            this.canvas.addTrajectoryView(new TrajectoryView(trajectory, paint));
+        }
 
+        this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
+                this.canvas,
+                new DrawingStartTouchHandler(this.selectedTrajectory),
+                new DrawingMoveTouchHandler(this.selectedTrajectory),
+                new DrawingEndTouchHandler()));
+    }
+
+    /**
+     * Initializes the various trajectories
+     */
+    private void initTrajectories() {
+        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+            this.trajectories.add(new Trajectory());
+        }
+    }
+
+    /**
+     * Initializes the various obstacle entities
+     */
+    private void initObstacles() {
+        this.obstacles.add(new Obstacle("Obstacle 1"));
+    }
+
+    /**
+     * Initializes the various text views.
+     */
+    private void initTextViews() {
+        this.initDimensionTextView();
+    }
+
+    /**
+     * Initializes the text box that displays the arena dimensions.
+     */
+    private void initDimensionTextView() {
+        final TextView dimensionText = (TextView) findViewById(R.id.dimension_text);
+        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
+        final float arenaHeightMeters = sharedPreferences.getFloat("arenaHeightMeters", ARENA_HEIGHT_METERS_DEFAULT);
+
+        dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
+    }
+
+    /**
+     * Assumes that there is at least one initialized trajectory. Sets the first trajectory as the 'selected' trajectory to be controlled by the app.
+     */
+    private void selectInitialTrajectory() {
+        this.selectedTrajectory = this.trajectories.get(0);
     }
 }

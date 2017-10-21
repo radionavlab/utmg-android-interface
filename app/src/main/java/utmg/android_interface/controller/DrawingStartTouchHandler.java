@@ -1,7 +1,7 @@
 package utmg.android_interface.controller;
 
-import utmg.android_interface.model.entity.Quad;
 import utmg.android_interface.model.util.Point3;
+import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.AbstractCanvas;
 
 /**
@@ -10,11 +10,11 @@ import utmg.android_interface.view.canvas.AbstractCanvas;
 
 public class DrawingStartTouchHandler implements IStartTouchHandler {
 
-    private final Quad quad;
+    private final Trajectory trajectory;
 
     public DrawingStartTouchHandler(
-            final Quad quad) {
-        this.quad = quad;
+            final Trajectory trajectory) {
+        this.trajectory = trajectory;
     }
 
     @Override
@@ -24,11 +24,11 @@ public class DrawingStartTouchHandler implements IStartTouchHandler {
             final AbstractCanvas canvas) {
 
         // Started drawing a new trajectory. Must reset old trajectory.
-        quad.clearTrajectory();
+        trajectory.clear();
 
-        // TODO: Z should not be zero and why am I asking canvas for time?
+        // TODO: Why am I asking canvas for time?
         // Start the new trajectory by appending the start point
-        quad.addPoint(new Point3(x, y, 0, canvas.getCurrentTime()));
+        trajectory.addPoint(new Point3(x, y, trajectory.getAltitude(), canvas.getCurrentTime()));
 
         // Invalidate the canvas to force redraw
         canvas.invalidate();

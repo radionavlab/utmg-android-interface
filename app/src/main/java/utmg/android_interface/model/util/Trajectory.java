@@ -13,7 +13,10 @@ import java.util.List;
 public class Trajectory {
 
     /* List of Point3 objects representing the trajectory in 3-space */
-    List<Point3> points;
+    private List<Point3> points;
+
+    /* Altitude specified by slider in meters */
+    private float altitude;
 
     /**
      * Constructor.
@@ -22,13 +25,14 @@ public class Trajectory {
     public Trajectory(
             final List<Point3> points){
         this.points = points;
+        this.altitude = 0;
     }
 
     /**
      * Default constructor. Initializes trajectory as an empty ArrayList.
      */
     public Trajectory(){
-        points = new ArrayList<>();
+        this(new ArrayList<>());
     }
 
     /**
@@ -61,5 +65,36 @@ public class Trajectory {
      */
     public int size(){
         return points.size();
+    }
+
+    /**
+     * Sets the current altitude of the trajectory.
+     * @param altitude
+     */
+    public void setAltitude(
+            final float altitude) {
+        this.altitude = altitude;
+    }
+
+    /**
+     * Returns the current altitude of the trajectory.
+     * @return
+     */
+    public float getAltitude() {
+        return this.altitude;
+    }
+
+    /**
+     * Clears all of the points from the trajectory.
+     */
+    public void clear() {
+        this.points = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return "Trajectory{" +
+                "points=" + points +
+                '}';
     }
 }
