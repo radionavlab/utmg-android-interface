@@ -18,29 +18,27 @@ public class Trajectory {
     /* Altitude specified by slider in meters */
     private float altitude;
 
+    /* A name to identify the trajectory */
+    public final String name;
+
     /**
      * Constructor.
      * @param points A list of Point3 objects representing the trajectory.
      */
     public Trajectory(
-            final List<Point3> points){
+            final List<Point3> points,
+            final String name){
         this.points = points;
+        this.name = name;
         this.altitude = 0;
     }
 
     /**
      * Default constructor. Initializes trajectory as an empty ArrayList.
      */
-    public Trajectory(){
-        this(new ArrayList<>());
-    }
-
-    /**
-     * Static factory method that generates an empty trajectory.
-     * @return A trajectory with no points.
-     */
-    public static Trajectory noTrajectory() {
-        return new Trajectory();
+    public Trajectory(
+            final String name){
+        this(new ArrayList<>(), name);
     }
 
     /**
@@ -68,8 +66,8 @@ public class Trajectory {
     }
 
     /**
-     * Sets the current altitude of the trajectory.
-     * @param altitude
+     * Sets the current altitude of the trajectory in meters
+     * @param altitude The current altitude of the trajectory in meters
      */
     public void setAltitude(
             final float altitude) {
@@ -77,8 +75,8 @@ public class Trajectory {
     }
 
     /**
-     * Returns the current altitude of the trajectory.
-     * @return
+     * Returns the current altitude of the trajectory in meters
+     * @return the current altitude of the trajectory in meters
      */
     public float getAltitude() {
         return this.altitude;
@@ -95,6 +93,8 @@ public class Trajectory {
     public String toString() {
         return "Trajectory{" +
                 "points=" + points +
+                ", altitude=" + altitude +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

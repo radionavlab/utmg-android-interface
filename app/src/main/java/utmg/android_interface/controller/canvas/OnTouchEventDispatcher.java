@@ -1,8 +1,11 @@
-package utmg.android_interface.controller;
+package utmg.android_interface.controller.canvas;
 
 import android.view.MotionEvent;
 import android.view.View;
 
+import utmg.android_interface.controller.canvas.IEndTouchHandler;
+import utmg.android_interface.controller.canvas.IMoveTouchHandler;
+import utmg.android_interface.controller.canvas.IStartTouchHandler;
 import utmg.android_interface.view.canvas.AbstractCanvas;
 
 /**

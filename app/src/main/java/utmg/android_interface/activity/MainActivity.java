@@ -6,15 +6,16 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -29,12 +30,16 @@ import java.util.List;
 import java.util.Properties;
 
 import utmg.android_interface.controller.AltitudeSeekBarHandler;
-import utmg.android_interface.controller.ClearAllTrajectoriesButtonHandler;
-import utmg.android_interface.controller.ClearTrajectoryButtonHandler;
-import utmg.android_interface.controller.DrawingEndTouchHandler;
-import utmg.android_interface.controller.DrawingMoveTouchHandler;
-import utmg.android_interface.controller.DrawingStartTouchHandler;
-import utmg.android_interface.controller.OnTouchEventDispatcher;
+import utmg.android_interface.controller.button.ClearAllTrajectoriesButtonHandler;
+import utmg.android_interface.controller.button.ClearTrajectoryButtonHandler;
+import utmg.android_interface.controller.button.PreviewButtonHandler;
+import utmg.android_interface.controller.button.SelectTrajectoryButtonHandler;
+import utmg.android_interface.controller.canvas.DrawingEndTouchHandler;
+import utmg.android_interface.controller.canvas.DrawingMoveTouchHandler;
+import utmg.android_interface.controller.canvas.DrawingStartTouchHandler;
+import utmg.android_interface.controller.canvas.OnTouchEventDispatcher;
+import utmg.android_interface.controller.button.SendAllTrajectoriesButtonHandler;
+import utmg.android_interface.controller.button.SendTrajectoryButtonHandler;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
 import utmg.android_interface.model.entity.Obstacle;
@@ -93,6 +98,7 @@ public class MainActivity extends AppCompatRosActivity {
         this.screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         this.screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
+        // TODO: Ensure that this does not override current shared preferences
         // Load config values into the shared preferences
         this.sharedPreferences = this.getPreferences(0);
         this.loadConfigProperties();
@@ -100,13 +106,13 @@ public class MainActivity extends AppCompatRosActivity {
         // Set the content layout
         setContentView(R.layout.activity_main);
 
-        // Initialize the various elements
+        // Initialize model elements
         this.initModelElements();
         this.selectInitialTrajectory();
-        this.initCanvas();
-        this.initAltitudeSlider();
-        this.initButtons();
-        this.initTextViews();
+
+        // Initialize UI elements
+        this.initUIElements();
+
     }
 
     @Override
@@ -137,6 +143,30 @@ public class MainActivity extends AppCompatRosActivity {
         setSupportActionBar(toolbar);
     }
 
+    private void initTrajectorySelectionMenu() {
+        RadioGroup selectTrajectoryGroup = (RadioGroup) findViewById(R.id.select_trajectory_group);
+
+        // Add a radio button for every trajectory
+        // TODO: Change the color of radio buttons to match the trajectory color
+        // TODO: Get these damn buttons to center!
+        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+            final RadioButton trajectorySelectButton = new RadioButton(this.getApplicationContext());
+            trajectorySelectButton.setText("Quad " + (i+1));
+
+            // Mark the first quad/trajectory as selected
+            if(i == 0) trajectorySelectButton.setChecked(true);
+
+            // Set the listener. Listener must change the selected trajectory
+            trajectorySelectButton.setOnClickListener(new SelectTrajectoryButtonHandler(
+                    trajectories.get(i),
+                    // TODO: Must reset the canvas handlers for the new selected trajectory
+                    trajectory -> {selectedTrajectory = trajectory; Log.i("New Trajectory", trajectory.toString());}
+            ));
+
+            selectTrajectoryGroup.addView(trajectorySelectButton, i);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(
             final Menu menu)
@@ -165,54 +195,37 @@ public class MainActivity extends AppCompatRosActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /* =================================== COMPLETED FUNCTIONS =================================== */
+
     /**
-     * Pressing this button starts the preview activity
+     * Initializes the preview button
      */
     private void initPreviewButton() {
         final Button previewButton = (Button) findViewById(R.id.previewButton);
-        previewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                // compress arrays, send to path planner, wait to launch PreviewActivity until service finishes
-//                nodeService.getOptimizedTrajectories(new TrajectoryOptimizerCallback(quads.size(), (Void) -> {
-//                            Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
-//                            MainActivity.this.startActivity(intent);
-//                            return Void;
-//                        })
-//                );
-                Log.i("DEBUG", "Preview button pressed.");
-            }
-        });
+        previewButton.setOnClickListener(new PreviewButtonHandler());
     }
 
-    private void initSendButtons() {
-//        // Send FAB
-//        //// TODO: 7/25/2017 Dynamically generate action buttons
-//        final FloatingActionsMenu fabSent = (FloatingActionsMenu) findViewById(R.id.fab);
-//        final FloatingActionButton sendAll = (FloatingActionButton) findViewById(R.id.sendAll);
-//        final FloatingActionButton sendQuad1 = (FloatingActionButton) findViewById(R.id.sendQuad1);
-//        fabSent.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//
-//            }
-//        });
-//
-//        sendAll.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Snackbar.make(v, "Sent All!", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-////                nodeMain.sendAll();
-//            }
-//        });
-//
-//        sendQuad1.setOnClickListener(new sendOnClickListener());
-    }
+    /**
+     * Initializes the buttons to send the trajectories. Creates one button for every trajectory and one button to send them all.
+     */
+    private void initSendTrajectoryButtons() {
+        final FloatingActionsMenu sendTrajectoriesMenu = (FloatingActionsMenu) findViewById(R.id.fab);
 
-    /* =================================== COMPLETED FUNCTIONS =================================== */
+        // Add a send all trajectories button
+        final FloatingActionButton sendAllTrajectoriesButton = new FloatingActionButton(this.getApplicationContext());
+        sendAllTrajectoriesButton.setColorNormal(Color.GREEN);
+        sendTrajectoriesMenu.addButton(sendAllTrajectoriesButton);
+        sendAllTrajectoriesButton.setOnClickListener(new SendAllTrajectoriesButtonHandler(this.trajectories, nodeMain));
+
+        // Add a send trajectory button for every quad
+        // TODO: Change the color of the buttons and add numbers to indicate the trajectory numbers
+        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+            final FloatingActionButton sendTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
+            sendTrajectoryButton.setColorNormal(Color.GRAY);
+            sendTrajectoriesMenu.addButton(sendTrajectoryButton);
+            sendTrajectoryButton.setOnClickListener(new SendTrajectoryButtonHandler(this.trajectories.get(i)));
+        }
+    }
 
     /**
      * Initializes the buttons to clear the trajectories. Creates one button for every trajectory and one button to clear them all.
@@ -220,9 +233,9 @@ public class MainActivity extends AppCompatRosActivity {
     private void initClearTrajectoryButtons() {
         final FloatingActionsMenu clearTrajectoriesMenu = (FloatingActionsMenu) findViewById(R.id.fab_clear);
 
-        // Add a clear all trajectory button
+        // Add a clear all trajectories button
         final FloatingActionButton clearAllTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
-        clearAllTrajectoryButton.setColorNormal(Color.BLACK);
+        clearAllTrajectoryButton.setColorNormal(Color.RED);
         clearTrajectoriesMenu.addButton(clearAllTrajectoryButton);
         clearAllTrajectoryButton.setOnClickListener(new ClearAllTrajectoriesButtonHandler(this.trajectories, this.canvas));
 
@@ -232,7 +245,7 @@ public class MainActivity extends AppCompatRosActivity {
             final FloatingActionButton clearTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
             clearTrajectoryButton.setColorNormal(Color.GRAY);
             clearTrajectoriesMenu.addButton(clearTrajectoryButton);
-            clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.canvas, this.trajectories.get(i)));
+            clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.trajectories.get(i), this.canvas));
         }
     }
 
@@ -268,7 +281,7 @@ public class MainActivity extends AppCompatRosActivity {
         initTerminateButton();
         initPreviewButton();
         initClearTrajectoryButtons();
-        initSendButtons();
+        initSendTrajectoryButtons();
     }
 
     /**
@@ -369,7 +382,7 @@ public class MainActivity extends AppCompatRosActivity {
      */
     private void initTrajectories() {
         for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
-            this.trajectories.add(new Trajectory());
+            this.trajectories.add(new Trajectory("Quad " + (i+1)));
         }
     }
 
@@ -403,5 +416,17 @@ public class MainActivity extends AppCompatRosActivity {
      */
     private void selectInitialTrajectory() {
         this.selectedTrajectory = this.trajectories.get(0);
+    }
+
+
+    /**
+     * Initializes the various UI elements of the main activity.
+     */
+    private void initUIElements() {
+        this.initCanvas();
+        this.initAltitudeSlider();
+        this.initButtons();
+        this.initTextViews();
+        this.initTrajectorySelectionMenu();
     }
 }

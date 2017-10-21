@@ -1,4 +1,4 @@
-package utmg.android_interface.controller;
+package utmg.android_interface.controller.button;
 
 import android.support.design.widget.Snackbar;
 import android.view.Gravity;

@@ -1,4 +1,6 @@
-package utmg.android_interface.controller;
+package utmg.android_interface.controller.canvas;
+
+import android.util.Log;
 
 import utmg.android_interface.model.util.Point3;
 import utmg.android_interface.model.util.Trajectory;
@@ -8,11 +10,11 @@ import utmg.android_interface.view.canvas.AbstractCanvas;
  * Created by tuckerhaydon on 10/15/17.
  */
 
-public class DrawingMoveTouchHandler implements IMoveTouchHandler {
+public class DrawingStartTouchHandler implements IStartTouchHandler {
 
     private final Trajectory trajectory;
 
-    public DrawingMoveTouchHandler(
+    public DrawingStartTouchHandler(
             final Trajectory trajectory) {
         this.trajectory = trajectory;
     }
@@ -23,12 +25,14 @@ public class DrawingMoveTouchHandler implements IMoveTouchHandler {
             final float y,
             final AbstractCanvas canvas) {
 
-        // TODO: Why am I asking canvas for time?
-        // Append the movement point
-        trajectory.addPoint(new Point3(x, y, trajectory.getAltitude(), canvas.getCurrentTime()));
+        // Started drawing a new trajectory. Must reset old trajectory.
+        trajectory.clear();
 
-        // TODO: Implement some sort of tolerance. No need to add a point for every movement.
-        // TODO: Prevent trajectory from leaving arena
+        Log.i("Info", "Clearing Trajectory:" + trajectory.name);
+
+        // TODO: Why am I asking canvas for time?
+        // Start the new trajectory by appending the start point
+        trajectory.addPoint(new Point3(x, y, trajectory.getAltitude(), canvas.getCurrentTime()));
 
         // Invalidate the canvas to force redraw
         canvas.invalidate();

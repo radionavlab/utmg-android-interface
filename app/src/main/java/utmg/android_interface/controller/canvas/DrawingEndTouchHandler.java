@@ -1,4 +1,4 @@
-package utmg.android_interface.controller;
+package utmg.android_interface.controller.canvas;
 
 import utmg.android_interface.view.canvas.AbstractCanvas;
 

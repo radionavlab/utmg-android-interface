@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_below="@id/toolbarLayout"
             android:layout_height="40dp"
+            android:gravity="center"
             android:weightSum="1">
 
             <Button
@@ -44,73 +45,17 @@
                 android:layout_marginLeft="5dp"
                 android:backgroundTint="@android:color/holo_red_dark"
                 android:textColor="@android:color/white"
-                android:text="TERMINATE!" />
+                android:text="Terminate App" />
 
-            <TextView
-                android:id="@+id/inMeters"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:text="xMeters"
-                android:textSize="15dp"
-                android:layout_weight="0.4"/>
-
-            <TextView
-                android:id="@+id/quad2pixel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:textSize="15dp"
-                android:text="      quad2pixel"
-                android:layout_weight="0.4"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:id="@+id/select_trajectory_group"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="0.1">
-
-                <Switch
-                    android:id="@+id/quad1Switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|right"
-                    android:text="Quad1"
-                    android:textColor="@android:color/holo_red_dark"/>
-
-            </LinearLayout>
+                android:orientation="horizontal" />
 
         </LinearLayout>
 
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/quad1"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/quad"
-        android:visibility="gone"
-        android:tint="@android:color/holo_red_dark"/>
-
-    <ImageView
-        android:id="@+id/sword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/sword"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/obstacle1"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
-        android:src="@drawable/obstacle"
-        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/seekbar_value"
@@ -191,27 +136,7 @@
         fab:fab_addButtonColorNormal="@android:color/holo_orange_dark"
         fab:fab_colorPressed="@android:color/holo_orange_light"
         fab:fab_icon="@android:drawable/ic_menu_send"
-        fab:fab_expandDirection="left">
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/sendQuad1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="Send Quad1"
-            fab:fab_colorNormal="@android:color/holo_red_dark"
-            fab:fab_colorPressed="@android:color/holo_red_light"
-            fab:fab_icon="@android:drawable/ic_menu_send"
-            fab:fab_size="mini"/>
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/sendAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="Send All"
-            fab:fab_colorNormal="@android:color/white"
-            fab:fab_colorPressed="@android:color/white"
-            fab:fab_icon="@android:drawable/ic_menu_send" />
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+        fab:fab_expandDirection="left" />
 
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
