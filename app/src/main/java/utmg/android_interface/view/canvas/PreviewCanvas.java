@@ -28,10 +28,6 @@ public class PreviewCanvas extends AbstractCanvas {
 //        }
     }
 
-    @Override
-    public void clearCanvas() {
-        // TODO: How do I do this?
-    }
 //
 //    //sets location of quads to a percentage of the seekbar
 //    public void setProgress(int index){

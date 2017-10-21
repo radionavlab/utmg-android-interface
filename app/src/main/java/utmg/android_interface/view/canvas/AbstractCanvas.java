@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import org.ros.message.Time;
@@ -24,11 +26,16 @@ public abstract class AbstractCanvas extends View {
     private static final int DEFAULT_WIDTH_PIXELS = 1000;
     private static final int DEFAULT_HEIGHT_PIXELS = 1000;
 
-    private static final float DEFAULT_WIDTH_METERS = 5.0f;
-    private static final float DEFAULT_HEIGHT_METERS = 5.0f;
+    private static final float DEFAULT_WIDTH_METERS = 1.0f;
+    private static final float DEFAULT_LENGTH_METERS = 1.0f;
 
     private static final float CENTER_X_METERS = 0f;
     private static final float CENTER_Y_METERS = 0f;
+
+    private float arenaLength;
+    private float arenaWidth;
+    private float canvasLength;
+    private float canvasWidth;
 
     public AbstractCanvas(
             final Context context,
@@ -38,6 +45,11 @@ public abstract class AbstractCanvas extends View {
         this.preferences = context.getSharedPreferences("Pref", 0);
         this.bitmap = Bitmap.createBitmap(DEFAULT_WIDTH_PIXELS, DEFAULT_HEIGHT_PIXELS, Bitmap.Config.ARGB_8888);
         this.canvas = new Canvas(this.bitmap);
+
+        this.arenaWidth = preferences.getFloat("arenaWidthMeters", DEFAULT_WIDTH_METERS);
+        this.arenaLength = preferences.getFloat("arenaLengthMeters", DEFAULT_LENGTH_METERS);
+        this.canvasWidth = this.bitmap.getWidth();
+        this.canvasLength = this.bitmap.getHeight();
     }
 
     /**
@@ -59,48 +71,14 @@ public abstract class AbstractCanvas extends View {
     }
 
     /**
-     * Maps a dimension from one coordinate space to another
-     * @param dimension The value to be mapped
-     * @param originalCoordinateCenter The center of the original space
-     * @param originalCoordinateSpan The span of the original space
-     * @param newCoordinateCenter The center of the new space
-     * @param newCoordinateSpan The span of the new space
-     * @return A dimension mapped to a new space
-     */
-    private float mapDimension(
-            final float dimension,
-            final float originalCoordinateCenter,
-            final float originalCoordinateSpan,
-            final float newCoordinateCenter,
-            final float newCoordinateSpan) {
-        return (dimension - originalCoordinateCenter) / originalCoordinateSpan * newCoordinateSpan + newCoordinateCenter;
-    }
-
-    /**
-     * Converts a point from pixel units to meter units. Does not change the time or z coordinate.
-     * TODO: Should z be changed?
-     *
-     * @param point A Point3
-     * @return A point in meter units
-     */
-    public final Point3 toMeters(
-            final Point3 point) {
-        return new Point3(pixelsToMetersX(point.x), toMetersY(point.y), point.z, point.t);
-    }
-
-    /**
      * Maps an x-coordinate from pixel coordinate space to meter coordinate space
      * @param x The x coordinate of a pixel
      * @return The x coordinate in meters
      */
     public final float pixelsToMetersX(
             final float x) {
-        return this.mapDimension(
-                x,
-                this.getPixelCenterX(),
-                this.bitmap.getWidth(),
-                CENTER_X_METERS,
-                this.preferences.getFloat("width", DEFAULT_WIDTH_METERS));
+        // TODO
+        return 0;
     }
 
     /**
@@ -110,12 +88,8 @@ public abstract class AbstractCanvas extends View {
      */
     public final float toMetersY(
             final float y) {
-        return this.mapDimension(
-                y,
-                this.getPixelCenterY(),
-                this.bitmap.getHeight(),
-                CENTER_Y_METERS,
-                this.preferences.getFloat("height", DEFAULT_HEIGHT_METERS));
+        // TODO
+        return 0;
     }
 
     /**
@@ -137,12 +111,7 @@ public abstract class AbstractCanvas extends View {
      */
     public final float toPixelsX(
             final float x) {
-        return this.mapDimension(
-                x,
-                CENTER_X_METERS,
-                this.preferences.getFloat("width", DEFAULT_WIDTH_METERS),
-                this.getPixelCenterX(),
-                this.bitmap.getWidth());
+        return (canvasWidth/arenaWidth) * (x + 0.5f * arenaWidth);
     }
 
     /**
@@ -152,17 +121,12 @@ public abstract class AbstractCanvas extends View {
      */
     public final float toPixelsY(
             final float y) {
-        return this.mapDimension(
-                y,
-                CENTER_Y_METERS,
-                this.preferences.getFloat("width", DEFAULT_HEIGHT_METERS),
-                this.getPixelCenterY(),
-                this.bitmap.getHeight());
+        return (-canvasLength/arenaLength) * (y - 0.5f * arenaLength);
     }
 
     /**
      * Determines the current ROS time from the current system time
-     * TODO: Why is thise here. Doesn't seem to belong
+     * TODO: Why is this here. Doesn't seem to belong
      *
      * @return The current ROS time
      */
@@ -196,6 +160,10 @@ public abstract class AbstractCanvas extends View {
         // your Canvas will draw onto the defined Bitmap
         this.bitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
         this.canvas = new Canvas(bitmap);
+
+        // Update the canvas width and height
+        this.canvasWidth = this.bitmap.getWidth();
+        this.canvasLength = this.bitmap.getHeight();
     }
 
     /**
@@ -207,10 +175,50 @@ public abstract class AbstractCanvas extends View {
     protected void onDraw(
             final Canvas canvas) {
         super.onDraw(canvas);
+        this.drawGridlines(canvas);
     }
 
-    /**
-     * Clear the canvas.
-     */
-    public abstract void clearCanvas();
+    private void drawGridlines(
+            final Canvas canvas) {
+        final Paint paint = new Paint();
+
+        /* Draw an extra bold line for the origin lines */
+        paint.setStrokeWidth(4);
+        paint.setColor(Color.BLACK);
+
+        // Draw a line above the origin
+        canvas.drawLine(0, toPixelsY(0), canvasWidth, toPixelsY(0), paint);
+
+        // Draw a line below the origin
+        canvas.drawLine(0, toPixelsY(0), canvasWidth, toPixelsY(0), paint);
+
+        // Draw a line right of the origin
+        canvas.drawLine(toPixelsX(0), 0, toPixelsX(0), canvasLength, paint);
+
+        // Draw a line left of the origin
+        canvas.drawLine(toPixelsX(0), 0, toPixelsX(0), canvasLength, paint);
+
+
+        /* Draw lighter lines for the non-origin line */
+        paint.setStrokeWidth(2);
+        paint.setColor(Color.GRAY);
+
+        // Draw horizontal lines every meter
+        for(int i = 1; i < arenaLength/2; i++) {
+            // Draw a line above the origin
+            canvas.drawLine(0, toPixelsY(i), canvasWidth, toPixelsY(i), paint);
+
+            // Draw a line below the origin
+            canvas.drawLine(0, toPixelsY(-i), canvasWidth, toPixelsY(-i), paint);
+        }
+
+        // Draw vertical lines every meter
+        for(int i = 1; i < arenaWidth/2; i++) {
+            // Draw a line right of the origin
+            canvas.drawLine(toPixelsX(i), 0, toPixelsX(i), canvasLength, paint);
+
+            // Draw a line left of the origin
+            canvas.drawLine(toPixelsX(-i), 0, toPixelsX(-i), canvasLength, paint);
+        }
+    }
 }

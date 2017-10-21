@@ -9,8 +9,8 @@
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/toolbarLayout"
@@ -31,28 +31,24 @@
 
 
         <LinearLayout
-            android:layout_width="match_parent"
             android:layout_below="@id/toolbarLayout"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:gravity="center"
-            android:weightSum="1">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/kill_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_marginLeft="5dp"
+                android:layout_height="match_parent"
                 android:backgroundTint="@android:color/holo_red_dark"
                 android:textColor="@android:color/white"
                 android:text="Terminate App" />
 
             <RadioGroup
                 android:id="@+id/select_trajectory_group"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal" />
-
         </LinearLayout>
 
     </RelativeLayout>
@@ -107,8 +103,8 @@
 
     <LinearLayout
         android:id="@+id/linLay"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:orientation="horizontal">
 

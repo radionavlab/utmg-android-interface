@@ -3,14 +3,16 @@ package utmg.android_interface.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -48,6 +50,8 @@ import utmg.android_interface.ROS.ROSNodeMain;
 import utmg.android_interface.ROS.ROSNodeService;
 import utmg.android_interface.view.entitiyView.TrajectoryView;
 
+import static android.graphics.Paint.ANTI_ALIAS_FLAG;
+
 public class MainActivity extends AppCompatRosActivity {
 
     /* Config file names */
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatRosActivity {
     private int screenHeight;
     private int screenWidth;
     private Trajectory selectedTrajectory;
+    final int[] trajectoryColors = {Color.BLUE, Color.RED, Color.GREEN, Color.CYAN, Color.MAGENTA};
 
     /**
      * Constructor. Called once. Initializes model objects
@@ -100,7 +105,7 @@ public class MainActivity extends AppCompatRosActivity {
 
         // TODO: Ensure that this does not override current shared preferences
         // Load config values into the shared preferences
-        this.sharedPreferences = this.getPreferences(0);
+        this.sharedPreferences = getSharedPreferences("Pref", 0);
         this.loadConfigProperties();
 
         // Set the content layout
@@ -115,6 +120,10 @@ public class MainActivity extends AppCompatRosActivity {
 
     }
 
+    /**
+     * Init function for the ROS component of this activity.
+     * @param nodeMainExecutor ROSJava node executor
+     */
     @Override
     protected void init(
             final NodeMainExecutor nodeMainExecutor) {
@@ -136,67 +145,62 @@ public class MainActivity extends AppCompatRosActivity {
     }
 
     /**
-     * TODO: What is the toolbar?
+     * Initializes the trajectory selection radio button group at the top of the app.
      */
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }
-
     private void initTrajectorySelectionMenu() {
         RadioGroup selectTrajectoryGroup = (RadioGroup) findViewById(R.id.select_trajectory_group);
 
         // Add a radio button for every trajectory
-        // TODO: Change the color of radio buttons to match the trajectory color
         // TODO: Get these damn buttons to center!
         for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
             final RadioButton trajectorySelectButton = new RadioButton(this.getApplicationContext());
             final String buttonName = "Quad " + (i+1);
             trajectorySelectButton.setText(buttonName);
 
-            // Mark the first quad/trajectory as selected
-            if(i == 0) trajectorySelectButton.setChecked(true);
-
             // Set the listener. Listener must change the selected trajectory
             trajectorySelectButton.setOnClickListener(new SelectTrajectoryButtonHandler(
                     trajectories.get(i),
-                    // TODO: Must reset the canvas handlers for the new selected trajectory
-                    trajectory -> {selectedTrajectory = trajectory; Log.i("New Trajectory", trajectory.toString());}
+                    trajectory -> {
+                        // Select the new trajectory
+                        selectedTrajectory = trajectory;
+
+                        // Reinitialize the canvas controllers to control the new trajectory
+                        initCanvasHandlers();
+                    }
             ));
 
             selectTrajectoryGroup.addView(trajectorySelectButton, i);
-        }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(
-            final Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+            // Mark the first quad/trajectory as selected
+            if(i == 0) selectTrajectoryGroup.check(trajectorySelectButton.getId());
+        }
     }
 
     /**
-     * Handle action bar item clicks here. The action bar will
-     * automatically handle clicks on the Home/Up button, so long
-     * as you specify a parent activity in AndroidManifest.xml.
-     * @param item The MenuItem selected
-     * @return TODO What does this return?
+     * Helper function that draws a text string as a bitmap. Useful for overlaying text on buttons.
+     * @param text The text the be drawn.
+     * @param textSize The size of the text. 40 is good for buttons.
+     * @param textColor The color of the text.
+     * @return A bitmap of the text.
      */
-    @Override
-    public boolean onOptionsItemSelected(
-            final MenuItem item) {
-        int id = item.getItemId();
+    private static Bitmap textAsBitmap(
+            final String text,
+            final float textSize,
+            final int textColor) {
+        final Paint paint = new Paint(ANTI_ALIAS_FLAG);
+        paint.setTextSize(textSize);
+        paint.setColor(textColor);
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        final float baseline = -paint.ascent(); // ascent() is negative
+        final int width = (int) (paint.measureText(text) + 0.0f); // round
+        final int height = (int) (baseline + paint.descent() + 0.0f);
+        final Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-        }
-
-        return super.onOptionsItemSelected(item);
+        final Canvas canvas = new Canvas(image);
+        canvas.drawText(text, 0, baseline, paint);
+        return image;
     }
-
-    /* =================================== COMPLETED FUNCTIONS =================================== */
 
     /**
      * Initializes the preview button
@@ -214,17 +218,20 @@ public class MainActivity extends AppCompatRosActivity {
 
         // Add a send all trajectories button
         final FloatingActionButton sendAllTrajectoriesButton = new FloatingActionButton(this.getApplicationContext());
-        sendAllTrajectoriesButton.setColorNormal(Color.GREEN);
-        sendTrajectoriesMenu.addButton(sendAllTrajectoriesButton);
+        sendAllTrajectoriesButton.setColorNormal(Color.YELLOW);
+        sendAllTrajectoriesButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
         sendAllTrajectoriesButton.setOnClickListener(new SendAllTrajectoriesButtonHandler(this.trajectories, nodeMain));
+        sendTrajectoriesMenu.addButton(sendAllTrajectoriesButton);
+
 
         // Add a send trajectory button for every quad
-        // TODO: Change the color of the buttons and add numbers to indicate the trajectory numbers
         for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
             final FloatingActionButton sendTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
-            sendTrajectoryButton.setColorNormal(Color.GRAY);
-            sendTrajectoriesMenu.addButton(sendTrajectoryButton);
+            sendTrajectoryButton.setColorNormal(trajectoryColors[i%trajectoryColors.length]);
+            sendTrajectoryButton.setImageBitmap(textAsBitmap(""+ (i+1), 40, Color.BLACK));
             sendTrajectoryButton.setOnClickListener(new SendTrajectoryButtonHandler(this.trajectories.get(i)));
+            sendTrajectoriesMenu.addButton(sendTrajectoryButton);
+
         }
     }
 
@@ -236,17 +243,20 @@ public class MainActivity extends AppCompatRosActivity {
 
         // Add a clear all trajectories button
         final FloatingActionButton clearAllTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
-        clearAllTrajectoryButton.setColorNormal(Color.RED);
-        clearTrajectoriesMenu.addButton(clearAllTrajectoryButton);
+        clearAllTrajectoryButton.setColorNormal(Color.YELLOW);
+        clearAllTrajectoryButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
         clearAllTrajectoryButton.setOnClickListener(new ClearAllTrajectoriesButtonHandler(this.trajectories, this.canvas));
+        clearTrajectoriesMenu.addButton(clearAllTrajectoryButton);
+
 
         // Add a clear trajectory button for every quad
-        // TODO: Change the color of the buttons and add numbers to indicate the trajectory numbers
         for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
             final FloatingActionButton clearTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
-            clearTrajectoryButton.setColorNormal(Color.GRAY);
-            clearTrajectoriesMenu.addButton(clearTrajectoryButton);
+            clearTrajectoryButton.setColorNormal(trajectoryColors[i%trajectoryColors.length]);
+            clearTrajectoryButton.setImageBitmap(textAsBitmap("" + (i+1), 40, Color.BLACK));
             clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.trajectories.get(i), this.canvas));
+            clearTrajectoriesMenu.addButton(clearTrajectoryButton);
+
         }
     }
 
@@ -359,18 +369,23 @@ public class MainActivity extends AppCompatRosActivity {
         setCanvasDimensions(arenaAspectRatio);
 
         // Create and add all the trajectory views
-        for(Trajectory trajectory: trajectories) {
-            // Create paint object
+        for(int i = 0; i < trajectories.size(); i++) {
             final Paint paint = new Paint();
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(5);
-            // TODO: Change to color for multiple quads
-            paint.setColor(Color.BLUE);
+            paint.setColor(trajectoryColors[i%trajectoryColors.length]);
 
             // Add trajectory view
-            this.canvas.addTrajectoryView(new TrajectoryView(trajectory, paint));
+            this.canvas.addTrajectoryView(new TrajectoryView(trajectories.get(i), paint));
         }
 
+        initCanvasHandlers();
+    }
+
+    /**
+     * Sets the various touch handlers for the canvas to control the selected trajectory.
+     */
+    private void initCanvasHandlers() {
         this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
                 this.canvas,
                 new DrawingStartTouchHandler(this.selectedTrajectory),
@@ -428,6 +443,48 @@ public class MainActivity extends AppCompatRosActivity {
         this.initAltitudeSlider();
         this.initButtons();
         this.initTextViews();
+        initToolbar();
         this.initTrajectorySelectionMenu();
+    }
+
+    /**
+     * Inflate the menu. This adds items to the action bar if it is present.
+     * @param menu The options menu
+     * @return true
+     */
+    @Override
+    public boolean onCreateOptionsMenu(
+            final Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+    /**
+     * Initialize the toolbar at the top of the screen
+     */
+    private void initToolbar() {
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+
+    /**
+     * Handle action bar item clicks here. The action bar will
+     * automatically handle clicks on the Home/Up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     * @param item The MenuItem selected
+     * @return true
+     */
+    @Override
+    public boolean onOptionsItemSelected(
+            final MenuItem item) {
+        switch(item.getItemId()){
+        case R.id.action_settings:
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

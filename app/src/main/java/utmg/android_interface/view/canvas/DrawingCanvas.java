@@ -32,14 +32,8 @@ public class DrawingCanvas extends AbstractCanvas {
         }
     }
 
-    @Override
-    public void clearCanvas() {
-        // TODO: How do I clear this?
-    }
-
     public void addTrajectoryView(
             final TrajectoryView trajectoryView) {
         this.trajectoryViews.add(trajectoryView);
     }
-
 }

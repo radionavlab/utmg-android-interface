@@ -28,8 +28,6 @@ public class DrawingStartTouchHandler implements IStartTouchHandler {
         // Started drawing a new trajectory. Must reset old trajectory.
         trajectory.clear();
 
-        Log.i("Info", "Clearing Trajectory:" + trajectory.name);
-
         // TODO: Why am I asking canvas for time?
         // Start the new trajectory by appending the start point
         trajectory.addPoint(new Point3(x, y, trajectory.getAltitude(), canvas.getCurrentTime()));
