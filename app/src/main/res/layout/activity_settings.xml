@@ -102,135 +102,62 @@
 
                 </LinearLayout>
 
-                <!-- objects to display -->
-                <LinearLayout
+                <!-- canvas size specs -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_weight="1">
-                    <TextView
-                        android:id="@+id/display_object_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="Objects to display:" />
-
-                    <CheckBox
-                        android:id="@+id/quad1_checkbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Quad1"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"
-                        android:checked="false"
-                        android:textColor="@android:color/holo_red_dark"/>
-
-                    <CheckBox
-                        android:id="@+id/quad2_checkbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Quad2"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"
-                        android:checked="false"
-                        android:textColor="@android:color/holo_green_dark"/>
-
-                    <CheckBox
-                        android:id="@+id/quad3_checkbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Quad3"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"
-                        android:checked="false"
-                        android:textColor="@android:color/holo_blue_dark"/>
-
-                    <CheckBox
-                        android:id="@+id/sword_checkbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Sword"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"
-                        android:checked="false"/>
-
-                    <CheckBox
-                        android:id="@+id/obstacle1_checkbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Obstacle1"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"
-                        android:checked="false"/>
-
-                    <CheckBox
-                        android:id="@+id/obstacle2_checkbox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Obstacle2"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"
-                        android:checked="false"/>
-                </LinearLayout>
-
-                <!-- canvas size specs -->
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
-
-                    <TextView
-                        android:id="@+id/display_canvas_size_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="Edit canvas size (Press Done!):" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <android.support.design.widget.TextInputLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <Button
-                                    android:id="@+id/button"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Done" />
-
-                                <EditText
-                                    android:id="@+id/resize_altitude"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Enter Max Altitude in Meters"
-                                    android:inputType="numberDecimal"/>
-                            </android.support.design.widget.TextInputLayout>
-
-                            <EditText
-                                android:id="@+id/resize_height"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Enter Height of Canvas in Meters"
-                                android:inputType="numberDecimal"/>
-
-                        </android.support.design.widget.TextInputLayout>
-
+                        android:layout_height="wrap_content">
                         <EditText
-                            android:id="@+id/resize_width"
+                            android:id="@+id/num_quads_setting_box"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter Width of Canvas in Meters"
-                            android:inputType="numberDecimal" />
-
+                            android:hint="Number of Quads"
+                            android:inputType="number" />
                     </android.support.design.widget.TextInputLayout>
 
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/arena_width_setting_box"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Arena Width (m)"
+                            android:inputType="numberDecimal" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/arena_length_setting_box"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Arena Length (m)"
+                            android:inputType="numberDecimal"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/altitude_setting_box"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Max Altitude (m)"
+                            android:inputType="numberDecimal"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/apply_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Apply" />
                 </LinearLayout>
 
             </TableRow>

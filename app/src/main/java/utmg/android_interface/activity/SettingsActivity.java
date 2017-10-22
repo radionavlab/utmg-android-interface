@@ -2,211 +2,228 @@ package utmg.android_interface.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.ToggleButton;
+
+import java.util.Locale;
 
 import utmg.android_interface.R;
+import utmg.android_interface.controller.button.ApplySettingsButtonHandler;
 
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    SharedPreferences pref;
-    SharedPreferences.Editor prefEditor;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor sharedPreferenceEditor;
 
-    public float newWidth;
-    public float newHeight;
-    public float newAltitude;
+    private float newWidth;
+    private float newHeight;
+    private float newAltitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        setupActionBar();
+//        setupActionBar();
 
-        newWidth = 0;
-        newHeight = 0;
-        newAltitude = 0;
+        sharedPreferences = getSharedPreferences("Pref", 0);
+        sharedPreferenceEditor = sharedPreferences.edit();
 
-        pref = getSharedPreferences("Pref", 0);
-        prefEditor = pref.edit();
+        initArenaSettingsTextboxes();
+        initApplyArenaSettingsButton();
 
+
+//        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+//        final CheckBox isQuad1Checked = (CheckBox) findViewById(R.id.quad1_checkbox);
+//        final CheckBox isQuad2Checked = (CheckBox) findViewById(R.id.quad2_checkbox);
+//        final CheckBox isQuad3Checked = (CheckBox) findViewById(R.id.quad3_checkbox);
+//        final CheckBox isSwordChecked = (CheckBox) findViewById(R.id.sword_checkbox);
+//        final CheckBox isObstacle1Checked = (CheckBox) findViewById(R.id.obstacle1_checkbox);
+//        final CheckBox isObstacle2Checked = (CheckBox) findViewById(R.id.obstacle2_checkbox);
+//        final ToggleButton serviceToggle = (ToggleButton) findViewById(R.id.service_toggle);
+//        final ToggleButton obstaclePublishToggle = (ToggleButton) findViewById(R.id.obstacle_publish_toggle);
+//        final ToggleButton debugModeToggle = (ToggleButton) findViewById(R.id.debug_mode_toggle);
+//
+//        isQuad1Checked.setChecked(sharedPreferences.getBoolean("quad1", true));
+//        isQuad2Checked.setChecked(sharedPreferences.getBoolean("quad2", true));
+//        isQuad3Checked.setChecked(sharedPreferences.getBoolean("quad3", true));
+//        isSwordChecked.setChecked(sharedPreferences.getBoolean("sword", false));
+//        isObstacle1Checked.setChecked(sharedPreferences.getBoolean("obstacle1", false));
+//        isObstacle2Checked.setChecked(sharedPreferences.getBoolean("obstacle2", false));
+//        serviceToggle.setChecked((sharedPreferences.getBoolean("serviceToggle", false)));
+//        obstaclePublishToggle.setChecked((sharedPreferences.getBoolean("obstaclePublish", false)));
+//        debugModeToggle.setChecked((sharedPreferences.getBoolean("debugMode", false)));
+//
+//        isQuad1Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                sharedPreferenceEditor.putBoolean("quad1", isQuad1Checked.isChecked());
+//                sharedPreferenceEditor.apply();
+//                //Log.i("quadvis",Boolean.toString(sharedPreferences.getBoolean("quad",false)));
+//            }
+//        });
+//
+//        isQuad2Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                sharedPreferenceEditor.putBoolean("quad2", isQuad2Checked.isChecked());
+//                sharedPreferenceEditor.apply();
+//                //Log.i("quadvis",Boolean.toString(sharedPreferences.getBoolean("quad",false)));
+//            }
+//        });
+//
+//        isQuad3Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                sharedPreferenceEditor.putBoolean("quad3", isQuad3Checked.isChecked());
+//                sharedPreferenceEditor.apply();
+//                //Log.i("quadvis",Boolean.toString(sharedPreferences.getBoolean("quad",false)));
+//            }
+//        });
+//
+//        isSwordChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                sharedPreferenceEditor.putBoolean("sword", isSwordChecked.isChecked());
+//                sharedPreferenceEditor.apply();
+//            }
+//        });
+//
+//        isObstacle1Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                sharedPreferenceEditor.putBoolean("obstacle1", isObstacle1Checked.isChecked());
+//                sharedPreferenceEditor.apply();
+//            }
+//        });
+//
+//        isObstacle2Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                sharedPreferenceEditor.putBoolean("obstacle2", isObstacle2Checked.isChecked());
+//                sharedPreferenceEditor.apply();
+//            }
+//        });
+//
+//        serviceToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                sharedPreferenceEditor.putBoolean("serviceToggle", serviceToggle.isChecked());
+//                sharedPreferenceEditor.apply();
+//            }
+//        });
+//
+//        obstaclePublishToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                sharedPreferenceEditor.putBoolean("obstaclePublish", obstaclePublishToggle.isChecked());
+//                sharedPreferenceEditor.apply();
+//            }
+//        });
+//
+//        debugModeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                sharedPreferenceEditor.putBoolean("debugMode", debugModeToggle.isChecked());
+//                sharedPreferenceEditor.apply();
+//            }
+//        });
+//
+//
+//        // mode spinner
+//        Spinner spinner = (Spinner) findViewById(R.id.mode_spinner);
+//        // Create an ArrayAdapter using the string array and a default spinner layout
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.modes_array, android.R.layout.simple_spinner_item);
+//        // Specify the layout to use when the list of choices appears
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        // Apply the adapter to the spinner
+//        spinner.setAdapter(adapter);
+//        spinner.setOnItemSelectedListener(this);
+//        spinner.setSelection( sharedPreferences.getInt("mode", 0) );
+//
+    }
+//
+//    private void setupActionBar() {
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            // Show the Up button in the action bar.
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
+//    }
+//
+//    public void onItemSelected(AdapterView<?> parent, View view,
+//                               int pos, long id) {
+//        // An item was selected. You can retrieve the selected item using
+//        // parent.getItemAtPosition(pos)
+//        sharedPreferences = getSharedPreferences("Pref", 0);
+//        sharedPreferenceEditor = sharedPreferences.edit();
+//
+//        if (parent.getItemAtPosition(pos).equals("Trajectory")) {
+//            sharedPreferenceEditor.putInt("mode", 0);
+//            sharedPreferenceEditor.apply();
+//        }
+//        else if (parent.getItemAtPosition(pos).equals("Waypoint")) {
+//            sharedPreferenceEditor.putInt("mode", 1);
+//            sharedPreferenceEditor.apply();
+//        }
+//
+//    }
+//
+//    public void onNothingSelected(AdapterView<?> parent) {
+//        // Another interface callback
+//    }
+
+    /**
+     * Initialized the textboxes that change the arena settings.
+     */
+    private void initArenaSettingsTextboxes() {
         // Get user input to resize canvas
-        final EditText w = (EditText) findViewById(R.id.resize_width);
-        final EditText h = (EditText) findViewById(R.id.resize_height);
-        final EditText a = (EditText) findViewById(R.id.resize_altitude);
+        final EditText numQuadsSetting = (EditText) findViewById(R.id.num_quads_setting_box);
+        final EditText arenaWidthSetting = (EditText) findViewById(R.id.arena_width_setting_box);
+        final EditText arenaLengthSetting = (EditText) findViewById(R.id.arena_length_setting_box);
+        final EditText altitudeSetting = (EditText) findViewById(R.id.altitude_setting_box);
 
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        // Retrieve the current settings
+        final float numQuads = sharedPreferences.getFloat("numQuads", 0);
+        final float areaWidth = sharedPreferences.getFloat("arenaWidthMeters", 0);
+        final float arenaLength = sharedPreferences.getFloat("arenaLengthMeters", 0);
+        final float maxAltitude = sharedPreferences.getFloat("maxAltitude", 0);
 
-        w.setText(Float.toString(pref.getFloat("width",5)));
-        h.setText(Float.toString(pref.getFloat("height",3)));
-        a.setText(Float.toString(pref.getFloat("altitude",2)));
+        // Put the current values in the textboxes
+        numQuadsSetting.setText(String.format(Locale.US, "%d", (int)numQuads));
+        arenaWidthSetting.setText(String.format(Locale.US, "%.2f", areaWidth));
+        arenaLengthSetting.setText(String.format(Locale.US, "%.2f", arenaLength));
+        altitudeSetting.setText(String.format(Locale.US, "%.2f", maxAltitude));
+    }
 
-        Button done = (Button) findViewById(R.id.button);
-        done.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view) {
-                newWidth = Float.valueOf(w.getText().toString());
-                newHeight = Float.valueOf(h.getText().toString());
-                newAltitude = Float.valueOf(a.getText().toString());
+    private void initApplyArenaSettingsButton() {
+        final Button applySettingsButton = (Button) findViewById(R.id.apply_button);
+        applySettingsButton.setOnClickListener(new ApplySettingsButtonHandler(
+                this.sharedPreferenceEditor,
+                (EditText) findViewById(R.id.num_quads_setting_box),
+                (EditText) findViewById(R.id.arena_width_setting_box),
+                (EditText) findViewById(R.id.arena_length_setting_box),
+                (EditText) findViewById(R.id.altitude_setting_box)));
+    }
 
-                prefEditor.putFloat("width", newWidth);
-                prefEditor.putFloat("height", newHeight);
-                prefEditor.putFloat("altitude", newAltitude);
-                prefEditor.apply();
-
-                finish();
-            }
-        });
-
-
-        final CheckBox isQuad1Checked = (CheckBox) findViewById(R.id.quad1_checkbox);
-        final CheckBox isQuad2Checked = (CheckBox) findViewById(R.id.quad2_checkbox);
-        final CheckBox isQuad3Checked = (CheckBox) findViewById(R.id.quad3_checkbox);
-        final CheckBox isSwordChecked = (CheckBox) findViewById(R.id.sword_checkbox);
-        final CheckBox isObstacle1Checked = (CheckBox) findViewById(R.id.obstacle1_checkbox);
-        final CheckBox isObstacle2Checked = (CheckBox) findViewById(R.id.obstacle2_checkbox);
-        final ToggleButton serviceToggle = (ToggleButton) findViewById(R.id.service_toggle);
-        final ToggleButton obstaclePublishToggle = (ToggleButton) findViewById(R.id.obstacle_publish_toggle);
-        final ToggleButton debugModeToggle = (ToggleButton) findViewById(R.id.debug_mode_toggle);
-
-        isQuad1Checked.setChecked(pref.getBoolean("quad1", true));
-        isQuad2Checked.setChecked(pref.getBoolean("quad2", true));
-        isQuad3Checked.setChecked(pref.getBoolean("quad3", true));
-        isSwordChecked.setChecked(pref.getBoolean("sword", false));
-        isObstacle1Checked.setChecked(pref.getBoolean("obstacle1", false));
-        isObstacle2Checked.setChecked(pref.getBoolean("obstacle2", false));
-        serviceToggle.setChecked((pref.getBoolean("serviceToggle", false)));
-        obstaclePublishToggle.setChecked((pref.getBoolean("obstaclePublish", false)));
-        debugModeToggle.setChecked((pref.getBoolean("debugMode", false)));
-
-        isQuad1Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("quad1", isQuad1Checked.isChecked());
-                prefEditor.apply();
-                //Log.i("quadvis",Boolean.toString(sharedPreferences.getBoolean("quad",false)));
-            }
-        });
-
-        isQuad2Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("quad2", isQuad2Checked.isChecked());
-                prefEditor.apply();
-                //Log.i("quadvis",Boolean.toString(sharedPreferences.getBoolean("quad",false)));
-            }
-        });
-
-        isQuad3Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("quad3", isQuad3Checked.isChecked());
-                prefEditor.apply();
-                //Log.i("quadvis",Boolean.toString(sharedPreferences.getBoolean("quad",false)));
-            }
-        });
-
-        isSwordChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("sword", isSwordChecked.isChecked());
-                prefEditor.apply();
-            }
-        });
-
-        isObstacle1Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("obstacle1", isObstacle1Checked.isChecked());
-                prefEditor.apply();
-            }
-        });
-
-        isObstacle2Checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("obstacle2", isObstacle2Checked.isChecked());
-                prefEditor.apply();
-            }
-        });
-
-        serviceToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("serviceToggle", serviceToggle.isChecked());
-                prefEditor.apply();
-            }
-        });
-
-        obstaclePublishToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("obstaclePublish", obstaclePublishToggle.isChecked());
-                prefEditor.apply();
-            }
-        });
-
-        debugModeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefEditor.putBoolean("debugMode", debugModeToggle.isChecked());
-                prefEditor.apply();
-            }
-        });
-
-
-        // mode spinner
-        Spinner spinner = (Spinner) findViewById(R.id.mode_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.modes_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
-        spinner.setSelection( pref.getInt("mode", 0) );
+    @Override
+    public void onItemSelected(
+            AdapterView<?> adapterView,
+            View view,
+            int i,
+            long l) {
 
     }
 
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // Show the Up button in the action bar.
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-        pref = getSharedPreferences("Pref", 0);
-        prefEditor = pref.edit();
-
-        if (parent.getItemAtPosition(pos).equals("Trajectory")) {
-            prefEditor.putInt("mode", 0);
-            prefEditor.apply();
-        }
-        else if (parent.getItemAtPosition(pos).equals("Waypoint")) {
-            prefEditor.putInt("mode", 1);
-            prefEditor.apply();
-        }
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-    }
 }

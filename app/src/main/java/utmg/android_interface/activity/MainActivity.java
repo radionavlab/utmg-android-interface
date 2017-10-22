@@ -52,6 +52,9 @@ import utmg.android_interface.view.entitiyView.TrajectoryView;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
+/**
+ * Main activity. This is where the program begins.
+ */
 public class MainActivity extends AppCompatRosActivity {
 
     /* Config file names */
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatRosActivity {
     private DrawingCanvas canvas;
 
     /* Model objects */
-    private final List<Trajectory> trajectories = new ArrayList<>();;
+    private final List<Trajectory> trajectories = new ArrayList<>();
     private final List<Obstacle> obstacles = new ArrayList<>();
 
     /* Globals for convenience */
@@ -90,6 +93,18 @@ public class MainActivity extends AppCompatRosActivity {
         super("MainActivity", "MainActivity");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Initialize model elements
+        this.initModelElements();
+        this.selectInitialTrajectory();
+
+        // Initialize UI elements
+        this.initUIElements();
+    }
+
     /**
      * On create is called every time this activity is created or restarted. Rotating the screen causes an activity restart.
      * @param savedInstanceState Saved instance state from the last time this app was destroyed.
@@ -103,7 +118,6 @@ public class MainActivity extends AppCompatRosActivity {
         this.screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         this.screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
-        // TODO: Ensure that this does not override current shared preferences
         // Load config values into the shared preferences
         this.sharedPreferences = getSharedPreferences("Pref", 0);
         this.loadConfigProperties();
@@ -149,6 +163,9 @@ public class MainActivity extends AppCompatRosActivity {
      */
     private void initTrajectorySelectionMenu() {
         RadioGroup selectTrajectoryGroup = (RadioGroup) findViewById(R.id.select_trajectory_group);
+
+        // Remove any previous buttons
+        selectTrajectoryGroup.removeAllViews();
 
         // Add a radio button for every trajectory
         // TODO: Get these damn buttons to center!
@@ -216,6 +233,10 @@ public class MainActivity extends AppCompatRosActivity {
     private void initSendTrajectoryButtons() {
         final FloatingActionsMenu sendTrajectoriesMenu = (FloatingActionsMenu) findViewById(R.id.fab);
 
+        // Remove any previous buttons
+        // TODO: This causes problem because library implemented poorly
+//        sendTrajectoriesMenu.removeAllViews();
+
         // Add a send all trajectories button
         final FloatingActionButton sendAllTrajectoriesButton = new FloatingActionButton(this.getApplicationContext());
         sendAllTrajectoriesButton.setColorNormal(Color.YELLOW);
@@ -240,6 +261,11 @@ public class MainActivity extends AppCompatRosActivity {
      */
     private void initClearTrajectoryButtons() {
         final FloatingActionsMenu clearTrajectoriesMenu = (FloatingActionsMenu) findViewById(R.id.fab_clear);
+
+        // Remove any previous buttons
+        // TODO: Library implemented poorly. Must find a different way
+//        clearTrajectoriesMenu.removeButton(clearTrajectoriesMenu);
+
 
         // Add a clear all trajectories button
         final FloatingActionButton clearAllTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
@@ -340,7 +366,13 @@ public class MainActivity extends AppCompatRosActivity {
             // TODO: Assuming all of these are floats. Not safe!
             final SharedPreferences.Editor editor = this.sharedPreferences.edit();
             for(String configValue: prop.stringPropertyNames()) {
-                editor.putFloat(configValue, Float.valueOf(prop.getProperty(configValue)));
+                // Prevent the config file from overwriting current settings.
+                // This can happen if this function is called twice, for example if the screen is rotated
+                // Screen rotation recreates the activity, re-calling this function
+                final float currentValue = this.sharedPreferences.getFloat(configValue, Float.NaN);
+                if(currentValue == Float.NaN) {
+                    editor.putFloat(configValue, Float.valueOf(prop.getProperty(configValue)));
+                }
             }
             editor.apply();
         } catch (IOException ex) {
@@ -397,6 +429,7 @@ public class MainActivity extends AppCompatRosActivity {
      * Initializes the various trajectories
      */
     private void initTrajectories() {
+        trajectories.clear();
         for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
             this.trajectories.add(new Trajectory("Quad " + (i+1)));
         }
@@ -406,6 +439,7 @@ public class MainActivity extends AppCompatRosActivity {
      * Initializes the various obstacle entities
      */
     private void initObstacles() {
+        obstacles.clear();
         this.obstacles.add(new Obstacle("Obstacle 1"));
     }
 

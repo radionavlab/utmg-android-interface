@@ -49,16 +49,15 @@
             <!--</intent-filter>-->
         <!--</service>-->
 
-        <!--<activity-->
-            <!--android:name=".activity.SettingsActivity"-->
-            <!--android:label="@string/title_activity_objects"-->
-            <!--android:parentActivityName=".activity.MainActivity"-->
-            <!--android:screenOrientation="landscape"-->
-            <!--android:launchMode="singleTop">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="utmg.android_interface.activity.MainActivity" />-->
-        <!--</activity>-->
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_objects"
+            android:parentActivityName=".activity.MainActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="utmg.android_interface.activity.MainActivity" />
+        </activity>
         <!--<activity-->
             <!--android:name=".activity.PreviewActivity"-->
             <!--android:label="@string/title_activity_preview"-->
