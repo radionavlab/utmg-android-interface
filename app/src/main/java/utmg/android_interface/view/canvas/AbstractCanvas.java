@@ -38,14 +38,11 @@ public abstract class AbstractCanvas extends View {
     private float canvasWidth;
 
     public AbstractCanvas(
-            final Context context,
-            final AttributeSet attrs) {
-        super(context, attrs);
-
+            final Context context) {
+        super(context);
         this.preferences = context.getSharedPreferences("Pref", 0);
         this.bitmap = Bitmap.createBitmap(DEFAULT_WIDTH_PIXELS, DEFAULT_HEIGHT_PIXELS, Bitmap.Config.ARGB_8888);
         this.canvas = new Canvas(this.bitmap);
-
         this.arenaWidth = preferences.getFloat("arenaWidthMeters", DEFAULT_WIDTH_METERS);
         this.arenaLength = preferences.getFloat("arenaLengthMeters", DEFAULT_LENGTH_METERS);
         this.canvasWidth = this.bitmap.getWidth();

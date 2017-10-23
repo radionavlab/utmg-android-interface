@@ -18,9 +18,8 @@ public class DrawingCanvas extends AbstractCanvas {
     private List<TrajectoryView> trajectoryViews = new ArrayList<>();
 
     public DrawingCanvas(
-            final Context context,
-            final AttributeSet attrs) {
-        super(context, attrs);
+            final Context context) {
+        super(context);
     }
 
     @Override

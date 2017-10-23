@@ -19,10 +19,6 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedPreferenceEditor;
 
-    private float newWidth;
-    private float newHeight;
-    private float newAltitude;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,6 +198,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         altitudeSetting.setText(String.format(Locale.US, "%.2f", maxAltitude));
     }
 
+    /**
+     * Initializes the button that applies the arena settings
+     */
     private void initApplyArenaSettingsButton() {
         final Button applySettingsButton = (Button) findViewById(R.id.apply_button);
         applySettingsButton.setOnClickListener(new ApplySettingsButtonHandler(

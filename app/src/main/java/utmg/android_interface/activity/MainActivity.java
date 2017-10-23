@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -231,11 +232,15 @@ public class MainActivity extends AppCompatRosActivity {
      * Initializes the buttons to send the trajectories. Creates one button for every trajectory and one button to send them all.
      */
     private void initSendTrajectoryButtons() {
-        final FloatingActionsMenu sendTrajectoriesMenu = (FloatingActionsMenu) findViewById(R.id.fab);
+        // Get the menu container
+        final LinearLayout sendTrajectoriesMenuContainer = (LinearLayout) findViewById(R.id.send_trajectories_menu_container);
 
-        // Remove any previous buttons
-        // TODO: This causes problem because library implemented poorly
-//        sendTrajectoriesMenu.removeAllViews();
+        // Create a new menu by inflating it from the XML definition
+        final FloatingActionsMenu sendTrajectoriesMenu = (FloatingActionsMenu) getLayoutInflater().inflate(R.layout.send_trajectories_menu_layout, null, false);
+
+        // Clean any previous buttons and add the new ones
+        sendTrajectoriesMenuContainer.removeAllViews();
+        sendTrajectoriesMenuContainer.addView(sendTrajectoriesMenu);
 
         // Add a send all trajectories button
         final FloatingActionButton sendAllTrajectoriesButton = new FloatingActionButton(this.getApplicationContext());
@@ -260,11 +265,15 @@ public class MainActivity extends AppCompatRosActivity {
      * Initializes the buttons to clear the trajectories. Creates one button for every trajectory and one button to clear them all.
      */
     private void initClearTrajectoryButtons() {
-        final FloatingActionsMenu clearTrajectoriesMenu = (FloatingActionsMenu) findViewById(R.id.fab_clear);
 
-        // Remove any previous buttons
-        // TODO: Library implemented poorly. Must find a different way
-//        clearTrajectoriesMenu.removeButton(clearTrajectoriesMenu);
+        // Get the menu container
+        final LinearLayout clearTrajectoriesMenuContainer = (LinearLayout) findViewById(R.id.clear_trajectories_menu_container);
+
+        // Create a new menu by inflating it from the XML definition
+        final FloatingActionsMenu clearTrajectoriesMenu = (FloatingActionsMenu) getLayoutInflater().inflate(R.layout.clear_trajectories_menu_layout, null, false);
+
+        clearTrajectoriesMenuContainer.removeAllViews();
+        clearTrajectoriesMenuContainer.addView(clearTrajectoriesMenu);
 
 
         // Add a clear all trajectories button
@@ -287,14 +296,14 @@ public class MainActivity extends AppCompatRosActivity {
     }
 
     /**
-     * Rescales the canvas size for a new aspect ratio
+     * Rescales the canvas size for a new aspect ratio. This actually changes the size of the object containing the canvas since the canvas scales to fit the container.
      * @param aspectRatio The desired aspect ratio
      */
     private void setCanvasDimensions (
             final float aspectRatio) {
 
-        // Set the canvas size
-        final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.linLay).getLayoutParams();
+        // Set the canvas container size
+        final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.canvas_container).getLayoutParams();
 
         // Assume the new screen size
         float canvasHeightNew = screenHeight * MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT;
@@ -392,7 +401,21 @@ public class MainActivity extends AppCompatRosActivity {
      * Initializes the canvas. Sets the dimensions, adds the various view elements, and attaches event listeners.
      */
     private void initCanvas() {
-        this.canvas = (DrawingCanvas) findViewById(R.id.signature_canvas);
+
+        // Get the canvas container
+        final LinearLayout canvasHolder = (LinearLayout) findViewById(R.id.canvas_container);
+
+        // Create a new canvas
+        this.canvas = new DrawingCanvas(getApplicationContext());
+
+        // Set the canvas layout parameters
+        final ViewGroup.LayoutParams canvasLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        this.canvas.setLayoutParams(canvasLayoutParams);
+        canvas.setBackgroundResource(R.drawable.canvas_border);
+
+        // Add the canvas to its container
+        canvasHolder.removeAllViews();
+        canvasHolder.addView(this.canvas);
 
         // Set the canvas dimensions
         final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
@@ -456,7 +479,7 @@ public class MainActivity extends AppCompatRosActivity {
     private void initDimensionTextView() {
         final TextView dimensionText = (TextView) findViewById(R.id.dimension_text);
         final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
-        final float arenaHeightMeters = sharedPreferences.getFloat("arenaHeightMeters", ARENA_HEIGHT_METERS_DEFAULT);
+        final float arenaHeightMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
 
         dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
     }

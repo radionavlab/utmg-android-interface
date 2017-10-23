@@ -15,9 +15,8 @@ public class PreviewCanvas extends AbstractCanvas {
 //    private List<QuadView> quadViews;
 
     public PreviewCanvas(
-            final Context context,
-            final AttributeSet attrs) {
-        super(context, attrs);
+            final Context context) {
+        super(context);
     }
 
     @Override
