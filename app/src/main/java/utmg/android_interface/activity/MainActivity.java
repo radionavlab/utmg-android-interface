@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatRosActivity {
         // Create a new menu by inflating it from the XML definition
         final FloatingActionsMenu sendTrajectoriesMenu = (FloatingActionsMenu) getLayoutInflater().inflate(R.layout.send_trajectories_menu_layout, null, false);
 
-        // Clean any previous buttons and add the new ones
+        // Clear any previous buttons and add the new ones
         sendTrajectoriesMenuContainer.removeAllViews();
         sendTrajectoriesMenuContainer.addView(sendTrajectoriesMenu);
 
@@ -272,6 +272,7 @@ public class MainActivity extends AppCompatRosActivity {
         // Create a new menu by inflating it from the XML definition
         final FloatingActionsMenu clearTrajectoriesMenu = (FloatingActionsMenu) getLayoutInflater().inflate(R.layout.clear_trajectories_menu_layout, null, false);
 
+        // Clear any previous buttons and add the new ones
         clearTrajectoriesMenuContainer.removeAllViews();
         clearTrajectoriesMenuContainer.addView(clearTrajectoriesMenu);
 
