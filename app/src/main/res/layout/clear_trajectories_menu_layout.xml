@@ -11,4 +11,4 @@
     android:layout_margin="@dimen/fab_margin"
     fab:fab_addButtonColorNormal="@android:color/holo_purple"
     fab:fab_icon="@android:drawable/ic_menu_send"
-    fab:fab_expandDirection="right" />
+    fab:fab_expandDirection="up" />

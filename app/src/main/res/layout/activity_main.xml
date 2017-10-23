@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -82,23 +83,23 @@
             />
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/dimension_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="15dp"
-        android:text="New Dimensions"/>
+    <!--<TextView-->
+        <!--android:id="@+id/dimension_text"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center|bottom"-->
+        <!--android:layout_marginBottom="15dp"-->
+        <!--android:text="New Dimensions"/>-->
 
-    <Button
-        android:id="@+id/previewButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="35dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"
-        android:text="PREVIEW"/>
+    <!--<Button-->
+        <!--android:id="@+id/previewButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center|bottom"-->
+        <!--android:layout_marginBottom="35dp"-->
+        <!--android:backgroundTint="@color/colorPrimary"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:text="PREVIEW"/>-->
 
     <LinearLayout
         android:id="@+id/canvas_container"
@@ -108,26 +109,26 @@
         android:orientation="horizontal">
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/send_trajectories_menu_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin" >
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:id="@+id/send_trajectories_menu_container"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_margin="@dimen/fab_margin" >-->
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/clear_trajectories_menu_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="bottom|start"
+        android:orientation="vertical"
+        android:layout_gravity="center|right"
         android:layout_margin="@dimen/fab_margin" >
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignParentTop="true"-->
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
