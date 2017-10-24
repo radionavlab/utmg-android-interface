@@ -233,6 +233,7 @@ public class MainActivity extends AppCompatRosActivity {
         // Set the canvas container size
         final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.canvas_container).getLayoutParams();
 
+        // TODO: Dont base this off of screen height. Base it off of the maximum canvas holder size
         // Assume the new screen size
 //        float canvasHeightNew = screenHeight * MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT;
         float canvasHeightNew = screenHeight - 200;
