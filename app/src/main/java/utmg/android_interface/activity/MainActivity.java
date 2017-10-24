@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatRosActivity {
     private static final String CONFIG_FILE_NAME = "app_config";
 
     /* Default constants */
-    private static final float MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT = 0.75f;
-    private static final float MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH = 0.75f;
+    private static final float MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT = 0.85f;
+    private static final float MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH = 0.85f;
     private static final float DEFAULT_MAX_ALTITUDE_METERS = 2.0f;
     private static final float ARENA_WIDTH_METERS_DEFAULT = 5.0f;
     private static final float ARENA_HEIGHT_METERS_DEFAULT = 10.0f;
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatRosActivity {
         this.initCanvas();
         this.initAltitudeSlider();
         this.initButtons();
-        this.initTextViews();
+//        this.initTextViews();
         this.initToolbar();
         this.initTrajectorySelectionMenu();
     }
@@ -322,6 +322,7 @@ public class MainActivity extends AppCompatRosActivity {
     }
 
     /**
+<<<<<<< HEAD
      * Initializes the preview button
      */
     private void initPreviewButton() {
@@ -363,6 +364,8 @@ public class MainActivity extends AppCompatRosActivity {
     }
 
     /**
+=======
+>>>>>>> 3343290d8c2b1525b357bf4f2a878fbc4739835c
      * Initializes the buttons to clear the trajectories. Creates one button for every trajectory and one button to clear them all.
      */
     private void initClearTrajectoryButtons() {
@@ -370,12 +373,8 @@ public class MainActivity extends AppCompatRosActivity {
         // Get the menu container
         final LinearLayout clearTrajectoriesMenuContainer = (LinearLayout) findViewById(R.id.clear_trajectories_menu_container);
 
-        // Create a new menu by inflating it from the XML definition
-        final FloatingActionsMenu clearTrajectoriesMenu = (FloatingActionsMenu) getLayoutInflater().inflate(R.layout.clear_trajectories_menu_layout, null, false);
-
         // Clear any previous buttons and add the new ones
         clearTrajectoriesMenuContainer.removeAllViews();
-        clearTrajectoriesMenuContainer.addView(clearTrajectoriesMenu);
 
 
         // Add a clear all trajectories button
@@ -383,8 +382,7 @@ public class MainActivity extends AppCompatRosActivity {
         clearAllTrajectoryButton.setColorNormal(Color.YELLOW);
         clearAllTrajectoryButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
         clearAllTrajectoryButton.setOnClickListener(new ClearAllTrajectoriesButtonHandler(this.trajectories, this.canvas));
-        clearTrajectoriesMenu.addButton(clearAllTrajectoryButton);
-
+        clearTrajectoriesMenuContainer.addView(clearAllTrajectoryButton);
 
         // Add a clear trajectory button for every quad
         for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
@@ -392,8 +390,7 @@ public class MainActivity extends AppCompatRosActivity {
             clearTrajectoryButton.setColorNormal(trajectoryColors[i % trajectoryColors.length]);
             clearTrajectoryButton.setImageBitmap(textAsBitmap("" + (i + 1), 40, Color.BLACK));
             clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.trajectories.get(i), this.canvas));
-            clearTrajectoriesMenu.addButton(clearTrajectoryButton);
-
+            clearTrajectoriesMenuContainer.addView(clearTrajectoryButton);
         }
     }
 
@@ -402,9 +399,9 @@ public class MainActivity extends AppCompatRosActivity {
      */
     private void initButtons() {
         initTerminateButton();
-        initPreviewButton();
+//        initPreviewButton();
         initClearTrajectoryButtons();
-        initSendTrajectoryButtons();
+//        initSendTrajectoryButtons();
     }
 
     /**
@@ -493,24 +490,6 @@ public class MainActivity extends AppCompatRosActivity {
     }
 
     /**
-     * Initializes the various text views.
-     */
-    private void initTextViews() {
-        this.initDimensionTextView();
-    }
-
-    /**
-     * Initializes the text box that displays the arena dimensions.
-     */
-    private void initDimensionTextView() {
-        final TextView dimensionText = (TextView) findViewById(R.id.dimension_text);
-        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
-        final float arenaHeightMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
-
-        dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
-    }
-
-    /**
      * Assumes that there is at least one initialized trajectory. Sets the first trajectory as the 'selected' trajectory to be controlled by the app.
      */
     private void selectInitialTrajectory() {
@@ -560,4 +539,63 @@ public class MainActivity extends AppCompatRosActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+//    /**
+//     * Initializes the various text views.
+//     */
+//    private void initTextViews() {
+//        this.initDimensionTextView();
+//    }
+
+//    /**
+//     * Initializes the text box that displays the arena dimensions.
+//     */
+//    private void initDimensionTextView() {
+//        final TextView dimensionText = (TextView) findViewById(R.id.dimension_text);
+//        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
+//        final float arenaHeightMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
+//
+//        dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
+//    }
+
+//    /**
+//     * Initializes the preview button
+//     */
+//    private void initPreviewButton() {
+//        final Button previewButton = (Button) findViewById(R.id.previewButton);
+//        previewButton.setOnClickListener(new PreviewButtonHandler());
+//    }
+
+//    /**
+//     * Initializes the buttons to send the trajectories. Creates one button for every trajectory and one button to send them all.
+//     */
+//    private void initSendTrajectoryButtons() {
+//        // Get the menu container
+//        final LinearLayout sendTrajectoriesMenuContainer = (LinearLayout) findViewById(R.id.send_trajectories_menu_container);
+//
+//        // Create a new menu by inflating it from the XML definition
+//        final FloatingActionsMenu sendTrajectoriesMenu = (FloatingActionsMenu) getLayoutInflater().inflate(R.layout.send_trajectories_menu_layout, null, false);
+//
+//        // Clear any previous buttons and add the new ones
+//        sendTrajectoriesMenuContainer.removeAllViews();
+//        sendTrajectoriesMenuContainer.addView(sendTrajectoriesMenu);
+//
+//        // Add a send all trajectories button
+//        final FloatingActionButton sendAllTrajectoriesButton = new FloatingActionButton(this.getApplicationContext());
+//        sendAllTrajectoriesButton.setColorNormal(Color.YELLOW);
+//        sendAllTrajectoriesButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
+//        sendAllTrajectoriesButton.setOnClickListener(new SendAllTrajectoriesButtonHandler(this.trajectories, nodeMain));
+//        sendTrajectoriesMenu.addButton(sendAllTrajectoriesButton);
+//
+//
+//        // Add a send trajectory button for every quad
+//        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+//            final FloatingActionButton sendTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
+//            sendTrajectoryButton.setColorNormal(trajectoryColors[i%trajectoryColors.length]);
+//            sendTrajectoryButton.setImageBitmap(textAsBitmap(""+ (i+1), 40, Color.BLACK));
+//            sendTrajectoryButton.setOnClickListener(new SendTrajectoryButtonHandler(this.trajectories.get(i)));
+//            sendTrajectoriesMenu.addButton(sendTrajectoryButton);
+//
+//        }
+//    }
 }
