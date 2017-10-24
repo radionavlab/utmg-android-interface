@@ -3,11 +3,6 @@
     package="utmg.android_interface">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -41,7 +36,7 @@
             <!--    android:name="android.support.PARENT_ACTIVITY"
                 android:value="utmg.android_interface.Activities.SplashActivity" /> -->
         </activity>
-        <!--<activity android:name="org.ros.android.MasterChooser" />-->
+        <activity android:name="org.ros.android.MasterChooser" />
 
         <!--<service android:name="org.ros.android.NodeMainExecutorService">-->
             <!--<intent-filter>-->

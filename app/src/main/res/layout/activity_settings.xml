@@ -23,84 +23,84 @@
                 android:layout_weight="1">
 
                 <!-- controls -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:layout_weight="1">-->
 
-                    <TextView
-                        android:id="@+id/mode_toggle_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="Control Mode:" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/mode_toggle_text"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:ems="10"-->
+                        <!--android:text="Control Mode:" />-->
 
-                    <Spinner
-                        android:id="@+id/mode_spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <!--<Spinner-->
+                        <!--android:id="@+id/mode_spinner"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content" />-->
 
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="15dp" />
+                    <!--<Space-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="15dp" />-->
 
-                    <TextView
-                        android:id="@+id/service_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="Path Planner Servicing?" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/service_text"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:ems="10"-->
+                        <!--android:text="Path Planner Servicing?" />-->
 
-                    <ToggleButton
-                        android:id="@+id/service_toggle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:checked="false"
-                        android:text="ServiceToggle"
-                        android:textSize="20dp" />
+                    <!--<ToggleButton-->
+                        <!--android:id="@+id/service_toggle"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:checked="false"-->
+                        <!--android:text="ServiceToggle"-->
+                        <!--android:textSize="20dp" />-->
 
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="15dp" />
+                    <!--<Space-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="15dp" />-->
 
-                    <TextView
-                        android:id="@+id/toggle_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="Publish Obstacles?" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/toggle_text"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:ems="10"-->
+                        <!--android:text="Publish Obstacles?" />-->
 
-                    <ToggleButton
-                        android:id="@+id/obstacle_publish_toggle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:checked="false"
-                        android:text="ObstaclePublishToggle"
-                        android:textSize="20dp" />
+                    <!--<ToggleButton-->
+                        <!--android:id="@+id/obstacle_publish_toggle"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:checked="false"-->
+                        <!--android:text="ObstaclePublishToggle"-->
+                        <!--android:textSize="20dp" />-->
 
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="15dp" />
+                    <!--<Space-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="15dp" />-->
 
-                    <TextView
-                        android:id="@+id/toggle_debug_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="Debug mode?" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/toggle_debug_text"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:ems="10"-->
+                        <!--android:text="Debug mode?" />-->
 
-                    <ToggleButton
-                        android:id="@+id/debug_mode_toggle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:checked="false"
-                        android:textSize="20dp" />
+                    <!--<ToggleButton-->
+                        <!--android:id="@+id/debug_mode_toggle"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:checked="false"-->
+                        <!--android:textSize="20dp" />-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
 
                 <!-- canvas size specs -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -24,10 +24,15 @@ import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
 import org.ros.android.AppCompatRosActivity;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
+
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -77,8 +82,8 @@ public class MainActivity extends AppCompatRosActivity {
     private DrawingCanvas canvas;
 
     /* Model objects */
-    private final List<Trajectory> trajectories = new ArrayList<>();
-    private final List<Obstacle> obstacles = new ArrayList<>();
+    private  List<Trajectory> trajectories = new ArrayList<>();
+    private  List<Obstacle> obstacles = new ArrayList<>();
 
     /* Globals for convenience */
     private SharedPreferences sharedPreferences;
@@ -108,6 +113,7 @@ public class MainActivity extends AppCompatRosActivity {
 
     /**
      * On create is called every time this activity is created or restarted. Rotating the screen causes an activity restart.
+     *
      * @param savedInstanceState Saved instance state from the last time this app was destroyed.
      */
     @Override
@@ -137,6 +143,7 @@ public class MainActivity extends AppCompatRosActivity {
 
     /**
      * Init function for the ROS component of this activity.
+     *
      * @param nodeMainExecutor ROSJava node executor
      */
     @Override
@@ -146,8 +153,12 @@ public class MainActivity extends AppCompatRosActivity {
         nodeService = new ROSNodeService();
 
         try {
-            java.net.Socket socket = new java.net.Socket(getMasterUri().getHost(), getMasterUri().getPort());
-            java.net.InetAddress local_network_address = socket.getLocalAddress();
+            final URI masterURI = this.getMasterUri();
+            final String host = masterURI.getHost();
+            final int port = masterURI.getPort();
+
+            final Socket socket = new Socket(host, port);
+            final InetAddress local_network_address = socket.getLocalAddress();
             socket.close();
             NodeConfiguration nodeConfiguration =
                     NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
@@ -157,6 +168,84 @@ public class MainActivity extends AppCompatRosActivity {
         } catch (IOException e) {
             Log.e("MainActivity", "socket error trying to get networking information from the master uri");
         }
+    }
+
+    /**
+     * Initializes the various UI elements of the main activity.
+     */
+    private void initUIElements() {
+        this.initCanvas();
+        this.initAltitudeSlider();
+        this.initButtons();
+        this.initTextViews();
+        this.initToolbar();
+        this.initTrajectorySelectionMenu();
+    }
+
+    /**
+     * Initializes the canvas. Sets the dimensions, adds the various view elements, and attaches event listeners.
+     */
+    private void initCanvas() {
+
+        // Get the canvas container
+        final LinearLayout canvasHolder = (LinearLayout) findViewById(R.id.canvas_container);
+
+        // Create a new canvas
+        this.canvas = new DrawingCanvas(getApplicationContext());
+
+        // Set the canvas layout parameters
+        final ViewGroup.LayoutParams canvasLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        this.canvas.setLayoutParams(canvasLayoutParams);
+        canvas.setBackgroundResource(R.drawable.canvas_border);
+
+        // Add the canvas to its container
+        canvasHolder.removeAllViews();
+        canvasHolder.addView(this.canvas);
+
+        // Set the canvas dimensions
+        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
+        final float arenaLengthMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
+        final float arenaAspectRatio = arenaWidthMeters / arenaLengthMeters;
+        this.setCanvasDimensions(arenaAspectRatio);
+
+        // Create and add all the trajectory views
+        for (int i = 0; i < trajectories.size(); i++) {
+            final Paint paint = new Paint();
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(5);
+            paint.setColor(trajectoryColors[i % trajectoryColors.length]);
+
+            // Add trajectory view
+            this.canvas.addTrajectoryView(new TrajectoryView(trajectories.get(i), paint));
+        }
+
+        this.initCanvasHandlers();
+    }
+
+    /**
+     * Rescales the canvas size for a new aspect ratio. This actually changes the size of the object containing the canvas since the canvas scales to fit the container.
+     *
+     * @param aspectRatio The desired aspect ratio
+     */
+    private void setCanvasDimensions(
+            final float aspectRatio) {
+
+        // Set the canvas container size
+        final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.canvas_container).getLayoutParams();
+
+        // Assume the new screen size
+        float canvasHeightNew = screenHeight * MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT;
+        float canvasWidthNew = canvasHeightNew * aspectRatio;
+
+        // Check to see if it fits. If too big, shrink to limiting dimensions
+        if (canvasWidthNew > screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH) {
+            canvasWidthNew = screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH;
+            canvasHeightNew = canvasLayoutParams.width / aspectRatio;
+        }
+
+        // Set the new dimensions
+        canvasLayoutParams.width = (int) canvasWidthNew;
+        canvasLayoutParams.height = (int) canvasHeightNew;
     }
 
     /**
@@ -170,9 +259,9 @@ public class MainActivity extends AppCompatRosActivity {
 
         // Add a radio button for every trajectory
         // TODO: Get these damn buttons to center!
-        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
             final RadioButton trajectorySelectButton = new RadioButton(this.getApplicationContext());
-            final String buttonName = "Quad " + (i+1);
+            final String buttonName = "Quad " + (i + 1);
             trajectorySelectButton.setText(buttonName);
 
             // Set the listener. Listener must change the selected trajectory
@@ -190,14 +279,26 @@ public class MainActivity extends AppCompatRosActivity {
             selectTrajectoryGroup.addView(trajectorySelectButton, i);
 
             // Mark the first quad/trajectory as selected
-            if(i == 0) selectTrajectoryGroup.check(trajectorySelectButton.getId());
+            if (i == 0) selectTrajectoryGroup.check(trajectorySelectButton.getId());
         }
     }
 
     /**
+     * Sets the various touch handlers for the canvas to control the selected trajectory.
+     */
+    private void initCanvasHandlers() {
+        this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
+                this.canvas,
+                new DrawingStartTouchHandler(this.selectedTrajectory),
+                new DrawingMoveTouchHandler(this.selectedTrajectory),
+                new DrawingEndTouchHandler()));
+    }
+
+    /**
      * Helper function that draws a text string as a bitmap. Useful for overlaying text on buttons.
-     * @param text The text the be drawn.
-     * @param textSize The size of the text. 40 is good for buttons.
+     *
+     * @param text      The text the be drawn.
+     * @param textSize  The size of the text. 40 is good for buttons.
      * @param textColor The color of the text.
      * @return A bitmap of the text.
      */
@@ -251,10 +352,10 @@ public class MainActivity extends AppCompatRosActivity {
 
 
         // Add a send trajectory button for every quad
-        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
             final FloatingActionButton sendTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
-            sendTrajectoryButton.setColorNormal(trajectoryColors[i%trajectoryColors.length]);
-            sendTrajectoryButton.setImageBitmap(textAsBitmap(""+ (i+1), 40, Color.BLACK));
+            sendTrajectoryButton.setColorNormal(trajectoryColors[i % trajectoryColors.length]);
+            sendTrajectoryButton.setImageBitmap(textAsBitmap("" + (i + 1), 40, Color.BLACK));
             sendTrajectoryButton.setOnClickListener(new SendTrajectoryButtonHandler(this.trajectories.get(i)));
             sendTrajectoriesMenu.addButton(sendTrajectoryButton);
 
@@ -286,39 +387,14 @@ public class MainActivity extends AppCompatRosActivity {
 
 
         // Add a clear trajectory button for every quad
-        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
             final FloatingActionButton clearTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
-            clearTrajectoryButton.setColorNormal(trajectoryColors[i%trajectoryColors.length]);
-            clearTrajectoryButton.setImageBitmap(textAsBitmap("" + (i+1), 40, Color.BLACK));
+            clearTrajectoryButton.setColorNormal(trajectoryColors[i % trajectoryColors.length]);
+            clearTrajectoryButton.setImageBitmap(textAsBitmap("" + (i + 1), 40, Color.BLACK));
             clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.trajectories.get(i), this.canvas));
             clearTrajectoriesMenu.addButton(clearTrajectoryButton);
 
         }
-    }
-
-    /**
-     * Rescales the canvas size for a new aspect ratio. This actually changes the size of the object containing the canvas since the canvas scales to fit the container.
-     * @param aspectRatio The desired aspect ratio
-     */
-    private void setCanvasDimensions (
-            final float aspectRatio) {
-
-        // Set the canvas container size
-        final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.canvas_container).getLayoutParams();
-
-        // Assume the new screen size
-        float canvasHeightNew = screenHeight * MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT;
-        float canvasWidthNew = canvasHeightNew * aspectRatio;
-
-        // Check to see if it fits. If too big, shrink to limiting dimensions
-        if(canvasWidthNew > screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH) {
-            canvasWidthNew = screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH;
-            canvasHeightNew = canvasLayoutParams.width / aspectRatio;
-        }
-
-        // Set the new dimensions
-        canvasLayoutParams.width = (int) canvasWidthNew;
-        canvasLayoutParams.height = (int) canvasHeightNew;
     }
 
     /**
@@ -335,7 +411,7 @@ public class MainActivity extends AppCompatRosActivity {
      * Button to terminate app so it doesn't have to be done manually
      */
     private void initTerminateButton() {
-        final Button terminateProgramButton = (Button)this.findViewById(R.id.kill_button);
+        final Button terminateProgramButton = (Button) this.findViewById(R.id.kill_button);
         terminateProgramButton.setOnClickListener(view -> {
             finish();
             System.exit(0);
@@ -355,7 +431,7 @@ public class MainActivity extends AppCompatRosActivity {
         slider.getLayoutParams().width = sliderLength;
 
         final float maxAltitude = this.sharedPreferences.getFloat("maxAltitude", DEFAULT_MAX_ALTITUDE_METERS);
-        slider.setMax((int) (maxAltitude * 100) );
+        slider.setMax((int) (maxAltitude * 100));
 
         final TextView altitudeDisplayTextView = (TextView) findViewById(R.id.seekbar_value);
         slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler(altitudeDisplayTextView, this.selectedTrajectory));
@@ -375,12 +451,12 @@ public class MainActivity extends AppCompatRosActivity {
             // Inject all of the values into the shared preferences
             // TODO: Assuming all of these are floats. Not safe!
             final SharedPreferences.Editor editor = this.sharedPreferences.edit();
-            for(String configValue: prop.stringPropertyNames()) {
+            for (String configValue : prop.stringPropertyNames()) {
                 // Prevent the config file from overwriting current settings.
                 // This can happen if this function is called twice, for example if the screen is rotated
                 // Screen rotation recreates the activity, re-calling this function
                 final float currentValue = this.sharedPreferences.getFloat(configValue, Float.NaN);
-                if(currentValue == Float.NaN) {
+                if (currentValue == Float.NaN) {
                     editor.putFloat(configValue, Float.valueOf(prop.getProperty(configValue)));
                 }
             }
@@ -399,63 +475,12 @@ public class MainActivity extends AppCompatRosActivity {
     }
 
     /**
-     * Initializes the canvas. Sets the dimensions, adds the various view elements, and attaches event listeners.
-     */
-    private void initCanvas() {
-
-        // Get the canvas container
-        final LinearLayout canvasHolder = (LinearLayout) findViewById(R.id.canvas_container);
-
-        // Create a new canvas
-        this.canvas = new DrawingCanvas(getApplicationContext());
-
-        // Set the canvas layout parameters
-        final ViewGroup.LayoutParams canvasLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        this.canvas.setLayoutParams(canvasLayoutParams);
-        canvas.setBackgroundResource(R.drawable.canvas_border);
-
-        // Add the canvas to its container
-        canvasHolder.removeAllViews();
-        canvasHolder.addView(this.canvas);
-
-        // Set the canvas dimensions
-        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
-        final float arenaLengthMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
-        final float arenaAspectRatio = arenaWidthMeters/arenaLengthMeters;
-        setCanvasDimensions(arenaAspectRatio);
-
-        // Create and add all the trajectory views
-        for(int i = 0; i < trajectories.size(); i++) {
-            final Paint paint = new Paint();
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(5);
-            paint.setColor(trajectoryColors[i%trajectoryColors.length]);
-
-            // Add trajectory view
-            this.canvas.addTrajectoryView(new TrajectoryView(trajectories.get(i), paint));
-        }
-
-        initCanvasHandlers();
-    }
-
-    /**
-     * Sets the various touch handlers for the canvas to control the selected trajectory.
-     */
-    private void initCanvasHandlers() {
-        this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
-                this.canvas,
-                new DrawingStartTouchHandler(this.selectedTrajectory),
-                new DrawingMoveTouchHandler(this.selectedTrajectory),
-                new DrawingEndTouchHandler()));
-    }
-
-    /**
      * Initializes the various trajectories
      */
     private void initTrajectories() {
-        trajectories.clear();
-        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
-            this.trajectories.add(new Trajectory("Quad " + (i+1)));
+        trajectories = new ArrayList<>();
+        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+            this.trajectories.add(new Trajectory("Quad " + (i + 1)));
         }
     }
 
@@ -463,7 +488,7 @@ public class MainActivity extends AppCompatRosActivity {
      * Initializes the various obstacle entities
      */
     private void initObstacles() {
-        obstacles.clear();
+        obstacles = new ArrayList<>();
         this.obstacles.add(new Obstacle("Obstacle 1"));
     }
 
@@ -494,19 +519,8 @@ public class MainActivity extends AppCompatRosActivity {
 
 
     /**
-     * Initializes the various UI elements of the main activity.
-     */
-    private void initUIElements() {
-        this.initCanvas();
-        this.initAltitudeSlider();
-        this.initButtons();
-        this.initTextViews();
-        initToolbar();
-        this.initTrajectorySelectionMenu();
-    }
-
-    /**
      * Inflate the menu. This adds items to the action bar if it is present.
+     *
      * @param menu The options menu
      * @return true
      */
@@ -531,16 +545,17 @@ public class MainActivity extends AppCompatRosActivity {
      * Handle action bar item clicks here. The action bar will
      * automatically handle clicks on the Home/Up button, so long
      * as you specify a parent activity in AndroidManifest.xml.
+     *
      * @param item The MenuItem selected
      * @return true
      */
     @Override
     public boolean onOptionsItemSelected(
             final MenuItem item) {
-        switch(item.getItemId()){
-        case R.id.action_settings:
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-            break;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -17,20 +17,16 @@ import utmg.android_interface.model.util.Point3;
 /***
  * Created by James on 7/27/2017. Modified by Tucker Haydon on 10/15/2017.
  */
-
 public abstract class AbstractCanvas extends View {
     private Bitmap bitmap;
     protected Canvas canvas;
-    private SharedPreferences preferences;
+    private final SharedPreferences preferences;
 
     private static final int DEFAULT_WIDTH_PIXELS = 1000;
     private static final int DEFAULT_HEIGHT_PIXELS = 1000;
 
     private static final float DEFAULT_WIDTH_METERS = 1.0f;
     private static final float DEFAULT_LENGTH_METERS = 1.0f;
-
-    private static final float CENTER_X_METERS = 0f;
-    private static final float CENTER_Y_METERS = 0f;
 
     private float arenaLength;
     private float arenaWidth;
@@ -47,58 +43,6 @@ public abstract class AbstractCanvas extends View {
         this.arenaLength = preferences.getFloat("arenaLengthMeters", DEFAULT_LENGTH_METERS);
         this.canvasWidth = this.bitmap.getWidth();
         this.canvasLength = this.bitmap.getHeight();
-    }
-
-    /**
-     * Returns the x coordinate of the center pixel on the screen
-     *
-     * @return The x coordinate of the center pixel on the screen
-     */
-    public final int getPixelCenterX() {
-        return this.bitmap.getWidth() / 2;
-    }
-
-    /**
-     * Returns the y coordinate of the center pixel on the screen
-     *
-     * @return The y coordinate of the center pixel on the screen
-     */
-    public final int getPixelCenterY() {
-        return this.bitmap.getHeight() / 2;
-    }
-
-    /**
-     * Maps an x-coordinate from pixel coordinate space to meter coordinate space
-     * @param x The x coordinate of a pixel
-     * @return The x coordinate in meters
-     */
-    public final float pixelsToMetersX(
-            final float x) {
-        // TODO
-        return 0;
-    }
-
-    /**
-     * Maps an y-coordinate from pixel coordinate space to meter coordinate space
-     * @param y The x coordinate of a pixel
-     * @return The y coordinate in meters
-     */
-    public final float toMetersY(
-            final float y) {
-        // TODO
-        return 0;
-    }
-
-    /**
-     * Converts a point to meters to a point in pixels. Does not change the time or z coordinate.
-     * TODO: Should the Z value be changed?
-     *
-     * @param meterPoint A point in meter units
-     * @return A point in pixel units
-     */
-    public final Point3 toPixels(
-            final Point3 meterPoint) {
-        return new Point3(toPixelsX(meterPoint.x), toPixelsY(meterPoint.y), meterPoint.z, meterPoint.t);
     }
 
     /**
