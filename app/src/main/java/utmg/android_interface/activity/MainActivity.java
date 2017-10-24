@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatRosActivity {
 
     /* Default constants */
     private static final float MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT = 0.85f;
-    private static final float MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH = 0.85f;
+    private static final float MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH = 0.78f;
     private static final float DEFAULT_MAX_ALTITUDE_METERS = 2.0f;
     private static final float ARENA_WIDTH_METERS_DEFAULT = 5.0f;
     private static final float ARENA_HEIGHT_METERS_DEFAULT = 10.0f;
@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatRosActivity {
     private DrawingCanvas canvas;
 
     /* Model objects */
-    private  List<Trajectory> trajectories = new ArrayList<>();
-    private  List<Obstacle> obstacles = new ArrayList<>();
+    private List<Trajectory> trajectories = new ArrayList<>();
+    private List<Obstacle> obstacles = new ArrayList<>();
 
     /* Globals for convenience */
     private SharedPreferences sharedPreferences;
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatRosActivity {
         this.initCanvas();
         this.initAltitudeSlider();
         this.initButtons();
-//        this.initTextViews();
+        this.initTextViews();
         this.initToolbar();
         this.initTrajectorySelectionMenu();
     }
@@ -234,12 +234,15 @@ public class MainActivity extends AppCompatRosActivity {
         final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.canvas_container).getLayoutParams();
 
         // Assume the new screen size
-        float canvasHeightNew = screenHeight * MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT;
+//        float canvasHeightNew = screenHeight * MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT;
+        float canvasHeightNew = screenHeight - 200;
         float canvasWidthNew = canvasHeightNew * aspectRatio;
 
         // Check to see if it fits. If too big, shrink to limiting dimensions
-        if (canvasWidthNew > screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH) {
-            canvasWidthNew = screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH;
+//        if (canvasWidthNew > screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH) {
+        if (canvasWidthNew > screenWidth - 375) {
+//            canvasWidthNew = screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH;
+            canvasWidthNew = screenWidth - 375;
             canvasHeightNew = canvasLayoutParams.width / aspectRatio;
         }
 
@@ -322,50 +325,6 @@ public class MainActivity extends AppCompatRosActivity {
     }
 
     /**
-<<<<<<< HEAD
-     * Initializes the preview button
-     */
-    private void initPreviewButton() {
-        final Button previewButton = (Button) findViewById(R.id.previewButton);
-        previewButton.setOnClickListener(new PreviewButtonHandler());
-    }
-
-    /**
-     * Initializes the buttons to send the trajectories. Creates one button for every trajectory and one button to send them all.
-     */
-    private void initSendTrajectoryButtons() {
-        // Get the menu container
-        final LinearLayout sendTrajectoriesMenuContainer = (LinearLayout) findViewById(R.id.send_trajectories_menu_container);
-
-        // Create a new menu by inflating it from the XML definition
-        final FloatingActionsMenu sendTrajectoriesMenu = (FloatingActionsMenu) getLayoutInflater().inflate(R.layout.send_trajectories_menu_layout, null, false);
-
-        // Clear any previous buttons and add the new ones
-        sendTrajectoriesMenuContainer.removeAllViews();
-        sendTrajectoriesMenuContainer.addView(sendTrajectoriesMenu);
-
-        // Add a send all trajectories button
-        final FloatingActionButton sendAllTrajectoriesButton = new FloatingActionButton(this.getApplicationContext());
-        sendAllTrajectoriesButton.setColorNormal(Color.YELLOW);
-        sendAllTrajectoriesButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
-        sendAllTrajectoriesButton.setOnClickListener(new SendAllTrajectoriesButtonHandler(this.trajectories, nodeMain));
-        sendTrajectoriesMenu.addButton(sendAllTrajectoriesButton);
-
-
-        // Add a send trajectory button for every quad
-        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
-            final FloatingActionButton sendTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
-            sendTrajectoryButton.setColorNormal(trajectoryColors[i % trajectoryColors.length]);
-            sendTrajectoryButton.setImageBitmap(textAsBitmap("" + (i + 1), 40, Color.BLACK));
-            sendTrajectoryButton.setOnClickListener(new SendTrajectoryButtonHandler(this.trajectories.get(i)));
-            sendTrajectoriesMenu.addButton(sendTrajectoryButton);
-
-        }
-    }
-
-    /**
-=======
->>>>>>> 3343290d8c2b1525b357bf4f2a878fbc4739835c
      * Initializes the buttons to clear the trajectories. Creates one button for every trajectory and one button to clear them all.
      */
     private void initClearTrajectoryButtons() {
@@ -540,23 +499,23 @@ public class MainActivity extends AppCompatRosActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    /**
-//     * Initializes the various text views.
-//     */
-//    private void initTextViews() {
-//        this.initDimensionTextView();
-//    }
+    /**
+     * Initializes the various text views.
+     */
+    private void initTextViews() {
+        this.initDimensionTextView();
+    }
 
-//    /**
-//     * Initializes the text box that displays the arena dimensions.
-//     */
-//    private void initDimensionTextView() {
-//        final TextView dimensionText = (TextView) findViewById(R.id.dimension_text);
-//        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
-//        final float arenaHeightMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
-//
-//        dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
-//    }
+    /**
+     * Initializes the text box that displays the arena dimensions.
+     */
+    private void initDimensionTextView() {
+        final TextView dimensionText = (TextView) findViewById(R.id.dimension_text);
+        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
+        final float arenaHeightMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
+
+        dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
+    }
 
 //    /**
 //     * Initializes the preview button
