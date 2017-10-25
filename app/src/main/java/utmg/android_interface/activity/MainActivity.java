@@ -510,11 +510,11 @@ public class MainActivity extends AppCompatRosActivity {
      * Initializes the text box that displays the arena dimensions.
      */
     private void initDimensionTextView() {
-        final TextView dimensionText = (TextView) findViewById(R.id.dimension_text);
-        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
-        final float arenaHeightMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
-
-        dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
+//        final TextView dimensionText = (TextView) findViewById(R.id.dimension_text);
+//        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
+//        final float arenaHeightMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
+//
+//        dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
     }
 
 //    /**
