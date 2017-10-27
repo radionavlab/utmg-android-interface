@@ -101,34 +101,13 @@
             />
     </FrameLayout>
 
-    <!--<Button-->
-        <!--android:id="@+id/previewButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center|bottom"-->
-        <!--android:layout_marginBottom="35dp"-->
-        <!--android:backgroundTint="@color/colorPrimary"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--android:text="PREVIEW"/>-->
-
     <LinearLayout
         android:id="@+id/canvas_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal">
     </LinearLayout>
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/send_trajectories_menu_container"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="@dimen/fab_margin" >-->
-    <!--</LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/clear_trajectories_menu_container"
@@ -137,8 +116,6 @@
         android:orientation="vertical"
         android:layout_gravity="center|right"
         android:layout_margin="@dimen/fab_margin" >
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentTop="true"-->
     </LinearLayout>
 
     <TextView

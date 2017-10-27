@@ -36,7 +36,7 @@
             <!--    android:name="android.support.PARENT_ACTIVITY"
                 android:value="utmg.android_interface.Activities.SplashActivity" /> -->
         </activity>
-        <activity android:name="org.ros.android.MasterChooser" />
+        <!--<activity android:name="org.ros.android.MasterChooser" />-->
 
         <!--<service android:name="org.ros.android.NodeMainExecutorService">-->
             <!--<intent-filter>-->

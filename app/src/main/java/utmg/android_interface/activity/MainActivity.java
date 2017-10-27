@@ -1,5 +1,6 @@
 package utmg.android_interface.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -9,8 +10,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -23,16 +24,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
-import org.ros.android.AppCompatRosActivity;
-import org.ros.node.NodeConfiguration;
-import org.ros.node.NodeMainExecutor;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -40,14 +33,12 @@ import java.util.Properties;
 import utmg.android_interface.controller.AltitudeSeekBarHandler;
 import utmg.android_interface.controller.button.ClearAllTrajectoriesButtonHandler;
 import utmg.android_interface.controller.button.ClearTrajectoryButtonHandler;
-import utmg.android_interface.controller.button.PreviewButtonHandler;
 import utmg.android_interface.controller.button.SelectTrajectoryButtonHandler;
 import utmg.android_interface.controller.canvas.DrawingEndTouchHandler;
 import utmg.android_interface.controller.canvas.DrawingMoveTouchHandler;
 import utmg.android_interface.controller.canvas.DrawingStartTouchHandler;
 import utmg.android_interface.controller.canvas.OnTouchEventDispatcher;
 import utmg.android_interface.controller.button.SendAllTrajectoriesButtonHandler;
-import utmg.android_interface.controller.button.SendTrajectoryButtonHandler;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
 import utmg.android_interface.model.entity.Obstacle;
@@ -61,7 +52,7 @@ import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 /**
  * Main activity. This is where the program begins.
  */
-public class MainActivity extends AppCompatRosActivity {
+public class MainActivity extends AppCompatActivity {
 
     /* Config file names */
     private static final String CONFIG_FILE_NAME = "app_config";
@@ -93,10 +84,10 @@ public class MainActivity extends AppCompatRosActivity {
     final int[] trajectoryColors = {Color.BLUE, Color.RED, Color.GREEN, Color.CYAN, Color.MAGENTA};
 
     /**
-     * Constructor. Called once. Initializes model objects
+     * Constructor.
      */
     public MainActivity() {
-        super("MainActivity", "MainActivity");
+
     }
 
     @Override
@@ -139,35 +130,6 @@ public class MainActivity extends AppCompatRosActivity {
         // Initialize UI elements
         this.initUIElements();
 
-    }
-
-    /**
-     * Init function for the ROS component of this activity.
-     *
-     * @param nodeMainExecutor ROSJava node executor
-     */
-    @Override
-    protected void init(
-            final NodeMainExecutor nodeMainExecutor) {
-        nodeMain = new ROSNodeMain();
-        nodeService = new ROSNodeService();
-
-        try {
-            final URI masterURI = this.getMasterUri();
-            final String host = masterURI.getHost();
-            final int port = masterURI.getPort();
-
-            final Socket socket = new Socket(host, port);
-            final InetAddress local_network_address = socket.getLocalAddress();
-            socket.close();
-            NodeConfiguration nodeConfiguration =
-                    NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
-
-            nodeMainExecutor.execute(nodeMain, nodeConfiguration);
-            nodeMainExecutor.execute(nodeService, nodeConfiguration);
-        } catch (IOException e) {
-            Log.e("MainActivity", "socket error trying to get networking information from the master uri");
-        }
     }
 
     /**
@@ -359,9 +321,13 @@ public class MainActivity extends AppCompatRosActivity {
      */
     private void initButtons() {
         initTerminateButton();
-//        initPreviewButton();
         initClearTrajectoryButtons();
-//        initSendTrajectoryButtons();
+        initSendTrajectoryButton();
+    }
+
+    private void initSendTrajectoryButton() {
+        final Button sendTrajectoriesButton = (Button) findViewById(R.id.send_button);
+        sendTrajectoriesButton.setOnClickListener(new SendAllTrajectoriesButtonHandler(trajectories));
     }
 
     /**
@@ -517,45 +483,4 @@ public class MainActivity extends AppCompatRosActivity {
 
         dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
     }
-
-//    /**
-//     * Initializes the preview button
-//     */
-//    private void initPreviewButton() {
-//        final Button previewButton = (Button) findViewById(R.id.previewButton);
-//        previewButton.setOnClickListener(new PreviewButtonHandler());
-//    }
-
-//    /**
-//     * Initializes the buttons to send the trajectories. Creates one button for every trajectory and one button to send them all.
-//     */
-//    private void initSendTrajectoryButtons() {
-//        // Get the menu container
-//        final LinearLayout sendTrajectoriesMenuContainer = (LinearLayout) findViewById(R.id.send_trajectories_menu_container);
-//
-//        // Create a new menu by inflating it from the XML definition
-//        final FloatingActionsMenu sendTrajectoriesMenu = (FloatingActionsMenu) getLayoutInflater().inflate(R.layout.send_trajectories_menu_layout, null, false);
-//
-//        // Clear any previous buttons and add the new ones
-//        sendTrajectoriesMenuContainer.removeAllViews();
-//        sendTrajectoriesMenuContainer.addView(sendTrajectoriesMenu);
-//
-//        // Add a send all trajectories button
-//        final FloatingActionButton sendAllTrajectoriesButton = new FloatingActionButton(this.getApplicationContext());
-//        sendAllTrajectoriesButton.setColorNormal(Color.YELLOW);
-//        sendAllTrajectoriesButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
-//        sendAllTrajectoriesButton.setOnClickListener(new SendAllTrajectoriesButtonHandler(this.trajectories, nodeMain));
-//        sendTrajectoriesMenu.addButton(sendAllTrajectoriesButton);
-//
-//
-//        // Add a send trajectory button for every quad
-//        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
-//            final FloatingActionButton sendTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
-//            sendTrajectoryButton.setColorNormal(trajectoryColors[i%trajectoryColors.length]);
-//            sendTrajectoryButton.setImageBitmap(textAsBitmap(""+ (i+1), 40, Color.BLACK));
-//            sendTrajectoryButton.setOnClickListener(new SendTrajectoryButtonHandler(this.trajectories.get(i)));
-//            sendTrajectoriesMenu.addButton(sendTrajectoryButton);
-//
-//        }
-//    }
 }
