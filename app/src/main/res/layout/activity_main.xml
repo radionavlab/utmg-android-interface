@@ -86,6 +86,7 @@
 
             <!--SLIDER BAR-->
             <RelativeLayout
+                android:id="@+id/slider_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -120,9 +121,6 @@
                     android:text="0"
                     android:layout_toEndOf="@+id/slider_frame_layout"
                     android:textSize="20sp"/>
-                <!--android:layout_marginBottom="100dp"-->
-                <!--android:layout_marginLeft="75dp"-->
-                <!--android:layout_marginTop="250dp"-->
 
             </RelativeLayout>
 
@@ -137,6 +135,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/clear_menu_container"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"

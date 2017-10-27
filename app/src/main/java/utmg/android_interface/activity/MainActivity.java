@@ -1,6 +1,5 @@
 package utmg.android_interface.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -12,6 +11,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -136,12 +137,12 @@ public class MainActivity extends AppCompatActivity {
      * Initializes the various UI elements of the main activity.
      */
     private void initUIElements() {
-        this.initCanvas();
         this.initAltitudeSlider();
         this.initButtons();
         this.initTextViews();
         this.initToolbar();
         this.initTrajectorySelectionMenu();
+        this.initCanvas();
     }
 
     /**
@@ -194,18 +195,31 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the canvas container size
         final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.canvas_container).getLayoutParams();
+        RelativeLayout parent = (RelativeLayout) findViewById(R.id.canvas_container).getParent();
+
+        // Get the container height. Can't be any larger
+        final int containerHeight = parent.getHeight();
+        int containerWidth = parent.getWidth();
+
+        // Container width also has the slider and menu in it. Subtract these widths
+        containerWidth = containerWidth
+                - ((RelativeLayout) findViewById(R.id.slider_container)).getWidth()
+                - ((RelativeLayout) findViewById(R.id.clear_menu_container)).getWidth();
+
+        Log.i("Width", ""+containerWidth);
+        Log.i("Height", ""+containerHeight);
+        Log.i("seekbar", ""+((RelativeLayout) findViewById(R.id.slider_container)).getWidth());
+        Log.i("clear menu", ""+((RelativeLayout) findViewById(R.id.slider_container)).getWidth());
+
 
         // TODO: Dont base this off of screen height. Base it off of the maximum canvas holder size
         // Assume the new screen size
-//        float canvasHeightNew = screenHeight * MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT;
-        float canvasHeightNew = screenHeight - 200;
+        float canvasHeightNew = containerHeight;
         float canvasWidthNew = canvasHeightNew * aspectRatio;
 
         // Check to see if it fits. If too big, shrink to limiting dimensions
-//        if (canvasWidthNew > screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH) {
-        if (canvasWidthNew > screenWidth - 375) {
-//            canvasWidthNew = screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH;
-            canvasWidthNew = screenWidth - 375;
+        if (canvasWidthNew > containerWidth) {
+            canvasWidthNew = containerWidth;
             canvasHeightNew = canvasLayoutParams.width / aspectRatio;
         }
 
