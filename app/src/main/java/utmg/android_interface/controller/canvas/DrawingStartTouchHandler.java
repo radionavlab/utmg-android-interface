@@ -13,10 +13,13 @@ import utmg.android_interface.view.canvas.AbstractCanvas;
 public class DrawingStartTouchHandler implements IStartTouchHandler {
 
     private final Trajectory trajectory;
+    private final Point3 POI;
 
     public DrawingStartTouchHandler(
-            final Trajectory trajectory) {
+            final Trajectory trajectory,
+            final  Point3 POI) {
         this.trajectory = trajectory;
+        this.POI =  POI;
     }
 
     @Override
