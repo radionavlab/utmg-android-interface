@@ -67,6 +67,15 @@
                 android:layout_weight="1"
                 android:text="Send Trajectories" />
 
+            <Button
+                android:id="@+id/select_point"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:backgroundTint="@android:color/holo_green_dark"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center"
+                android:layour_weight="1"
+                android:text="POI" />
         </LinearLayout>
 
     </RelativeLayout>
@@ -111,14 +120,6 @@
         <!--android:textColor="@android:color/white"-->
         <!--android:text="PREVIEW"/>-->
 
-    <LinearLayout
-        android:id="@+id/canvas_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-    </LinearLayout>
-
     <!--<LinearLayout-->
         <!--android:id="@+id/send_trajectories_menu_container"-->
         <!--android:layout_width="wrap_content"-->
@@ -149,6 +150,12 @@
         android:layout_gravity="center|bottom"
         android:text="Arena Dimensions"/>
 
+    <LinearLayout
+        android:id="@+id/canvas_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal"></LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

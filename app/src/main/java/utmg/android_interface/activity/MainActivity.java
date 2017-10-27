@@ -41,6 +41,7 @@ import utmg.android_interface.controller.AltitudeSeekBarHandler;
 import utmg.android_interface.controller.button.ClearAllTrajectoriesButtonHandler;
 import utmg.android_interface.controller.button.ClearTrajectoryButtonHandler;
 import utmg.android_interface.controller.button.PreviewButtonHandler;
+import utmg.android_interface.controller.button.SelectPointButtonHandler;
 import utmg.android_interface.controller.button.SelectTrajectoryButtonHandler;
 import utmg.android_interface.controller.canvas.DrawingEndTouchHandler;
 import utmg.android_interface.controller.canvas.DrawingMoveTouchHandler;
@@ -362,6 +363,8 @@ public class MainActivity extends AppCompatRosActivity {
 //        initPreviewButton();
         initClearTrajectoryButtons();
 //        initSendTrajectoryButtons();
+        initSelectPointButton();
+//        initSelectPointButton():
     }
 
     /**
@@ -374,6 +377,13 @@ public class MainActivity extends AppCompatRosActivity {
             System.exit(0);
         });
     }
+
+
+    private void initSelectPointButton() {
+        final Button selectPOI = (Button) this.findViewById(R.id.select_point);
+        selectPOI.setOnClickListener(new SelectPointButtonHandler(this.canvas));
+    };
+
 
     /**
      * Initialize the altitude slider.
