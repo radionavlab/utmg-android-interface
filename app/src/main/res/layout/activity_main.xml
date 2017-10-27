@@ -174,33 +174,3 @@
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
-
-<!--<TextView-->
-<!--android:id="@+id/dimension_text"-->
-<!--android:layout_width="wrap_content"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:layout_gravity="center|bottom"-->
-<!--android:layout_marginBottom="15dp"-->
-<!--android:text="Arena Dimensions"/>-->
-
-
-    <!--<Button-->
-    <!--android:id="@+id/previewButton"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center|bottom"-->
-    <!--android:layout_marginBottom="35dp"-->
-    <!--android:backgroundTint="@color/colorPrimary"-->
-    <!--android:textColor="@android:color/white"-->
-    <!--android:text="PREVIEW"/>-->
-
-    <!--<LinearLayout-->
-    <!--android:id="@+id/send_trajectories_menu_container"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:layout_alignParentEnd="true"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_gravity="bottom|end"-->
-    <!--android:layout_margin="@dimen/fab_margin" >-->
-    <!--</LinearLayout>-->
