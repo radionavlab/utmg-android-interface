@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -29,8 +30,11 @@ import org.ros.android.AppCompatRosActivity;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URI;
 import java.util.ArrayList;
@@ -361,6 +365,31 @@ public class MainActivity extends AppCompatRosActivity {
 //        initPreviewButton();
         initClearTrajectoryButtons();
 //        initSendTrajectoryButtons();
+        initSendTrajectoryButton();
+    }
+
+    private void initSendTrajectoryButton() {
+        final Button sendTrajectorybutton = (Button) this.findViewById(R.id.send_button);
+        sendTrajectorybutton.setOnClickListener(view -> {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        final Socket socket = new Socket();
+                        socket.connect(new InetSocketAddress("localhost", 8080));
+                        socket.setSoLinger(true, 1);
+                        socket.setTcpNoDelay(true);
+                        socket.getOutputStream().write(new byte[]{'h', 'e', 'l', 'l', 'o'}, 0, 5);
+                        socket.getOutputStream().flush();
+//                        socket.close();
+                        Log.i("INFO", "Sent data!!");
+                    } catch (IOException e) {
+                        Log.i("INFO", "Could not connect!");
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        });
     }
 
     /**
