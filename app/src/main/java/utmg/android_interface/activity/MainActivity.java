@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -44,8 +45,6 @@ import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.R;
-import utmg.android_interface.ROS.ROSNodeMain;
-import utmg.android_interface.ROS.ROSNodeService;
 import utmg.android_interface.view.entitiyView.TrajectoryView;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
@@ -59,16 +58,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String CONFIG_FILE_NAME = "app_config";
 
     /* Default constants */
-    private static final float MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT = 0.85f;
-    private static final float MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH = 0.78f;
     private static final float DEFAULT_MAX_ALTITUDE_METERS = 2.0f;
     private static final float ARENA_WIDTH_METERS_DEFAULT = 5.0f;
     private static final float ARENA_HEIGHT_METERS_DEFAULT = 10.0f;
     private static final float SLIDER_SCREEN_RATIO = 0.6f;
-
-    /* ROS Nodes */
-    private ROSNodeMain nodeMain;
-    private ROSNodeService nodeService;
 
     /* Canvas element */
     private DrawingCanvas canvas;
@@ -130,19 +123,18 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize UI elements
         this.initUIElements();
-
     }
 
     /**
      * Initializes the various UI elements of the main activity.
      */
     private void initUIElements() {
+        this.initCanvas();
         this.initAltitudeSlider();
         this.initButtons();
         this.initTextViews();
         this.initToolbar();
         this.initTrajectorySelectionMenu();
-        this.initCanvas();
     }
 
     /**
@@ -157,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         this.canvas = new DrawingCanvas(getApplicationContext());
 
         // Set the canvas layout parameters
-        final ViewGroup.LayoutParams canvasLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        final ViewGroup.LayoutParams canvasLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         this.canvas.setLayoutParams(canvasLayoutParams);
         canvas.setBackgroundResource(R.drawable.canvas_border);
 
@@ -186,46 +178,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Rescales the canvas size for a new aspect ratio. This actually changes the size of the object containing the canvas since the canvas scales to fit the container.
+     * Rescales the canvas size for a new aspect ratio.
      *
      * @param aspectRatio The desired aspect ratio
      */
     private void setCanvasDimensions(
             final float aspectRatio) {
+        final ViewTreeObserver vto = ((ViewGroup) findViewById(R.id.canvas_container)).getViewTreeObserver();
 
-        // Set the canvas container size
-        final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.canvas_container).getLayoutParams();
-        RelativeLayout parent = (RelativeLayout) findViewById(R.id.canvas_container).getParent();
+        vto.addOnGlobalLayoutListener(() -> {
 
-        // Get the container height. Can't be any larger
-        final int containerHeight = parent.getHeight();
-        int containerWidth = parent.getWidth();
+            // Get the maximum size from the container of the container
+            findViewById(R.id.canvas_container_container).measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            final int containerWidth = findViewById(R.id.canvas_container_container).getWidth();
+            final int containerHeight = findViewById(R.id.canvas_container_container).getHeight();
 
-        // Container width also has the slider and menu in it. Subtract these widths
-        containerWidth = containerWidth
-                - ((RelativeLayout) findViewById(R.id.slider_container)).getWidth()
-                - ((RelativeLayout) findViewById(R.id.clear_menu_container)).getWidth();
+            // Assume the new size
+            // Doesn't matter. Will be bounded by the container.
+            float canvasHeightNew = containerHeight;
+            float canvasWidthNew = canvasHeightNew * aspectRatio;
 
-        Log.i("Width", ""+containerWidth);
-        Log.i("Height", ""+containerHeight);
-        Log.i("seekbar", ""+((RelativeLayout) findViewById(R.id.slider_container)).getWidth());
-        Log.i("clear menu", ""+((RelativeLayout) findViewById(R.id.slider_container)).getWidth());
+            if (canvasWidthNew > containerWidth) {
+                canvasWidthNew = containerWidth;
+                canvasHeightNew = canvasWidthNew / aspectRatio;
+            }
 
-
-        // TODO: Dont base this off of screen height. Base it off of the maximum canvas holder size
-        // Assume the new screen size
-        float canvasHeightNew = containerHeight;
-        float canvasWidthNew = canvasHeightNew * aspectRatio;
-
-        // Check to see if it fits. If too big, shrink to limiting dimensions
-        if (canvasWidthNew > containerWidth) {
-            canvasWidthNew = containerWidth;
-            canvasHeightNew = canvasLayoutParams.width / aspectRatio;
-        }
-
-        // Set the new dimensions
-        canvasLayoutParams.width = (int) canvasWidthNew;
-        canvasLayoutParams.height = (int) canvasHeightNew;
+            // Set the new dimensions
+            final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.canvas_container).getLayoutParams();
+            canvasLayoutParams.width = (int) canvasWidthNew;
+            canvasLayoutParams.height = (int) canvasHeightNew;
+        });
     }
 
     /**
@@ -238,7 +220,6 @@ public class MainActivity extends AppCompatActivity {
         selectTrajectoryGroup.removeAllViews();
 
         // Add a radio button for every trajectory
-        // TODO: Get these damn buttons to center!
         for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
             final RadioButton trajectorySelectButton = new RadioButton(this.getApplicationContext());
             final String buttonName = "Quad " + (i + 1);
@@ -312,12 +293,11 @@ public class MainActivity extends AppCompatActivity {
         // Clear any previous buttons and add the new ones
         clearTrajectoriesMenuContainer.removeAllViews();
 
-
         // Add a clear all trajectories button
         final FloatingActionButton clearAllTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
         clearAllTrajectoryButton.setColorNormal(Color.YELLOW);
         clearAllTrajectoryButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
-        clearAllTrajectoryButton.setOnClickListener(new ClearAllTrajectoriesButtonHandler(this.trajectories, this.canvas));
+        clearAllTrajectoryButton.setOnClickListener(new ClearAllTrajectoriesButtonHandler(this.trajectories, this.canvas, this.getApplicationContext()));
         clearTrajectoriesMenuContainer.addView(clearAllTrajectoryButton);
 
         // Add a clear trajectory button for every quad
@@ -325,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
             final FloatingActionButton clearTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
             clearTrajectoryButton.setColorNormal(trajectoryColors[i % trajectoryColors.length]);
             clearTrajectoryButton.setImageBitmap(textAsBitmap("" + (i + 1), 40, Color.BLACK));
-            clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.trajectories.get(i), this.canvas));
+            clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.trajectories.get(i), this.canvas, getApplicationContext()));
             clearTrajectoriesMenuContainer.addView(clearTrajectoryButton);
         }
     }
@@ -341,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initSendTrajectoryButton() {
         final Button sendTrajectoriesButton = (Button) findViewById(R.id.send_button);
-        sendTrajectoriesButton.setOnClickListener(new SendAllTrajectoriesButtonHandler(trajectories));
+        sendTrajectoriesButton.setOnClickListener(new SendAllTrajectoriesButtonHandler(trajectories, this.getApplicationContext()));
     }
 
     /**

@@ -88,15 +88,16 @@
             <RelativeLayout
                 android:id="@+id/slider_container"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true">
 
                 <FrameLayout
                     android:id="@+id/slider_frame_layout"
                     android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:orientation="vertical"
                     android:layout_centerVertical="true">
 
@@ -115,24 +116,46 @@
                 <TextView
                     android:id="@+id/seekbar_value"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="0"
-                    android:layout_toEndOf="@+id/slider_frame_layout"
-                    android:textSize="20sp"/>
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_above="@+id/slider_frame_layout"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="20sp"
+                    android:text="0"/>
 
             </RelativeLayout>
 
+            <View
+                android:id="@+id/canvas_padding_box_left"
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:layout_alignEnd="@+id/slider_container"/>
+
             <!--PLACE WHERE CANVAS GOES-->
-            <LinearLayout
-                android:id="@+id/canvas_container"
+            <RelativeLayout
+                android:id="@+id/canvas_container_container"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_centerInParent="true"
+                android:layout_height="match_parent"
+                android:layout_alignStart="@+id/canvas_padding_box_left"
+                android:layout_alignEnd="@+id/canvas_padding_box_right"
+                android:layout_centerVertical="true"
                 android:orientation="horizontal">
-            </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/canvas_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/canvas_padding_box_right"
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:layout_alignStart="@+id/clear_menu_container"/>
 
             <RelativeLayout
                 android:id="@+id/clear_menu_container"
