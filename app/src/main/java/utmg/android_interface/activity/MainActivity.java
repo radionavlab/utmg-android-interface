@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Set the new dimensions
-            final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.canvas_container).getLayoutParams();
+            final ViewGroup.LayoutParams canvasLayoutParams = ((LinearLayout) findViewById(R.id.canvas_container)).getLayoutParams();
             canvasLayoutParams.width = (int) canvasWidthNew;
             canvasLayoutParams.height = (int) canvasHeightNew;
         });
@@ -373,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
                 // This can happen if this function is called twice, for example if the screen is rotated
                 // Screen rotation recreates the activity, re-calling this function
                 final float currentValue = this.sharedPreferences.getFloat(configValue, Float.NaN);
-                if (currentValue == Float.NaN) {
+                if (currentValue != currentValue) {
                     editor.putFloat(configValue, Float.valueOf(prop.getProperty(configValue)));
                 }
             }
