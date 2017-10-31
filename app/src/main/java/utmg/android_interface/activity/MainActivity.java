@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     private static final float ARENA_WIDTH_METERS_DEFAULT = 5.0f;
     private static final float ARENA_HEIGHT_METERS_DEFAULT = 10.0f;
     private static final float SLIDER_SCREEN_RATIO = 0.6f;
+    private static final String HOSTNAME_DEFAULT = "localhost";
+    private static final int PORT_DEFAULT = 8080;
 
     /* Canvas element */
     private DrawingCanvas canvas;
@@ -218,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         selectTrajectoryGroup.removeAllViews();
 
         // Add a radio button for every trajectory
-        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+        for (int i = 0; i < this.sharedPreferences.getInt("numQuads", 0); i++) {
             final RadioButton trajectorySelectButton = new RadioButton(this.getApplicationContext());
             final String buttonName = "Quad " + (i + 1);
             trajectorySelectButton.setText(buttonName);
@@ -299,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
         clearTrajectoriesMenuContainer.addView(clearAllTrajectoryButton);
 
         // Add a clear trajectory button for every quad
-        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+        for (int i = 0; i < this.sharedPreferences.getInt("numQuads", 0); i++) {
             final FloatingActionButton clearTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
             clearTrajectoryButton.setColorNormal(trajectoryColors[i % trajectoryColors.length]);
             clearTrajectoryButton.setImageBitmap(textAsBitmap("" + (i + 1), 40, Color.BLACK));
@@ -319,7 +322,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void initSendTrajectoryButton() {
         final Button sendTrajectoriesButton = (Button) findViewById(R.id.send_button);
-        sendTrajectoriesButton.setOnClickListener(new SendAllTrajectoriesButtonHandler(trajectories, this.getApplicationContext()));
+        sendTrajectoriesButton.setOnClickListener(
+                new SendAllTrajectoriesButtonHandler(
+                        trajectories,
+                        this.getApplicationContext(),
+                        this.sharedPreferences.getString("hostname", HOSTNAME_DEFAULT),
+                        this.sharedPreferences.getInt("port", PORT_DEFAULT)));
     }
 
     /**
@@ -364,16 +372,42 @@ public class MainActivity extends AppCompatActivity {
             prop.load(this.getApplicationContext().getAssets().open(CONFIG_FILE_NAME));
 
             // Inject all of the values into the shared preferences
-            // TODO: Assuming all of these are floats. Not safe!
+            // TODO: Assuming 3 types of data in a really poor manner. Refactor this!
             final SharedPreferences.Editor editor = this.sharedPreferences.edit();
             for (String configValue : prop.stringPropertyNames()) {
                 // Prevent the config file from overwriting current settings.
                 // This can happen if this function is called twice, for example if the screen is rotated
                 // Screen rotation recreates the activity, re-calling this function
-                final float currentValue = this.sharedPreferences.getFloat(configValue, Float.NaN);
-                if (currentValue != currentValue) {
-                    editor.putFloat(configValue, Float.valueOf(prop.getProperty(configValue)));
-                }
+
+                try {
+                    final int DEFAULT_VALUE = Integer.MAX_VALUE;
+                    final int currentValue = this.sharedPreferences.getInt(configValue, DEFAULT_VALUE);
+                    if(currentValue == DEFAULT_VALUE) {
+                        editor.putInt(configValue, Integer.valueOf(prop.getProperty(configValue)));
+                        Log.i("EDITOR:", "Put int: " + Integer.valueOf(prop.getProperty(configValue)));
+                        continue;
+                    }
+                } catch(Exception e) {}
+
+                try {
+                    final float DEFAULT_VALUE = Float.NaN;
+                    final float currentValue = this.sharedPreferences.getFloat(configValue, DEFAULT_VALUE);
+                    if(currentValue != currentValue) {
+                        editor.putFloat(configValue, Float.valueOf(prop.getProperty(configValue)));
+                        Log.i("EDITOR:", "Put float: " + Float.valueOf(prop.getProperty(configValue)));
+                        continue;
+                    }
+                } catch(Exception e) {}
+
+                try {
+                    final String DEFAULT_VALUE = "";
+                    final String currentValue = this.sharedPreferences.getString(configValue, DEFAULT_VALUE);
+                    if(currentValue.equals(DEFAULT_VALUE)) {
+                        editor.putString(configValue, prop.getProperty(configValue));
+                        Log.i("EDITOR:", "Put string: " + prop.getProperty(configValue));
+                        continue;
+                    }
+                } catch(Exception e) {}
             }
             editor.apply();
         } catch (IOException ex) {
@@ -394,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initTrajectories() {
         trajectories = new ArrayList<>();
-        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+        for (int i = 0; i < this.sharedPreferences.getInt("numQuads", 0); i++) {
             this.trajectories.add(new Trajectory("Quad " + (i + 1)));
         }
     }

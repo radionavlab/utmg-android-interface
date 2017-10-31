@@ -39,18 +39,24 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         final EditText arenaWidthSetting = (EditText) findViewById(R.id.arena_width_setting_box);
         final EditText arenaLengthSetting = (EditText) findViewById(R.id.arena_length_setting_box);
         final EditText altitudeSetting = (EditText) findViewById(R.id.altitude_setting_box);
+        final EditText hostnameSetting = (EditText) findViewById(R.id.hostname_setting_box);
+        final EditText portSetting = (EditText) findViewById(R.id.port_setting_box);
 
         // Retrieve the current settings
-        final float numQuads = sharedPreferences.getFloat("numQuads", 0);
+        final int numQuads = sharedPreferences.getInt("numQuads", 0);
         final float areaWidth = sharedPreferences.getFloat("arenaWidthMeters", 0);
         final float arenaLength = sharedPreferences.getFloat("arenaLengthMeters", 0);
         final float maxAltitude = sharedPreferences.getFloat("maxAltitude", 0);
+        final String hostname = sharedPreferences.getString("hostname", "UNKNOWN");
+        final int port = sharedPreferences.getInt("port", 0);
 
         // Put the current values in the textboxes
-        numQuadsSetting.setText(String.format(Locale.US, "%d", (int)numQuads));
+        numQuadsSetting.setText(String.format(Locale.US, "%d", numQuads));
         arenaWidthSetting.setText(String.format(Locale.US, "%.2f", areaWidth));
         arenaLengthSetting.setText(String.format(Locale.US, "%.2f", arenaLength));
         altitudeSetting.setText(String.format(Locale.US, "%.2f", maxAltitude));
+        hostnameSetting.setText(String.format(Locale.US, "%s", hostname));
+        portSetting.setText(String.format(Locale.US, "%d", port));
     }
 
     /**
@@ -59,11 +65,14 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     private void initApplyArenaSettingsButton() {
         final Button applySettingsButton = (Button) findViewById(R.id.apply_button);
         applySettingsButton.setOnClickListener(new ApplySettingsButtonHandler(
+                this,
                 this.sharedPreferenceEditor,
                 (EditText) findViewById(R.id.num_quads_setting_box),
                 (EditText) findViewById(R.id.arena_width_setting_box),
                 (EditText) findViewById(R.id.arena_length_setting_box),
                 (EditText) findViewById(R.id.altitude_setting_box),
+                (EditText) findViewById(R.id.hostname_setting_box),
+                (EditText) findViewById(R.id.port_setting_box),
                         this.getApplicationContext()));
     }
 

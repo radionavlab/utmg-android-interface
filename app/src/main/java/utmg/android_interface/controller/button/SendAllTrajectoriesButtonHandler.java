@@ -21,12 +21,18 @@ public class SendAllTrajectoriesButtonHandler implements View.OnClickListener {
     private final List<Trajectory> trajectories;
     private final Context context;
     private static final ObjectMapper mapper = new ObjectMapper();
+    private final String hostname;
+    private final int port;
 
     public SendAllTrajectoriesButtonHandler(
             final List<Trajectory> trajectories,
-            final Context context) {
+            final Context context,
+            final String hostname,
+            final int port) {
         this.trajectories = trajectories;
         this.context = context;
+        this.hostname = hostname;
+        this.port = port;
     }
 
     @Override
@@ -35,8 +41,7 @@ public class SendAllTrajectoriesButtonHandler implements View.OnClickListener {
 
         new Thread(() -> {
             try {
-                // TODO: This is hardcoded. Change it in config file.
-                final Socket socket = new Socket("localhost", 8080);
+                final Socket socket = new Socket(this.hostname, this.port);
                 PrintWriter socketWriter = new PrintWriter(socket.getOutputStream());
 
                 for (Trajectory trajectory : trajectories) {
