@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatRosActivity {
             final float aspectRatio) {
 
         // Set the canvas container size
-        final ViewGroup.LayoutParams canvasLayoutParams = findViewById(R.id.canvas_container).getLayoutParams();
+        final ViewGroup.LayoutParams canvasLayoutParams = ((ViewGroup)findViewById(R.id.canvas_container)).getLayoutParams();
 
         // TODO: Dont base this off of screen height. Base it off of the maximum canvas holder size
         // Assume the new screen size
@@ -294,8 +294,8 @@ public class MainActivity extends AppCompatRosActivity {
     private void initCanvasHandlers() {
         this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
                 this.canvas,
-                new DrawingStartTouchHandler(this.selectedTrajectory),
-                new DrawingMoveTouchHandler(this.selectedTrajectory),
+                new DrawingStartTouchHandler(this.selectedTrajectory,0,0),
+                new DrawingMoveTouchHandler(this.selectedTrajectory,0,0),
                 new DrawingEndTouchHandler()));
     }
 
