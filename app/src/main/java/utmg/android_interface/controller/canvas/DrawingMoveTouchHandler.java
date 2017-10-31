@@ -23,9 +23,8 @@ public class DrawingMoveTouchHandler implements IMoveTouchHandler {
             final float y,
             final AbstractCanvas canvas) {
 
-        // TODO: Why am I asking canvas for time?
         // Append the movement point
-        trajectory.addPoint(new Point3(x, y, trajectory.getAltitude(), canvas.getCurrentTime()));
+        trajectory.addPoint(new Point3(x, y, trajectory.getAltitude()));
 
         // TODO: Implement some sort of tolerance. No need to add a point for every movement.
         // TODO: Prevent trajectory from leaving arena

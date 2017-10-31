@@ -1,7 +1,5 @@
 package utmg.android_interface.controller.canvas;
 
-import android.util.Log;
-
 import utmg.android_interface.model.util.Point3;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.AbstractCanvas;
@@ -30,7 +28,7 @@ public class DrawingStartTouchHandler implements IStartTouchHandler {
 
         // TODO: Why am I asking canvas for time?
         // Start the new trajectory by appending the start point
-        trajectory.addPoint(new Point3(x, y, trajectory.getAltitude(), canvas.getCurrentTime()));
+        trajectory.addPoint(new Point3(x, y, trajectory.getAltitude()));
 
         // Invalidate the canvas to force redraw
         canvas.invalidate();

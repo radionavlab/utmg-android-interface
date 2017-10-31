@@ -3,7 +3,6 @@ package utmg.android_interface.controller.button;
 import android.view.View;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import utmg.android_interface.model.util.Trajectory;
 

@@ -6,13 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-
-import org.ros.message.Time;
-
-import utmg.android_interface.model.util.Point3;
 
 /***
  * Created by James on 7/27/2017. Modified by Tucker Haydon on 10/15/2017.
@@ -63,23 +57,6 @@ public abstract class AbstractCanvas extends View {
     public final float toPixelsY(
             final float y) {
         return (-canvasLength/arenaLength) * (y - 0.5f * arenaLength);
-    }
-
-    /**
-     * Determines the current ROS time from the current system time
-     * TODO: Why is this here. Doesn't seem to belong
-     *
-     * @return The current ROS time
-     */
-    public final Time getCurrentTime() {
-        // TODO: Where is the reference time?
-        final long currentTimeMillis = System.currentTimeMillis();
-
-        final Time time = new Time();
-        time.secs = (int) (currentTimeMillis / 1000);
-        time.nsecs = (int) ((currentTimeMillis % 1000) * 1000000);
-
-        return time;
     }
 
     /**

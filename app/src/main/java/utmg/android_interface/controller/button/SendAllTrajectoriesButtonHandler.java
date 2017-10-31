@@ -1,14 +1,11 @@
 package utmg.android_interface.controller.button;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
@@ -39,7 +36,7 @@ public class SendAllTrajectoriesButtonHandler implements View.OnClickListener {
         new Thread(() -> {
             try {
                 // TODO: This is hardcoded. Change it in config file.
-                final Socket socket = new Socket("192.168.1.3", 8080);
+                final Socket socket = new Socket("localhost", 8080);
                 PrintWriter socketWriter = new PrintWriter(socket.getOutputStream());
 
                 for (Trajectory trajectory : trajectories) {

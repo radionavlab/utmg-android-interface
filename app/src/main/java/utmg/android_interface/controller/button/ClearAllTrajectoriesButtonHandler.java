@@ -1,11 +1,8 @@
 package utmg.android_interface.controller.button;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;

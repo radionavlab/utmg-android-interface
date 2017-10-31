@@ -11,7 +11,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -32,20 +30,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import utmg.android_interface.R;
 import utmg.android_interface.controller.AltitudeSeekBarHandler;
 import utmg.android_interface.controller.button.ClearAllTrajectoriesButtonHandler;
 import utmg.android_interface.controller.button.ClearTrajectoryButtonHandler;
 import utmg.android_interface.controller.button.SelectTrajectoryButtonHandler;
+import utmg.android_interface.controller.button.SendAllTrajectoriesButtonHandler;
 import utmg.android_interface.controller.canvas.DrawingEndTouchHandler;
 import utmg.android_interface.controller.canvas.DrawingMoveTouchHandler;
 import utmg.android_interface.controller.canvas.DrawingStartTouchHandler;
 import utmg.android_interface.controller.canvas.OnTouchEventDispatcher;
-import utmg.android_interface.controller.button.SendAllTrajectoriesButtonHandler;
+import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
-import utmg.android_interface.model.entity.Obstacle;
-import utmg.android_interface.R;
-import utmg.android_interface.view.entitiyView.TrajectoryView;
+import utmg.android_interface.view.entityView.TrajectoryView;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 

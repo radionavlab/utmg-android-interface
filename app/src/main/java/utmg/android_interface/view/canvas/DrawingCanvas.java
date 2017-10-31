@@ -2,12 +2,11 @@ package utmg.android_interface.view.canvas;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.AttributeSet;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import utmg.android_interface.view.entitiyView.TrajectoryView;
+import utmg.android_interface.view.entityView.TrajectoryView;
 
 /**
  * Unknown creator. Modified by Tucker Haydon on 10/15/2017
