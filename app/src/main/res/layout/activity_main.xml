@@ -74,7 +74,7 @@
                 android:backgroundTint="@android:color/holo_green_dark"
                 android:textColor="@android:color/white"
                 android:layout_gravity="center"
-                android:layour_weight="1"
+                android:layout_weight="1"
                 android:text="POI" />
         </LinearLayout>
 
