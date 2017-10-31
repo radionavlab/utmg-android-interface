@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -21,6 +23,7 @@ public class SendAllTrajectoriesButtonHandler implements View.OnClickListener {
 
     private final List<Trajectory> trajectories;
     private final Context context;
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public SendAllTrajectoriesButtonHandler(
             final List<Trajectory> trajectories,
@@ -35,11 +38,13 @@ public class SendAllTrajectoriesButtonHandler implements View.OnClickListener {
 
         new Thread(() -> {
             try {
+                // TODO: This is hardcoded. Change it in config file.
                 final Socket socket = new Socket("localhost", 8080);
                 PrintWriter socketWriter = new PrintWriter(socket.getOutputStream());
 
                 for (Trajectory trajectory : trajectories) {
-                    socketWriter.println(trajectory.toString());
+                    final String json = mapper.writeValueAsString(trajectory);
+                    socketWriter.println(json);
                     socketWriter.flush();
                     Thread.sleep(1);
                 }

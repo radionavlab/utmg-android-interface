@@ -16,6 +16,8 @@ android {
         jackOptions {
             enabled true
         }
+
+        multiDexEnabled true
     }
 
     compileOptions {
@@ -42,6 +44,7 @@ android {
     // prevent packaging Android applications.
     packagingOptions {
         exclude "META-INF/LICENSE.txt"
+        exclude "META-INF/LICENSE"
         exclude "META-INF/NOTICE.txt"
     }
 }
@@ -64,4 +67,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/app_pathplanner_interface-0.0.0.jar')
     compile files('libs/mav_trajectory_generation_ros-0.0.0.jar')
+
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.9.0'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
 }
