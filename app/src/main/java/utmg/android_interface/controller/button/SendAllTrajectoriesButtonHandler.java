@@ -39,7 +39,7 @@ public class SendAllTrajectoriesButtonHandler implements View.OnClickListener {
         new Thread(() -> {
             try {
                 // TODO: This is hardcoded. Change it in config file.
-                final Socket socket = new Socket("localhost", 8080);
+                final Socket socket = new Socket("192.168.1.3", 8080);
                 PrintWriter socketWriter = new PrintWriter(socket.getOutputStream());
 
                 for (Trajectory trajectory : trajectories) {
