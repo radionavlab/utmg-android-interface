@@ -8,6 +8,7 @@ import java.util.List;
 
 import utmg.android_interface.model.util.Point3;
 import utmg.android_interface.model.util.Trajectory;
+import utmg.android_interface.view.canvas.AbstractCanvas;
 
 /**
  * Created by tuckerhaydon on 10/15/17.
@@ -20,12 +21,15 @@ public class TrajectoryView extends AbstractEntityView{
 
     private final Trajectory trajectory;
     private final Paint paint;
+    private final AbstractCanvas drawingCanvas;
 
     public TrajectoryView(
             final Trajectory trajectory,
-            final Paint paint) {
+            final Paint paint,
+            final AbstractCanvas drawingCanvas) {
         this.trajectory = trajectory;
         this.paint = paint;
+        this.drawingCanvas = drawingCanvas;
     }
 
     @Override
@@ -45,13 +49,13 @@ public class TrajectoryView extends AbstractEntityView{
         final Path path = new Path();
 
         // Set the first point in the path
-        final Point3 initialPoint = pathPoints.get(0);
-        path.moveTo(initialPoint.x, initialPoint.y);
+        final Point3 initialPointMeters = pathPoints.get(0);
+        path.moveTo(this.drawingCanvas.toPixelsX(initialPointMeters.x), this.drawingCanvas.toPixelsY(initialPointMeters.y));
 
         // Add the rest of the points to the path
         for(int i = 1; i < pathPoints.size(); i++) {
-            final Point3 point = pathPoints.get(i);
-            path.lineTo(point.x, point.y);
+            final Point3 metersPoint = pathPoints.get(i);
+            path.lineTo(this.drawingCanvas.toPixelsX(metersPoint.x), this.drawingCanvas.toPixelsY(metersPoint.y));
         }
 
         return path;

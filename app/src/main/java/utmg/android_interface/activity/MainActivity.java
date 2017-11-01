@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             paint.setColor(trajectoryColors[i % trajectoryColors.length]);
 
             // Add trajectory view
-            this.canvas.addTrajectoryView(new TrajectoryView(trajectories.get(i), paint));
+            this.canvas.addTrajectoryView(new TrajectoryView(trajectories.get(i), paint, this.canvas));
         }
 
         this.initCanvasHandlers();

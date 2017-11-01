@@ -19,12 +19,16 @@ public class DrawingMoveTouchHandler implements IMoveTouchHandler {
 
     @Override
     public void handle(
-            final float x,
-            final float y,
+            final float pixelX,
+            final float pixelY,
             final AbstractCanvas canvas) {
 
+        // Convert the points from pixels to meters
+        final float meterX = canvas.toMetersX(pixelX);
+        final float meterY = canvas.toMetersY(pixelY);
+
         // Append the movement point
-        trajectory.addPoint(new Point3(x, y, trajectory.getAltitude()));
+        trajectory.addPoint(new Point3(meterX, meterY, trajectory.getAltitude()));
 
         // TODO: Implement some sort of tolerance. No need to add a point for every movement.
         // TODO: Prevent trajectory from leaving arena

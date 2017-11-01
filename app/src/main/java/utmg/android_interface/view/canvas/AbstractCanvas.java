@@ -60,6 +60,26 @@ public abstract class AbstractCanvas extends View {
     }
 
     /**
+     * Maps an x-coordinate from pixels coordinate space to meters coordinate space
+     * @param x The x coordinate in pixels
+     * @return The x coordinate in meters
+     */
+    public final float toMetersX(
+            final float x) {
+        return x * (arenaWidth/canvasWidth) - 0.5f * arenaWidth;
+    }
+
+    /**
+     * Maps a y-coordinate from pixels coordinate space to meters coordinate space.
+     * @param y The y coordinate in pixels
+     * @return The y coordinate in meters
+     */
+    public final float toMetersY(
+            final float y) {
+        return y * (-arenaLength/canvasLength) + 0.5f * arenaLength;
+    }
+
+    /**
      * This is called when the canvas size changes, perhaps due to a screen rotation
      *
      * @param newWidth  The new canvas width

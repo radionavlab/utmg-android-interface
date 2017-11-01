@@ -19,16 +19,19 @@ public class DrawingStartTouchHandler implements IStartTouchHandler {
 
     @Override
     public void handle(
-            final float x,
-            final float y,
+            final float pixelX,
+            final float pixelY,
             final AbstractCanvas canvas) {
 
         // Started drawing a new trajectory. Must reset old trajectory.
         trajectory.clear();
 
-        // TODO: Why am I asking canvas for time?
+        // Convert the points from pixels to meters
+        final float meterX = canvas.toMetersX(pixelX);
+        final float meterY = canvas.toMetersY(pixelY);
+
         // Start the new trajectory by appending the start point
-        trajectory.addPoint(new Point3(x, y, trajectory.getAltitude()));
+        trajectory.addPoint(new Point3(meterX, meterY, trajectory.getAltitude()));
 
         // Invalidate the canvas to force redraw
         canvas.invalidate();

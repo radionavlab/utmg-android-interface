@@ -8,7 +8,8 @@ import java.util.List;
  */
 
 /**
- * Class that represents a trajectory a quad should follow in 3-space. Data is represented as a list of Point3 objects.
+ * Class that represents a trajectory a quad should follow in 3-space. Data is represented as a list of Point3 objects in unit meters.
+ * TODO: The trajectory class is the wrong class to maintain the current altitude of the slider
  */
 public class Trajectory {
 
