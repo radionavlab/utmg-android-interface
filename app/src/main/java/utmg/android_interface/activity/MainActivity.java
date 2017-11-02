@@ -315,7 +315,6 @@ public class MainActivity extends AppCompatActivity {
      * Initializes the various buttons on the main activity
      */
     private void initButtons() {
-        initTerminateButton();
         initClearTrajectoryButtons();
         initSendTrajectoryButton();
     }
@@ -328,17 +327,6 @@ public class MainActivity extends AppCompatActivity {
                         this.getApplicationContext(),
                         this.sharedPreferences.getString("hostname", HOSTNAME_DEFAULT),
                         this.sharedPreferences.getInt("port", PORT_DEFAULT)));
-    }
-
-    /**
-     * Button to terminate app so it doesn't have to be done manually
-     */
-    private void initTerminateButton() {
-        final Button terminateProgramButton = (Button) this.findViewById(R.id.kill_button);
-        terminateProgramButton.setOnClickListener(view -> {
-            finish();
-            System.exit(0);
-        });
     }
 
     /**
