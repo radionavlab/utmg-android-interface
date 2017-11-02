@@ -86,8 +86,8 @@
                     android:id="@+id/slider_frame_layout"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
                     android:orientation="vertical"
                     android:layout_centerVertical="true">
 
