@@ -23,7 +23,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import org.ros.android.AppCompatRosActivity;
 import org.ros.node.NodeConfiguration;
@@ -40,15 +39,12 @@ import java.util.Properties;
 import utmg.android_interface.controller.AltitudeSeekBarHandler;
 import utmg.android_interface.controller.button.ClearAllTrajectoriesButtonHandler;
 import utmg.android_interface.controller.button.ClearTrajectoryButtonHandler;
-import utmg.android_interface.controller.button.PreviewButtonHandler;
 import utmg.android_interface.controller.button.SelectPointButtonHandler;
 import utmg.android_interface.controller.button.SelectTrajectoryButtonHandler;
 import utmg.android_interface.controller.canvas.DrawingEndTouchHandler;
 import utmg.android_interface.controller.canvas.DrawingMoveTouchHandler;
 import utmg.android_interface.controller.canvas.DrawingStartTouchHandler;
 import utmg.android_interface.controller.canvas.OnTouchEventDispatcher;
-import utmg.android_interface.controller.button.SendAllTrajectoriesButtonHandler;
-import utmg.android_interface.controller.button.SendTrajectoryButtonHandler;
 import utmg.android_interface.model.util.POI;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
@@ -92,7 +88,7 @@ public class MainActivity extends AppCompatRosActivity {
     private int screenHeight;
     private int screenWidth;
     private Trajectory selectedTrajectory;
-    private POI poi;
+    private POI poi = new POI(0,0);
     final int[] trajectoryColors = {Color.BLUE, Color.RED, Color.GREEN, Color.CYAN, Color.MAGENTA};
 
     /**
@@ -219,7 +215,7 @@ public class MainActivity extends AppCompatRosActivity {
             paint.setColor(trajectoryColors[i % trajectoryColors.length]);
 
             // Add trajectory view
-            this.canvas.addTrajectoryView(new TrajectoryView(trajectories.get(i), paint));
+            this.canvas.addEntityView(new TrajectoryView(trajectories.get(i), paint, this.poi));
         }
 
         this.initCanvasHandlers();
@@ -383,7 +379,7 @@ public class MainActivity extends AppCompatRosActivity {
 
     private void initSelectPointButton() {
         final Button selectPOI = (Button) this.findViewById(R.id.select_point);
-        selectPOI.setOnClickListener(new SelectPointButtonHandler(this.canvas, this.poi));
+        selectPOI.setOnClickListener(new SelectPointButtonHandler(this.canvas, this, this.poi));
     };
 
 

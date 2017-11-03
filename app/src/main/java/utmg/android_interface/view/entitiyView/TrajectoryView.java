@@ -6,6 +6,7 @@ import android.graphics.Path;
 
 import java.util.List;
 
+import utmg.android_interface.model.util.POI;
 import utmg.android_interface.model.util.Point3;
 import utmg.android_interface.model.util.Point4;
 import utmg.android_interface.model.util.Trajectory;
@@ -21,12 +22,15 @@ public class TrajectoryView extends AbstractEntityView{
 
     private final Trajectory trajectory;
     private final Paint paint;
+    private final POI poi;
 
     public TrajectoryView(
             final Trajectory trajectory,
-            final Paint paint) {
+            final Paint paint,
+            final POI poi) {
         this.trajectory = trajectory;
         this.paint = paint;
+        this.poi = poi;
     }
 
     @Override

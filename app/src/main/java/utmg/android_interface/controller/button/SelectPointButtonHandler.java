@@ -2,6 +2,7 @@ package utmg.android_interface.controller.button;
 
 import android.view.View;
 
+import utmg.android_interface.activity.MainActivity;
 import utmg.android_interface.controller.canvas.IEndTouchHandler;
 import utmg.android_interface.controller.canvas.IMoveTouchHandler;
 import utmg.android_interface.controller.canvas.IStartTouchHandler;
@@ -18,12 +19,15 @@ import utmg.android_interface.view.canvas.DrawingCanvas;
 public class SelectPointButtonHandler implements View.OnClickListener {
     private final DrawingCanvas canvas;
     private final POI poi;
+    private final MainActivity activity;
 
     public SelectPointButtonHandler(
             final DrawingCanvas canvas,
+            final MainActivity activity,
             final POI poi) {
         this.canvas = canvas;
         this.poi = poi;
+        this.activity = activity;
     }
 
     @Override
@@ -31,7 +35,7 @@ public class SelectPointButtonHandler implements View.OnClickListener {
             final View view) {
         canvas.setOnTouchListener(new OnTouchEventDispatcher(
                 this.canvas,
-                new POIStartTouchHandler(this.poi),
+                new POIStartTouchHandler(this.poi, this.activity, this.canvas),
                 new IMoveTouchHandler() {
                     @Override
                     public void handle(float x, float y, AbstractCanvas canvas) {
