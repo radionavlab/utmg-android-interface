@@ -49,6 +49,7 @@ import utmg.android_interface.controller.canvas.DrawingStartTouchHandler;
 import utmg.android_interface.controller.canvas.OnTouchEventDispatcher;
 import utmg.android_interface.controller.button.SendAllTrajectoriesButtonHandler;
 import utmg.android_interface.controller.button.SendTrajectoryButtonHandler;
+import utmg.android_interface.model.util.POI;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
 import utmg.android_interface.model.entity.Obstacle;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatRosActivity {
     private int screenHeight;
     private int screenWidth;
     private Trajectory selectedTrajectory;
+    private POI poi;
     final int[] trajectoryColors = {Color.BLUE, Color.RED, Color.GREEN, Color.CYAN, Color.MAGENTA};
 
     /**
@@ -291,11 +293,11 @@ public class MainActivity extends AppCompatRosActivity {
     /**
      * Sets the various touch handlers for the canvas to control the selected trajectory.
      */
-    private void initCanvasHandlers() {
+    public void initCanvasHandlers() {
         this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
                 this.canvas,
-                new DrawingStartTouchHandler(this.selectedTrajectory,0,0),
-                new DrawingMoveTouchHandler(this.selectedTrajectory,0,0),
+                new DrawingStartTouchHandler(this.selectedTrajectory,this.poi),
+                new DrawingMoveTouchHandler(this.selectedTrajectory, this.poi),
                 new DrawingEndTouchHandler()));
     }
 
@@ -381,7 +383,7 @@ public class MainActivity extends AppCompatRosActivity {
 
     private void initSelectPointButton() {
         final Button selectPOI = (Button) this.findViewById(R.id.select_point);
-        selectPOI.setOnClickListener(new SelectPointButtonHandler(this.canvas));
+        selectPOI.setOnClickListener(new SelectPointButtonHandler(this.canvas, this.poi));
     };
 
 

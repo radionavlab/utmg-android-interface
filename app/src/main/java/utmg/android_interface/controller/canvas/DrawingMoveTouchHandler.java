@@ -1,5 +1,6 @@
 package utmg.android_interface.controller.canvas;
 
+import utmg.android_interface.model.util.POI;
 import utmg.android_interface.model.util.Point3;
 import utmg.android_interface.model.util.Point4;
 import utmg.android_interface.model.util.Trajectory;
@@ -12,16 +13,15 @@ import utmg.android_interface.view.canvas.AbstractCanvas;
 public class DrawingMoveTouchHandler implements IMoveTouchHandler {
 
     private final Trajectory trajectory;
-    float POIx = 3;
-    float POIy = 4;
+
+    private final POI poi;
 
     public DrawingMoveTouchHandler(
             final Trajectory trajectory,
-            float POIx,
-            float POIy) {
+            final POI poi) {
         this.trajectory = trajectory;
-        this.POIx = POIx;
-        this.POIy = POIy;
+        this.poi = poi;
+
 
     }
 
@@ -32,8 +32,8 @@ public class DrawingMoveTouchHandler implements IMoveTouchHandler {
             final AbstractCanvas canvas) {
 
 
- //       w = (float) Math.atan(POIy-y/POIx-x);
-          float w =0;
+        float w = (float) Math.atan(poi.y-y/poi.x-x);
+
 
         // TODO: Why am I asking canvas for time?
         // Append the movement point
