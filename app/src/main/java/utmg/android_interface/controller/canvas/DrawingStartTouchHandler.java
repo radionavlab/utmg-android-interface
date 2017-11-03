@@ -1,5 +1,6 @@
 package utmg.android_interface.controller.canvas;
 
+import utmg.android_interface.model.util.Altitude;
 import utmg.android_interface.model.util.Point3;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.AbstractCanvas;
@@ -11,10 +12,13 @@ import utmg.android_interface.view.canvas.AbstractCanvas;
 public class DrawingStartTouchHandler implements IStartTouchHandler {
 
     private final Trajectory trajectory;
+    private final Altitude altitude;
 
     public DrawingStartTouchHandler(
-            final Trajectory trajectory) {
+            final Trajectory trajectory,
+            final Altitude altitude) {
         this.trajectory = trajectory;
+        this.altitude = altitude;
     }
 
     @Override
@@ -31,7 +35,7 @@ public class DrawingStartTouchHandler implements IStartTouchHandler {
         final float meterY = canvas.toMetersY(pixelY);
 
         // Start the new trajectory by appending the start point
-        trajectory.addPoint(new Point3(meterX, meterY, trajectory.getAltitude()));
+        trajectory.addPoint(new Point3(meterX, meterY, altitude.value));
 
         // Invalidate the canvas to force redraw
         canvas.invalidate();

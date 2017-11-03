@@ -16,9 +16,6 @@ public class Trajectory {
     /* List of Point3 objects representing the trajectory in 3-space */
     private List<Point3> points;
 
-    /* Altitude specified by slider in meters */
-    private float altitude;
-
     /* A name to identify the trajectory */
     public final String name;
 
@@ -31,7 +28,6 @@ public class Trajectory {
             final String name){
         this.points = points;
         this.name = name;
-        this.altitude = 0;
     }
 
     /**
@@ -67,23 +63,6 @@ public class Trajectory {
     }
 
     /**
-     * Sets the current altitude of the trajectory in meters
-     * @param altitude The current altitude of the trajectory in meters
-     */
-    public void setAltitude(
-            final float altitude) {
-        this.altitude = altitude;
-    }
-
-    /**
-     * Returns the current altitude of the trajectory in meters
-     * @return the current altitude of the trajectory in meters
-     */
-    public float getAltitude() {
-        return this.altitude;
-    }
-
-    /**
      * Clears all of the points from the trajectory.
      */
     public void clear() {
@@ -94,7 +73,6 @@ public class Trajectory {
     public String toString() {
         return "Trajectory{" +
                 "points=" + points +
-                ", altitude=" + altitude +
                 ", name='" + name + '\'' +
                 '}';
     }

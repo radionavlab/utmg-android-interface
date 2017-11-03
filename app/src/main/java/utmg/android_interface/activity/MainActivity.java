@@ -42,6 +42,8 @@ import utmg.android_interface.controller.canvas.DrawingMoveTouchHandler;
 import utmg.android_interface.controller.canvas.DrawingStartTouchHandler;
 import utmg.android_interface.controller.canvas.OnTouchEventDispatcher;
 import utmg.android_interface.model.entity.Obstacle;
+import utmg.android_interface.model.util.Altitude;
+import utmg.android_interface.model.util.SelectedTrajectory;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
 import utmg.android_interface.view.entityView.TrajectoryView;
@@ -67,15 +69,17 @@ public class MainActivity extends AppCompatActivity {
     /* Canvas element */
     private DrawingCanvas canvas;
 
-    /* Model objects */
+    /* Models */
     private List<Trajectory> trajectories = new ArrayList<>();
     private List<Obstacle> obstacles = new ArrayList<>();
+    private Altitude altitude = new Altitude();
+    private SelectedTrajectory selectedTrajectory = new SelectedTrajectory();
+
 
     /* Globals for convenience */
     private SharedPreferences sharedPreferences;
     private int screenHeight;
     private int screenWidth;
-    private Trajectory selectedTrajectory;
     final int[] trajectoryColors = {Color.BLUE, Color.RED, Color.GREEN, Color.CYAN, Color.MAGENTA};
 
     /**
@@ -229,13 +233,8 @@ public class MainActivity extends AppCompatActivity {
             // Set the listener. Listener must change the selected trajectory
             trajectorySelectButton.setOnClickListener(new SelectTrajectoryButtonHandler(
                     trajectories.get(i),
-                    trajectory -> {
-                        // Select the new trajectory
-                        selectedTrajectory = trajectory;
-
-                        // Reinitialize the canvas controllers to control the new trajectory
-                        initCanvasHandlers();
-                    }
+                    selectedTrajectory,
+                    this
             ));
 
             selectTrajectoryGroup.addView(trajectorySelectButton, i);
@@ -248,11 +247,11 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sets the various touch handlers for the canvas to control the selected trajectory.
      */
-    private void initCanvasHandlers() {
+    public void initCanvasHandlers() {
         this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
                 this.canvas,
-                new DrawingStartTouchHandler(this.selectedTrajectory),
-                new DrawingMoveTouchHandler(this.selectedTrajectory),
+                new DrawingStartTouchHandler(this.selectedTrajectory.trajectory, altitude),
+                new DrawingMoveTouchHandler(this.selectedTrajectory.trajectory, altitude),
                 new DrawingEndTouchHandler()));
     }
 
@@ -345,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
         slider.setMax((int) (maxAltitude * 100));
 
         final TextView altitudeDisplayTextView = (TextView) findViewById(R.id.seekbar_value);
-        slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler(altitudeDisplayTextView, this.selectedTrajectory));
+        slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler(altitudeDisplayTextView, this.altitude));
     }
 
     /**
@@ -433,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
      * Assumes that there is at least one initialized trajectory. Sets the first trajectory as the 'selected' trajectory to be controlled by the app.
      */
     private void selectInitialTrajectory() {
-        this.selectedTrajectory = this.trajectories.get(0);
+        this.selectedTrajectory.trajectory = this.trajectories.get(0);
     }
 
 
