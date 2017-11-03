@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import java.util.ArrayList;
 import java.util.List;
 
+import utmg.android_interface.view.entityView.AbstractEntityView;
 import utmg.android_interface.view.entityView.TrajectoryView;
 
 /**
@@ -14,7 +15,7 @@ import utmg.android_interface.view.entityView.TrajectoryView;
 
 public class DrawingCanvas extends AbstractCanvas {
 
-    private List<TrajectoryView> trajectoryViews = new ArrayList<>();
+    private List<AbstractEntityView> entityViews = new ArrayList<>();
 
     public DrawingCanvas(
             final Context context) {
@@ -25,13 +26,13 @@ public class DrawingCanvas extends AbstractCanvas {
     protected void onDraw(
             final Canvas canvas) {
         super.onDraw(canvas);
-        for(TrajectoryView trajectoryView: trajectoryViews) {
-            trajectoryView.draw(canvas);
+        for(AbstractEntityView entityView: entityViews) {
+            entityView.draw(canvas);
         }
     }
 
-    public void addTrajectoryView(
-            final TrajectoryView trajectoryView) {
-        this.trajectoryViews.add(trajectoryView);
+    public void addEntityView(
+            final AbstractEntityView entityView) {
+        this.entityViews.add(entityView);
     }
 }

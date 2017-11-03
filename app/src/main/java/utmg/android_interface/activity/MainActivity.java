@@ -33,6 +33,7 @@ import java.util.Properties;
 
 import utmg.android_interface.R;
 import utmg.android_interface.controller.AltitudeSeekBarHandler;
+import utmg.android_interface.controller.button.AddObstacleButtonHandler;
 import utmg.android_interface.controller.button.ClearAllTrajectoriesButtonHandler;
 import utmg.android_interface.controller.button.ClearTrajectoryButtonHandler;
 import utmg.android_interface.controller.button.SelectTrajectoryButtonHandler;
@@ -43,6 +44,7 @@ import utmg.android_interface.controller.canvas.DrawingStartTouchHandler;
 import utmg.android_interface.controller.canvas.OnTouchEventDispatcher;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.model.util.Altitude;
+import utmg.android_interface.model.util.SelectedObstacle;
 import utmg.android_interface.model.util.SelectedTrajectory;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
@@ -72,8 +74,9 @@ public class MainActivity extends AppCompatActivity {
     /* Models */
     private List<Trajectory> trajectories = new ArrayList<>();
     private List<Obstacle> obstacles = new ArrayList<>();
-    private Altitude altitude = new Altitude();
-    private SelectedTrajectory selectedTrajectory = new SelectedTrajectory();
+    private final Altitude altitude = new Altitude();
+    private final SelectedTrajectory selectedTrajectory = new SelectedTrajectory();
+    private final SelectedObstacle selectedObstacle = new SelectedObstacle();
 
 
     /* Globals for convenience */
@@ -176,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             paint.setColor(trajectoryColors[i % trajectoryColors.length]);
 
             // Add trajectory view
-            this.canvas.addTrajectoryView(new TrajectoryView(trajectories.get(i), paint, this.canvas));
+            this.canvas.addEntityView(new TrajectoryView(trajectories.get(i), paint, this.canvas));
         }
 
         this.initCanvasHandlers();
@@ -316,6 +319,18 @@ public class MainActivity extends AppCompatActivity {
     private void initButtons() {
         initClearTrajectoryButtons();
         initSendTrajectoryButton();
+        initAddObstacleButton();
+    }
+
+    private void initAddObstacleButton() {
+        final Button addObstacleButton = (Button) findViewById(R.id.add_obstacle_button);
+        addObstacleButton.setOnClickListener(
+                new AddObstacleButtonHandler(
+                        this.canvas,
+                        this.obstacles,
+                        this.selectedObstacle,
+                        this
+                ));
     }
 
     private void initSendTrajectoryButton() {
@@ -425,7 +440,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initObstacles() {
         obstacles = new ArrayList<>();
-        this.obstacles.add(new Obstacle("Obstacle 1"));
     }
 
     /**
