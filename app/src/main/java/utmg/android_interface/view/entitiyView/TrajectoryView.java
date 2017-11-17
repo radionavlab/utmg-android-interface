@@ -37,6 +37,14 @@ public class TrajectoryView extends AbstractEntityView{
     public void draw(
             final Canvas canvas) {
         canvas.drawPath(this.composePath(), this.paint);
+
+        for(int i=5; i< this.trajectory.getPoints().size(); i=i+10)
+        canvas.drawLine(
+                this.trajectory.getPoints().get(i).x,
+                this.trajectory.getPoints().get(i).y,
+                this.poi.x,
+                this.poi.y,
+                paint);
     }
 
     private Path composePath() {
