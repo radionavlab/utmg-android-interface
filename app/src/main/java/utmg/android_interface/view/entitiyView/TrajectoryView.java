@@ -42,8 +42,8 @@ public class TrajectoryView extends AbstractEntityView{
         canvas.drawLine(
                 this.trajectory.getPoints().get(i).x,
                 this.trajectory.getPoints().get(i).y,
-                this.poi.x,
-                this.poi.y,
+                (this.poi.x+this.trajectory.getPoints().get(i).x)/2,
+                (this.poi.y+this.trajectory.getPoints().get(i).y)/2,
                 paint);
     }
 
