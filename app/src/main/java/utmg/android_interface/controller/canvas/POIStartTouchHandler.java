@@ -7,7 +7,7 @@ import utmg.android_interface.activity.MainActivity;
 import utmg.android_interface.model.util.POI;
 import utmg.android_interface.view.canvas.AbstractCanvas;
 import utmg.android_interface.view.canvas.DrawingCanvas;
-import utmg.android_interface.view.entitiyView.POIView;
+import utmg.android_interface.view.entityView.POIView;
 
 /**
  * Created by Paige on 11/2/2017.

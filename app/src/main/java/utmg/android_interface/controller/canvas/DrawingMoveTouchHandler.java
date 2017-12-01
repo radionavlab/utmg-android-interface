@@ -38,7 +38,7 @@ public class DrawingMoveTouchHandler implements IMoveTouchHandler {
         final float meterY = canvas.toMetersY(pixelY);
 
 
-        float w = (float) Math.atan(poi.y-meterY/poi.x-meterX);
+        float w = (float) Math.atan2((canvas.toMetersY(poi.y)-meterY),(canvas.toMetersX(poi.x)-meterX));
 
 
         // TODO: Why am I asking canvas for time?

@@ -1,4 +1,4 @@
-package utmg.android_interface.view.entitiyView;
+package utmg.android_interface.view.entityView;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

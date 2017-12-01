@@ -38,17 +38,14 @@ public class DrawingStartTouchHandler implements IStartTouchHandler {
             final float pixelY,
             final AbstractCanvas canvas) {
 
-
-
-        float w = (float) Math.atan(poi.y-pixelY / poi.x-pixelX);
-
-
         // Started drawing a new trajectory. Must reset old trajectory.
         trajectory.clear();
 
         // Convert the points from pixels to meters
         final float meterX = canvas.toMetersX(pixelX);
         final float meterY = canvas.toMetersY(pixelY);
+
+        float w = (float) Math.atan2((canvas.toMetersY(poi.y)-meterY),(canvas.toMetersX(poi.x)-meterX));
 
         // Start the new trajectory by appending the start point
         trajectory.addPoint(new Point4(meterX, meterY, altitude.value, w));
