@@ -1,8 +1,8 @@
 package utmg.android_interface.controller.button;
 
-import android.support.design.widget.Snackbar;
-import android.util.Log;
+import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.AbstractCanvas;
@@ -15,12 +15,15 @@ public class ClearTrajectoryButtonHandler implements View.OnClickListener {
 
     private final AbstractCanvas canvas;
     private final Trajectory trajectory;
+    private final Context context;
 
     public ClearTrajectoryButtonHandler(
             final Trajectory trajectory,
-            final AbstractCanvas canvas) {
+            final AbstractCanvas canvas,
+            Context context) {
         this.canvas = canvas;
         this.trajectory = trajectory;
+        this.context = context;
     }
 
     @Override
@@ -29,12 +32,11 @@ public class ClearTrajectoryButtonHandler implements View.OnClickListener {
         // Clear the trajectory
         trajectory.clear();
 
-        Log.i("Info", "Clearing Trajectory:" + trajectory.name);
-
         // Mark the canvas as invalid to force redraw
         canvas.invalidate();
 
-        // Display a snackbar at the bottom of the screen
-        Snackbar.make(view, "Cleared trajectory.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        // Display a toast at the bottom of the screen
+        Toast.makeText(this.context, "Cleared trajectory.", Toast.LENGTH_SHORT).show();
+
     }
 }

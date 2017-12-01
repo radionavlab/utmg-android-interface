@@ -2,9 +2,6 @@ package utmg.android_interface.view.canvas;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.AttributeSet;
-
-import java.util.List;
 
 /**
  * Unknown author. Modified by Tucker Haydon on 10/15/2017.

@@ -1,6 +1,5 @@
 package utmg.android_interface.model.util;
 
-import org.ros.message.Time;
 
 import java.util.ArrayList;
 
@@ -14,7 +13,7 @@ public class Point4 {
     public final float x, y, z, w;
 
     //time of creation
-    public final Time t;
+    public final long t;
 
     /**
      * Constructor
@@ -31,7 +30,7 @@ public class Point4 {
             final float y,
             final float z,
             final float w,
-            final Time t) {
+            final long t) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -54,7 +53,7 @@ public class Point4 {
         this.y = y;
         this.z = z;
         this.w = w;
-        t = new Time(Time.fromMillis(System.currentTimeMillis()));
+        t = System.currentTimeMillis();
     }
 
 

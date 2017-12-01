@@ -7,8 +7,8 @@ import android.util.AttributeSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import utmg.android_interface.view.entitiyView.AbstractEntityView;
-import utmg.android_interface.view.entitiyView.TrajectoryView;
+import utmg.android_interface.view.entityView.AbstractEntityView;
+
 
 /**
  * Unknown creator. Modified by Tucker Haydon on 10/15/2017
