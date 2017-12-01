@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     tools:context="utmg.android_interface.activity.MainActivity">
 
-
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <!--APP BAR-->
         <android.support.design.widget.AppBarLayout
             android:id="@+id/toolbarLayout"
             android:layout_width="match_parent"
@@ -26,46 +26,46 @@
                 android:background="?attr/colorPrimary"
                 android:elevation="14dp"
                 android:minHeight="170dp"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
         </android.support.design.widget.AppBarLayout>
 
-
+        <!--TOOL BAR-->
         <LinearLayout
-            android:layout_below="@id/toolbarLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_height="60dp"
+            android:layout_below="@id/toolbarLayout"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/kill_button"
+                android:id="@+id/add_obstacle_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:backgroundTint="@android:color/holo_red_dark"
-                android:textColor="@android:color/white"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:layout_weight="1"
-                android:text="Terminate App" />
+                android:backgroundTint="@android:color/holo_orange_light"
+                android:text="Add Obstacle"
+                android:textColor="@android:color/white"/>
 
             <RadioGroup
                 android:id="@+id/select_trajectory_group"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:orientation="horizontal" />
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="horizontal"/>
 
             <Button
                 android:id="@+id/send_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:backgroundTint="@android:color/holo_blue_dark"
-                android:textColor="@android:color/white"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_weight="1"
-                android:text="Send Trajectories" />
+                android:backgroundTint="@android:color/holo_green_dark"
+                android:text="Send Trajectories"
+                android:textColor="@android:color/white"/>
 
             <Button
                 android:id="@+id/select_point"
@@ -78,84 +78,130 @@
                 android:text="POI" />
         </LinearLayout>
 
-    </RelativeLayout>
+        <!-- USE THIS TO PAD THE CANVAS AREA-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="0"/>
 
-    <TextView
-        android:id="@+id/seekbar_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="250dp"
-        android:text="0"
-        android:textSize="20dp" />
+        <!--CANVAS AREA-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+            <!--Ensure that the layout weight above is one to make canvas fill to bottom-->
 
-    <FrameLayout
-        android:id="@+id/slider_frame_layout"
-        android:layout_width="30dp"
-        android:layout_height="400dp"
-        android:orientation="vertical"
-        android:layout_marginLeft="40dp"
-        android:layout_gravity="center|left">
+            <!--SLIDER BAR-->
+            <RelativeLayout
+                android:id="@+id/slider_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true">
 
-        <SeekBar
-            android:id="@+id/slider"
-            android:layout_width="300dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:max="2"
-            android:rotation="270"
-            android:thumb="@drawable/altitude_seekbar_thumb"
-            android:background="@drawable/altitude_seekbar"
-            />
-    </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/slider_frame_layout"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true">
 
-    <!--<Button-->
-        <!--android:id="@+id/previewButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center|bottom"-->
-        <!--android:layout_marginBottom="35dp"-->
-        <!--android:backgroundTint="@color/colorPrimary"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--android:text="PREVIEW"/>-->
+                    <SeekBar
+                        android:id="@+id/slider"
+                        android:layout_width="300dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/altitude_seekbar"
+                        android:max="2"
+                        android:rotation="270"
+                        android:thumb="@drawable/altitude_seekbar_thumb"
+                        />
+                </FrameLayout>
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/send_trajectories_menu_container"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="@dimen/fab_margin" >-->
-    <!--</LinearLayout>-->
+                <TextView
+                    android:id="@+id/seekbar_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_above="@+id/slider_frame_layout"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="20sp"
+                    android:text="0"/>
 
-    <LinearLayout
-        android:id="@+id/clear_trajectories_menu_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center|right"
-        android:layout_margin="@dimen/fab_margin" >
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentTop="true"-->
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/canvas_padding_box_left"
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:layout_alignEnd="@+id/slider_container"/>
+
+            <!--PLACE WHERE CANVAS GOES-->
+            <RelativeLayout
+                android:id="@+id/canvas_container_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignStart="@+id/canvas_padding_box_left"
+                android:layout_alignEnd="@+id/canvas_padding_box_right"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/canvas_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/canvas_padding_box_right"
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:layout_alignStart="@+id/clear_menu_container"/>
+
+            <RelativeLayout
+                android:id="@+id/clear_menu_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true">
+
+                <!--CLEAR TRAJECTORIES MENU-->
+                <LinearLayout
+                    android:id="@+id/clear_trajectories_menu_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_above="@+id/clear_trajectories_menu_container"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp"
+                    android:text="Clear"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!-- USE THIS TO PAD THE CANVAS AREA-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="0"/>
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/dimension_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_gravity="center|bottom"
-        android:text="Arena Dimensions"/>
-
-    <LinearLayout
-        android:id="@+id/canvas_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="horizontal"></LinearLayout>
-
 
 </android.support.design.widget.CoordinatorLayout>

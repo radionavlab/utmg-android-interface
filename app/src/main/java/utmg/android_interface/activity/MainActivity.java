@@ -9,11 +9,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -24,78 +26,73 @@ import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
-import org.ros.android.AppCompatRosActivity;
-import org.ros.node.NodeConfiguration;
-import org.ros.node.NodeMainExecutor;
-
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import utmg.android_interface.R;
 import utmg.android_interface.controller.AltitudeSeekBarHandler;
+import utmg.android_interface.controller.button.AddObstacleButtonHandler;
 import utmg.android_interface.controller.button.ClearAllTrajectoriesButtonHandler;
 import utmg.android_interface.controller.button.ClearTrajectoryButtonHandler;
 import utmg.android_interface.controller.button.SelectPointButtonHandler;
 import utmg.android_interface.controller.button.SelectTrajectoryButtonHandler;
+import utmg.android_interface.controller.button.SendAllTrajectoriesButtonHandler;
 import utmg.android_interface.controller.canvas.DrawingEndTouchHandler;
 import utmg.android_interface.controller.canvas.DrawingMoveTouchHandler;
 import utmg.android_interface.controller.canvas.DrawingStartTouchHandler;
 import utmg.android_interface.controller.canvas.OnTouchEventDispatcher;
 import utmg.android_interface.model.util.POI;
+import utmg.android_interface.model.entity.Obstacle;
+import utmg.android_interface.model.util.Altitude;
+import utmg.android_interface.model.util.SelectedObstacle;
+import utmg.android_interface.model.util.SelectedTrajectory;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
-import utmg.android_interface.model.entity.Obstacle;
-import utmg.android_interface.R;
-import utmg.android_interface.ROS.ROSNodeMain;
-import utmg.android_interface.ROS.ROSNodeService;
-import utmg.android_interface.view.entitiyView.TrajectoryView;
+import utmg.android_interface.view.entityView.TrajectoryView;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
 /**
  * Main activity. This is where the program begins.
  */
-public class MainActivity extends AppCompatRosActivity {
+public class MainActivity extends AppCompatActivity {
 
     /* Config file names */
     private static final String CONFIG_FILE_NAME = "app_config";
 
     /* Default constants */
-    private static final float MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT = 0.85f;
-    private static final float MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH = 0.78f;
     private static final float DEFAULT_MAX_ALTITUDE_METERS = 2.0f;
     private static final float ARENA_WIDTH_METERS_DEFAULT = 5.0f;
     private static final float ARENA_HEIGHT_METERS_DEFAULT = 10.0f;
     private static final float SLIDER_SCREEN_RATIO = 0.6f;
-
-    /* ROS Nodes */
-    private ROSNodeMain nodeMain;
-    private ROSNodeService nodeService;
+    private static final String HOSTNAME_DEFAULT = "localhost";
+    private static final int PORT_DEFAULT = 8080;
 
     /* Canvas element */
     private DrawingCanvas canvas;
 
-    /* Model objects */
+    /* Models */
     private List<Trajectory> trajectories = new ArrayList<>();
     private List<Obstacle> obstacles = new ArrayList<>();
+    private final Altitude altitude = new Altitude();
+    private final SelectedTrajectory selectedTrajectory = new SelectedTrajectory();
+    private final SelectedObstacle selectedObstacle = new SelectedObstacle();
+
 
     /* Globals for convenience */
     private SharedPreferences sharedPreferences;
     private int screenHeight;
     private int screenWidth;
-    private Trajectory selectedTrajectory;
     private POI poi = new POI(0,0);
     final int[] trajectoryColors = {Color.BLUE, Color.RED, Color.GREEN, Color.CYAN, Color.MAGENTA};
 
     /**
-     * Constructor. Called once. Initializes model objects
+     * Constructor.
      */
     public MainActivity() {
-        super("MainActivity", "MainActivity");
+
     }
 
     @Override
@@ -137,36 +134,6 @@ public class MainActivity extends AppCompatRosActivity {
 
         // Initialize UI elements
         this.initUIElements();
-
-    }
-
-    /**
-     * Init function for the ROS component of this activity.
-     *
-     * @param nodeMainExecutor ROSJava node executor
-     */
-    @Override
-    protected void init(
-            final NodeMainExecutor nodeMainExecutor) {
-        nodeMain = new ROSNodeMain();
-        nodeService = new ROSNodeService();
-
-        try {
-            final URI masterURI = this.getMasterUri();
-            final String host = masterURI.getHost();
-            final int port = masterURI.getPort();
-
-            final Socket socket = new Socket(host, port);
-            final InetAddress local_network_address = socket.getLocalAddress();
-            socket.close();
-            NodeConfiguration nodeConfiguration =
-                    NodeConfiguration.newPublic(local_network_address.getHostAddress(), getMasterUri());
-
-            nodeMainExecutor.execute(nodeMain, nodeConfiguration);
-            nodeMainExecutor.execute(nodeService, nodeConfiguration);
-        } catch (IOException e) {
-            Log.e("MainActivity", "socket error trying to get networking information from the master uri");
-        }
     }
 
     /**
@@ -193,7 +160,7 @@ public class MainActivity extends AppCompatRosActivity {
         this.canvas = new DrawingCanvas(getApplicationContext());
 
         // Set the canvas layout parameters
-        final ViewGroup.LayoutParams canvasLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        final ViewGroup.LayoutParams canvasLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         this.canvas.setLayoutParams(canvasLayoutParams);
         canvas.setBackgroundResource(R.drawable.canvas_border);
 
@@ -215,40 +182,43 @@ public class MainActivity extends AppCompatRosActivity {
             paint.setColor(trajectoryColors[i % trajectoryColors.length]);
 
             // Add trajectory view
-            this.canvas.addEntityView(new TrajectoryView(trajectories.get(i), paint, this.poi));
+            this.canvas.addEntityView(new TrajectoryView(trajectories.get(i), paint, this.poi, this.canvas));
         }
 
         this.initCanvasHandlers();
     }
 
     /**
-     * Rescales the canvas size for a new aspect ratio. This actually changes the size of the object containing the canvas since the canvas scales to fit the container.
+     * Rescales the canvas size for a new aspect ratio.
      *
      * @param aspectRatio The desired aspect ratio
      */
     private void setCanvasDimensions(
             final float aspectRatio) {
+        final ViewTreeObserver vto = ((ViewGroup) findViewById(R.id.canvas_container)).getViewTreeObserver();
 
-        // Set the canvas container size
-        final ViewGroup.LayoutParams canvasLayoutParams = ((ViewGroup)findViewById(R.id.canvas_container)).getLayoutParams();
+        vto.addOnGlobalLayoutListener(() -> {
 
-        // TODO: Dont base this off of screen height. Base it off of the maximum canvas holder size
-        // Assume the new screen size
-//        float canvasHeightNew = screenHeight * MAX_CANVAS_HEIGHT_TO_SCREEN_HEIGHT;
-        float canvasHeightNew = screenHeight - 200;
-        float canvasWidthNew = canvasHeightNew * aspectRatio;
+            // Get the maximum size from the container of the container
+            findViewById(R.id.canvas_container_container).measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            final int containerWidth = findViewById(R.id.canvas_container_container).getWidth();
+            final int containerHeight = findViewById(R.id.canvas_container_container).getHeight();
 
-        // Check to see if it fits. If too big, shrink to limiting dimensions
-//        if (canvasWidthNew > screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH) {
-        if (canvasWidthNew > screenWidth - 375) {
-//            canvasWidthNew = screenWidth * MAX_CANVAS_WIDTH_TO_SCREEN_WIDTH;
-            canvasWidthNew = screenWidth - 375;
-            canvasHeightNew = canvasLayoutParams.width / aspectRatio;
-        }
+            // Assume the new size
+            // Doesn't matter. Will be bounded by the container.
+            float canvasHeightNew = containerHeight;
+            float canvasWidthNew = canvasHeightNew * aspectRatio;
 
-        // Set the new dimensions
-        canvasLayoutParams.width = (int) canvasWidthNew;
-        canvasLayoutParams.height = (int) canvasHeightNew;
+            if (canvasWidthNew > containerWidth) {
+                canvasWidthNew = containerWidth;
+                canvasHeightNew = canvasWidthNew / aspectRatio;
+            }
+
+            // Set the new dimensions
+            final ViewGroup.LayoutParams canvasLayoutParams = ((LinearLayout) findViewById(R.id.canvas_container)).getLayoutParams();
+            canvasLayoutParams.width = (int) canvasWidthNew;
+            canvasLayoutParams.height = (int) canvasHeightNew;
+        });
     }
 
     /**
@@ -261,8 +231,7 @@ public class MainActivity extends AppCompatRosActivity {
         selectTrajectoryGroup.removeAllViews();
 
         // Add a radio button for every trajectory
-        // TODO: Get these damn buttons to center!
-        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+        for (int i = 0; i < this.sharedPreferences.getInt("numQuads", 0); i++) {
             final RadioButton trajectorySelectButton = new RadioButton(this.getApplicationContext());
             final String buttonName = "Quad " + (i + 1);
             trajectorySelectButton.setText(buttonName);
@@ -270,13 +239,8 @@ public class MainActivity extends AppCompatRosActivity {
             // Set the listener. Listener must change the selected trajectory
             trajectorySelectButton.setOnClickListener(new SelectTrajectoryButtonHandler(
                     trajectories.get(i),
-                    trajectory -> {
-                        // Select the new trajectory
-                        selectedTrajectory = trajectory;
-
-                        // Reinitialize the canvas controllers to control the new trajectory
-                        initCanvasHandlers();
-                    }
+                    selectedTrajectory,
+                    this
             ));
 
             selectTrajectoryGroup.addView(trajectorySelectButton, i);
@@ -292,8 +256,8 @@ public class MainActivity extends AppCompatRosActivity {
     public void initCanvasHandlers() {
         this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
                 this.canvas,
-                new DrawingStartTouchHandler(this.selectedTrajectory,this.poi),
-                new DrawingMoveTouchHandler(this.selectedTrajectory, this.poi),
+                new DrawingStartTouchHandler(this.selectedTrajectory.trajectory, this.poi, altitude),
+                new DrawingMoveTouchHandler(this.selectedTrajectory.trajectory,  this.poi, altitude),
                 new DrawingEndTouchHandler()));
     }
 
@@ -340,15 +304,15 @@ public class MainActivity extends AppCompatRosActivity {
         final FloatingActionButton clearAllTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
         clearAllTrajectoryButton.setColorNormal(Color.YELLOW);
         clearAllTrajectoryButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
-        clearAllTrajectoryButton.setOnClickListener(new ClearAllTrajectoriesButtonHandler(this.trajectories, this.canvas));
+        clearAllTrajectoryButton.setOnClickListener(new ClearAllTrajectoriesButtonHandler(this.trajectories, this.canvas, this.getApplicationContext()));
         clearTrajectoriesMenuContainer.addView(clearAllTrajectoryButton);
 
         // Add a clear trajectory button for every quad
-        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+        for (int i = 0; i < this.sharedPreferences.getInt("numQuads", 0); i++) {
             final FloatingActionButton clearTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
             clearTrajectoryButton.setColorNormal(trajectoryColors[i % trajectoryColors.length]);
             clearTrajectoryButton.setImageBitmap(textAsBitmap("" + (i + 1), 40, Color.BLACK));
-            clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.trajectories.get(i), this.canvas));
+            clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.trajectories.get(i), this.canvas, getApplicationContext()));
             clearTrajectoriesMenuContainer.addView(clearTrajectoryButton);
         }
     }
@@ -357,23 +321,32 @@ public class MainActivity extends AppCompatRosActivity {
      * Initializes the various buttons on the main activity
      */
     private void initButtons() {
-        initTerminateButton();
-//        initPreviewButton();
         initClearTrajectoryButtons();
-//        initSendTrajectoryButtons();
+        initSendTrajectoryButton();
+        initAddObstacleButton();
         initSelectPointButton();
-//        initSelectPointButton():
+
     }
 
-    /**
-     * Button to terminate app so it doesn't have to be done manually
-     */
-    private void initTerminateButton() {
-        final Button terminateProgramButton = (Button) this.findViewById(R.id.kill_button);
-        terminateProgramButton.setOnClickListener(view -> {
-            finish();
-            System.exit(0);
-        });
+    private void initAddObstacleButton() {
+        final Button addObstacleButton = (Button) findViewById(R.id.add_obstacle_button);
+        addObstacleButton.setOnClickListener(
+                new AddObstacleButtonHandler(
+                        this.canvas,
+                        this.obstacles,
+                        this.selectedObstacle,
+                        this
+                ));
+    }
+
+    private void initSendTrajectoryButton() {
+        final Button sendTrajectoriesButton = (Button) findViewById(R.id.send_button);
+        sendTrajectoriesButton.setOnClickListener(
+                new SendAllTrajectoriesButtonHandler(
+                        trajectories,
+                        this.getApplicationContext(),
+                        this.sharedPreferences.getString("hostname", HOSTNAME_DEFAULT),
+                        this.sharedPreferences.getInt("port", PORT_DEFAULT)));
     }
 
 
@@ -399,7 +372,7 @@ public class MainActivity extends AppCompatRosActivity {
         slider.setMax((int) (maxAltitude * 100));
 
         final TextView altitudeDisplayTextView = (TextView) findViewById(R.id.seekbar_value);
-        slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler(altitudeDisplayTextView, this.selectedTrajectory));
+        slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler(altitudeDisplayTextView, this.altitude));
     }
 
     /**
@@ -414,16 +387,42 @@ public class MainActivity extends AppCompatRosActivity {
             prop.load(this.getApplicationContext().getAssets().open(CONFIG_FILE_NAME));
 
             // Inject all of the values into the shared preferences
-            // TODO: Assuming all of these are floats. Not safe!
+            // TODO: Assuming 3 types of data in a really poor manner. Refactor this!
             final SharedPreferences.Editor editor = this.sharedPreferences.edit();
             for (String configValue : prop.stringPropertyNames()) {
                 // Prevent the config file from overwriting current settings.
                 // This can happen if this function is called twice, for example if the screen is rotated
                 // Screen rotation recreates the activity, re-calling this function
-                final float currentValue = this.sharedPreferences.getFloat(configValue, Float.NaN);
-                if (currentValue != currentValue) {
-                    editor.putFloat(configValue, Float.valueOf(prop.getProperty(configValue)));
-                }
+
+                try {
+                    final int DEFAULT_VALUE = Integer.MAX_VALUE;
+                    final int currentValue = this.sharedPreferences.getInt(configValue, DEFAULT_VALUE);
+                    if(currentValue == DEFAULT_VALUE) {
+                        editor.putInt(configValue, Integer.valueOf(prop.getProperty(configValue)));
+                        Log.i("EDITOR:", "Put int: " + Integer.valueOf(prop.getProperty(configValue)));
+                        continue;
+                    }
+                } catch(Exception e) {}
+
+                try {
+                    final float DEFAULT_VALUE = Float.NaN;
+                    final float currentValue = this.sharedPreferences.getFloat(configValue, DEFAULT_VALUE);
+                    if(currentValue != currentValue) {
+                        editor.putFloat(configValue, Float.valueOf(prop.getProperty(configValue)));
+                        Log.i("EDITOR:", "Put float: " + Float.valueOf(prop.getProperty(configValue)));
+                        continue;
+                    }
+                } catch(Exception e) {}
+
+                try {
+                    final String DEFAULT_VALUE = "";
+                    final String currentValue = this.sharedPreferences.getString(configValue, DEFAULT_VALUE);
+                    if(currentValue.equals(DEFAULT_VALUE)) {
+                        editor.putString(configValue, prop.getProperty(configValue));
+                        Log.i("EDITOR:", "Put string: " + prop.getProperty(configValue));
+                        continue;
+                    }
+                } catch(Exception e) {}
             }
             editor.apply();
         } catch (IOException ex) {
@@ -444,7 +443,7 @@ public class MainActivity extends AppCompatRosActivity {
      */
     private void initTrajectories() {
         trajectories = new ArrayList<>();
-        for (int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
+        for (int i = 0; i < this.sharedPreferences.getInt("numQuads", 0); i++) {
             this.trajectories.add(new Trajectory("Quad " + (i + 1)));
         }
     }
@@ -454,14 +453,13 @@ public class MainActivity extends AppCompatRosActivity {
      */
     private void initObstacles() {
         obstacles = new ArrayList<>();
-        this.obstacles.add(new Obstacle("Obstacle 1"));
     }
 
     /**
      * Assumes that there is at least one initialized trajectory. Sets the first trajectory as the 'selected' trajectory to be controlled by the app.
      */
     private void selectInitialTrajectory() {
-        this.selectedTrajectory = this.trajectories.get(0);
+        this.selectedTrajectory.trajectory = this.trajectories.get(0);
     }
 
 
@@ -519,51 +517,10 @@ public class MainActivity extends AppCompatRosActivity {
      * Initializes the text box that displays the arena dimensions.
      */
     private void initDimensionTextView() {
-        final TextView dimensionText = (TextView) findViewById(R.id.dimension_text);
-        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
-        final float arenaHeightMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
-
-        dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
+//        final TextView dimensionText = (TextView) findViewById(R.id.dimension_text);
+//        final float arenaWidthMeters = sharedPreferences.getFloat("arenaWidthMeters", ARENA_WIDTH_METERS_DEFAULT);
+//        final float arenaHeightMeters = sharedPreferences.getFloat("arenaLengthMeters", ARENA_HEIGHT_METERS_DEFAULT);
+//
+//        dimensionText.setText(Float.toString(arenaWidthMeters) + "m, " + Float.toString(arenaHeightMeters) + "m");
     }
-
-//    /**
-//     * Initializes the preview button
-//     */
-//    private void initPreviewButton() {
-//        final Button previewButton = (Button) findViewById(R.id.previewButton);
-//        previewButton.setOnClickListener(new PreviewButtonHandler());
-//    }
-
-//    /**
-//     * Initializes the buttons to send the trajectories. Creates one button for every trajectory and one button to send them all.
-//     */
-//    private void initSendTrajectoryButtons() {
-//        // Get the menu container
-//        final LinearLayout sendTrajectoriesMenuContainer = (LinearLayout) findViewById(R.id.send_trajectories_menu_container);
-//
-//        // Create a new menu by inflating it from the XML definition
-//        final FloatingActionsMenu sendTrajectoriesMenu = (FloatingActionsMenu) getLayoutInflater().inflate(R.layout.send_trajectories_menu_layout, null, false);
-//
-//        // Clear any previous buttons and add the new ones
-//        sendTrajectoriesMenuContainer.removeAllViews();
-//        sendTrajectoriesMenuContainer.addView(sendTrajectoriesMenu);
-//
-//        // Add a send all trajectories button
-//        final FloatingActionButton sendAllTrajectoriesButton = new FloatingActionButton(this.getApplicationContext());
-//        sendAllTrajectoriesButton.setColorNormal(Color.YELLOW);
-//        sendAllTrajectoriesButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
-//        sendAllTrajectoriesButton.setOnClickListener(new SendAllTrajectoriesButtonHandler(this.trajectories, nodeMain));
-//        sendTrajectoriesMenu.addButton(sendAllTrajectoriesButton);
-//
-//
-//        // Add a send trajectory button for every quad
-//        for(int i = 0; i < this.sharedPreferences.getFloat("numQuads", 0.0f); i++) {
-//            final FloatingActionButton sendTrajectoryButton = new FloatingActionButton(this.getApplicationContext());
-//            sendTrajectoryButton.setColorNormal(trajectoryColors[i%trajectoryColors.length]);
-//            sendTrajectoryButton.setImageBitmap(textAsBitmap(""+ (i+1), 40, Color.BLACK));
-//            sendTrajectoryButton.setOnClickListener(new SendTrajectoryButtonHandler(this.trajectories.get(i)));
-//            sendTrajectoriesMenu.addButton(sendTrajectoryButton);
-//
-//        }
-//    }
 }

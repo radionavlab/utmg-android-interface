@@ -1,4 +1,6 @@
-numQuads                                = 2.0
+numQuads                                = 2
 arenaWidthMeters                        = 5.0
 arenaLengthMeters                       = 20.0
 maxAltitude                             = 3.0
+hostname                                = localhost
+port                                    = 8080

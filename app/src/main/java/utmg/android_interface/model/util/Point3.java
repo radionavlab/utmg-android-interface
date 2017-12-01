@@ -1,7 +1,5 @@
 package utmg.android_interface.model.util;
 
-import org.ros.message.Time;
-
 /**
  * Created by jtb20 on 7/20/2017. Modified by Tucker Haydon on 10/14/2017.
  */
@@ -15,7 +13,7 @@ public class Point3 {
     public final float x, y, z;
 
     /* Time of creation */
-    public final Time t;
+    public final long t;
 
     /**
      * Constructor
@@ -28,7 +26,7 @@ public class Point3 {
             final float x,
             final float y,
             final float z,
-            final Time t) {
+            final long t) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -48,7 +46,7 @@ public class Point3 {
         this.x = x;
         this.y = y;
         this.z = z;
-        t = new Time(Time.fromMillis(System.currentTimeMillis()));
+        t = System.currentTimeMillis();
     }
 
     /**

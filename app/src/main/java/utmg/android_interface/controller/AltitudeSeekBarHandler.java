@@ -3,6 +3,7 @@ package utmg.android_interface.controller;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import utmg.android_interface.model.util.Altitude;
 import utmg.android_interface.model.util.Trajectory;
 
 /**
@@ -12,13 +13,13 @@ import utmg.android_interface.model.util.Trajectory;
 public class AltitudeSeekBarHandler implements SeekBar.OnSeekBarChangeListener {
 
     private final TextView textView;
-    private final Trajectory trajectory;
+    private final Altitude altitude;
 
     public AltitudeSeekBarHandler(
             final TextView textView,
-            final Trajectory trajectory) {
+            final Altitude altitude) {
         this.textView = textView;
-        this.trajectory = trajectory;
+        this.altitude = altitude;
     }
 
     @Override
@@ -40,6 +41,6 @@ public class AltitudeSeekBarHandler implements SeekBar.OnSeekBarChangeListener {
             final boolean fromUser) {
         final float value = ((float) progress / 100);
         this.textView.setText(Float.toString(value));
-        trajectory.setAltitude(value);
+        altitude.value = value;
     }
 }

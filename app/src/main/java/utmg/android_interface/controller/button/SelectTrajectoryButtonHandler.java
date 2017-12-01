@@ -3,8 +3,9 @@ package utmg.android_interface.controller.button;
 import android.view.View;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
 
+import utmg.android_interface.activity.MainActivity;
+import utmg.android_interface.model.util.SelectedTrajectory;
 import utmg.android_interface.model.util.Trajectory;
 
 /**
@@ -14,18 +15,25 @@ import utmg.android_interface.model.util.Trajectory;
 public class SelectTrajectoryButtonHandler implements View.OnClickListener {
 
     private final Trajectory trajectory;
-    private final Consumer<Trajectory> callback;
+    private final SelectedTrajectory selectedTrajectory;
+    private final MainActivity activity;
 
     public SelectTrajectoryButtonHandler(
             final Trajectory trajectory,
-            final Consumer<Trajectory> callback) {
+            final SelectedTrajectory selectedTrajectory,
+            final MainActivity activity) {
         this.trajectory = trajectory;
-        this.callback = callback;
+        this.selectedTrajectory = selectedTrajectory;
+        this.activity = activity;
     }
 
     @Override
     public void onClick(
             final View view) {
-        callback.accept(trajectory);
+        // Change the selected trajectory
+        this.selectedTrajectory.trajectory = this.trajectory;
+
+        // Reinitialize the canvas controllers to control the new trajectory
+        activity.initCanvasHandlers();
     }
 }

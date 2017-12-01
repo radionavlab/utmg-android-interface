@@ -4,12 +4,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import utmg.android_interface.model.util.POI;
+import utmg.android_interface.view.entityView.AbstractEntityView;
 
 /**
  * Created by pwhitt24 on 11/3/17.
  */
 
-public class POIView extends AbstractEntityView{
+public class POIView extends AbstractEntityView {
 
     private final POI poi;
     private final Paint paint;
