@@ -251,11 +251,19 @@ public class MainActivity extends AppCompatActivity {
      * Sets the various touch handlers for the canvas to control the selected trajectory.
      */
     public void initCanvasHandlers() {
-        this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
-                this.canvas,
-                new DrawingStartTouchHandler(this.selectedTrajectory.trajectory, altitude),
-                new DrawingMoveTouchHandler(this.selectedTrajectory.trajectory, altitude),
-                new DrawingEndTouchHandler()));
+        final Handler canvasH = new Handler();
+        Runnable canvasR = new Runnable() {
+            @Override
+            public void run() {
+                canvas.setOnTouchListener(new OnTouchEventDispatcher(
+                        canvas,
+                        new DrawingStartTouchHandler(selectedTrajectory.trajectory, altitude),
+                        new DrawingMoveTouchHandler(selectedTrajectory.trajectory, altitude),
+                        new DrawingEndTouchHandler()));
+                canvasH.postDelayed(this, 1000);
+            }
+        };
+        canvasR.run();
     }
 
     /**
@@ -346,20 +354,28 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Initialize the altitude slider.
      */
-    private void initAltitudeSlider() {
-        final int sliderLength = (int) (screenHeight * SLIDER_SCREEN_RATIO);
+private void initAltitudeSlider() {
+        final Handler seekbarH = new Handler();
+        Runnable seekbarR = new Runnable() {
+            @Override
+            public void run() {
+                final int sliderLength = (int) (screenHeight * SLIDER_SCREEN_RATIO);
 
-        final FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
-        sbLayout.getLayoutParams().height = sliderLength;
+                final FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
+                sbLayout.getLayoutParams().height = sliderLength;
 
-        final SeekBar slider = (SeekBar) findViewById(R.id.slider);
-        slider.getLayoutParams().width = sliderLength;
+                final SeekBar slider = (SeekBar) findViewById(R.id.slider);
+                slider.getLayoutParams().width = sliderLength;
 
-        final float maxAltitude = this.sharedPreferences.getFloat("maxAltitude", DEFAULT_MAX_ALTITUDE_METERS);
-        slider.setMax((int) (maxAltitude * 100));
+                final float maxAltitude = sharedPreferences.getFloat("maxAltitude", DEFAULT_MAX_ALTITUDE_METERS);
+                slider.setMax((int) (maxAltitude * 100));
 
-        final TextView altitudeDisplayTextView = (TextView) findViewById(R.id.seekbar_value);
-        slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler(altitudeDisplayTextView, this.altitude));
+                final TextView altitudeDisplayTextView = (TextView) findViewById(R.id.seekbar_value);
+                slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler(altitudeDisplayTextView, altitude));
+                seekbarH.postDelayed(this, 0);
+            }
+        };
+        seekbarR.run();
     }
 
     /**
