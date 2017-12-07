@@ -46,23 +46,19 @@ public class TrajectoryView extends AbstractEntityView{
         final List<Point4> pathPoints = this.trajectory.getPoints();
 
 
-        for (int i = 5; i < pathPoints.size(); i = i + 25) {
+        for (int i = 5; i < pathPoints.size(); i = i + 50) {
             Point4 metersP = pathPoints.get(i);
             canvas.drawLine(
                     this.drawingCanvas.toPixelsX(metersP.x),
                     this.drawingCanvas.toPixelsY(metersP.y),
-                    (this.poi.x + this.drawingCanvas.toPixelsX(metersP.x)) / 2,
-                    (this.poi.y + this.drawingCanvas.toPixelsY(metersP.y)) / 2,
+                   // poi.x,
+                   // poi.y,
+                   this.drawingCanvas.toPixelsX(metersP.x)+(40*(float)Math.sin(this.trajectory.getPoints().get(i).w)),
+                   this.drawingCanvas.toPixelsY(metersP.y)+(40*(float)Math.cos(this.trajectory.getPoints().get(i).w)),
                     paint);
 
         }
     }
-
-//                this.trajectory.getPoints().get(i).x,
- //               this.trajectory.getPoints().get(i).y,
- //               (this.poi.x+this.trajectory.getPoints().get(i).x)/2,
- //               (this.poi.y+this.trajectory.getPoints().get(i).y)/2,
-                //paint);
 
 
     private Path composePath() {

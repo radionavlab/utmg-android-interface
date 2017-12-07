@@ -35,6 +35,7 @@ import utmg.android_interface.R;
 import utmg.android_interface.controller.AltitudeSeekBarHandler;
 import utmg.android_interface.controller.button.AddObstacleButtonHandler;
 import utmg.android_interface.controller.button.ClearAllTrajectoriesButtonHandler;
+import utmg.android_interface.controller.button.ClearObstacleButtonHandler;
 import utmg.android_interface.controller.button.ClearTrajectoryButtonHandler;
 import utmg.android_interface.controller.button.SelectPointButtonHandler;
 import utmg.android_interface.controller.button.SelectTrajectoryButtonHandler;
@@ -317,6 +318,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+private void initClearObstacleButton() {
+    // Add a clear obstacles button
+    final FloatingActionButton clearObstacleButton = new FloatingActionButton(this.getApplicationContext());
+    clearObstacleButton.setColorNormal(Color.YELLOW);
+    clearObstacleButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
+    clearObstacleButton.setOnClickListener(new ClearObstacleButtonHandler(this.selectedObstacle, this.canvas, this.getApplicationContext()));
+}
+
+
     /**
      * Initializes the various buttons on the main activity
      */
@@ -325,8 +335,12 @@ public class MainActivity extends AppCompatActivity {
         initSendTrajectoryButton();
         initAddObstacleButton();
         initSelectPointButton();
+        initClearObstacleButton();
 
     }
+
+
+
 
     private void initAddObstacleButton() {
         final Button addObstacleButton = (Button) findViewById(R.id.add_obstacle_button);
