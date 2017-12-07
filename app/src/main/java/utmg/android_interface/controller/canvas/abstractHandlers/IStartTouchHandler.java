@@ -11,6 +11,5 @@ public interface IStartTouchHandler {
     void handle(
             final float x,
             final float y,
-            final AbstractCanvas canvas
-            );
+            final AbstractCanvas canvas);
 }

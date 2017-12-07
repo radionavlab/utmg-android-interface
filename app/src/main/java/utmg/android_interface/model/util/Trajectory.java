@@ -14,7 +14,7 @@ import java.util.List;
 public class Trajectory {
 
     /* List of Point3 objects representing the trajectory in 3-space */
-    private List<Point3> points;
+    private List<Point4> points;
 
     /* A name to identify the trajectory */
     public final String name;
@@ -24,7 +24,7 @@ public class Trajectory {
      * @param points A list of Point3 objects representing the trajectory.
      */
     public Trajectory(
-            final List<Point3> points,
+            final List<Point4> points,
             final String name){
         this.points = points;
         this.name = name;
@@ -42,7 +42,7 @@ public class Trajectory {
      * Returns the list of points representing the trajectory
      * @return The list of pointrs representing the trajectory
      */
-    public List<Point3> getPoints() {
+    public List<Point4> getPoints() {
         return points;
     }
 
@@ -50,7 +50,7 @@ public class Trajectory {
      * Appends a point onto the end of the list
      * @param point A point to be appended to the end of the list
      */
-    public void addPoint(Point3 point){
+    public void addPoint(Point4 point){
         points.add(point);
     }
 

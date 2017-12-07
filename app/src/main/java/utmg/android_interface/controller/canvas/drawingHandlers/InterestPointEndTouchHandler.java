@@ -4,16 +4,15 @@ import utmg.android_interface.controller.canvas.abstractHandlers.IEndTouchHandle
 import utmg.android_interface.view.canvas.AbstractCanvas;
 
 /**
- * Created by tuckerhaydon on 10/15/17.
+ * Created by tuckerhaydon on 12/7/17.
  */
 
-public class DrawingEndTouchHandler implements IEndTouchHandler {
-
+public class InterestPointEndTouchHandler implements IEndTouchHandler {
     @Override
     public void handle(
             final float x,
             final float y,
             final AbstractCanvas canvas) {
-        // Do nothing
+        // Does nothing
     }
 }

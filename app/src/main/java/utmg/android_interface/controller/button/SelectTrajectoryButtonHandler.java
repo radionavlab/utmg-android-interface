@@ -2,8 +2,6 @@ package utmg.android_interface.controller.button;
 
 import android.view.View;
 
-import java.util.function.Consumer;
-
 import utmg.android_interface.activity.MainActivity;
 import utmg.android_interface.model.util.SelectedTrajectory;
 import utmg.android_interface.model.util.Trajectory;

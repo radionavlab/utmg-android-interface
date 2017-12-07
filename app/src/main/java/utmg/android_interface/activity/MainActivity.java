@@ -33,6 +33,7 @@ import java.util.Properties;
 
 import utmg.android_interface.R;
 import utmg.android_interface.controller.AltitudeSeekBarHandler;
+import utmg.android_interface.controller.button.AddInterestPointButtonHandler;
 import utmg.android_interface.controller.button.AddObstacleButtonHandler;
 import utmg.android_interface.controller.button.ClearAllTrajectoriesButtonHandler;
 import utmg.android_interface.controller.button.ClearTrajectoryButtonHandler;
@@ -44,10 +45,12 @@ import utmg.android_interface.controller.canvas.drawingHandlers.DrawingStartTouc
 import utmg.android_interface.controller.canvas.abstractHandlers.OnTouchEventDispatcher;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.model.util.Altitude;
+import utmg.android_interface.model.util.InterestPoint;
 import utmg.android_interface.model.util.SelectedObstacle;
 import utmg.android_interface.model.util.SelectedTrajectory;
 import utmg.android_interface.model.util.Trajectory;
 import utmg.android_interface.view.canvas.DrawingCanvas;
+import utmg.android_interface.view.entityView.InterestPointView;
 import utmg.android_interface.view.entityView.TrajectoryView;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
@@ -79,13 +82,14 @@ public class MainActivity extends AppCompatActivity {
     private final Altitude altitude = new Altitude();
     private final SelectedTrajectory selectedTrajectory = new SelectedTrajectory();
     private final SelectedObstacle selectedObstacle = new SelectedObstacle();
+    private final InterestPoint interestPoint = new InterestPoint();
 
 
     /* Globals for convenience */
     private SharedPreferences sharedPreferences;
     private int screenHeight;
     private int screenWidth;
-    final int[] trajectoryColors = {Color.BLUE, Color.RED, Color.GREEN, Color.CYAN, Color.MAGENTA};
+    final int[] trajectoryColors = {Color.BLUE, Color.RED, Color.GREEN};
 
     /**
      * Constructor.
@@ -185,6 +189,14 @@ public class MainActivity extends AppCompatActivity {
             this.canvas.addEntityView(new TrajectoryView(trajectories.get(i), paint, this.canvas));
         }
 
+        {
+            final Paint paint = new Paint();
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(8);
+            paint.setColor(Color.RED);
+            this.canvas.addEntityView(new InterestPointView(this.interestPoint, paint));
+        }
+
         this.initCanvasHandlers();
     }
 
@@ -256,8 +268,8 @@ public class MainActivity extends AppCompatActivity {
     public void initCanvasHandlers() {
         this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
                 this.canvas,
-                new DrawingStartTouchHandler(this.selectedTrajectory.trajectory, altitude),
-                new DrawingMoveTouchHandler(this.selectedTrajectory.trajectory, altitude),
+                new DrawingStartTouchHandler(this.selectedTrajectory.trajectory, altitude, interestPoint),
+                new DrawingMoveTouchHandler(this.selectedTrajectory.trajectory, altitude, interestPoint),
                 new DrawingEndTouchHandler()));
     }
 
@@ -323,6 +335,17 @@ public class MainActivity extends AppCompatActivity {
         initClearTrajectoryButtons();
         initSendTrajectoryButton();
         initAddObstacleButton();
+        initAddInterestPointButton();
+    }
+
+    private void initAddInterestPointButton() {
+        final Button interestPointButton = (Button) findViewById(R.id.add_interest_point_button);
+        interestPointButton.setOnClickListener(
+                new AddInterestPointButtonHandler(
+                        this.canvas,
+                        this.interestPoint,
+                        this
+                ));
     }
 
     private void initAddObstacleButton() {
