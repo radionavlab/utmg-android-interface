@@ -5,10 +5,10 @@ import android.view.View;
 import java.util.List;
 
 import utmg.android_interface.activity.MainActivity;
-import utmg.android_interface.controller.canvas.AddObstacleEndTouchHandler;
-import utmg.android_interface.controller.canvas.AddObstacleMoveTouchHandler;
-import utmg.android_interface.controller.canvas.AddObstacleStartTouchHandler;
-import utmg.android_interface.controller.canvas.OnTouchEventDispatcher;
+import utmg.android_interface.controller.canvas.obstacleHandlers.AddObstacleEndTouchHandler;
+import utmg.android_interface.controller.canvas.obstacleHandlers.AddObstacleMoveTouchHandler;
+import utmg.android_interface.controller.canvas.obstacleHandlers.AddObstacleStartTouchHandler;
+import utmg.android_interface.controller.canvas.abstractHandlers.OnTouchEventDispatcher;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.model.util.SelectedObstacle;
 import utmg.android_interface.view.canvas.DrawingCanvas;

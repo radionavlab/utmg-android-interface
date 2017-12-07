@@ -38,10 +38,10 @@ import utmg.android_interface.controller.button.ClearAllTrajectoriesButtonHandle
 import utmg.android_interface.controller.button.ClearTrajectoryButtonHandler;
 import utmg.android_interface.controller.button.SelectTrajectoryButtonHandler;
 import utmg.android_interface.controller.button.SendAllTrajectoriesButtonHandler;
-import utmg.android_interface.controller.canvas.DrawingEndTouchHandler;
-import utmg.android_interface.controller.canvas.DrawingMoveTouchHandler;
-import utmg.android_interface.controller.canvas.DrawingStartTouchHandler;
-import utmg.android_interface.controller.canvas.OnTouchEventDispatcher;
+import utmg.android_interface.controller.canvas.drawingHandlers.DrawingEndTouchHandler;
+import utmg.android_interface.controller.canvas.drawingHandlers.DrawingMoveTouchHandler;
+import utmg.android_interface.controller.canvas.drawingHandlers.DrawingStartTouchHandler;
+import utmg.android_interface.controller.canvas.abstractHandlers.OnTouchEventDispatcher;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.model.util.Altitude;
 import utmg.android_interface.model.util.SelectedObstacle;
@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     private static final float SLIDER_SCREEN_RATIO = 0.6f;
     private static final String HOSTNAME_DEFAULT = "localhost";
     private static final int PORT_DEFAULT = 8080;
+    private static final float QUAD_SAFETY_DISTANCE = 0.27f;
+
 
     /* Canvas element */
     private DrawingCanvas canvas;
@@ -175,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < trajectories.size(); i++) {
             final Paint paint = new Paint();
             paint.setStyle(Paint.Style.STROKE);
+//            paint.setStrokeWidth(canvas.toPixelsX(QUAD_SAFETY_DISTANCE) - canvas.toPixelsX(0));
             paint.setStrokeWidth(5);
             paint.setColor(trajectoryColors[i % trajectoryColors.length]);
 

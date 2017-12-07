@@ -1,5 +1,6 @@
-package utmg.android_interface.controller.canvas;
+package utmg.android_interface.controller.canvas.drawingHandlers;
 
+import utmg.android_interface.controller.canvas.abstractHandlers.IEndTouchHandler;
 import utmg.android_interface.view.canvas.AbstractCanvas;
 
 /**

@@ -1,4 +1,4 @@
-package utmg.android_interface.controller.canvas;
+package utmg.android_interface.controller.canvas.abstractHandlers;
 
 import android.view.MotionEvent;
 import android.view.View;

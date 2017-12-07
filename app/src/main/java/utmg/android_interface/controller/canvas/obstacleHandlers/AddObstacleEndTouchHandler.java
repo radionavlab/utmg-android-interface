@@ -1,17 +1,14 @@
-package utmg.android_interface.controller.canvas;
-
-import android.graphics.Color;
-import android.graphics.Paint;
+package utmg.android_interface.controller.canvas.obstacleHandlers;
 
 import java.util.List;
 
 import utmg.android_interface.activity.MainActivity;
+import utmg.android_interface.controller.canvas.abstractHandlers.IEndTouchHandler;
 import utmg.android_interface.model.entity.Obstacle;
 import utmg.android_interface.model.util.Point3;
 import utmg.android_interface.model.util.SelectedObstacle;
 import utmg.android_interface.view.canvas.AbstractCanvas;
 import utmg.android_interface.view.canvas.DrawingCanvas;
-import utmg.android_interface.view.entityView.ObstacleView;
 
 /**
  * Created by tuckerhaydon on 11/3/17.

@@ -52,12 +52,13 @@ public class TrajectoryView extends AbstractEntityView{
         final Point3 initialPointMeters = pathPoints.get(0);
         path.moveTo(this.drawingCanvas.toPixelsX(initialPointMeters.x), this.drawingCanvas.toPixelsY(initialPointMeters.y));
 
+//        path.setFillType(Path.FillType.WINDING);
+
         // Add the rest of the points to the path
         for(int i = 1; i < pathPoints.size(); i++) {
             final Point3 metersPoint = pathPoints.get(i);
             path.lineTo(this.drawingCanvas.toPixelsX(metersPoint.x), this.drawingCanvas.toPixelsY(metersPoint.y));
         }
-
         return path;
     }
 }

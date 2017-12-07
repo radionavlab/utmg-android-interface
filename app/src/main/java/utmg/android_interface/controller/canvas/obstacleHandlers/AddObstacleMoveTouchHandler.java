@@ -1,5 +1,6 @@
-package utmg.android_interface.controller.canvas;
+package utmg.android_interface.controller.canvas.obstacleHandlers;
 
+import utmg.android_interface.controller.canvas.abstractHandlers.IMoveTouchHandler;
 import utmg.android_interface.model.util.Point3;
 import utmg.android_interface.model.util.SelectedObstacle;
 import utmg.android_interface.view.canvas.AbstractCanvas;
