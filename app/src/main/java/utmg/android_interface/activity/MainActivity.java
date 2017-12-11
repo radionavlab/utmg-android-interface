@@ -24,6 +24,8 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import android.os.Handler;
+
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
@@ -255,6 +257,21 @@ public class MainActivity extends AppCompatActivity {
      * Sets the various touch handlers for the canvas to control the selected trajectory.
      */
     public void initCanvasHandlers() {
+//        final Handler canvasH = new Handler();
+//        Runnable canvasR = new Runnable() {
+//            @Override
+//            public void run() {
+//                canvas.setOnTouchListener(new OnTouchEventDispatcher(
+//                        canvas,
+//                        new DrawingStartTouchHandler(selectedTrajectory.trajectory, poi,  altitude),
+//                        new DrawingMoveTouchHandler(selectedTrajectory.trajectory, poi, altitude),
+//                        new DrawingEndTouchHandler()));
+//                canvasH.postDelayed(this, 1000);
+//            }
+//        };
+//        canvasR.run();
+
+
         this.canvas.setOnTouchListener(new OnTouchEventDispatcher(
                 this.canvas,
                 new DrawingStartTouchHandler(this.selectedTrajectory.trajectory, this.poi, altitude),
@@ -316,15 +333,30 @@ public class MainActivity extends AppCompatActivity {
             clearTrajectoryButton.setOnClickListener(new ClearTrajectoryButtonHandler(this.trajectories.get(i), this.canvas, getApplicationContext()));
             clearTrajectoriesMenuContainer.addView(clearTrajectoryButton);
         }
-    }
 
-private void initClearObstacleButton() {
-    // Add a clear obstacles button
-    final FloatingActionButton clearObstacleButton = new FloatingActionButton(this.getApplicationContext());
-    clearObstacleButton.setColorNormal(Color.YELLOW);
-    clearObstacleButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
-    clearObstacleButton.setOnClickListener(new ClearObstacleButtonHandler(this.selectedObstacle, this.canvas, this.getApplicationContext()));
-}
+//
+        final FloatingActionButton clearObstacleButton = new FloatingActionButton(this.getApplicationContext());
+        clearObstacleButton.setColorNormal(Color.YELLOW);
+        clearObstacleButton.setImageBitmap(textAsBitmap("Obstacle", 40, Color.BLACK));
+        clearObstacleButton.setOnClickListener(new ClearObstacleButtonHandler(this.obstacles, this.canvas, this.getApplicationContext()));
+        clearTrajectoriesMenuContainer.addView(clearObstacleButton);
+
+    }
+//private void initClearObstacleButton() {
+//
+//    //final LinearLayout clearObstacleMenuContainer = (Linear Layout) findViewById(R.id.clear_obstacle_menu_container);
+//
+//    //clearObstacleMenuContainer.removeAllViews();
+//
+//    // Add a clear obstacles button
+//    for (int i=0; i<obstacles.size(); i++) {
+//        final FloatingActionButton clearObstacleButton = new FloatingActionButton(this.getApplicationContext());
+//        clearObstacleButton.setColorNormal(Color.YELLOW);
+//        clearObstacleButton.setImageBitmap(textAsBitmap("All", 40, Color.BLACK));
+//        clearObstacleButton.setOnClickListener(new ClearObstacleButtonHandler(this.obstacles.get(i), this.canvas, this.getApplicationContext()));
+//        //clearObstacleMenuContainer.addView(clearObstacleButton);
+//    }
+//}
 
 
     /**
@@ -335,7 +367,7 @@ private void initClearObstacleButton() {
         initSendTrajectoryButton();
         initAddObstacleButton();
         initSelectPointButton();
-        initClearObstacleButton();
+//        initClearObstacleButton();
 
     }
 
@@ -374,19 +406,28 @@ private void initClearObstacleButton() {
      * Initialize the altitude slider.
      */
     private void initAltitudeSlider() {
-        final int sliderLength = (int) (screenHeight * SLIDER_SCREEN_RATIO);
+       // final Handler seekbarH = new Handler();
+       // Runnable seekbarR = new Runnable() {
+         //   @Override
+           // public void run() {
 
-        final FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
-        sbLayout.getLayoutParams().height = sliderLength;
+                final int sliderLength = (int) (screenHeight * SLIDER_SCREEN_RATIO);
 
-        final SeekBar slider = (SeekBar) findViewById(R.id.slider);
-        slider.getLayoutParams().width = sliderLength;
+                final FrameLayout sbLayout = (FrameLayout) findViewById(R.id.slider_frame_layout);
+                sbLayout.getLayoutParams().height = sliderLength;
 
-        final float maxAltitude = this.sharedPreferences.getFloat("maxAltitude", DEFAULT_MAX_ALTITUDE_METERS);
-        slider.setMax((int) (maxAltitude * 100));
+                final SeekBar slider = (SeekBar) findViewById(R.id.slider);
+                slider.getLayoutParams().width = sliderLength;
 
-        final TextView altitudeDisplayTextView = (TextView) findViewById(R.id.seekbar_value);
-        slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler(altitudeDisplayTextView, this.altitude));
+                final float maxAltitude = sharedPreferences.getFloat("maxAltitude", DEFAULT_MAX_ALTITUDE_METERS);
+                slider.setMax((int) (maxAltitude * 100));
+
+                final TextView altitudeDisplayTextView = (TextView) findViewById(R.id.seekbar_value);
+                slider.setOnSeekBarChangeListener(new AltitudeSeekBarHandler(altitudeDisplayTextView, altitude));
+                //seekbarH.postDelayed(this, 0);
+            //}
+       // };
+        //seekbarR.run();
     }
 
     /**

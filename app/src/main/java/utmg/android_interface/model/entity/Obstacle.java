@@ -39,4 +39,8 @@ public class Obstacle extends AbstractEntity {
     public float getRadius() {
         return this.radius;
     }
+
+    public void clear() {
+        this.radius = 1;
+    }
 }

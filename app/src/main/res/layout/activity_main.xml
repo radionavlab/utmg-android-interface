@@ -48,6 +48,7 @@
                 android:text="Add Obstacle"
                 android:textColor="@android:color/white"/>
 
+
             <RadioGroup
                 android:id="@+id/select_trajectory_group"
                 android:layout_width="wrap_content"
@@ -184,6 +185,7 @@
                     android:orientation="vertical">
                 </LinearLayout>
 
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -192,7 +194,13 @@
                     android:textColor="@android:color/black"
                     android:textSize="25sp"
                     android:text="Clear"/>
+
+
+
+
             </RelativeLayout>
+
+
 
         </RelativeLayout>
 

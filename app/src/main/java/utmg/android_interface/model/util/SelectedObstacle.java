@@ -8,4 +8,7 @@ import utmg.android_interface.model.entity.Obstacle;
 
 public class SelectedObstacle {
     public Obstacle obstacle;
+
+
+
 }
